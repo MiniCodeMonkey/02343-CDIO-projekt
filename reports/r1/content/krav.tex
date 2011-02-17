@@ -13,7 +13,7 @@
 			\item Hent billeder fra USB webcam
 			\item Behandl billeder og identificér bane, robot, 'kage' og forhindringer
 			\item Bestem position og retning for robot
-			\item Bestem position for kage
+			\item Bestem positioner for kager
 			\item Bestem positioner for forhindringer
 		\end{enumerate}
 		\item Stifindingsalgoritme
@@ -26,9 +26,10 @@
 		\end{enumerate}
 		\item Styring (vha. ovenstående)
 		\begin{enumerate}
-			\item Lokalisér kage, robot og forhindringer på banen
-			\item Dirigér robot til kage -- uden om forhindringer -- og saml kagen op
-			\item Dirigér robot uden for banen, og læg kagen
+			\item Lokalisér kager, robot og forhindringer på banen
+			\item Dirigér robot til én kage -- uden om forhindringer -- og saml kagen op
+			\item Dirigér robot uden for banen -- stadig uden om forhindringer -- og læg kagen
+			\item Gentag, så længe der er kager på banen
 		\end{enumerate}
 	\end{enumerate}
 \end{enumerate}
@@ -37,8 +38,9 @@
 \begin{tabular}{r p{0.85\linewidth}}
 	\textbf{Prio} & \textbf{Mål} \\
 	\hline
-	1 & Flere kager, som alle skal fjernes fra banen af robotten.\\
-	2 & Fejlhåndtering -- robot i stand til at undgå forhindring vha. egne sensorer og kommunikere tilbage til PC.\\
-	3 & 2 robotter til at udføre opgaven i fællesskab. Robotterne må ikke kollidere.\\
+%	1 & Flere kager, som alle skal fjernes fra banen af robotten.\\ % Succeskriterie
+	1 & Fejlhåndtering -- robot i stand til at undgå forhindring vha. egne sensorer og kommunikere tilbage til PC.\\
+	2 & 2 robotter til at udføre opgaven i fællesskab. Robotterne må ikke kollidere.\\
+	3 & Mulighed for at håndtere kager og/eller forhindringer, der bliver flyttet. \\
 	  & 1. plads i konkurrencen
 \end{tabular}
