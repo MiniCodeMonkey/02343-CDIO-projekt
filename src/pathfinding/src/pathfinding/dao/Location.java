@@ -1,8 +1,6 @@
-package pathfinding.implementations;
+package pathfinding.dao;
 
-import pathfinding.interfaces.ILocation;
-
-public class Location implements ILocation
+public class Location
 {
 	private int x;
 	private int y;
