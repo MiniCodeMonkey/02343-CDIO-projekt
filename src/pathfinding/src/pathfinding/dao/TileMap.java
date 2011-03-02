@@ -11,5 +11,23 @@ public class TileMap
 	public int[][] getTileMap() {
 		return tileMap;
 	}
+
+	public int getWidthInTiles()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getHeightInTiles()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public boolean blocked(Robot robot, int tx, int ty)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }
