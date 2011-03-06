@@ -1,0 +1,85 @@
+package testimageprocessing;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import imageprocessing.*;
+import imagesource.*;
+
+public class TestImageProcessor implements ActionListener {
+	ImageProcessor imageProcessor;
+	IImageSource imageSource;
+	ImagePanel panel;
+	
+	public void run() {
+		// Opret WebCam, initialisér, hent billede til RenderedImage, og luk WebCam igen.
+//		imageSource = new WebCam();
+		imageSource = new ImageFile();
+		imageProcessor = new ImageProcessor(80,40);
+		imageSource.init();
+		Image img = imageSource.getImage();
+		imageSource.close();
+		img = imageProcessor.resizeImage(img);
+		// Opret JFrame samt panel til billede
+		JFrame frame = new JFrame();
+		frame.setLayout(new FlowLayout());
+		panel = new ImagePanel(img);
+		panel.setMinimumSize(new Dimension(320,240));
+		frame.getContentPane().add(panel);
+		
+		// Opret panel til knapper
+		JPanel panel2 = new JPanel();
+		frame.getContentPane().add(panel2);
+		
+		// Definér knapper
+		JButton open = new JButton("Connect");
+		JButton update = new JButton("Update image");
+		JButton close = new JButton("Disconnect");
+		open.setActionCommand("open");
+		update.setActionCommand("update");
+		close.setActionCommand("close");
+		open.addActionListener(this);
+		update.addActionListener(this);
+		close.addActionListener(this);
+		panel2.add(open);
+		panel2.add(update);
+		panel2.add(close);
+		
+		frame.setSize(480, 320);
+		frame.setVisible(true);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	/**
+	 * Eksekveret metode til test af WebCam. Opret en instans af egen klasse og kør run() 
+	 * @param args Bruges ikke
+	 */
+	public static void main(String[] args) {
+		TestImageProcessor testWebCam = new TestImageProcessor();
+		testWebCam.run();
+	}
+	
+	/**
+	 * ActionPerformed for knapperne 
+	 */
+	public void actionPerformed(ActionEvent ae) {
+		if (ae.getActionCommand().equals("open")) {
+			// Initialisér ImageSource
+			imageSource.init();
+		} else if (ae.getActionCommand().equals("update")) {
+			// Hent billede fra ImageSource og vis dette i panel
+			Image img = imageSource.getImage();
+			img = imageProcessor.resizeImage(img);
+			panel.setImage((Image) img);
+			panel.paint(panel.getGraphics());
+		} else if (ae.getActionCommand().equals("close")) {
+			// Luk ImageSource
+			imageSource.close();
+		}
+	}
+}

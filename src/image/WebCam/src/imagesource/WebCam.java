@@ -11,7 +11,6 @@ import javax.media.CaptureDeviceManager;
 import javax.media.Format;
 import javax.media.Manager;
 import javax.media.NoPlayerException;
-import javax.media.Controller;
 import javax.media.Player;
 import javax.media.control.FormatControl;
 import javax.media.control.FrameGrabbingControl;
