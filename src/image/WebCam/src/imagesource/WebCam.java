@@ -1,5 +1,6 @@
 package imagesource;
 
+import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 
@@ -10,12 +11,18 @@ import javax.media.CaptureDeviceManager;
 import javax.media.Format;
 import javax.media.Manager;
 import javax.media.NoPlayerException;
+import javax.media.Controller;
 import javax.media.Player;
 import javax.media.control.FormatControl;
 import javax.media.control.FrameGrabbingControl;
 import javax.media.format.VideoFormat;
 import javax.media.util.BufferToImage;
 
+/**
+ * ImageSource-objekt, som benytter JMF til at skabe forbindelse til et webcam
+ * @author PC
+ *
+ */
 public class WebCam implements IImageSource {
 	protected static Player player = null;
 	protected FormatControl formatControl;
@@ -86,6 +93,9 @@ public class WebCam implements IImageSource {
 		// Vent, så playeren får tid til at starte op
 		try {
 			Thread.sleep(5000);
+//			do {
+//				Thread.sleep(100);
+//			} while (player.getState() == Controller.Unrealized || player.getState() == Controller.Realizing);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -95,13 +105,13 @@ public class WebCam implements IImageSource {
 	 * Hent nuværende billede fra webcam
 	 * @returns Det aktuelle billede fra webcam
 	 */
-	public RenderedImage getImage() {
+	public Image getImage() {
 		// Opret framegrabber objekt fra player
 		FrameGrabbingControl frameGrabber = (FrameGrabbingControl) player.getControl("javax.media.control.FrameGrabbingControl");
 		// Opret buffer med billede, og konvertér dette til et RenderedImage, som returneres
 		Buffer buf = frameGrabber.grabFrame();
 		BufferToImage btoi = new BufferToImage((VideoFormat) buf.getFormat());
 		RenderedImage image = (RenderedImage) btoi.createImage(buf);
-		return image;
+		return (Image) image;
 	}
 }

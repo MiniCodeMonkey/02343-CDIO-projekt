@@ -2,7 +2,6 @@ package testimagesource;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.RenderedImage;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,14 +23,15 @@ public class TestWebCam implements ActionListener {
 	public void run() {
 		// Opret WebCam, initialisér, hent billede til RenderedImage, og luk WebCam igen.
 		imageSource = new WebCam();
+		//imageSource = new ImageFile();
 		imageSource.init();
-		RenderedImage img = imageSource.getImage();
+		Image img = imageSource.getImage();
 		imageSource.close();
 		
 		// Opret JFrame samt panel til billede
 		JFrame frame = new JFrame();
 		frame.setLayout(new FlowLayout());
-		panel = new ImagePanel((Image) img);
+		panel = new ImagePanel(img);
 		panel.setMinimumSize(new Dimension(320,240));
 		frame.getContentPane().add(panel);
 		
@@ -40,9 +40,9 @@ public class TestWebCam implements ActionListener {
 		frame.getContentPane().add(panel2);
 		
 		// Definér knapper
-		JButton open = new JButton("Open");
-		JButton update = new JButton("Update");
-		JButton close = new JButton("Close");
+		JButton open = new JButton("Connect");
+		JButton update = new JButton("Update image");
+		JButton close = new JButton("Disconnect");
 		open.setActionCommand("open");
 		update.setActionCommand("update");
 		close.setActionCommand("close");
@@ -77,7 +77,7 @@ public class TestWebCam implements ActionListener {
 			imageSource.init();
 		} else if (ae.getActionCommand().equals("update")) {
 			// Hent billede fra ImageSource og vis dette i panel
-			RenderedImage img = imageSource.getImage();
+			Image img = imageSource.getImage();
 			panel.setImage((Image) img);
 			panel.paint(panel.getGraphics());
 		} else if (ae.getActionCommand().equals("close")) {

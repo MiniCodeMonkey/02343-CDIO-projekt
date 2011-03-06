@@ -1,6 +1,6 @@
 package imagesource;
 
-import java.awt.image.RenderedImage;
+import java.awt.Image;
 
 /**
  * Kilde til rå billeder
@@ -23,5 +23,5 @@ public interface IImageSource {
 	 * Hent et billede fra kilden
 	 * @return Det nuværende billede fra ImageSource kilden
 	 */
-	public RenderedImage getImage();
+	public Image getImage();
 }
