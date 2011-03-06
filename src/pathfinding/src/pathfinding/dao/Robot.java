@@ -1,22 +1,23 @@
-package pathfinding.transferInterfaces;
+package pathfinding.dao;
 
 public class Robot {
 
 	private int x, y, angle;
 
-	public void setXCoordinate(int x) {
+	public Robot(int x, int y, int angle)
+	{
 		this.x = x;
+		this.y = y;
+		setAngle(angle);
 	}
-
-	public int getXCoordinate() {
+	
+	public int getXCoordinates()
+	{
 		return x;
 	}
-
-	public void setYCoordinate(int y) {
-		this.y = y;
-	}
-
-	public int getYCoordinate() {
+	
+	public int getYCoordinates()
+	{
 		return y;
 	}
 
