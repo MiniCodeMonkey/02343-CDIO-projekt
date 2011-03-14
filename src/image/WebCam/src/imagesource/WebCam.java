@@ -1,6 +1,6 @@
 package imagesource;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 
@@ -104,13 +104,13 @@ public class WebCam implements IImageSource {
 	 * Hent nuværende billede fra webcam
 	 * @returns Det aktuelle billede fra webcam
 	 */
-	public Image getImage() {
+	public BufferedImage getImage() {
 		// Opret framegrabber objekt fra player
 		FrameGrabbingControl frameGrabber = (FrameGrabbingControl) player.getControl("javax.media.control.FrameGrabbingControl");
 		// Opret buffer med billede, og konvertér dette til et RenderedImage, som returneres
 		Buffer buf = frameGrabber.grabFrame();
 		BufferToImage btoi = new BufferToImage((VideoFormat) buf.getFormat());
 		RenderedImage image = (RenderedImage) btoi.createImage(buf);
-		return (Image) image;
+		return (BufferedImage) image;
 	}
 }

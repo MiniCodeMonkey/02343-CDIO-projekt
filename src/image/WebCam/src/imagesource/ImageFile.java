@@ -1,6 +1,6 @@
 package imagesource;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,10 +53,10 @@ public class ImageFile implements IImageSource {
 	 * Henter det næste billede på listen
 	 * @return Næste billede på listen
 	 */
-	public Image getImage() {
+	public BufferedImage getImage() {
 		// Opret File objekt til billedet, og læs dette til et Image-objekt
 		File file = new File(files.get(index));
-		Image image = null;
+		BufferedImage image = null;
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
