@@ -1,4 +1,4 @@
-package testimageprocessing;
+package dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -10,8 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import imageprocessing.*;
-import imagesource.*;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
 
 /**
  * Program til test af ImageProcessor funktionerne samt ImageSource input
@@ -147,7 +148,7 @@ public class TestImageProcessor implements ActionListener {
 			
 			// Opret tilemap og billede 
 			createTileImage(sourceImg, tileImg);
-			
+				
 			// Opdatér billeder
 			panel1.setImage((Image) sourceImg);
 			panel1.paint(panel1.getGraphics());

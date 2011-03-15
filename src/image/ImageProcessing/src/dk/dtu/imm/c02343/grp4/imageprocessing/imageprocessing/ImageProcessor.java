@@ -1,4 +1,4 @@
-package imageprocessing;
+package dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

@@ -1,4 +1,4 @@
-package testimageprocessing;
+package dk.dtu.imm.c02343.grp4.imageprocessing.testimagesource;
 import java.awt.*;
 
 import javax.swing.*;
