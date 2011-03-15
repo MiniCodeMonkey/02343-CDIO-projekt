@@ -114,47 +114,107 @@ public class ImageProcessor {
 	/**
 	 * Finder alle objekter af en bestemt type i tilemap og returnerer disses center-koordinater
 	 */
-	public static int[][] findPickObjects(int[][] tilemap, int type) {
+	public static ArrayList<int[]> findPickUpObjects(int[][] tilemap, int type) {
 		// matrix til at holde styr på behandlede pixels
 		int[][] foundmap = new int[tilemap.length][];
-		// ArrayList til at holde firkant-grænser for fundne objekter
-		/*ArrayList<int[]> objectBounds = new ArrayList<int[]>();*/
+		// Initialisér alle felter i matricen
+		for(int i = 0; i < foundmap.length; i++) {
+			foundmap[i] = new int[tilemap[i].length];
+			java.util.Arrays.fill(foundmap[i], 0);
+		}
+		// Retur-objekt med liste over positioner for objekter
+		ArrayList<int[]> objectCoords = new ArrayList<int[]>();
+		// Løb igennem alle pixels
 		for(int y = 0; y < tilemap.length; y++) {
-			foundmap[y] = new int[tilemap[y].length];
-			java.util.Arrays.fill(foundmap[y], 0);
-			for(int x = 0; x < tilemap.length; x++) {
-				// Tjek, om pixlen er af den ønskede type
+			for(int x = 0; x < tilemap[y].length; x++) {
+				// Tjek, om pixlen er af den ønskede type, samt at den ikke er behandlet
 				if (tilemap[y][x] == type && foundmap[y][x] == 0) {
-/*					// Følgende bruges til at finde ud af, om pixlen allerede er defineret i et objekt
-					boolean objectAlreadyFound = false;
-					Iterator<int[]> itr = objectBounds.iterator();
+					// Liste til de punkter, objektet består af
+					ArrayList<int[]> returnCoords = new ArrayList<int[]>();
+					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
+					examineTilemap(tilemap, new int[] {y, x}, 1, foundmap, returnCoords);
+					
+					// Beregn gennemsnitspositionen og føj denne til retur-listen
+					int sumX = 0;
+					int sumY = 0;
+					Iterator<int[]> itr = returnCoords.iterator();
 					while(itr.hasNext()) {
-						int[] bounds = itr.next();
-						if (y >= bounds[0] && y <= bounds[2] && x <= bounds[1] && x >= bounds[3]) {
-							objectAlreadyFound = true;
-							break;
-						}
+						int[] pos = itr.next();
+						sumX += pos[0];
+						sumY += pos[1];
 					}
-					if (!objectAlreadyFound) {
-						
-					}*/
+					if (returnCoords.size() > 0) {
+						objectCoords.add(new int[] {sumY/returnCoords.size(),sumX/returnCoords.size()});
+					}
 				}
 			}
 		}
-		return null;
+		return objectCoords;
 	}
 	
-	private void examineTilemap(int[][] tilemap, int[] pos, int type, int[][] foundmap, ArrayList<int[]> returnCoords) {
-		if (pos[0]+1 < tilemap.length && tilemap[pos[0]+1][pos[1]] == type) {
-			foundmap[pos[0]+1][pos[1]] = 1;
-			int[] newpos = new int[] {pos[0]+1,pos[1]};
+	/**
+	 * Arbejder rekursivt ud fra et punkt og finder alle sammenhængendende pixels af en bestemt type
+	 * @param tilemap Det tilemap, der skal undersøges
+	 * @param pos Startpositionen
+	 * @param type Den værdi der søges efter i tilemap
+	 * @param foundmap Matrix over fundne/behandlede felter i tilemap
+	 * @param returnCoords Liste over matchende koordinater, som er i den undersøgte mængde
+	 */
+	private static void examineTilemap(int[][] tilemap, int[] pos, int type, int[][] foundmap, ArrayList<int[]> returnCoords) {
+		// Debug-udskrifter
+//		System.out.println("examineTilemap:");
+//		System.out.println("\ttilemap.length: " + tilemap.length);
+//		System.out.println("\ttilemap[pos[0]].length: " + tilemap[pos[0]].length);
+//		System.out.println("\tpos: (" + pos[0] + "," + pos[1] + ")");
+//		System.out.println("\ttype: " + type);
+//		System.out.println("\tfoundmap.length: " + foundmap.length);
+//		System.out.println("\treturnCoords.size(): " + returnCoords.size());
+		
+		// Tjek punktet til højre
+		if (pos[1]+1 < tilemap[pos[0]].length && foundmap[pos[0]][pos[1]+1] == 0 && tilemap[pos[0]][pos[1]+1] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]][pos[1]+1] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0],pos[1]+1};
+			// Tilføj koordinater til listen
 			returnCoords.add(newpos);
+			// Kør metoden rekursivt
 			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
 		}
-		if (pos[1]+1 < tilemap[pos[0]].length && tilemap[pos[0]][pos[1]+1] == type) {
-			foundmap[pos[0]][pos[1]+1] = 1;
-			int[] newpos = new int[] {pos[0],pos[1]+1};
+		
+		// Tjek punktet under
+		if (pos[0]+1 < tilemap.length && foundmap[pos[0]+1][pos[1]] == 0 && tilemap[pos[0]+1][pos[1]] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]+1][pos[1]] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0]+1,pos[1]};
+			// Tilføj koordinater til listen
 			returnCoords.add(newpos);
+			// Kør metoden rekursivt
+			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
+		}
+		
+		// Tjek punktet til venstre
+		if (pos[1]-1 >= 0 && foundmap[pos[0]][pos[1]-1] == 0 && tilemap[pos[0]][pos[1]-1] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]][pos[1]-1] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0],pos[1]-1};
+			// Tilføj koordinater til listen
+			returnCoords.add(newpos);
+			// Kør metoden rekursivt
+			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
+		}
+		
+		// Tjek punktet over
+		if (pos[0]-1 >= 0 && foundmap[pos[0]-1][pos[1]] == 0 && tilemap[pos[0]-1][pos[1]] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]-1][pos[1]] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0]-1,pos[1]};
+			// Tilføj koordinater til listen
+			returnCoords.add(newpos);
+			// Kør metoden rekursivt
 			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
 		}
 	}

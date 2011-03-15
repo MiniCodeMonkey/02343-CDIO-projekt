@@ -3,6 +3,8 @@ package testimageprocessing;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -83,7 +85,6 @@ public class TestImageProcessor implements ActionListener {
 	 */
 	private void createTileImage(BufferedImage sourceImg, BufferedImage tileImg) {
 		int[][] map = ImageProcessor.createTileMap(sourceImg);
-		System.out.println();
 		// Iterér over alle vandrette linjer
 		for(int i = 0; i < map.length; i++) {
 			// Iterér over alle punkter
@@ -102,9 +103,21 @@ public class TestImageProcessor implements ActionListener {
 				}
 				// Sæt pixel-værdi
 				tileImg.setRGB(j, i, rgb);
-				System.out.print(map[i][j]);
+//				System.out.print(map[i][j]); // Til udskrift af tilemap i console
 			}
-			System.out.println();
+//			System.out.println(); // Til udskrift af tilemap i console
+		}
+		
+		ArrayList<int[]> objects = ImageProcessor.findPickUpObjects(map, 1);
+		Iterator<int[]> itr = objects.iterator();
+		while(itr.hasNext()) {
+			int[] pos = itr.next();
+			System.out.println("Object at (" + pos[0] + "," + pos[1] + ").");
+			tileImg.setRGB(pos[0], pos[1], 0xFF00FFFF);
+			tileImg.setRGB(pos[0]+1, pos[1], 0xFF00FFFF);
+			tileImg.setRGB(pos[0]-1, pos[1], 0xFF00FFFF);
+			tileImg.setRGB(pos[0], pos[1]+1, 0xFF00FFFF);
+			tileImg.setRGB(pos[0], pos[1]-1, 0xFF00FFFF);
 		}
 	}
 	
@@ -128,9 +141,13 @@ public class TestImageProcessor implements ActionListener {
 			// Hent billede fra ImageSource og vis dette i panel
 			BufferedImage sourceImg = imageSource.getImage();
 			BufferedImage tileImg = new BufferedImage(sourceImg.getWidth(), sourceImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
-//			img = ImageProcessor.resizeImage(img, 160, 120);
+			
+			// Skalér billede
+//			sourceImg = (BufferedImage) ImageProcessor.resizeImage(sourceImg, 160, 120);
+			
 			// Opret tilemap og billede 
 			createTileImage(sourceImg, tileImg);
+			
 			// Opdatér billeder
 			panel1.setImage((Image) sourceImg);
 			panel1.paint(panel1.getGraphics());
