@@ -3,10 +3,7 @@ package pathfinding.implementations;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.newdawn.slick.util.pathfinding.heuristics.ClosestHeuristic;
-
-import pathfinding.dao.Robot;
-import pathfinding.dao.TileMap;
+import pathfinding.dao.*;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm
@@ -16,7 +13,7 @@ import pathfinding.dao.TileMap;
  */
 public class PathFinder {
 	/** The set of nodes that have been searched through */
-	private ArrayList closed = new ArrayList();
+	private ArrayList<Node> closed = new ArrayList<Node>();
 	/** The set of nodes that we do not yet consider fully searched */
 	private SortedList open = new SortedList();
 	
@@ -321,6 +318,7 @@ public class PathFinder {
 	 */
 	private class SortedList {
 		/** The list of elements */
+		@SuppressWarnings("rawtypes")
 		private ArrayList list = new ArrayList();
 		
 		/**
@@ -344,6 +342,7 @@ public class PathFinder {
 		 * 
 		 * @param o The element to add
 		 */
+		@SuppressWarnings("unchecked")
 		public void add(Object o) {
 			list.add(o);
 			Collections.sort(list);
@@ -381,6 +380,7 @@ public class PathFinder {
 	/**
 	 * A single node in the search graph
 	 */
+	@SuppressWarnings("rawtypes")
 	private class Node implements Comparable {
 		/** The x coordinate of the node */
 		private int x;
