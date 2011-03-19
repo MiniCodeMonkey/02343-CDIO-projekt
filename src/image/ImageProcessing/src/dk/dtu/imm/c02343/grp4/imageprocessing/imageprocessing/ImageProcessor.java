@@ -218,4 +218,162 @@ public class ImageProcessor {
 			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
 		}
 	}
+	
+	/**
+	 * Finder grænserne for banen og returnerer et array med 4 værdier; top, venstre, bund og højre grænse-index
+	 * @param tilemap Det tilemap, der skal findes grænser på
+	 * @return Array med grænserne i rækkefølgen [top, venstre, bund, højre]
+	 */
+	public static int[] findBounds(int[][] tilemap) {
+		// Grænser sættes umiddelbart til input-tilemap's grænser
+		int[] bounds = new int[] {0,0,tilemap.length-1,tilemap[0].length-1};
+		
+		// Bestemmer antallet af obstacle-værdier der skal være på en linje, som betegnes som grænse
+		int bordercount = 5;
+		
+		// Variable brugt ved bestemmelse af grænser
+		int y;
+		int x;
+		int count;
+		boolean found;
+		
+		// Initialisér variable til første grænse: top
+		y = bounds[0];
+		x = bounds[1];
+		count = 0;
+		found = false;
+		
+		// Undersøg gennem y-værdierne
+		while (!found && y < bounds[2]) {
+			count = 0;
+			// Iterér gennem x-værdierne
+			for (x=bounds[1]; x < bounds[3]; x++) {
+				// Hvis positionen er en obstacle, tæl op
+				if (tilemap[y][x] == 2) {
+					count++;
+				}
+				
+				// Hvis der er fundet nok obstacle-positioner, sættes found og grænse - og for-løkken termineres
+				if (count > bordercount) {
+					found = true;
+					bounds[0] = y;
+					break;
+				}
+			}
+			y++;
+		}
+		
+		// Initialisér variable til anden grænse: venstre
+		y = bounds[0];
+		x = bounds[1];
+		count = 0;
+		found = false;
+		
+		// Undersøg gennem x-værdierne 
+		while (!found && x < bounds[3]) {
+			count = 0;
+			// Iterér gennem y-værdierne
+			for (y=bounds[0]; y < bounds[2]; y++) {
+				// Hvis positionen er en obstacle, tæl op
+				if (tilemap[y][x] == 2) {
+					count++;
+				}
+				
+				// Hvis der er fundet nok obstacle-positioner, sættes found og grænse - og for-løkken termineres
+				if (count > bordercount) {
+					found = true;
+					bounds[1] = x;
+					break;
+				}
+			}
+			x++;
+		}
+		
+		// Initialisér variable til tredje grænse: bund
+		y = bounds[2];
+		x = bounds[1];
+		count = 0;
+		found = false;
+		
+		// Undersøg gennem y-værdierne 
+		while (!found && y > bounds[0]) {
+			count = 0;
+			// Iterér gennem x-værdierne
+			for (x=bounds[1]; x < bounds[3]; x++) {
+				// Hvis positionen er en obstacle, tæl op
+				if (tilemap[y][x] == 2) {
+					count++;
+				}
+				
+				// Hvis der er fundet nok obstacle-positioner, sættes found og grænse - og for-løkken termineres
+				if (count > bordercount) {
+					found = true;
+					bounds[2] = y;
+					break;
+				}
+			}
+			y--;
+		}
+		
+		// Initialisér variable til anden grænse: venstre
+		y = bounds[0];
+		x = bounds[3];
+		count = 0;
+		found = false;
+		
+		// Undersøg gennem x-værdierne 
+		while (!found && x > bounds[1]) {
+			count = 0;
+			// Iterér gennem y-værdierne
+			for (y=bounds[0]; y < bounds[2]; y++) {
+				// Hvis positionen er en obstacle, tæl op
+				if (tilemap[y][x] == 2) {
+					count++;
+				}
+				
+				// Hvis der er fundet nok obstacle-positioner, sættes found og grænse - og for-løkken termineres
+				if (count > bordercount) {
+					found = true;
+					bounds[3] = x;
+					break;
+				}
+			}
+			x--;
+		}
+		
+		return bounds;
+	}
+	
+	/**
+	 * Beskærer tilemap til givne grænser
+	 * @param tilemap Tilemap, der skal beskæres
+	 * @param bounds Grænser, der skal beskæres efter: (top,venstre,bund,højre)
+	 * @return Beskåret tilemap
+	 */
+	public static int[][] cropTilemap(int[][] tilemap, int[] bounds) {
+		// Hent grænserne ud til enkelte variable
+		int ymin = bounds[0];
+		int xmin = bounds[1];
+		int ymax = bounds[2];
+		int xmax = bounds[3];
+		
+		// Beregn ny højde og bredde af tilemap
+		int height = ymax-ymin+1;
+		int width = xmax-xmin+1; 
+		
+		// Initialisér output
+		int[][] output = new int[height][];
+		
+		// Iterér over den nye højde (koordinater i det nye map)
+		for(int y = 0; y < height; y++) {
+			output[y] = new int[width];
+			// Iterér over den nye bredde
+			for(int x = 0; x < width; x++) {
+				// Kopiér værdier fra udsnit af oprindeligt tilemap til beskåret map 
+				output[y][x] = tilemap[ymin+y][xmin+x];
+			}
+		}
+		
+		return output;
+	}
 }

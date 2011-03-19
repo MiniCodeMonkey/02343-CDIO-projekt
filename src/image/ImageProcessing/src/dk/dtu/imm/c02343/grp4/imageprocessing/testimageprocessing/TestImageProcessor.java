@@ -86,6 +86,9 @@ public class TestImageProcessor implements ActionListener {
 	 */
 	private void createTileImage(BufferedImage sourceImg, BufferedImage tileImg) {
 		int[][] map = ImageProcessor.createTileMap(sourceImg);
+		int[] bounds = ImageProcessor.findBounds(map);
+		System.out.println("Boundaries: (top,left,bottom,right): ("+bounds[0]+","+bounds[1]+","+bounds[2]+","+bounds[3]+")");
+		map = ImageProcessor.cropTilemap(map, bounds);
 		// Iterér over alle vandrette linjer
 		for(int i = 0; i < map.length; i++) {
 			// Iterér over alle punkter
@@ -120,6 +123,17 @@ public class TestImageProcessor implements ActionListener {
 			tileImg.setRGB(pos[0], pos[1]+1, 0xFF00FFFF);
 			tileImg.setRGB(pos[0], pos[1]-1, 0xFF00FFFF);
 		}
+		
+/*		int[] bounds = ImageProcessor.findBounds(map);
+		System.out.println("Boundaries: (top,left,bottom,right): ("+bounds[0]+","+bounds[1]+","+bounds[2]+","+bounds[3]+")");
+		for(int y = bounds[1]; y < bounds[3]; y++) {
+			tileImg.setRGB(y, bounds[0], 0xFF00FF00);
+			tileImg.setRGB(y, bounds[2], 0xFF00FF00);
+		}
+		for(int x = bounds[0]; x < bounds[2]; x++) {
+			tileImg.setRGB(bounds[1], x, 0xFF00FF00);
+			tileImg.setRGB(bounds[3], x, 0xFF00FF00);
+		}*/
 	}
 	
 	/**
