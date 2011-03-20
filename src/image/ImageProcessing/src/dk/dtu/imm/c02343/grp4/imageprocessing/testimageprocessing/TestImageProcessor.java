@@ -124,6 +124,27 @@ public class TestImageProcessor implements ActionListener {
 			tileImg.setRGB(pos[0], pos[1]-1, 0xFF00FFFF);
 		}
 		
+		try {
+			ArrayList<int[]> robots = ImageProcessor.findRobots(map, 3, 4);
+			itr = robots.iterator();
+			while(itr.hasNext()) {
+				int[] pos = itr.next();
+				System.out.println("Robot at [(" + pos[0] + "," + pos[1] + ")],[(" + pos[2] + "," + pos[3] + ")]");
+				tileImg.setRGB(pos[0],pos[1], 0xFF00FF00);
+				tileImg.setRGB(pos[0]+1,pos[1], 0xFF00FF00);
+				tileImg.setRGB(pos[0]-1,pos[1], 0xFF00FF00);
+				tileImg.setRGB(pos[0],pos[1]+1, 0xFF00FF00);
+				tileImg.setRGB(pos[0],pos[1]-1, 0xFF00FF00);
+				tileImg.setRGB(pos[2],pos[3], 0xFF0000FF);
+				tileImg.setRGB(pos[2]+1,pos[3], 0xFF0000FF);
+				tileImg.setRGB(pos[2]-1,pos[3], 0xFF0000FF);
+				tileImg.setRGB(pos[2],pos[3]+1, 0xFF0000FF);
+				tileImg.setRGB(pos[2],pos[3]-1, 0xFF0000FF);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 /*		int[] bounds = ImageProcessor.findBounds(map);
 		System.out.println("Boundaries: (top,left,bottom,right): ("+bounds[0]+","+bounds[1]+","+bounds[2]+","+bounds[3]+")");
 		for(int y = bounds[1]; y < bounds[3]; y++) {

@@ -84,6 +84,12 @@ public class ImageProcessor {
 				if (rgb[0] > 150 && rgb[1] > 150 && rgb[2] > 150) {
 					// Hvid farve: Forhindring
 					output[j][i] = 2;
+				} else if (rgb[0] < 25 && rgb[1] > 100 && rgb[2] < 25) {
+					// Grøn farve: Robot N
+					output[j][i] = 3;
+				} else if (rgb[0] < 25 && rgb[1] < 25 && rgb[2] > 100) {
+					// Blå farve: Robot S
+					output[j][i] = 4;
 				} else if (rgb[0] > 100 && rgb[1] < 25 && rgb[2] < 25) {
 					// Rød farve: Kage
 					output[j][i] = 1;
@@ -152,6 +158,58 @@ public class ImageProcessor {
 		return objectCoords;
 	}
 	
+	public static ArrayList<int[]> findRobots(int[][] tilemap, int type1, int type2) throws Exception {
+		// matrix til at holde styr på behandlede pixels
+		int[][] foundmap = new int[tilemap.length][];
+		// Initialisér alle felter i matricen
+		for(int i = 0; i < foundmap.length; i++) {
+			foundmap[i] = new int[tilemap[i].length];
+			java.util.Arrays.fill(foundmap[i], 0);
+		}
+		// Retur-objekt med liste over positioner for objekter
+		ArrayList<int[]> robotCoords = new ArrayList<int[]>();
+		// Løb igennem alle pixels
+		for(int y = 0; y < tilemap.length; y++) {
+			for(int x = 0; x < tilemap[y].length; x++) {
+				// Tjek, om pixlen er af den ønskede type, samt at den ikke er behandlet
+				if ((tilemap[y][x] == type1 || tilemap[y][x] == type2) && foundmap[y][x] == 0) {
+					// Liste til de punkter, objektet består af
+					ArrayList<int[]> return1Coords = new ArrayList<int[]>();
+					ArrayList<int[]> return2Coords = new ArrayList<int[]>();
+					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
+					examineTilemap(tilemap, new int[] {y, x}, 3, 4, foundmap, return1Coords, return2Coords);
+					
+					// Beregn gennemsnitspositionen og føj denne til retur-listen
+					if (return1Coords.size() == 0 || return2Coords.size() == 0) {
+						throw new Exception("En robot hænger ikke sammen");
+					}
+					
+					int sum1X = 0;
+					int sum1Y = 0;
+					int sum2X = 0;
+					int sum2Y = 0;
+					Iterator<int[]> itr1 = return1Coords.iterator();
+					Iterator<int[]> itr2 = return2Coords.iterator();
+					while(itr1.hasNext()) {
+						int[] pos1 = itr1.next();
+						sum1X += pos1[0];
+						sum1Y += pos1[1];
+					}
+					while(itr2.hasNext()) {
+						int[] pos2 = itr2.next();
+						sum2X += pos2[0];
+						sum2Y += pos2[1];
+					}
+					if (return1Coords.size() > 0 && return2Coords.size() > 0) {
+						robotCoords.add(new int[] {sum1Y/return1Coords.size(),sum1X/return1Coords.size(),sum2Y/return2Coords.size(),sum2X/return2Coords.size()});
+					}
+				}
+			}
+		}
+		
+		return robotCoords;
+	}
+	
 	/**
 	 * Arbejder rekursivt ud fra et punkt og finder alle sammenhængendende pixels af en bestemt type
 	 * @param tilemap Det tilemap, der skal undersøges
@@ -216,6 +274,93 @@ public class ImageProcessor {
 			returnCoords.add(newpos);
 			// Kør metoden rekursivt
 			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
+		}
+	}
+	
+	/**
+	 * Arbejder rekursivt ud fra et punkt og finder alle sammenhængendende pixels af to bestemte typer
+	 * @param tilemap Det tilemap, der skal undersøges
+	 * @param pos Startpositionen
+	 * @param type1 Den ene værdi der søges efter i tilemap
+	 * @param type2 Den anden værdi der søges efter i tilemap
+	 * @param foundmap Matrix over fundne/behandlede felter i tilemap
+	 * @param returnCoords1 Liste over matchende koordinater af type1, som er i den undersøgte mængde
+	 * @param returnCoords2 Liste over matchende koordinater af type2, som er i den undersøgte mængde
+	 */
+	private static void examineTilemap(int[][] tilemap, int[] pos, int type1, int type2, int[][] foundmap, ArrayList<int[]> returnCoords1, ArrayList<int[]> returnCoords2) {
+		// Debug-udskrifter
+//		System.out.println("examineTilemap:");
+//		System.out.println("\ttilemap.length: " + tilemap.length);
+//		System.out.println("\ttilemap[pos[0]].length: " + tilemap[pos[0]].length);
+//		System.out.println("\tpos: (" + pos[0] + "," + pos[1] + ")");
+//		System.out.println("\ttype1: " + type1);
+//		System.out.println("\ttype2: " + type2);
+//		System.out.println("\tfoundmap.length: " + foundmap.length);
+//		System.out.println("\treturnCoords1.size(): " + returnCoords1.size());
+//		System.out.println("\treturnCoords2.size(): " + returnCoords2.size());
+		
+		// Tjek punktet til højre
+		if (pos[1]+1 < tilemap[pos[0]].length && foundmap[pos[0]][pos[1]+1] == 0 && (tilemap[pos[0]][pos[1]+1] == type1 || tilemap[pos[0]][pos[1]+1] == type2)) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]][pos[1]+1] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0],pos[1]+1};
+			// Tilføj koordinater til listen
+			if (tilemap[newpos[0]][newpos[1]] == type1) {
+				returnCoords1.add(newpos);
+			} else {
+				returnCoords2.add(newpos);
+			}
+			// Kør metoden rekursivt
+			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
+		}
+		
+		// Tjek punktet under
+		if (pos[0]+1 < tilemap.length && foundmap[pos[0]+1][pos[1]] == 0 && (tilemap[pos[0]+1][pos[1]] == type1 || tilemap[pos[0]+1][pos[1]] == type2)) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]+1][pos[1]] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0]+1,pos[1]};
+			// Tilføj koordinater til listen
+			if (tilemap[newpos[0]][newpos[1]] == type1) {
+				returnCoords1.add(newpos);
+			} else {
+				returnCoords2.add(newpos);
+			}
+			// Kør metoden rekursivt
+			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
+		}
+		
+		// Tjek punktet til venstre
+		if (pos[1]-1 >= 0 && foundmap[pos[0]][pos[1]-1] == 0 && (tilemap[pos[0]][pos[1]-1] == type1 || tilemap[pos[0]][pos[1]-1] == type2)) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]][pos[1]-1] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0],pos[1]-1};
+			// Tilføj koordinater til listen
+			if (tilemap[newpos[0]][newpos[1]] == type1) {
+				returnCoords1.add(newpos);
+			} else {
+				returnCoords2.add(newpos);
+			}
+			// Kør metoden rekursivt
+			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
+		}
+		
+		// Tjek punktet over
+		if (pos[0]-1 >= 0 && foundmap[pos[0]-1][pos[1]] == 0 && (tilemap[pos[0]-1][pos[1]] == type1 || tilemap[pos[0]-1][pos[1]] == type2)) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]-1][pos[1]] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0]-1,pos[1]};
+			// Tilføj koordinater til listen
+			if (tilemap[newpos[0]][newpos[1]] == type1) {
+				returnCoords1.add(newpos);
+			} else {
+				returnCoords2.add(newpos);
+			}
+			// Kør metoden rekursivt
+			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
 		}
 	}
 	
