@@ -119,6 +119,9 @@ public class ImageProcessor {
 	
 	/**
 	 * Finder alle objekter af en bestemt type i tilemap og returnerer disses center-koordinater
+	 * @param tilemap Tilemap, der skal undersøges
+	 * @param type Den type objekter der skal findes
+	 * @return Liste over objekternes center-koordinater
 	 */
 	public static ArrayList<int[]> findPickUpObjects(int[][] tilemap, int type) {
 		// matrix til at holde styr på behandlede pixels
@@ -158,6 +161,14 @@ public class ImageProcessor {
 		return objectCoords;
 	}
 	
+	/**
+	 * Finder alle objekter af to givne typer i tilemap og returnerer disses center-koordinater samt vinkel med lodret
+	 * @param tilemap Tilemap, der skal undersøges
+	 * @param type1 Typen af forreste farve på objektet
+	 * @param type2 Typen af bageste farve på objektet
+	 * @return Liste over objekter med center-koordinater og vinkel
+	 * @throws Exception Såfremt ikke begge farver er repræsenteret
+	 */
 	public static ArrayList<int[]> findRobots(int[][] tilemap, int type1, int type2) throws Exception {
 		// matrix til at holde styr på behandlede pixels
 		int[][] foundmap = new int[tilemap.length][];
@@ -179,11 +190,12 @@ public class ImageProcessor {
 					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
 					examineTilemap(tilemap, new int[] {y, x}, 3, 4, foundmap, return1Coords, return2Coords);
 					
-					// Beregn gennemsnitspositionen og føj denne til retur-listen
+					// Undersøg, at begge farver er repræsenteret
 					if (return1Coords.size() == 0 || return2Coords.size() == 0) {
 						throw new Exception("En robot hænger ikke sammen");
 					}
 					
+					// Summér hver farve
 					int sum1X = 0;
 					int sum1Y = 0;
 					int sum2X = 0;
@@ -200,9 +212,20 @@ public class ImageProcessor {
 						sum2X += pos2[0];
 						sum2Y += pos2[1];
 					}
-					if (return1Coords.size() > 0 && return2Coords.size() > 0) {
-						robotCoords.add(new int[] {sum1Y/return1Coords.size(),sum1X/return1Coords.size(),sum2Y/return2Coords.size(),sum2X/return2Coords.size()});
-					}
+					
+					// Beregn middel-koordinater for hver af de to farver 
+					int[] coordsN = new int[] {sum1Y/return1Coords.size(),sum1X/return1Coords.size()};
+					int[] coordsS = new int[] {sum2Y/return2Coords.size(),sum2X/return2Coords.size()};
+					
+					// Beregn vinklen mellem linjen gennem punkterne og lodret (positiv vinkel MED uret)
+					double a = coordsN[1]-coordsS[1];
+					double b = coordsN[0]-coordsS[0];
+					double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+					double angle = Math.asin(b/c);
+					System.out.println("Angle: " + angle + "rad, " + angle*180/Math.PI + "deg");
+					
+					// Føj robot til retur-liste
+					robotCoords.add(new int[] {(coordsN[0]+coordsS[0])/2,(coordsN[1]+coordsS[1])/2});
 				}
 			}
 		}

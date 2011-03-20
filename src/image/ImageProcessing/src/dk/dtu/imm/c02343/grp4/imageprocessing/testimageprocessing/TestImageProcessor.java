@@ -129,17 +129,12 @@ public class TestImageProcessor implements ActionListener {
 			itr = robots.iterator();
 			while(itr.hasNext()) {
 				int[] pos = itr.next();
-				System.out.println("Robot at [(" + pos[0] + "," + pos[1] + ")],[(" + pos[2] + "," + pos[3] + ")]");
+				System.out.println("Robot at (" + pos[0] + "," + pos[1] + ")");
 				tileImg.setRGB(pos[0],pos[1], 0xFF00FF00);
 				tileImg.setRGB(pos[0]+1,pos[1], 0xFF00FF00);
 				tileImg.setRGB(pos[0]-1,pos[1], 0xFF00FF00);
 				tileImg.setRGB(pos[0],pos[1]+1, 0xFF00FF00);
 				tileImg.setRGB(pos[0],pos[1]-1, 0xFF00FF00);
-				tileImg.setRGB(pos[2],pos[3], 0xFF0000FF);
-				tileImg.setRGB(pos[2]+1,pos[3], 0xFF0000FF);
-				tileImg.setRGB(pos[2]-1,pos[3], 0xFF0000FF);
-				tileImg.setRGB(pos[2],pos[3]+1, 0xFF0000FF);
-				tileImg.setRGB(pos[2],pos[3]-1, 0xFF0000FF);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
