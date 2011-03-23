@@ -1,4 +1,4 @@
-package testimagesource;
+package dk.dtu.imm.c02343.grp4.imageprocessing.testimagesource;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -7,7 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import imagesource.*;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
+
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.*;
 
 /**
  * Testklasse til ImageSource objekter. Benytter lidt sekvens fra givet kode på CampusNet, samt ImagePanel fra http://www.javafaq.nu/java-example-code-750.html (let modificeret)

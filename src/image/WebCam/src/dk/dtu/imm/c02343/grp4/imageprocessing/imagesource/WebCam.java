@@ -1,4 +1,4 @@
-package imagesource;
+package dk.dtu.imm.c02343.grp4.imageprocessing.imagesource;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;

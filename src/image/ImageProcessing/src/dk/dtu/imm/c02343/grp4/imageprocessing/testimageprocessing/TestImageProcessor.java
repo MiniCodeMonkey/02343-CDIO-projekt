@@ -1,15 +1,18 @@
-package testimageprocessing;
+package dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import imageprocessing.*;
-import imagesource.*;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
 
 /**
  * Program til test af ImageProcessor funktionerne samt ImageSource input
@@ -83,7 +86,9 @@ public class TestImageProcessor implements ActionListener {
 	 */
 	private void createTileImage(BufferedImage sourceImg, BufferedImage tileImg) {
 		int[][] map = ImageProcessor.createTileMap(sourceImg);
-		System.out.println();
+		int[] bounds = ImageProcessor.findBounds(map);
+		System.out.println("Boundaries: (top,left,bottom,right): ("+bounds[0]+","+bounds[1]+","+bounds[2]+","+bounds[3]+")");
+		map = ImageProcessor.cropTilemap(map, bounds);
 		// Iterér over alle vandrette linjer
 		for(int i = 0; i < map.length; i++) {
 			// Iterér over alle punkter
@@ -102,10 +107,49 @@ public class TestImageProcessor implements ActionListener {
 				}
 				// Sæt pixel-værdi
 				tileImg.setRGB(j, i, rgb);
-				System.out.print(map[i][j]);
+//				System.out.print(map[i][j]); // Til udskrift af tilemap i console
 			}
-			System.out.println();
+//			System.out.println(); // Til udskrift af tilemap i console
 		}
+		
+		ArrayList<int[]> objects = ImageProcessor.findPickUpObjects(map, 1);
+		Iterator<int[]> itr = objects.iterator();
+		while(itr.hasNext()) {
+			int[] pos = itr.next();
+			System.out.println("Object at (" + pos[0] + "," + pos[1] + ").");
+			tileImg.setRGB(pos[0], pos[1], 0xFF00FFFF);
+			tileImg.setRGB(pos[0]+1, pos[1], 0xFF00FFFF);
+			tileImg.setRGB(pos[0]-1, pos[1], 0xFF00FFFF);
+			tileImg.setRGB(pos[0], pos[1]+1, 0xFF00FFFF);
+			tileImg.setRGB(pos[0], pos[1]-1, 0xFF00FFFF);
+		}
+		
+		try {
+			ArrayList<int[]> robots = ImageProcessor.findRobots(map, 3, 4);
+			itr = robots.iterator();
+			while(itr.hasNext()) {
+				int[] pos = itr.next();
+				System.out.println("Robot at (" + pos[0] + "," + pos[1] + ")");
+				tileImg.setRGB(pos[0],pos[1], 0xFF00FF00);
+				tileImg.setRGB(pos[0]+1,pos[1], 0xFF00FF00);
+				tileImg.setRGB(pos[0]-1,pos[1], 0xFF00FF00);
+				tileImg.setRGB(pos[0],pos[1]+1, 0xFF00FF00);
+				tileImg.setRGB(pos[0],pos[1]-1, 0xFF00FF00);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+/*		int[] bounds = ImageProcessor.findBounds(map);
+		System.out.println("Boundaries: (top,left,bottom,right): ("+bounds[0]+","+bounds[1]+","+bounds[2]+","+bounds[3]+")");
+		for(int y = bounds[1]; y < bounds[3]; y++) {
+			tileImg.setRGB(y, bounds[0], 0xFF00FF00);
+			tileImg.setRGB(y, bounds[2], 0xFF00FF00);
+		}
+		for(int x = bounds[0]; x < bounds[2]; x++) {
+			tileImg.setRGB(bounds[1], x, 0xFF00FF00);
+			tileImg.setRGB(bounds[3], x, 0xFF00FF00);
+		}*/
 	}
 	
 	/**
@@ -128,9 +172,13 @@ public class TestImageProcessor implements ActionListener {
 			// Hent billede fra ImageSource og vis dette i panel
 			BufferedImage sourceImg = imageSource.getImage();
 			BufferedImage tileImg = new BufferedImage(sourceImg.getWidth(), sourceImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
-//			img = ImageProcessor.resizeImage(img, 160, 120);
+			
+			// Skalér billede
+//			sourceImg = (BufferedImage) ImageProcessor.resizeImage(sourceImg, 160, 120);
+			
 			// Opret tilemap og billede 
 			createTileImage(sourceImg, tileImg);
+				
 			// Opdatér billeder
 			panel1.setImage((Image) sourceImg);
 			panel1.paint(panel1.getGraphics());
