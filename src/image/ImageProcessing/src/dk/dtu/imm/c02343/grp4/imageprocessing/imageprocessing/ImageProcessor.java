@@ -11,12 +11,11 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ScaleDescriptor;
 
 /**
- * Klasse med statiske metoder, som bearbejder billeder
+ * Bearbejdning af billeder. Generering af tile map, identifikation af bane-grænser, bestemmelse af objekters position og robotters position samt retning
  * @author PC
  *
  */
 public class ImageProcessor {
-	
 	/**
 	 * Tom konstruktør. Metoderne bruges statisk
 	 */
