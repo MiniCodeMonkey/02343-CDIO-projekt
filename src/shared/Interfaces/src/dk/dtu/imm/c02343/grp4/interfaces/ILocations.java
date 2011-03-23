@@ -6,7 +6,7 @@ import java.util.List;
  * Specificerer tilemap over banen med forhindringer, samt en liste af kager og en liste af robotter
  * @author per
  */
-public interface Locations {
+public interface ILocations {
 	/**
 	 * Hent tilemap
 	 */
@@ -20,20 +20,20 @@ public interface Locations {
 	/**
 	 * Hent liste over kager
 	 */
-	public List<Cake> getCakes();
+	public List<ICake> getCakes();
 	
 	/**
 	 * Sæt liste over kager
 	 */
-	public void setCakes(List<Cake> cakes);
+	public void setCakes(List<ICake> cakes);
 	
 	/**
 	 * Hent liste over robotter
 	 */
-	public List<Robot> getRobots();
+	public List<IRobot> getRobots();
 	
 	/**
 	 * Sæt liste over robotter
 	 */
-	public void setRoots(List<Robot> robots);
+	public void setRobots(List<IRobot> robots);
 }

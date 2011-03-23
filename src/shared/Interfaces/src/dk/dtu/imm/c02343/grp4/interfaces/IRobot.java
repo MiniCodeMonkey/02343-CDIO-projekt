@@ -1,6 +1,6 @@
 package dk.dtu.imm.c02343.grp4.interfaces;
 
-public interface Robot {
+public interface IRobot {
 	/**
 	 * Sætter positionen for robotten som enkelte koordinater
 	 * @param y Lodret position, y

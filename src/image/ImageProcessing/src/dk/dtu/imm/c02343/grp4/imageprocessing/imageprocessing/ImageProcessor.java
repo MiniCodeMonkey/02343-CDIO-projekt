@@ -10,6 +10,8 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ScaleDescriptor;
 
+import dk.dtu.imm.c02343.grp4.interfaces.ILocations;
+
 /**
  * Bearbejdning af billeder. Generering af tile map, identifikation af bane-grænser, bestemmelse af objekters position og robotters position samt retning
  * @author PC
@@ -542,5 +544,12 @@ public class ImageProcessor {
 		}
 		
 		return output;
+	}
+	
+	/**
+	 * Gennemfører fuld analyse af input-billede, og returnerer et Locations objekt
+	 */
+	public static ILocations examineImage(BufferedImage imageSource) {
+		
 	}
 }
