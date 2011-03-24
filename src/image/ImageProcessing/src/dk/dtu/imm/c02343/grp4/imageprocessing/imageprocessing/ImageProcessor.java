@@ -12,7 +12,6 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ScaleDescriptor;
 
 import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
-import dk.dtu.imm.c02343.grp4.dto.impl.DebugLocations;
 import dk.dtu.imm.c02343.grp4.dto.impl.Locations;
 import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;

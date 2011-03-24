@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WebCam"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Interfaces"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/DTO"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
