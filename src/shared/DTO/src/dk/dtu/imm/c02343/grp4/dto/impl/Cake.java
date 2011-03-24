@@ -11,12 +11,29 @@ public class Cake implements ICake {
 	private int y, x;
 	
 	/**
+	 * Opretter en Cake uden koordinater
+	 */
+	public Cake() {
+		this(-1,-1);
+	}
+	
+	/**
+	 * Opretter en Cake med specifikke koordinater
+	 * @param y Lodret position, y
+	 * @param x Vandret position, x
+	 */
+	public Cake(int y, int x) {
+		setPos(y,x);
+	}
+	
+	/**
 	 * Sætter positionen for kagen som enkelte koordinater
 	 * @param y Lodret position, y
 	 * @param x Vandret position, x
 	 */
 	public void setPos(int y, int x) {
 		this.y = y;
+		this.x = x;
 	}
 	
 	/**

@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
+import dk.dtu.imm.c02343.grp4.interfaces.ICake;
+import dk.dtu.imm.c02343.grp4.interfaces.ILocations;
+import dk.dtu.imm.c02343.grp4.interfaces.IRobot;
 
 /**
  * Program til test af ImageProcessor funktionerne samt ImageSource input
@@ -39,8 +42,10 @@ public class TestImageProcessor implements ActionListener {
 //		sourceImg = (BufferedImage) ImageProcessor.resizeImage((Image) sourceImg, 160, 120);
 		
 		// Opret tile-image vha. hjælpemetode
-		BufferedImage tileImg = new BufferedImage(sourceImg.getWidth(), sourceImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		createTileImage(sourceImg, tileImg);
+//		BufferedImage tileImg = new BufferedImage(sourceImg.getWidth(), sourceImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		ILocations locations = ImageProcessor.examineImage(sourceImg, true);
+		BufferedImage tileImg = locations.getTileImage();
+//		createTileImage(sourceImg, tileImg);
 		
 		// Opret JFrame samt panel til input-billede
 		JFrame frame = new JFrame();
@@ -112,29 +117,29 @@ public class TestImageProcessor implements ActionListener {
 //			System.out.println(); // Til udskrift af tilemap i console
 		}
 		
-		ArrayList<int[]> objects = ImageProcessor.findPickUpObjects(map, 1);
-		Iterator<int[]> itr = objects.iterator();
-		while(itr.hasNext()) {
-			int[] pos = itr.next();
-			System.out.println("Object at (" + pos[0] + "," + pos[1] + ").");
-			tileImg.setRGB(pos[0], pos[1], 0xFF00FFFF);
-			tileImg.setRGB(pos[0]+1, pos[1], 0xFF00FFFF);
-			tileImg.setRGB(pos[0]-1, pos[1], 0xFF00FFFF);
-			tileImg.setRGB(pos[0], pos[1]+1, 0xFF00FFFF);
-			tileImg.setRGB(pos[0], pos[1]-1, 0xFF00FFFF);
+		ArrayList<ICake> cakes = ImageProcessor.findCakes(map, 1);
+		Iterator<ICake> cakeItr = cakes.iterator();
+		while(cakeItr.hasNext()) {
+			ICake cake = cakeItr.next();
+			System.out.println("Object at (" + cake.getY() + "," + cake.getX() + ").");
+			tileImg.setRGB(cake.getY(), cake.getX(), 0xFF00FFFF);
+			tileImg.setRGB(cake.getY()+1, cake.getX(), 0xFF00FFFF);
+			tileImg.setRGB(cake.getY()-1, cake.getX(), 0xFF00FFFF);
+			tileImg.setRGB(cake.getY(), cake.getX()+1, 0xFF00FFFF);
+			tileImg.setRGB(cake.getY(), cake.getX()-1, 0xFF00FFFF);
 		}
 		
 		try {
-			ArrayList<int[]> robots = ImageProcessor.findRobots(map, 3, 4);
-			itr = robots.iterator();
-			while(itr.hasNext()) {
-				int[] pos = itr.next();
-				System.out.println("Robot at (" + pos[0] + "," + pos[1] + ")");
-				tileImg.setRGB(pos[0],pos[1], 0xFF00FF00);
-				tileImg.setRGB(pos[0]+1,pos[1], 0xFF00FF00);
-				tileImg.setRGB(pos[0]-1,pos[1], 0xFF00FF00);
-				tileImg.setRGB(pos[0],pos[1]+1, 0xFF00FF00);
-				tileImg.setRGB(pos[0],pos[1]-1, 0xFF00FF00);
+			ArrayList<IRobot> robots = ImageProcessor.findRobots(map, 3, 4);
+			Iterator<IRobot> robotItr = robots.iterator();
+			while(robotItr.hasNext()) {
+				IRobot robot = robotItr.next();
+				System.out.println("Robot at (" + robot.getY() + "," + robot.getX() + ") angle: " + robot.getAngle() + "rad = " + robot.getAngle()*180/Math.PI + " deg");
+				tileImg.setRGB(robot.getY(),robot.getX(), 0xFF00FF00);
+				tileImg.setRGB(robot.getY()+1,robot.getX(), 0xFF00FF00);
+				tileImg.setRGB(robot.getY()-1,robot.getX(), 0xFF00FF00);
+				tileImg.setRGB(robot.getY(),robot.getX()+1, 0xFF00FF00);
+				tileImg.setRGB(robot.getY(),robot.getX()-1, 0xFF00FF00);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -171,18 +176,20 @@ public class TestImageProcessor implements ActionListener {
 		} else if (ae.getActionCommand().equals("update")) {
 			// Hent billede fra ImageSource og vis dette i panel
 			BufferedImage sourceImg = imageSource.getImage();
-			BufferedImage tileImg = new BufferedImage(sourceImg.getWidth(), sourceImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
+//			BufferedImage tileImg = new BufferedImage(sourceImg.getWidth(), sourceImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			
 			// Skalér billede
 //			sourceImg = (BufferedImage) ImageProcessor.resizeImage(sourceImg, 160, 120);
 			
 			// Opret tilemap og billede 
-			createTileImage(sourceImg, tileImg);
+//			createTileImage(sourceImg, tileImg);
+			ILocations locations = ImageProcessor.examineImage(sourceImg, true);
 				
 			// Opdatér billeder
 			panel1.setImage((Image) sourceImg);
 			panel1.paint(panel1.getGraphics());
-			panel2.setImage((Image) tileImg);
+//			panel2.setImage((Image) tileImg);
+			panel2.setImage((Image) locations.getTileImage());
 			panel2.paint(panel2.getGraphics());
 		} else if (ae.getActionCommand().equals("close")) {
 			// Luk ImageSource

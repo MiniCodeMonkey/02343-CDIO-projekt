@@ -5,12 +5,19 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.media.jai.Interpolation;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ScaleDescriptor;
 
+import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
+import dk.dtu.imm.c02343.grp4.dto.impl.DebugLocations;
+import dk.dtu.imm.c02343.grp4.dto.impl.Locations;
+import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
+import dk.dtu.imm.c02343.grp4.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.interfaces.ILocations;
+import dk.dtu.imm.c02343.grp4.interfaces.IRobot;
 
 /**
  * Bearbejdning af billeder. Generering af tile map, identifikation af bane-grænser, bestemmelse af objekters position og robotters position samt retning
@@ -124,7 +131,7 @@ public class ImageProcessor {
 	 * @param type Den type objekter der skal findes
 	 * @return Liste over objekternes center-koordinater
 	 */
-	public static ArrayList<int[]> findPickUpObjects(int[][] tilemap, int type) {
+	public static ArrayList<ICake> findCakes(int[][] tilemap, int type) {
 		// matrix til at holde styr på behandlede pixels
 		int[][] foundmap = new int[tilemap.length][];
 		// Initialisér alle felter i matricen
@@ -133,7 +140,7 @@ public class ImageProcessor {
 			java.util.Arrays.fill(foundmap[i], 0);
 		}
 		// Retur-objekt med liste over positioner for objekter
-		ArrayList<int[]> objectCoords = new ArrayList<int[]>();
+		ArrayList<ICake> cakes = new ArrayList<ICake>();
 		// Løb igennem alle pixels
 		for(int y = 0; y < tilemap.length; y++) {
 			for(int x = 0; x < tilemap[y].length; x++) {
@@ -154,12 +161,14 @@ public class ImageProcessor {
 						sumY += pos[1];
 					}
 					if (returnCoords.size() > 0) {
-						objectCoords.add(new int[] {sumY/returnCoords.size(),sumX/returnCoords.size()});
+						int cakeY = sumY/returnCoords.size();
+						int cakeX = sumX/returnCoords.size();
+						cakes.add(new Cake(cakeY,cakeX));
 					}
 				}
 			}
 		}
-		return objectCoords;
+		return cakes;
 	}
 	
 	/**
@@ -170,7 +179,7 @@ public class ImageProcessor {
 	 * @return Liste over objekter med center-koordinater og vinkel
 	 * @throws Exception Såfremt ikke begge farver er repræsenteret
 	 */
-	public static ArrayList<int[]> findRobots(int[][] tilemap, int type1, int type2) throws Exception {
+	public static ArrayList<IRobot> findRobots(int[][] tilemap, int type1, int type2) {
 		// matrix til at holde styr på behandlede pixels
 		int[][] foundmap = new int[tilemap.length][];
 		// Initialisér alle felter i matricen
@@ -179,7 +188,7 @@ public class ImageProcessor {
 			java.util.Arrays.fill(foundmap[i], 0);
 		}
 		// Retur-objekt med liste over positioner for objekter
-		ArrayList<int[]> robotCoords = new ArrayList<int[]>();
+		ArrayList<IRobot> robots = new ArrayList<IRobot>();
 		// Løb igennem alle pixels
 		for(int y = 0; y < tilemap.length; y++) {
 			for(int x = 0; x < tilemap[y].length; x++) {
@@ -192,46 +201,46 @@ public class ImageProcessor {
 					examineTilemap(tilemap, new int[] {y, x}, 3, 4, foundmap, return1Coords, return2Coords);
 					
 					// Undersøg, at begge farver er repræsenteret
-					if (return1Coords.size() == 0 || return2Coords.size() == 0) {
-						throw new Exception("En robot hænger ikke sammen");
+					if (return1Coords.size() > 0 && return2Coords.size() > 0) {
+						// Summér hver farve
+						int sum1X = 0;
+						int sum1Y = 0;
+						int sum2X = 0;
+						int sum2Y = 0;
+						Iterator<int[]> itr1 = return1Coords.iterator();
+						Iterator<int[]> itr2 = return2Coords.iterator();
+						while(itr1.hasNext()) {
+							int[] pos1 = itr1.next();
+							sum1X += pos1[0];
+							sum1Y += pos1[1];
+						}
+						while(itr2.hasNext()) {
+							int[] pos2 = itr2.next();
+							sum2X += pos2[0];
+							sum2Y += pos2[1];
+						}
+						
+						// Beregn middel-koordinater for hver af de to farver 
+						int[] coordsN = new int[] {sum1Y/return1Coords.size(),sum1X/return1Coords.size()};
+						int[] coordsS = new int[] {sum2Y/return2Coords.size(),sum2X/return2Coords.size()};
+						
+						// Beregn vinklen mellem linjen gennem punkterne og lodret (positiv vinkel MED uret)
+						double a = coordsN[1]-coordsS[1];
+						double b = coordsN[0]-coordsS[0];
+						double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+						double angle = Math.asin(b/c);
+						System.out.println("Angle: " + angle + "rad, " + angle*180/Math.PI + "deg");
+						
+						// Føj robot til retur-liste
+						int robotY = (coordsN[0]+coordsS[0])/2;
+						int robotX = (coordsN[1]+coordsS[1])/2;
+						robots.add(new Robot(robotY,robotX,angle));
 					}
-					
-					// Summér hver farve
-					int sum1X = 0;
-					int sum1Y = 0;
-					int sum2X = 0;
-					int sum2Y = 0;
-					Iterator<int[]> itr1 = return1Coords.iterator();
-					Iterator<int[]> itr2 = return2Coords.iterator();
-					while(itr1.hasNext()) {
-						int[] pos1 = itr1.next();
-						sum1X += pos1[0];
-						sum1Y += pos1[1];
-					}
-					while(itr2.hasNext()) {
-						int[] pos2 = itr2.next();
-						sum2X += pos2[0];
-						sum2Y += pos2[1];
-					}
-					
-					// Beregn middel-koordinater for hver af de to farver 
-					int[] coordsN = new int[] {sum1Y/return1Coords.size(),sum1X/return1Coords.size()};
-					int[] coordsS = new int[] {sum2Y/return2Coords.size(),sum2X/return2Coords.size()};
-					
-					// Beregn vinklen mellem linjen gennem punkterne og lodret (positiv vinkel MED uret)
-					double a = coordsN[1]-coordsS[1];
-					double b = coordsN[0]-coordsS[0];
-					double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
-					double angle = Math.asin(b/c);
-					System.out.println("Angle: " + angle + "rad, " + angle*180/Math.PI + "deg");
-					
-					// Føj robot til retur-liste
-					robotCoords.add(new int[] {(coordsN[0]+coordsS[0])/2,(coordsN[1]+coordsS[1])/2});
 				}
 			}
 		}
 		
-		return robotCoords;
+		return robots;
 	}
 	
 	/**
@@ -547,9 +556,79 @@ public class ImageProcessor {
 	}
 	
 	/**
+	 * Returnerer en grafik over det tolkede billede til visuel debug
+	 * @param tilemap Det tilemap, der skal repræsenteres
+	 * @return Billede af tilemap
+	 */
+	public static BufferedImage createTileImage(ILocations locations) {
+		int[][] tilemap = locations.getTilemap();
+		BufferedImage tileImage = new BufferedImage(tilemap[0].length, tilemap.length, BufferedImage.TYPE_INT_ARGB);
+		System.out.println("Dimensions: " + tileImage.getHeight() + "x" + tileImage.getWidth());
+		// Iterér over alle vandrette linjer
+		for(int i = 0; i < tilemap.length; i++) {
+			// Iterér over alle punkter
+			for(int j = 0; j < tilemap[i].length; j++) {
+				int rgb;
+				// Sæt RGB-værdi til output-billede ud fra tilemap værdi. To første hex-værdier er alpha-værdi: RGB = 0xAARRGGBB.
+				switch (tilemap[i][j]) {
+					case 1:
+						rgb = 0xFFFF0000;
+						break;
+					case 2:
+						rgb = 0xFFFFFFFF;
+						break;
+					default:
+						rgb = 0xFF000000;
+				}
+				// Sæt pixel-værdi
+				tileImage.setRGB(j, i, rgb);
+//				System.out.print(map[i][j]); // Til udskrift af tilemap i console
+			}
+//			System.out.println(); // Til udskrift af tilemap i console
+		}
+		
+		List<ICake> cakes = locations.getCakes();
+		Iterator<ICake> cakeItr = cakes.iterator();
+		while(cakeItr.hasNext()) {
+			ICake cake = cakeItr.next();
+			System.out.println("Object at (" + cake.getY() + "," + cake.getX() + ").");
+			tileImage.setRGB(cake.getY(), cake.getX(), 0xFF00FFFF);
+			tileImage.setRGB(cake.getY()+1, cake.getX(), 0xFF00FFFF);
+			tileImage.setRGB(cake.getY()-1, cake.getX(), 0xFF00FFFF);
+			tileImage.setRGB(cake.getY(), cake.getX()+1, 0xFF00FFFF);
+			tileImage.setRGB(cake.getY(), cake.getX()-1, 0xFF00FFFF);
+		}
+		
+		List<IRobot> robots = locations.getRobots();
+		Iterator<IRobot> robotItr = robots.iterator();
+		while(robotItr.hasNext()) {
+			IRobot robot = robotItr.next();
+			System.out.println("Robot at (" + robot.getY() + "," + robot.getX() + ") angle: " + robot.getAngle() + "rad = " + robot.getAngle()*180/Math.PI + " deg");
+			tileImage.setRGB(robot.getY(),robot.getX(), 0xFF00FF00);
+			tileImage.setRGB(robot.getY()+1,robot.getX(), 0xFF00FF00);
+			tileImage.setRGB(robot.getY()-1,robot.getX(), 0xFF00FF00);
+			tileImage.setRGB(robot.getY(),robot.getX()+1, 0xFF00FF00);
+			tileImage.setRGB(robot.getY(),robot.getX()-1, 0xFF00FF00);
+		}
+		
+		return tileImage;
+	}
+	
+	/**
 	 * Gennemfører fuld analyse af input-billede, og returnerer et Locations objekt
 	 */
-	public static ILocations examineImage(BufferedImage imageSource) {
-		
+	public static ILocations examineImage(BufferedImage imageSource, boolean debug) {
+		int[][] tilemap = createTileMap(imageSource);
+		int[] tileMapBounds = findBounds(tilemap);
+		tilemap = cropTilemap(tilemap, tileMapBounds);
+		ArrayList<ICake> cakes = findCakes(tilemap, 1);
+		ArrayList<IRobot> robots = findRobots(tilemap, 3, 4);
+		ILocations locations = new Locations(tilemap,cakes,robots);
+		if (debug) {
+			locations.setSourceImage(imageSource);
+			BufferedImage tileImage = createTileImage(locations);
+			locations.setTileImage(tileImage);
+		}
+		return locations;
 	}
 }

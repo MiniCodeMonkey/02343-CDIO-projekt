@@ -10,6 +10,24 @@ public class Robot implements dk.dtu.imm.c02343.grp4.interfaces.IRobot {
 	private double angle;
 	
 	/**
+	 * Opretter en Robot uden koordinater
+	 */
+	public Robot() {
+		this(-1,-1,0);
+	}
+	
+	/**
+	 * Opretter en Robot med specifikke koordinater
+	 * @param y Lodret position, y
+	 * @param x Vandret position, x
+	 * @param r Vinkel i radianer
+	 */
+	public Robot(int y, int x, double r) {
+		setPos(y,x);
+		setAngle(r);
+	}
+	
+	/**
 	 * Sætter positionen for robotten som enkelte koordinater
 	 * @param y Lodret position, y
 	 * @param x Vandret position, x

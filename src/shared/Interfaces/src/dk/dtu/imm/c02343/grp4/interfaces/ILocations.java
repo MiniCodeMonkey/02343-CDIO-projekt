@@ -1,5 +1,6 @@
 package dk.dtu.imm.c02343.grp4.interfaces;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -10,12 +11,12 @@ public interface ILocations {
 	/**
 	 * Hent tilemap
 	 */
-	public int[][] getTileMap();
+	public int[][] getTilemap();
 	
 	/**
 	 * Sæt tilemap
 	 */
-	public void setTilemap(int[][] tileMap);
+	public void setTilemap(int[][] tilemap);
 	
 	/**
 	 * Hent liste over kager
@@ -36,4 +37,28 @@ public interface ILocations {
 	 * Sæt liste over robotter
 	 */
 	public void setRobots(List<IRobot> robots);
+	
+	/**
+	 * Sætter sourceImage
+	 * @param sourceImage Billede, der skal gemmes
+	 */
+	public void setSourceImage(BufferedImage sourceImage);
+	
+	/**
+	 * Henter sourceImage
+	 * @return Det gemte sourceImage
+	 */
+	public BufferedImage getSourceImage();
+	
+	/**
+	 * Sætter tileImage
+	 * @param tileImage Billede, der skal gemmes
+	 */
+	public void setTileImage(BufferedImage tileImage);
+	
+	/**
+	 * Henter tileImage
+	 * @return Det gemte tileImage
+	 */
+	public BufferedImage getTileImage();
 }
