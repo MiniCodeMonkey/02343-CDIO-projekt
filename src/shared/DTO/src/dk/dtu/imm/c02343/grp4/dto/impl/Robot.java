@@ -5,7 +5,7 @@ package dk.dtu.imm.c02343.grp4.dto.impl;
  * @author per
  *
  */
-public class Robot implements dk.dtu.imm.c02343.grp4.interfaces.IRobot {
+public class Robot implements dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot {
 	private int x, y;
 	private double angle;
 	

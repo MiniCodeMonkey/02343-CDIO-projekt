@@ -1,4 +1,4 @@
-package dk.dtu.imm.c02343.grp4.interfaces;
+package dk.dtu.imm.c02343.grp4.dto.interfaces;
 
 /**
  * Repræsenterer kager på banen

@@ -1,6 +1,6 @@
 package dk.dtu.imm.c02343.grp4.dto.impl;
 
-import dk.dtu.imm.c02343.grp4.interfaces.ICake;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 
 /**
  * Repræsenterer kager på banen

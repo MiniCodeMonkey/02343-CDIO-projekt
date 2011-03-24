@@ -15,9 +15,9 @@ import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.impl.DebugLocations;
 import dk.dtu.imm.c02343.grp4.dto.impl.Locations;
 import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
-import dk.dtu.imm.c02343.grp4.interfaces.ICake;
-import dk.dtu.imm.c02343.grp4.interfaces.ILocations;
-import dk.dtu.imm.c02343.grp4.interfaces.IRobot;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 
 /**
  * Bearbejdning af billeder. Generering af tile map, identifikation af bane-grænser, bestemmelse af objekters position og robotters position samt retning

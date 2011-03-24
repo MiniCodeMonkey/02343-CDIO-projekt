@@ -10,12 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
-import dk.dtu.imm.c02343.grp4.interfaces.ICake;
-import dk.dtu.imm.c02343.grp4.interfaces.ILocations;
-import dk.dtu.imm.c02343.grp4.interfaces.IRobot;
 
 /**
  * Program til test af ImageProcessor funktionerne samt ImageSource input

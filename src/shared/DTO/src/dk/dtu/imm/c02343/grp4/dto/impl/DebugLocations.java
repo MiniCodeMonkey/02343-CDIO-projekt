@@ -4,24 +4,28 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
-import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 
 /**
- * Specificerer tilemap over banen med forhindringer, samt en liste af kager og en liste af robotter
+ * Specificerer tilemap over banen med forhindringer, samt en liste af kager og en liste af robotter.
+ * Indeholder desuden illustrationer af, hvad der benyttes undervejs.
  * @author per
  */
-public class Locations implements ILocations {
-	private int[][] tilemap;
-	private List<ICake> cakes;
-	private List<IRobot> robots;
+public class DebugLocations extends Locations {
+	/**
+	 * Input-billede, som er blevet behandlet
+	 */
 	private BufferedImage sourceImage;
+	/**
+	 * Genereret grafik over det tolkede billede
+	 */
 	private BufferedImage tileImage;
 	
 	/**
 	 * Tom konstruktør
 	 */
-	public Locations() {
+	public DebugLocations() {
+		super();
 	}
 	
 	/**
@@ -30,52 +34,20 @@ public class Locations implements ILocations {
 	 * @param cakes Cake-liste
 	 * @param robots Robot-liste
 	 */
-	public Locations(int[][] tilemap, List<ICake> cakes, List<IRobot> robots) {
-		setTilemap(tilemap);
-		setCakes(cakes);
-		setRobots(robots);
+	public DebugLocations(int[][] tilemap, List<ICake> cakes, List<IRobot> robots) {
+		super(tilemap, cakes, robots);
 	}
 	
 	/**
-	 * Hent tilemap
+	 * Sætter tilemap, Cake liste og Robot liste
+	 * @param tilemap tilemap til Locations
+	 * @param cakes Cake-liste
+	 * @param robots Robot-liste
+	 * @param sourceImage Input-billede, som er blevet behandlet
+	 * @param tileImage Genereret grafik over det tolkede billede
 	 */
-	public int[][] getTilemap() {
-		return this.tilemap;
-	}
-	
-	/**
-	 * Sæt tilemap
-	 */
-	public void setTilemap(int[][] tilemap) {
-		this.tilemap = tilemap;
-	}
-	
-	/**
-	 * Hent liste over kager
-	 */
-	public List<ICake> getCakes() {
-		return this.cakes;
-	}
-	
-	/**
-	 * Sæt liste over kager
-	 */
-	public void setCakes(List<ICake> cakes) {
-		this.cakes = cakes;
-	}
-	
-	/**
-	 * Hent liste over robotter
-	 */
-	public List<IRobot> getRobots() {
-		return this.robots;
-	}
-	
-	/**
-	 * Sæt liste over robotter
-	 */
-	public void setRobots(List<IRobot> robots) {
-		this.robots = robots;
+	public DebugLocations(int[][] tilemap, List<ICake> cakes, List<IRobot> robots, BufferedImage sourceImage, BufferedImage tileImage) {
+		super(tilemap, cakes, robots);
 	}
 	
 	/**
