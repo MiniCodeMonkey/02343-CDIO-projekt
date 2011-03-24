@@ -189,6 +189,8 @@ public class TestImageProcessor implements ActionListener {
 			panel1.setImage((Image) sourceImg);
 			panel1.paint(panel1.getGraphics());
 //			panel2.setImage((Image) tileImg);
+			panel2.removeAll();
+			panel2.setSize(locations.getTileImage().getWidth(), locations.getTileImage().getHeight());
 			panel2.setImage((Image) locations.getTileImage());
 			panel2.paint(panel2.getGraphics());
 		} else if (ae.getActionCommand().equals("close")) {

@@ -235,6 +235,8 @@ public class ImageProcessor {
 						int robotY = (coordsN[0]+coordsS[0])/2;
 						int robotX = (coordsN[1]+coordsS[1])/2;
 						robots.add(new Robot(robotY,robotX,angle));
+					} else {
+						System.out.println("Incomplete robot!");
 					}
 				}
 			}
