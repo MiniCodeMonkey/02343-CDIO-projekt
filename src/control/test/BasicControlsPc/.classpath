@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/leJOS NXJ/3rdparty/lib/bluecove.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/leJOS NXJ/lib/pccomm.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Terkel/Desktop/CDIO Git/02343-CDIO-projekt/src/bluecove.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Terkel/Desktop/CDIO Git/02343-CDIO-projekt/src/pccomm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
