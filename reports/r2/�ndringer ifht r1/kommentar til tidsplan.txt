@@ -1,0 +1,7 @@
+Kommentar til tidsplan
+
+Til d.d. følger vi planen. Vi har været hurtigere end forventet med at få forbindelse til robotten, webcam og til at få implementeret algoritmen.
+Milestones i 3 ugers perioden er udeladt.
+Logføring, gruppemøder og dokumentation er noget der kører under hele projektet.
+*Videreudvikling er betegnelsen for hvad vi vil arbejde med når vores minimumimplementation er nået. Dvs, først vil vi optimere fejlhåndteringen af en robot, 
+så den er mere driftsikker, før vi vil forsøge os med 2 robotter.

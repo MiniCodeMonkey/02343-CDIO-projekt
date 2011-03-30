@@ -1,0 +1,2 @@
+-	omskrivning af afsnit 4.1
+-	udregning af % i afsnit 6
