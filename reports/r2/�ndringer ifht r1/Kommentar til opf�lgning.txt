@@ -1,0 +1,11 @@
+Design udarbejdet:
+
+Design skal være udarbejdet den 30/3/11. 
+Med design menes der pakke struktur over det overordnede system, forbindelser mellem delsystemer, interfaces osv.
+
+Komponenter klar:	
+Alle delkomponenter skal være klar den 20/4/11. Klar til at indgå i en first full cycle	
+
+Full Cycle:		
+Den 4/5/11 skal en full cycle være muligt.
+En full cycle defineres ved at systemet understøtter en komplet fungerende kommandovej fra webcam til billedebehandling, til stifinding, til robotstyring og til at robotten flytter sig som forventet.		
