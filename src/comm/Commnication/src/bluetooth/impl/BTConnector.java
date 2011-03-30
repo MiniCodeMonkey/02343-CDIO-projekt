@@ -1,52 +1,48 @@
-package connector;
+package bluetooth.impl;
 
 import java.io.IOException;
 
-import lejos.nxt.Sound;
 import lejos.nxt.remote.NXTCommand;
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
+import bluetooth.interfaces.IBTConnector;
 
 /**
  * @author Morten Hulvej
  * 
  */
-public class Connector {
-
-	final String NXT_NAME1 = "B.E.R.T.A.";
-	final String NXT_ADR = "001653091CAE";
-	final String NXT_ADR2 = "001653091CAE";
-	// TODO tilføj adresse på anden NXT..
-
-	static int NO_BERTA_FOUND = 2;
-	static int NO_NXT_FOUND = 1;
-	static int BERTA_FOUND = 0;
+public class BTConnector implements IBTConnector {
 
 	private NXTInfo bertaNXTInfo;
 	private NXTConnector conn;
 	private NXTCommand nxtCommand = null;
 
-	static Connector singleton = null;
+	static IBTConnector singleton = null;
 
-	private Connector() {
+	private BTConnector() {
 		nxtCommand = new NXTCommand();
 		conn = new NXTConnector();
 	}
 
-	public static Connector getInstance() {
+	public static IBTConnector getInstance() {
 		if (singleton == null)
-			return singleton = new Connector();
+			return singleton = new BTConnector();
 		else
 			return singleton;
 	}
 
+	/* (non-Javadoc)
+	 * @see connector.IBTConnector#getNxtCommand()
+	 */
+	@Override
 	public NXTCommand getNxtCommand() {
 		return nxtCommand;
 	}
 
+	@Override
 	public int searchAndConnect(boolean shouldBeep) throws NXTCommException {
 		NXTInfo[] info = conn.search("", null, NXTCommFactory.BLUETOOTH);
 
@@ -71,6 +67,7 @@ public class Connector {
 		return connect(shouldBeep);
 	}
 
+	@Override
 	public void disconnect() throws IOException {
 		System.out.println();
 		System.out.println("Closing BT-connection..");

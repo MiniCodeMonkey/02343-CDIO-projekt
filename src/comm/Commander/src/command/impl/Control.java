@@ -1,11 +1,10 @@
-package comm;
+package command.impl;
 
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
+import command.interfaces.IControl;
 
-import lejos.nxt.Motor;
-import lejos.nxt.Sound;
+
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
 
@@ -16,7 +15,8 @@ import lejos.nxt.remote.NXTProtocol;
 public class Control implements IControl{
 	
 	private NXTCommand commander;
-	private boolean isMoving;
+	private boolean inMotion;
+	private boolean clawMoving;
 	
 
 	public Control(NXTCommand commander) {
@@ -40,16 +40,22 @@ public class Control implements IControl{
 
 	@Override
 	public void left(int turnSpeed) throws IOException {
+		if (isMoving())
+			return;
 		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		System.out.println("TURNING: left");
+		setMoving(true);
 	}
 
 	@Override
 	public void right(int turnSpeed) throws IOException {
+		if (isMoving())
+			return;
 		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		System.out.println("TURNING: right");
+		setMoving(true);
 	}
 
 	@Override
@@ -61,13 +67,19 @@ public class Control implements IControl{
 	}
 
 	@Override
-	public void open(int clawMotor) throws IOException {
-		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+	public void openClaw(int clawMotor) throws IOException {
+		if (isClawMoving())
+			return;
+		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		setClawMoving(true);
 	}
 
 	@Override
-	public void close(int clawMotor) throws IOException {
-		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+	public void closeClaw(int clawMotor) throws IOException {
+		if (isClawMoving())
+			return;
+		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		setClawMoving(true);
 	}
 
 	/**
@@ -82,7 +94,7 @@ public class Control implements IControl{
 	 * @param isMoving the isMoving to set
 	 */
 	public void setMoving(boolean isMoving) {
-		this.isMoving = isMoving;
+		this.inMotion = isMoving;
 	}
 
 
@@ -90,7 +102,41 @@ public class Control implements IControl{
 	 * @return the isMoving
 	 */
 	public boolean isMoving() {
-		return isMoving;
+		return inMotion;
+	}
+
+
+	/**
+	 * @param clawMoving the clawMoving to set
+	 */
+	public void setClawMoving(boolean clawMoving) {
+		this.clawMoving = clawMoving;
+	}
+
+
+	/**
+	 * @return the clawMoving
+	 */
+	public boolean isClawMoving() {
+		return clawMoving;
+	}
+
+
+	@Override
+	public int getBatteryLevel() throws IOException {
+		int milliVolts = commander.getBatteryLevel();
+		
+		int result = 9000 - milliVolts;
+		result /= 100;
+		result = 100 - result;
+		return result;
+	}
+
+
+	@Override
+	public int getDistanceToNearestObject() {
+		System.err.println("Ikke implementeret...");
+		return 0;
 	}
 
 }

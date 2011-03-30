@@ -1,4 +1,4 @@
-package comm;
+package command.interfaces;
 
 import java.io.IOException;
 
@@ -33,20 +33,30 @@ public interface IControl {
 	 * @throws IOException hvis forbindelsen blev tabt
 	 */
 	void stop() throws IOException;
-	/**Åbner kloen.. IKKE TESTET!
+	/**Åbner kloen.. 
 	 * <br>
 	 * TODO limits
 	 * @param clawMotor - hastighed hvormed kloen åbnes (0-50)
 	 * @throws IOException hvis forbindelsen blev tabt
 	 */
-	void open(int clawMotor) throws IOException;
-	/**Lukker kloen.. IKKE TESTET!
+	void openClaw(int clawMotor) throws IOException;
+	/**Lukker kloen.. 
 	 * <br>
 	 * TODO limits
 	 * @param clawMotor - hastighed hvormed kloen lukkes (0-50)
 	 * @throws IOException hvis forbindelsen blev tabt
 	 */
-	void close(int clawMotor) throws IOException;
+	void closeClaw(int clawMotor) throws IOException;
+	
+	/**
+	 * @return
+	 * @throws IOException 
+	 */
+	int getBatteryLevel() throws IOException;
+	/**
+	 * @return
+	 */
+	int getDistanceToNearestObject();
 	
 	
 }
