@@ -91,10 +91,10 @@ public class ImageProcessor {
 				if (rgb[0] > 150 && rgb[1] > 150 && rgb[2] > 150) {
 					// Hvid farve: Forhindring
 					output[j][i] = 2;
-				} else if (rgb[0] < 25 && rgb[1] > 100 && rgb[2] < 25) {
+				} else if (rgb[0] < 70 && rgb[1] > 70 && rgb[2] < 90) {
 					// Grøn farve: Robot N
 					output[j][i] = 3;
-				} else if (rgb[0] < 25 && rgb[1] < 25 && rgb[2] > 100) {
+				} else if (rgb[0] < 80 && rgb[1] < 80 && rgb[2] > 110) {
 					// Blå farve: Robot S
 					output[j][i] = 4;
 				} else if (rgb[0] > 100 && rgb[1] < 25 && rgb[2] < 25) {
