@@ -1,0 +1,87 @@
+% contents.tex
+% Denne fil er "index" for hele rapporten og dikterer underdokumenterne og deres rækkefølge.
+% Til løbende arbejde kan en tilsvarende fil ved navn "contents_temp.tex" oprettes.
+%  Skabelonen vil da automatisk inkludere den fil, i stedet for denne. Dermed kan kun de ting, DU arbejder med, isoleres mens skrivningen pågår.
+%  contents_temp.tex må IKKE committes til rapporten!
+
+\typeout{---------- dokument starter -------------}%
+\newcounter{tpages}
+\setcounter{tpages}{0}
+% START FORSIDE
+\typeout{---------- forside starter -------------}%
+\input{forside/forside}
+% SLUT FORSIDE
+% START FRONT MATTER
+\pagenumbering{roman}% skifter til romertal i sidetallene
+%   START TIDSREGISTRERING
+%\input{content/time}
+%   SLUT TIDSREGISTRERING
+%   START TOC
+%\clearpage
+%\tableofcontents%
+%
+%
+\section*{Indholdsfortegnelse}
+\startcontents[chapters]
+\printcontents[chapters]{}{0}{\setcounter{tocdepth}{2}}
+%\listoffigures%
+\clearpage
+\startlist[figures]{lof}
+\section*{Figurer}
+\printlist[figures]{lof}{}{}
+%\vspace{1cm}%
+%\listoftables%
+%\startlist[tables]{lot}
+%\section*{Tabeller}
+%\printlist[tables]{lot}{}{}
+%
+%\vspace{1cm}%
+%\lstlistoflistings% hvis der er inkluderet kildekode.
+\clearpage
+% Sørg for at indhold starter på ny forside
+%\addtocounter{tpages}{\arabic{page}}
+%\ifodd\value{tpages}
+%	\begin{minipage}[b]{0.495\textwidth}
+%	\end{minipage}
+%	\newpage
+%\else
+%\fi
+\fancyhead[LO,RE]{\headinner}
+\fancyhead[LE,RO]{\headouter}
+\fancyhead[C]{\headcenter}
+\fancyfoot[LO,RE]{\footinner}
+\fancyfoot[LE,RO]{\footouter}
+\fancyfoot[C]{\footcenter}
+%   SLUT TOC
+% SLUT FRONT MATTER
+% START INDHOLD
+\addtocounter{tpages}{\arabic{page}}
+\pagenumbering{arabic}% skifter til tal i sidetallene
+\input{content/krav}
+\clearpage
+\input{content/losningsstrategi}
+\clearpage
+\input{content/projektplan}
+\clearpage
+\input{content/gantt}
+\clearpage
+\input{content/opfolgning}
+\clearpage
+\input{content/kvalitet}
+\clearpage
+\input{content/risici}
+%\input{content/textest}
+% SLUT INDHOLD
+% START APPENDIX
+\clearpage
+% Sørg for at appendix starter på ny forside
+%\addtocounter{tpages}{\arabic{page}}
+%\ifodd\value{tpages}
+%	\begin{minipage}[b]{0.495\textwidth}
+%	\end{minipage}
+%	\newpage
+%\else
+%\fi
+%\typeout{---------- appendiks starter -------------}%
+%\input{content/appendix}
+% SLUT APPENDIX
