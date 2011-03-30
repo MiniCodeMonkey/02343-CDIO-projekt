@@ -16,6 +16,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 
 /**
  * Program til test af ImageProcessor funktionerne samt ImageSource input
@@ -32,8 +33,8 @@ public class TestImageProcessor implements ActionListener {
 	 */
 	public void run() {
 		// Opret WebCam, initialisér, hent billede til RenderedImage, og luk WebCam igen.
-//		imageSource = new WebCam();
-		imageSource = new ImageFile();
+		imageSource = new WebCam();
+//		imageSource = new ImageFile();
 		imageSource.init();
 		BufferedImage sourceImg = imageSource.getImage();
 		imageSource.close();
