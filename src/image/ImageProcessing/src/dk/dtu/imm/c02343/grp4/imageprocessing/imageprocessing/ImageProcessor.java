@@ -92,9 +92,11 @@ public class ImageProcessor {
 					// Hvid farve: Forhindring
 					output[j][i] = 2;
 				} else if (rgb[0] < 70 && rgb[1] > 70 && rgb[2] < 90) {
+//				} else if (rgb[1] > 110) {
 					// Grøn farve: Robot N
 					output[j][i] = 3;
 				} else if (rgb[0] < 80 && rgb[1] < 80 && rgb[2] > 110) {
+//				} else if (rgb[2] > 110) {
 					// Blå farve: Robot S
 					output[j][i] = 4;
 				} else if (rgb[0] > 100 && rgb[1] < 25 && rgb[2] < 25) {
@@ -148,7 +150,7 @@ public class ImageProcessor {
 					// Liste til de punkter, objektet består af
 					ArrayList<int[]> returnCoords = new ArrayList<int[]>();
 					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
-					examineTilemap(tilemap, new int[] {y, x}, 1, foundmap, returnCoords);
+					examineTilemap(tilemap, new int[] {y, x}, type, foundmap, returnCoords);
 					
 					// Beregn gennemsnitspositionen og føj denne til retur-listen
 					int sumX = 0;
@@ -162,6 +164,7 @@ public class ImageProcessor {
 					if (returnCoords.size() > 0) {
 						int cakeY = sumY/returnCoords.size();
 						int cakeX = sumX/returnCoords.size();
+						System.out.println("Cake type "+type+" found at ("+cakeY+","+cakeX+").");
 						cakes.add(new Cake(cakeY,cakeX));
 					}
 				}
@@ -179,7 +182,22 @@ public class ImageProcessor {
 	 * @throws Exception Såfremt ikke begge farver er repræsenteret
 	 */
 	public static ArrayList<IRobot> findRobots(int[][] tilemap, int type1, int type2) {
-		// matrix til at holde styr på behandlede pixels
+		ArrayList<IRobot> robots = new ArrayList<IRobot>();
+		try {
+			int[] posN = findCakes(tilemap, type1).get(0).getPos();
+			int[] posS = findCakes(tilemap, type2).get(0).getPos();
+			int[] coords = new int[] {(posN[0]+posS[0])/2,(posN[1]+posS[1])/2};
+			double a = posN[1]-posS[1];
+			double b = posN[0]-posS[0];
+			double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+			double angle = Math.asin(b/c);
+			robots.add(new Robot(coords[0],coords[1],angle));
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("No robot found.");
+		}
+		return robots;
+		
+/*		// matrix til at holde styr på behandlede pixels
 		int[][] foundmap = new int[tilemap.length][];
 		// Initialisér alle felter i matricen
 		for(int i = 0; i < foundmap.length; i++) {
@@ -241,7 +259,7 @@ public class ImageProcessor {
 			}
 		}
 		
-		return robots;
+		return robots;*/
 	}
 	
 	/**
@@ -578,12 +596,18 @@ public class ImageProcessor {
 					case 2:
 						rgb = 0xFFFFFFFF;
 						break;
+					case 3:
+						rgb = 0xFF00FF00;
+						break;
+					case 4:
+						rgb = 0xFF0000FF;
+						break;
 					default:
 						rgb = 0xFF000000;
 				}
 				// Sæt pixel-værdi
 				tileImage.setRGB(j, i, rgb);
-//				System.out.print(map[i][j]); // Til udskrift af tilemap i console
+//				System.out.print(tilemap[i][j]); // Til udskrift af tilemap i console
 			}
 //			System.out.println(); // Til udskrift af tilemap i console
 		}
