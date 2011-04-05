@@ -3,7 +3,7 @@ package command.interfaces;
 import java.io.IOException;
 
 /**
- * Midlertidig interface til styring af robot (the basics)
+ * Interface til primitiv styring af robot (the basics)
  * 
  * @author Morten Hulvej
  *

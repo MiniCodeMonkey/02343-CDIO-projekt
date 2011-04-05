@@ -254,7 +254,7 @@ public class BasicControlGui extends javax.swing.JFrame {
             sensorPanel.setFocusable(false);
 
             batteryLevelBar.setOrientation(1);
-            batteryLevelBar.setToolTipText("Batteri-niveau");
+            batteryLevelBar.setToolTipText("<html>Batteri-spænding<br><br>Dette er spændingen i millivolt,\n og viser derfor ikke meget om hvor lang tid<br>den kan køre endnu!</html>");
             batteryLevelBar.setFocusable(false);
 
             javax.swing.GroupLayout sensorPanelLayout = new javax.swing.GroupLayout(sensorPanel);
@@ -622,7 +622,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 		statusPtyLabel.setText("NOT CONNECTED");
 		statusPtyLabel.setForeground(Color.black);
 		connected = false;
-                enableControls(connected);
+        enableControls(connected);
+        
 	}
 
 	public void enableControls(boolean en) {
@@ -634,7 +635,7 @@ public class BasicControlGui extends javax.swing.JFrame {
 		for (Component comp : c) {
 			comp.setEnabled(en);
 		}
-		connectBtn.setText("Disconnect");
+		if (en) connectBtn.setText("Disconnect");
 	}
 
 	public void moveForward() {
@@ -708,16 +709,17 @@ public class BasicControlGui extends javax.swing.JFrame {
 	}
         public void updateReadings(){
         try {
-            System.out.println("Updating..");
+            System.out.print("Updating..");
             if(connected){
                 int voltage = controller.getBatteryLevel();
                 batteryLevelBar.setValue(voltage);
+                System.out.println("OK");
                 if (voltage < 50) JOptionPane.showMessageDialog(this, 
                         "Batteri-spÃ¦ndingen er nu under 50%.\n"
                         + "BemÃ¦rk at spÃ¦ndingen IKKE falder linÃ¦rt,\n"
                         + "hvorfor det anbefales at skifte/lade batteri.", "Advarsel",
 					JOptionPane.WARNING_MESSAGE);
-            }
+            }else	System.out.println("FAIL");
                 
             
         } catch (IOException ex) {

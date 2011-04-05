@@ -7,6 +7,8 @@ import command.interfaces.IControl;
 
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
+import lejos.nxt.remote.RemoteBattery;
+import lejos.nxt.remote.RemoteMotor;
 
 /**
  * @author Morten Hulvej
@@ -31,7 +33,7 @@ public class Control implements IControl{
 			return;
 		if(reverse)
 			speed *= -1;
-		
+
 		commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		setMoving(true);
