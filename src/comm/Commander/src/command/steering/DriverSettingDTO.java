@@ -1,5 +1,8 @@
 package command.steering;
 
+import bluetooth.impl.BTConnector;
+import lejos.nxt.Motor;
+import lejos.nxt.remote.RemoteMotor;
 import lejos.robotics.TachoMotor;
 
 /**Indeholder oplysninger omkring fysiske parametre på BERTA
@@ -24,6 +27,13 @@ public class DriverSettingDTO {
 
 		/* TODO  
 		 * default settings... */
+		
+		setWheelDiameter(36);
+		setTrackWidth(120);
+		setLeftMotor(new RemoteMotor(BTConnector.getInstance().getNxtCommand(), Motor.A.getId()));
+		setRightMotor(new RemoteMotor(BTConnector.getInstance().getNxtCommand(), Motor.C.getId()));
+		reverse = false;
+		smoothAcc = false;
 		
 	}
 	
