@@ -602,6 +602,7 @@ public class ImageProcessor {
 	 */
 	public static BufferedImage createTileImage(ILocations locations) {
 		int[][] tilemap = locations.getTilemap();
+		int[][] obstaclemap = locations.getObstaclemap();
 		BufferedImage tileImage = new BufferedImage(tilemap[0].length, tilemap.length, BufferedImage.TYPE_INT_ARGB);
 		System.out.println("Dimensions: " + tileImage.getHeight() + "x" + tileImage.getWidth());
 		// Iterér over alle vandrette linjer
@@ -625,6 +626,10 @@ public class ImageProcessor {
 						break;
 					default:
 						rgb = 0xFF000000;
+				}
+				// Hvis pixel er bufferzonegrænse (værdi 1 i obstaclemap), sæt farve
+				if (obstaclemap[i][j] == 1) {
+					rgb = 0xFFFFFF00;
 				}
 				// Sæt pixel-værdi
 				tileImage.setRGB(j, i, rgb);
@@ -666,21 +671,27 @@ public class ImageProcessor {
 	 * @return
 	 */
 	public static int[][] createObstacleMap(int[][] tilemap, int bufferzone) {
+		// Initialisér output-map
 		int[][] obstaclemap = new int[tilemap.length][];
 		for (int i = 0; i < obstaclemap.length; i++) {
 			obstaclemap[i] = new int[tilemap[0].length];
 			java.util.Arrays.fill(obstaclemap[i], 0);
 		}
 		
+		// Iterér over positioner i tilemap
 		for (int y = 0; y < tilemap.length; y++) {
 			for (int x = 0; x < tilemap[y].length; x++) {
 				if (tilemap[y][x] == OBSTACLE) {
+					// Sæt nuværende pixel til bufferzone-værdi, hvis der er en obstacle her
 					obstaclemap[y][x] = bufferzone;
+					// Iterér i +/- bufferzone pixels omkring pixlen
 					for (int dy = -bufferzone; dy < bufferzone; dy++) {
-						if (!(y+dy < 0 || y+dy >= obstaclemap.length)) {
+						if (!(y+dy < 0 || y+dy >= obstaclemap.length)) { // Sikrer, at der ikke gøres noget uden for array-grænser
 							for (int dx = -bufferzone; dx < bufferzone; dx++) {
-								if (!(x+dx < 0 || x+dx >= obstaclemap[y+dy].length)) {
+								if (!(x+dx < 0 || x+dx >= obstaclemap[y+dy].length)) { // Sikrer, at der ikke gøres noget uden for array-grænser
+									// Udregn "power" ud fra afstanden til den fundne obstacle-pixel. "power" er bufferzone-værdien minus afstanden.
 									int power = bufferzone-(int)Math.floor(Math.sqrt(dy*dy+dx*dx));
+									// Den beregnede power skal kun påføres en pixel, hvis den er større end tidligere værdi.
 									if (power > obstaclemap[y+dy][x+dx]) {
 										obstaclemap[y+dy][x+dx] = power;
 									}

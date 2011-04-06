@@ -13,6 +13,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
  */
 public class Locations implements ILocations {
 	private int[][] tilemap;
+	private int[][] obstaclemap;
 	private List<ICake> cakes;
 	private List<IRobot> robots;
 	private BufferedImage sourceImage;
@@ -55,14 +56,14 @@ public class Locations implements ILocations {
 	 * Hent obstaclemap
 	 */
 	public int[][] getObstaclemap() {
-		return this.tilemap;
+		return this.obstaclemap;
 	}
 	
 	/**
 	 * Sæt obstaclemap
 	 */
 	public void setObstaclemap(int[][] obstaclemap) {
-		this.tilemap = tilemap;
+		this.obstaclemap = obstaclemap;
 	}
 	
 	/**

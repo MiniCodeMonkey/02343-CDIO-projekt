@@ -3,6 +3,8 @@
 	<name>ImageProcessing</name>
 	<comment></comment>
 	<projects>
+		<project>DTO</project>
+		<project>WebCam</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
