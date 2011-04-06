@@ -30,8 +30,9 @@ public class Locations implements ILocations {
 	 * @param cakes Cake-liste
 	 * @param robots Robot-liste
 	 */
-	public Locations(int[][] tilemap, List<ICake> cakes, List<IRobot> robots) {
+	public Locations(int[][] tilemap, int[][] obstaclemap, List<ICake> cakes, List<IRobot> robots) {
 		setTilemap(tilemap);
+		setObstaclemap(obstaclemap);
 		setCakes(cakes);
 		setRobots(robots);
 	}
@@ -47,6 +48,20 @@ public class Locations implements ILocations {
 	 * Sæt tilemap
 	 */
 	public void setTilemap(int[][] tilemap) {
+		this.tilemap = tilemap;
+	}
+	
+	/**
+	 * Hent obstaclemap
+	 */
+	public int[][] getObstaclemap() {
+		return this.tilemap;
+	}
+	
+	/**
+	 * Sæt obstaclemap
+	 */
+	public void setObstaclemap(int[][] obstaclemap) {
 		this.tilemap = tilemap;
 	}
 	
