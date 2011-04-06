@@ -2,13 +2,9 @@ package command.impl;
 
 import java.io.IOException;
 
-import command.interfaces.IControl;
-
-
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
-import lejos.nxt.remote.RemoteBattery;
-import lejos.nxt.remote.RemoteMotor;
+import command.interfaces.IControl;
 
 /**
  * @author Morten Hulvej

@@ -33,6 +33,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        dashboard.setBackground(new java.awt.Color(204, 204, 204));
+
         fileMenu.setText("File");
         mainMenuBar.add(fileMenu);
 
