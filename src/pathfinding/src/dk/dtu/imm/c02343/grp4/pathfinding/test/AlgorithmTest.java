@@ -1,9 +1,9 @@
 package dk.dtu.imm.c02343.grp4.pathfinding.test;
 
+import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
-import dk.dtu.imm.c02343.grp4.pathfinding.dat.Robot;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.TileMap;
-import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path.Step;
 import dk.dtu.imm.c02343.grp4.pathfinding.implementations.PathFinder;
 
 public class AlgorithmTest {
@@ -12,7 +12,10 @@ public class AlgorithmTest {
 	
 	public static void main(String[] args)
 	{
-		Robot robot = new Robot(12, 10, 0);
+		IRobot robot = new Robot();
+		robot.setAngle(20);
+		robot.setPos(10, 5);
+		
 		TileMap tileMap = new TileMap();
 		
 		int[][] tiles = new int[][]{ 	 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -35,9 +38,9 @@ public class AlgorithmTest {
 		tileMap.setTileMap(tiles);
 		
 		PathFinder pathFinder = new PathFinder(tileMap, 20, true);
-		Path path = pathFinder.findPath(robot, robot.getXCoordinates(), robot.getYCoordinates(), 1, 1);
+		Path path = pathFinder.findPath(robot, robot.getX(), robot.getY(), 1, 1);
 		
-		if (path == null)
+		/*if (path == null)
 		{
 			System.out.println("Could not find path from " + robot.getXCoordinates() + "," + robot.getYCoordinates() + " to 1,1");
 		}
@@ -51,6 +54,6 @@ public class AlgorithmTest {
 				Step step = path.getStep(i);
 				System.out.println("Step: " + step.getX() + ", " + step.getY());
 			}
-		}
+		}*/
 	}
 }

@@ -5,9 +5,11 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
@@ -16,6 +18,10 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.TileMap;
+import dk.dtu.imm.c02343.grp4.pathfinding.implementations.PathFinder;
 
 /**
  * Program til test af ImageProcessor funktionerne samt ImageSource input
@@ -184,6 +190,8 @@ public class TestPathfinding implements ActionListener {
 			// Opret tilemap og billede 
 //			createTileImage(sourceImg, tileImg);
 			ILocations locations = ImageProcessor.examineImage(sourceImg, true);
+			
+			calculatePath(locations);
 				
 			// Opdatér billeder
 			panel1.setImage((Image) sourceImg);
@@ -197,5 +205,70 @@ public class TestPathfinding implements ActionListener {
 			// Luk ImageSource
 			imageSource.close();
 		}
+	}
+
+	private void calculatePath(ILocations locations)
+	{
+		if (locations.getRobots().size() <= 0 || locations.getCakes().size() <= 0)
+			return;
+		
+		TileMap tileMap = new TileMap();
+		tileMap.setTileMap(locations.getTilemap());
+		IRobot robot = locations.getRobots().get(0);
+		ICake cake = locations.getCakes().get(0);
+		
+		// ** HOT FIX **
+		// (Drop it like it's hot)
+		int x = robot.getY();
+		int y = robot.getX();
+		robot.setPos(y, x);
+		
+		x = cake.getY();
+		y = cake.getX();
+		cake.setPos(y, x);
+		// ** HOT FIX **
+		
+		PathFinder pathFinder = new PathFinder(tileMap, 1500, true);
+		Path path = pathFinder.findPath(robot, robot.getY(), robot.getX(), cake.getY(), cake.getX());
+		System.out.println("Finding path between " + robot.getX() +"," + robot.getY() + " and " + cake.getX() + "," + cake.getY() + ".");
+		
+		Random r = new Random();
+		BufferedImage image = locations.getTileImage();
+		Graphics g = image.getGraphics();
+		
+		/*g.setColor(Color.red);
+		g.fillRoundRect(robot.getX() - 5, robot.getY() - 5, 10, 10, 10, 10);
+		
+		g.setColor(Color.blue);
+		g.fillRoundRect(cake.getX() - 5, cake.getY() - 5, 10, 10, 10, 10);*/
+		
+		g.setColor(Color.white);
+		
+		if (path == null)
+		{
+			JOptionPane.showMessageDialog(null, "Could not find path between " + robot.getX() +"," + robot.getY() + " and " + cake.getX() + "," + cake.getY() + ".");
+		}
+		else
+		{
+			for (int i = 0; i < path.getLength(); i++)
+			{
+				Step step = path.getStep(i);
+				Step nextStep;
+				
+				if (i == path.getLength() - 1)
+				{
+					nextStep = new Step(cake.getY(), cake.getX());
+				}
+				else
+				{
+					nextStep = path.getStep(i + 1);
+				}
+				
+				//g.setColor(new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+				g.drawLine(step.getX(), step.getY(), nextStep.getX(), nextStep.getY());
+			}
+		}
+		
+		locations.setTileImage(image);
 	}
 }

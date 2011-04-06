@@ -1,5 +1,7 @@
 package dk.dtu.imm.c02343.grp4.pathfinding.dat;
 
+import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
+
 public class TileMap
 {
 	private int width, height;
@@ -9,11 +11,21 @@ public class TileMap
 
 	public void setTileMap(int[][] tileMap)
 	{
-		width = tileMap.length;
-		height = tileMap[0].length;
-		visited = new boolean[width][height];
+		height = tileMap.length;
+		width = tileMap[0].length;
+		visited = new boolean[height][width];
+		
+		addObstacleWalls();
 		
 		this.tileMap = tileMap;
+	}
+
+	private void addObstacleWalls()
+	{
+		for (int y = 0; y < height; y++)
+		{
+			
+		}
 	}
 
 	public int[][] getTileMap()
@@ -31,19 +43,19 @@ public class TileMap
 		return height;
 	}
 
-	public boolean blocked(Robot robot, int tx, int ty)
+	public boolean blocked(IRobot robot, int ty, int tx)
 	{
-		return (tileMap[tx][ty] != 0);
+		return (tileMap[ty][tx] == 2);
 	}
 
-	public float getCost(Robot robot, int sx, int sy, int tx, int ty)
+	public float getCost(IRobot robot, int sy, int sx, int ty, int tx)
 	{
 		return 1;
 	}
 
-	public void pathFinderVisited(int x, int y)
+	public void pathFinderVisited(int y, int x)
 	{
-		visited[x][y] = true;
+		visited[y][x] = true;
 	}
 	
 }

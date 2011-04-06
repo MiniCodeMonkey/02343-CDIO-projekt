@@ -3,6 +3,8 @@ package dk.dtu.imm.c02343.grp4.pathfinding.implementations;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.*;
 
 
@@ -56,10 +58,10 @@ public class PathFinder {
 		this.maxSearchDistance = maxSearchDistance;
 		this.allowDiagMovement = allowDiagMovement;
 		
-		nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
+		nodes = new Node[map.getHeightInTiles()][map.getWidthInTiles()];
 		for (int x=0;x<map.getWidthInTiles();x++) {
 			for (int y=0;y<map.getHeightInTiles();y++) {
-				nodes[x][y] = new Node(x,y);
+				nodes[y][x] = new Node(y,x);
 			}
 		}
 	}
@@ -67,23 +69,23 @@ public class PathFinder {
 	/**
 	 * @see PathFinder#findPath(Robot, int, int, int, int)
 	 */
-	public Path findPath(Robot robot, int sx, int sy, int tx, int ty) {
+	public Path findPath(IRobot robot, int sy, int sx, int ty, int tx) {
 		// easy first check, if the destination is blocked, we can't get there
 
-		if (map.blocked(robot, tx, ty)) {
+		if (map.blocked(robot, ty, tx)) {
 			return null;
 		}
 		
 		// initial state for A*. The closed group is empty. Only the starting
 
 		// tile is in the open list and it'e're already there
-		nodes[sx][sy].cost = 0;
-		nodes[sx][sy].depth = 0;
+		nodes[sy][sx].cost = 0;
+		nodes[sy][sx].depth = 0;
 		closed.clear();
 		open.clear();
-		open.add(nodes[sx][sy]);
+		open.add(nodes[sy][sx]);
 		
-		nodes[tx][ty].parent = null;
+		nodes[ty][tx].parent = null;
 		
 		// while we haven'n't exceeded our max search depth
 		int maxDepth = 0;
@@ -93,7 +95,7 @@ public class PathFinder {
 			// be the most likely to be the next step based on our heuristic
 
 			Node current = getFirstInOpen();
-			if (current == nodes[tx][ty]) {
+			if (current == nodes[ty][tx]) {
 				break;
 			}
 			
@@ -127,16 +129,16 @@ public class PathFinder {
 					int xp = x + current.x;
 					int yp = y + current.y;
 					
-					if (isValidLocation(robot,sx,sy,xp,yp)) {
+					if (isValidLocation(robot,sy,sx,yp,xp)) {
 						// the cost to get to this node is cost the current plus the movement
 
 						// cost to reach this node. Note that the heursitic value is only used
 
 						// in the sorted open list
 
-						float nextStepCost = current.cost + getMovementCost(robot, current.x, current.y, xp, yp);
-						Node neighbour = nodes[xp][yp];
-						map.pathFinderVisited(xp, yp);
+						float nextStepCost = current.cost + getMovementCost(robot, current.y, current.x, yp, xp);
+						Node neighbour = nodes[yp][xp];
+						map.pathFinderVisited(yp, xp);
 						
 						// if the new cost we've determined for this node is lower than 
 
@@ -162,7 +164,7 @@ public class PathFinder {
 
 						if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
 							neighbour.cost = nextStepCost;
-							neighbour.heuristic = getHeuristicCost(robot, xp, yp, tx, ty);
+							neighbour.heuristic = getHeuristicCost(robot, yp, xp, ty, tx);
 							maxDepth = Math.max(maxDepth, neighbour.setParent(current));
 							addToOpen(neighbour);
 						}
@@ -174,7 +176,7 @@ public class PathFinder {
 		// since we'e've run out of search 
 		// there was no path. Just return null
 
-		if (nodes[tx][ty].parent == null) {
+		if (nodes[ty][tx].parent == null) {
 			return null;
 		}
 		
@@ -185,12 +187,12 @@ public class PathFinder {
 		// to the start recording the nodes on the way.
 
 		Path path = new Path();
-		Node target = nodes[tx][ty];
-		while (target != nodes[sx][sy]) {
-			path.prependStep(target.x, target.y);
+		Node target = nodes[ty][tx];
+		while (target != nodes[sy][sx]) {
+			path.prependStep(target.y, target.x);
 			target = target.parent;
 		}
-		path.prependStep(sx,sy);
+		path.prependStep(sy,sx);
 		
 		// thats it, we have our path 
 
@@ -273,11 +275,11 @@ public class PathFinder {
 	 * @param y The y coordinate of the location to check
 	 * @return True if the location is valid for the given robot
 	 */
-	protected boolean isValidLocation(Robot robot, int sx, int sy, int x, int y) {
+	protected boolean isValidLocation(IRobot robot, int sy, int sx, int y, int x) {
 		boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
 		
 		if ((!invalid) && ((sx != x) || (sy != y))) {
-			invalid = map.blocked(robot, x, y);
+			invalid = map.blocked(robot, y, x);
 		}
 		
 		return !invalid;
@@ -293,8 +295,8 @@ public class PathFinder {
 	 * @param ty The y coordinate of the target location
 	 * @return The cost of movement through the given tile
 	 */
-	public float getMovementCost(Robot robot, int sx, int sy, int tx, int ty) {
-		return map.getCost(robot, sx, sy, tx, ty);
+	public float getMovementCost(IRobot robot, int sy, int sx, int ty, int tx) {
+		return map.getCost(robot, sy, sx, ty, tx);
 	}
 
 	/**
@@ -308,8 +310,8 @@ public class PathFinder {
 	 * @param ty The y coordinate of the target location
 	 * @return The heuristic cost assigned to the tile
 	 */
-	public float getHeuristicCost(Robot robot, int x, int y, int tx, int ty) {
-		return heuristic.getCost(map, robot, x, y, tx, ty);
+	public float getHeuristicCost(IRobot robot, int y, int x, int ty, int tx) {
+		return heuristic.getCost(map, robot, y, x, ty, tx);
 	}
 	
 	/**
@@ -402,7 +404,7 @@ public class PathFinder {
 		 * @param x The x coordinate of the node
 		 * @param y The y coordinate of the node
 		 */
-		public Node(int x, int y) {
+		public Node(int y, int x) {
 			this.x = x;
 			this.y = y;
 		}
