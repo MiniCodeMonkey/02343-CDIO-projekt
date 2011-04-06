@@ -44,7 +44,7 @@ public class BTConnector implements IBTConnector {
 
 	@Override
 	public int searchAndConnect(boolean shouldBeep) throws NXTCommException {
-		NXTInfo[] info = conn.search("", null, NXTCommFactory.BLUETOOTH);
+		NXTInfo[] info = conn.search("", NXT_ADR, NXTCommFactory.BLUETOOTH);
 
 		if (info.length == 0) {
 			System.out.println();
@@ -54,15 +54,18 @@ public class BTConnector implements IBTConnector {
 
 			System.out.println("Found " + info.length + " devices");
 			int d = 1;
-			for (NXTInfo nxtInfo : info) {
-				System.out.println("   " + d + ". " + nxtInfo.name + " "
-						+ nxtInfo.deviceAddress);
-				d++;
-				if (nxtInfo.deviceAddress.equals(NXT_ADR)
-						|| nxtInfo.deviceAddress.equals(NXT_ADR2)) {
-					bertaNXTInfo = nxtInfo;
-				}
-			}
+			
+			bertaNXTInfo = info[0];
+			
+//			for (NXTInfo nxtInfo : info) {
+//				System.out.println("   " + d + ". " + nxtInfo.name + " "
+//						+ nxtInfo.deviceAddress);
+//				d++;
+//				if (nxtInfo.deviceAddress.equals(NXT_ADR)
+//						|| nxtInfo.deviceAddress.equals(NXT_ADR2)) {
+//					bertaNXTInfo = nxtInfo;
+//				}
+//			}
 		}
 		return connect(shouldBeep);
 	}
@@ -80,7 +83,7 @@ public class BTConnector implements IBTConnector {
 
 		if (bertaNXTInfo != null) {
 			System.out.println();
-			System.out.println("Connecting to B.E.R.T.A...");
+			System.out.println("Connecting to B.E.R.T.A..."+bertaNXTInfo.deviceAddress);
 			System.out.println("Success?  "
 					+ nxtComm.open(bertaNXTInfo, lejos.pc.comm.NXTComm.LCP));
 		}
