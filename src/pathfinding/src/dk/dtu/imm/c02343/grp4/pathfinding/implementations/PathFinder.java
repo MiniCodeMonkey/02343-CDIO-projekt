@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.*;
 
@@ -64,6 +65,13 @@ public class PathFinder {
 				nodes[y][x] = new Node(y,x);
 			}
 		}
+	}
+	
+	public int getNextNextMove(ILocations locations, int robotNo, int cakeNo)
+	{
+		
+		
+		return 0;
 	}
 	
 	/**

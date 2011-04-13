@@ -1,3 +1,5 @@
-#Wed Mar 30 11:04:58 CEST 2011
+#Wed Apr 13 11:39:26 CEST 2011
 eclipse.preferences.version=1
-encoding//src/dk/dtu/imm/c02343/grp4/pathfinding/testpathfinding/TestPathfinding.java=ISO-8859-1
+encoding//src/dk/dtu/imm/c02343/grp4/pathfinding/test/comm/TestPathfinding.java=ISO-8859-1
+encoding//src/dk/dtu/imm/c02343/grp4/pathfinding/test/imageprocessing/TestInterfacing.java=ISO-8859-1
+encoding//src/dk/dtu/imm/c02343/grp4/pathfinding/test/standalone/TestPathfinding.java=ISO-8859-1
