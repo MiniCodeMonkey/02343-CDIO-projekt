@@ -712,7 +712,7 @@ public class ImageProcessor {
 		int[][] tilemap = createTileMap(imageSource);
 		int[] tileMapBounds = findBounds(tilemap);
 		tilemap = cropTilemap(tilemap, tileMapBounds);
-		int[][] obstaclemap = createObstacleMap(tilemap, 5);
+		int[][] obstaclemap = createObstacleMap(tilemap, 15);
 		ArrayList<ICake> cakes = findCakes(tilemap, 1);
 		ArrayList<IRobot> robots = findRobots(tilemap, 3, 4);
 		ILocations locations = new Locations(tilemap,obstaclemap,cakes,robots);

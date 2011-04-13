@@ -7,27 +7,24 @@ public class TileMap
 	private int width, height;
 	
 	private int[][] tileMap;
+	private int[][] obstacleMap;
 	private boolean[][] visited;
 
-	public void setTileMap(int[][] tileMap)
+	public void setTileMap(int[][] tileMap, int[][] obstacleMap)
 	{
 		height = tileMap.length;
 		width = tileMap[0].length;
 		visited = new boolean[height][width];
 		
-		addObstacleWalls();
-		
 		this.tileMap = tileMap;
+		this.obstacleMap = obstacleMap;
 	}
-
-	private void addObstacleWalls()
+	
+	public int[][] getObstacleMap()
 	{
-		for (int y = 0; y < height; y++)
-		{
-			
-		}
+		return obstacleMap;
 	}
-
+	
 	public int[][] getTileMap()
 	{
 		return tileMap;
@@ -45,7 +42,7 @@ public class TileMap
 
 	public boolean blocked(IRobot robot, int ty, int tx)
 	{
-		return (tileMap[ty][tx] == 2);
+		return (obstacleMap[ty][tx] != 0);//(tileMap[ty][tx] == 2);
 	}
 
 	public float getCost(IRobot robot, int sy, int sx, int ty, int tx)

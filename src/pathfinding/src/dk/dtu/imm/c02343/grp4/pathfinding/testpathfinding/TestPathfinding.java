@@ -1,11 +1,15 @@
 package dk.dtu.imm.c02343.grp4.pathfinding.testpathfinding;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -213,7 +217,7 @@ public class TestPathfinding implements ActionListener {
 			return;
 		
 		TileMap tileMap = new TileMap();
-		tileMap.setTileMap(locations.getTilemap());
+		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
 		IRobot robot = locations.getRobots().get(0);
 		ICake cake = locations.getCakes().get(0);
 		
@@ -232,15 +236,9 @@ public class TestPathfinding implements ActionListener {
 		Path path = pathFinder.findPath(robot, robot.getY(), robot.getX(), cake.getY(), cake.getX());
 		System.out.println("Finding path between " + robot.getX() +"," + robot.getY() + " and " + cake.getX() + "," + cake.getY() + ".");
 		
-		Random r = new Random();
+		//Random r = new Random();
 		BufferedImage image = locations.getTileImage();
 		Graphics g = image.getGraphics();
-		
-		/*g.setColor(Color.red);
-		g.fillRoundRect(robot.getX() - 5, robot.getY() - 5, 10, 10, 10, 10);
-		
-		g.setColor(Color.blue);
-		g.fillRoundRect(cake.getX() - 5, cake.getY() - 5, 10, 10, 10, 10);*/
 		
 		g.setColor(Color.white);
 		
