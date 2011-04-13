@@ -33,20 +33,6 @@ public interface IControl {
 	 * @throws IOException hvis forbindelsen blev tabt
 	 */
 	void stop() throws IOException;
-	/**Åbner kloen.. 
-	 * <br>
-	 * TODO limits
-	 * @param clawMotor - hastighed hvormed kloen åbnes (0-50)
-	 * @throws IOException hvis forbindelsen blev tabt
-	 */
-	void openClaw(int clawMotor) throws IOException;
-	/**Lukker kloen.. 
-	 * <br>
-	 * TODO limits
-	 * @param clawMotor - hastighed hvormed kloen lukkes (0-50)
-	 * @throws IOException hvis forbindelsen blev tabt
-	 */
-	void closeClaw(int clawMotor) throws IOException;
 	
 	/**
 	 * @return

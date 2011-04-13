@@ -64,21 +64,21 @@ public class Control implements IControl{
 		setMoving(false);
 	}
 
-	@Override
-	public void openClaw(int clawMotor) throws IOException {
-		if (isClawMoving())
-			return;
-		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		setClawMoving(true);
-	}
-
-	@Override
-	public void closeClaw(int clawMotor) throws IOException {
-		if (isClawMoving())
-			return;
-		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		setClawMoving(true);
-	}
+//	@Override
+//	public void openClaw(int clawMotor) throws IOException {
+//		if (isClawMoving())
+//			return;
+//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+//		setClawMoving(true);
+//	}
+//
+//	@Override
+//	public void closeClaw(int clawMotor) throws IOException {
+//		if (isClawMoving())
+//			return;
+//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+//		setClawMoving(true);
+//	}
 
 	/**
 	 * @return the commander
@@ -101,22 +101,6 @@ public class Control implements IControl{
 	 */
 	public boolean isMoving() {
 		return inMotion;
-	}
-
-
-	/**
-	 * @param clawMoving the clawMoving to set
-	 */
-	public void setClawMoving(boolean clawMoving) {
-		this.clawMoving = clawMoving;
-	}
-
-
-	/**
-	 * @return the clawMoving
-	 */
-	public boolean isClawMoving() {
-		return clawMoving;
 	}
 
 
