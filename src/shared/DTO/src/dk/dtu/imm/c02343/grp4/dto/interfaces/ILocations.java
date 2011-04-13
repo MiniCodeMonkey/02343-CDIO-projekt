@@ -9,6 +9,16 @@ import java.util.List;
  */
 public interface ILocations {
 	/**
+	 * Hent obstaclemap
+	 */
+	public int[][] getObstaclemap();
+	
+	/**
+	 * Sæt obstaclemap
+	 */
+	public void setObstaclemap(int[][] obstaclemap);
+	
+	/**
 	 * Hent tilemap
 	 */
 	public int[][] getTilemap();

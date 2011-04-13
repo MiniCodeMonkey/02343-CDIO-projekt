@@ -1,4 +1,4 @@
-package pathfinding.dao;
+package dk.dtu.imm.c02343.grp4.pathfinding.dat;
 
 public class Location
 {

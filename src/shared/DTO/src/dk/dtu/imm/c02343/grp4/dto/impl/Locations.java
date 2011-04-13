@@ -13,6 +13,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
  */
 public class Locations implements ILocations {
 	private int[][] tilemap;
+	private int[][] obstaclemap;
 	private List<ICake> cakes;
 	private List<IRobot> robots;
 	private BufferedImage sourceImage;
@@ -30,8 +31,9 @@ public class Locations implements ILocations {
 	 * @param cakes Cake-liste
 	 * @param robots Robot-liste
 	 */
-	public Locations(int[][] tilemap, List<ICake> cakes, List<IRobot> robots) {
+	public Locations(int[][] tilemap, int[][] obstaclemap, List<ICake> cakes, List<IRobot> robots) {
 		setTilemap(tilemap);
+		setObstaclemap(obstaclemap);
 		setCakes(cakes);
 		setRobots(robots);
 	}
@@ -48,6 +50,20 @@ public class Locations implements ILocations {
 	 */
 	public void setTilemap(int[][] tilemap) {
 		this.tilemap = tilemap;
+	}
+	
+	/**
+	 * Hent obstaclemap
+	 */
+	public int[][] getObstaclemap() {
+		return this.obstaclemap;
+	}
+	
+	/**
+	 * Sæt obstaclemap
+	 */
+	public void setObstaclemap(int[][] obstaclemap) {
+		this.obstaclemap = obstaclemap;
 	}
 	
 	/**
