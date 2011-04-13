@@ -47,6 +47,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		initComponents();
 
+		Thread.currentThread().setName("BasicGUI");
+		
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 	}
