@@ -3,6 +3,7 @@ package dk.dtu.imm.c02343.grp4.imageprocessing.imagesource;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.media.Buffer;
 import javax.media.CannotRealizeException;

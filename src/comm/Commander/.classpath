@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="bluecove.jar"/>
 	<classpathentry kind="lib" path="pccomm.jar"/>
-	<classpathentry kind="lib" path="comm.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Communication"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

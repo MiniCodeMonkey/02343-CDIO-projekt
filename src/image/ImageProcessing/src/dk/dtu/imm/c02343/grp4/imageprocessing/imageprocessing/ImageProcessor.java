@@ -115,7 +115,7 @@ public class ImageProcessor {
 				} else if (rgb[0] < 70 && rgb[1] > 70 && rgb[2] < 90) {
 					// Grøn farve: Robot N
 					output[j][i] = ROBOTN;
-				} else if (rgb[0] < 80 && rgb[1] < 80 && rgb[2] > 110) {
+				} else if (rgb[0] < 20 && rgb[1] < 50 && rgb[2] > 50) {
 					// Blå farve: Robot S
 					output[j][i] = ROBOTS;
 				} else if (rgb[0] > 100 && rgb[1] < 25 && rgb[2] < 25) {
@@ -208,10 +208,23 @@ public class ImageProcessor {
 			int[] posN = findCakes(tilemap, type1).get(0).getPos();
 			int[] posS = findCakes(tilemap, type2).get(0).getPos();
 			int[] coords = new int[] {(posN[0]+posS[0])/2,(posN[1]+posS[1])/2};
+			System.out.println("Pos: (" + posN[1] + "," + posN[0] + "),("+posS[1]+","+posS[0]+")");
 			double a = posN[1]-posS[1];
 			double b = posN[0]-posS[0];
+			System.out.println("a: " + a + " - b: " + b);
+			double angle = 0.0;
 			double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
-			double angle = Math.asin(b/c);
+			angle = Math.asin(b/c);
+			System.out.println("Angle first: " + angle + "rad = " + (angle*180/Math.PI) + " deg");
+			if (a > 0 && b < 0) {
+				// 3. kvadrant
+				System.out.println("3rd quadrant");
+				angle = -Math.PI-angle;
+			} else if (a > 0 && b > 0) {
+				// 4. kvadrant
+				System.out.println("4th quadrant");
+				angle = Math.PI-angle;
+			}
 			robots.add(new Robot(coords[0],coords[1],angle));
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("No robot found.");
