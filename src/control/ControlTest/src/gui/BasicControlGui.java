@@ -13,13 +13,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import lejos.nxt.Motor;
-import lejos.nxt.remote.RemoteMotor;
 import lejos.pc.comm.NXTCommException;
-import lejos.robotics.TachoMotor;
-import lejos.robotics.navigation.Pilot;
 import bluetooth.interfaces.IBTConnector;
-import command.claw.ClawDriver;
-import command.claw.ClawSettingDTO;
 
 import command.impl.Control;
 import command.interfaces.IClawControl;
@@ -27,12 +22,13 @@ import command.interfaces.IControl;
 
 /** GUI af styring til debug..
  * 
- *  Mï¿½ IKKE ï¿½NDRES!
+ *  Må IKKE ÆNDRES!
  * 
  * @author Morten Hulvej
  */
 public class BasicControlGui extends javax.swing.JFrame {
 
+	private static final long serialVersionUID = -693154801145671834L;
 	IControl controller;
 	IClawControl claw;
 	IBTConnector con;
@@ -741,8 +737,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 
 	public void openClaw() {
 		try {
-//			controller.openClaw(clawspeedSlider.getValue());
-			claw.openClaw(clawspeedSlider.getValue());
+			controller.openClaw(clawspeedSlider.getValue());
+//			claw.openClaw(clawspeedSlider.getValue());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);
@@ -752,8 +748,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 
 	public void closeClaw() {
 		try {
-//			controller.closeClaw(clawspeedSlider.getValue());
-			claw.closeClaw(clawspeedSlider.getValue());
+			controller.closeClaw(clawspeedSlider.getValue());
+//			claw.closeClaw(clawspeedSlider.getValue());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);
