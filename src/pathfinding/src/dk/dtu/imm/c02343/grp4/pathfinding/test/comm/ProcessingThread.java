@@ -148,9 +148,24 @@ public class ProcessingThread extends Thread {
 			System.out.println("step: " + step.getX() + "," + step.getY());
 			System.out.println("robot: " + robot.getX() + "," + robot.getY());
 			
+			double a = robot.getX() - step.getX();
+			double b = robot.getY() - step.getY();
 			double supposedToBeAngle = 0.0;
-			
-			if (step.getX() - robot.getX() == 0) {
+			double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+			supposedToBeAngle = Math.asin(b/c);
+			if (a > 0 && b < 0) {
+				// 3. kvadrant
+				System.out.println("3. kvadrant");
+				supposedToBeAngle = -Math.PI-supposedToBeAngle;
+			} else if (a > 0 && b >= 0) {
+				// 4. kvadrant
+				System.out.println("4. kvadrant");
+				supposedToBeAngle = Math.PI-supposedToBeAngle;
+			}
+			supposedToBeAngle += Math.PI;
+			if (supposedToBeAngle > Math.PI)
+				supposedToBeAngle -= 2*Math.PI;
+/*			if (step.getX() - robot.getX() == 0) {
 				if (step.getY() > robot.getY()) {
 					supposedToBeAngle = Math.PI;
 				}
@@ -160,13 +175,8 @@ public class ProcessingThread extends Thread {
 						/
 						(step.getX() - robot.getX())
 				) + Math.PI / 2;
-				
-				/*supposedToBeAngle = Math.atan(
-						(step.getY() - robot.getY())
-						/
-						(step.getX() - robot.getX())
-				) + Math.PI / 2 - Math.PI;*/
-			}
+				supposedToBeAngle = -supposedToBeAngle;
+			}*/
 			
 			System.out.println("Current robot angle: " + (robot.getAngle()*180/Math.PI) + ", supposed to be angle: " + (supposedToBeAngle*180/Math.PI));
 			
@@ -177,17 +187,16 @@ public class ProcessingThread extends Thread {
 			{
 				bertaControl.right(10);
 			}
-			else */if (Math.abs(robot.getAngle() - supposedToBeAngle) > ((Math.PI * 2) / 360)*10) // ~10 deg
+			else */if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*10) // ~10 deg
 			{
 				// Rotate
-//				if (supposedToBeAngle*180/Math.PI > robot.getAngle()*180/Math.PI)
-				if (Math.abs(robot.getAngle()-supposedToBeAngle) > 0)
+				if (robot.getAngle() < supposedToBeAngle)
 				{
-					bertaControl.right(7);
+					bertaControl.right(15);
 				}
 				else
 				{
-					bertaControl.left(7);
+					bertaControl.left(15);
 				}
 			}
 			else
@@ -195,13 +204,13 @@ public class ProcessingThread extends Thread {
 				System.out.println("Full steam ahead! ---- Aye aye captain, full steam ahead. TUUUUUUUT TUUUUUUUT");
 				
 				// MOVE!
-				bertaControl.move(20, false);
+				bertaControl.move(30, false);
 			}
 		}
 	}
 
 	private Path resizePath(Path path) {
-		if (path.getLength() <= 0)
+		if (path == null || path.getLength() <= 0)
 			return path;
 		
 		Path returnPath = new Path();

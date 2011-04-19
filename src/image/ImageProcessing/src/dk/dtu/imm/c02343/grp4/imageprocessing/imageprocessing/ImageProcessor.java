@@ -208,21 +208,16 @@ public class ImageProcessor {
 			int[] posN = findCakes(tilemap, type1).get(0).getPos();
 			int[] posS = findCakes(tilemap, type2).get(0).getPos();
 			int[] coords = new int[] {(posN[0]+posS[0])/2,(posN[1]+posS[1])/2};
-			System.out.println("Pos: (" + posN[1] + "," + posN[0] + "),("+posS[1]+","+posS[0]+")");
 			double a = posN[1]-posS[1];
 			double b = posN[0]-posS[0];
-			System.out.println("a: " + a + " - b: " + b);
 			double angle = 0.0;
 			double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
 			angle = Math.asin(b/c);
-			System.out.println("Angle first: " + angle + "rad = " + (angle*180/Math.PI) + " deg");
 			if (a > 0 && b < 0) {
 				// 3. kvadrant
-				System.out.println("3rd quadrant");
 				angle = -Math.PI-angle;
-			} else if (a > 0 && b > 0) {
+			} else if (a > 0 && b >= 0) {
 				// 4. kvadrant
-				System.out.println("4th quadrant");
 				angle = Math.PI-angle;
 			}
 			robots.add(new Robot(coords[0],coords[1],angle));
