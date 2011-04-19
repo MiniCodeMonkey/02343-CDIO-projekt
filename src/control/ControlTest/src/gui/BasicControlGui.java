@@ -63,7 +63,6 @@ public class BasicControlGui extends javax.swing.JFrame {
         clawOpenBtn = new javax.swing.JButton();
         stopBtn = new javax.swing.JButton();
         isReversedChkBox = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
         connectBtn = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -189,14 +188,6 @@ public class BasicControlGui extends javax.swing.JFrame {
             isReversedChkBox.setFocusPainted(false);
             isReversedChkBox.setFocusable(false);
 
-            jButton1.setText("test");
-            jButton1.setToolTipText("Claw test");
-            jButton1.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton1ActionPerformed(evt);
-                }
-            });
-
             javax.swing.GroupLayout movePanelLayout = new javax.swing.GroupLayout(movePanel);
             movePanel.setLayout(movePanelLayout);
             movePanelLayout.setHorizontalGroup(
@@ -212,10 +203,7 @@ public class BasicControlGui extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(BckwBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                                .addComponent(fwrBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                                .addGroup(movePanelLayout.createSequentialGroup()
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)))
+                                .addComponent(fwrBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(movePanelLayout.createSequentialGroup()
                                     .addGap(9, 9, 9)
@@ -239,9 +227,7 @@ public class BasicControlGui extends javax.swing.JFrame {
                         .addGroup(movePanelLayout.createSequentialGroup()
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(clawOpenBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(clawCloseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                                    .addComponent(jButton1)))
+                                .addComponent(clawCloseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(movePanelLayout.createSequentialGroup()
                                     .addGap(46, 46, 46)
@@ -443,44 +429,6 @@ public class BasicControlGui extends javax.swing.JFrame {
 			JOptionPane.WARNING_MESSAGE,new ImageIcon(icon));
         }//GEN-LAST:event_aboutBtnActionPerformed
 
-        private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            
-        	
-        	System.out.println();
-		System.out.println("===USER PROGRAM====");
-		
-		
-		Motor.B.forward();
-		
-		
-		
-//		ClawSettingDTO set = new ClawSettingDTO(con.getNxtCommand());
-//		
-//		this.claw = new ClawDriver(set);
-//
-//		try {
-//			claw.openClaw(10);
-//			while(claw.isClawMoving()){
-//				System.out.println("Claw moving..");
-//				Thread.sleep(300);
-//			}
-//			claw.closeClaw(10);
-//			while(claw.isClawMoving()){
-//				System.out.println("Claw moving..");
-//				Thread.sleep(300);
-//			}
-//
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		
-        }//GEN-LAST:event_jButton1ActionPerformed
-
 	private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_connectBtnActionPerformed
 		if (connected) {
 			try {
@@ -655,7 +603,6 @@ public class BasicControlGui extends javax.swing.JFrame {
     private javax.swing.JButton connectBtn;
     private javax.swing.JButton fwrBtn;
     private javax.swing.JCheckBox isReversedChkBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
