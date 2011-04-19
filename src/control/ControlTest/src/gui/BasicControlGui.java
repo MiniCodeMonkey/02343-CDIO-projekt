@@ -22,7 +22,7 @@ import command.interfaces.IControl;
 
 /** GUI af styring til debug..
  * 
- *  Må IKKE ÆNDRES!
+ *  
  * 
  * @author Morten Hulvej
  */
