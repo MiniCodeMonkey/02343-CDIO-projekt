@@ -29,9 +29,14 @@ public class Control implements IControl{
 			return;
 		if(reverse)
 			speed *= -1;
-
+		
 		commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		String print;
+		if (reverse)	print="Backwards";
+		else	print="Forwards";
+		
+		System.out.println("MOVING: "+print);
 		setMoving(true);
 	}
 
@@ -61,24 +66,25 @@ public class Control implements IControl{
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
+		System.out.println("STOPPING");
 		setMoving(false);
 	}
 
-	@Override
-	public void openClaw(int clawMotor) throws IOException {
-		if (isClawMoving())
-			return;
-		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		setClawMoving(true);
-	}
-
-	@Override
-	public void closeClaw(int clawMotor) throws IOException {
-		if (isClawMoving())
-			return;
-		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		setClawMoving(true);
-	}
+//	@Override
+//	public void openClaw(int clawMotor) throws IOException {
+//		if (isClawMoving())
+//			return;
+//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+//		setClawMoving(true);
+//	}
+//
+//	@Override
+//	public void closeClaw(int clawMotor) throws IOException {
+//		if (isClawMoving())
+//			return;
+//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+//		setClawMoving(true);
+//	}
 
 	/**
 	 * @return the commander
@@ -101,22 +107,6 @@ public class Control implements IControl{
 	 */
 	public boolean isMoving() {
 		return inMotion;
-	}
-
-
-	/**
-	 * @param clawMoving the clawMoving to set
-	 */
-	public void setClawMoving(boolean clawMoving) {
-		this.clawMoving = clawMoving;
-	}
-
-
-	/**
-	 * @return the clawMoving
-	 */
-	public boolean isClawMoving() {
-		return clawMoving;
 	}
 
 

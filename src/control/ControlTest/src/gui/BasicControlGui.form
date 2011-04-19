@@ -42,13 +42,13 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="sensorPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jSeparator1" alignment="0" pref="399" max="32767" attributes="0"/>
+                  <Component id="jSeparator1" alignment="0" pref="402" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="statusPtyLabel" pref="113" max="32767" attributes="0"/>
+                              <Component id="statusPtyLabel" pref="116" max="32767" attributes="0"/>
                           </Group>
                           <Component id="connectBtn" alignment="0" min="-2" pref="139" max="-2" attributes="0"/>
                       </Group>
@@ -104,16 +104,20 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="stopBtn" alignment="0" pref="299" max="32767" attributes="1"/>
+                      <Component id="stopBtn" alignment="0" pref="302" max="32767" attributes="1"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="clawCloseBtn" min="-2" pref="116" max="-2" attributes="0"/>
                               <Component id="leftBtn" alignment="1" min="-2" pref="61" max="-2" attributes="1"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="BckwBtn" pref="52" max="32767" attributes="1"/>
-                              <Component id="fwrBtn" alignment="0" pref="52" max="32767" attributes="1"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="BckwBtn" alignment="0" pref="55" max="32767" attributes="1"/>
+                              <Component id="fwrBtn" alignment="0" pref="55" max="32767" attributes="1"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jButton1" min="-2" pref="37" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -147,7 +151,10 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="clawOpenBtn" max="32767" attributes="1"/>
-                              <Component id="clawCloseBtn" alignment="0" pref="50" max="32767" attributes="1"/>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="clawCloseBtn" alignment="3" pref="50" max="32767" attributes="1"/>
+                                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
@@ -272,6 +279,15 @@
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="test"/>
+            <Property name="toolTipText" type="java.lang.String" value="Claw test"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JButton" name="connectBtn">
@@ -369,7 +385,7 @@
                           <Component id="clawspeedSlider" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="82" max="32767" attributes="0"/>
+                  <EmptySpace pref="85" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -473,13 +489,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="aboutBtn">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="D:\Documents\CDIO_workspace\BasicControlsPc\images\help_button.png"/>
-        </Property>
         <Property name="contentAreaFilled" type="boolean" value="false"/>
         <Property name="focusPainted" type="boolean" value="false"/>
         <Property name="focusable" type="boolean" value="false"/>
-        <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutBtnActionPerformed"/>
