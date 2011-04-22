@@ -1,0 +1,58 @@
+% Makro til at indsætte billede, studienr., navn og underskriftslinje på forside
+%
+\begin{titlepage}
+	%\changepage{textheight}{textwidth}{evensidemargin}{oddsidemargin}{columnsep}{topmargin}{headheight}{headsep}{footskip}
+	\changepage{4cm}{4cm}{-2cm}{-2cm}{}{-2cm}{0cm}{}{}% Små margener
+	%
+	% Logo øverst til højre på siden
+	\begin{flushright}
+		\includegraphics[width=0.4\textwidth]{forside/DTU_DK_CMYK}
+	\end{flushright}
+	%
+	% Centrér og lad være med at indentere nye afsnit
+	\centering \parindent=0pt%
+	%
+	% Ny makro til at lave tyk vandret linje
+	\newcommand{\HRule}{\rule{0.9\textwidth}{1mm}}%
+	% Lav lodret mellemrum og sæt en vandret linje efterfulgt af 1cm lodret mellemrum
+	\vspace*{\stretch{1}} \color{DTUred}\HRule\\[1cm]%
+	% Skriv titler
+	\color{black}\huge\bfseries \titlea\\[0.7cm]%
+	\LARGE Appendiks\\[1cm]%
+	% Ny vandret linje	
+	\color{DTUred}\HRule%\\[1cm]
+	% Lav mellemrum ned til næste elementer
+	\vspace*{\stretch{0.75}}
+	% Udarbejdet af: del
+	\color{black}%
+	\ifx\group\empty% Tjek om gruppen er tom
+	\else
+		\Large \group\\[0.5cm]% Ellers skriv den
+	\fi
+	% Medlemmer af gruppen
+	\begin{minipage}[t]{0.6\linewidth}
+		\begin{center}
+			\studentstring{2}
+		\end{center}
+	\end{minipage}
+	\\[2cm] % Sørger for at sidste gruppemedlems linje bliver afsluttet
+%	
+%
+% Venstre gruppering nederst på siden
+	\begin{minipage}[b]{0.45\linewidth}
+		\vfill% Sørg for at indholdet kommer nederst i minipagen
+		\includegraphics[height=35pt]{forside/\institutelogo}%\\% Institutlogo
+%		\color{DTUgray2}\bl% Tekst under institutlogo
+	\end{minipage}%
+%	
+	\hfill% Sørg for at næste minipage kommer helt ud til højre
+%	
+	\begin{minipage}[b]{0.45\linewidth}
+		\normalsize
+		\color{DTUgray2}\raggedleft% Højrestil
+		\bl\\
+		\bra%\\
+%		\brb\\
+%		\brc
+	\end{minipage}
+\end{titlepage}
