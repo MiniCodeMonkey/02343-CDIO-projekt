@@ -32,11 +32,12 @@ public class Control implements IControl{
 		
 		commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		String print;
-		if (reverse)	print="Backwards";
-		else	print="Forwards";
 		
-		System.out.println("MOVING: "+print);
+//		String print;
+//		if (reverse)	print="Backwards";
+//		else	print="Forwards";
+//		System.out.println("MOVING: "+print);
+		
 		setMoving(true);
 	}
 
@@ -47,7 +48,7 @@ public class Control implements IControl{
 			return;
 		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		System.out.println("TURNING: left");
+//		System.out.println("TURNING: left");
 		setMoving(true);
 	}
 
@@ -57,7 +58,7 @@ public class Control implements IControl{
 			return;
 		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		System.out.println("TURNING: right");
+//		System.out.println("TURNING: right");
 		setMoving(true);
 	}
 
@@ -66,25 +67,11 @@ public class Control implements IControl{
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
-		System.out.println("STOPPING");
+//		System.out.println("STOPPING");
 		setMoving(false);
 	}
 
-//	@Override
-//	public void openClaw(int clawMotor) throws IOException {
-//		if (isClawMoving())
-//			return;
-//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-//		setClawMoving(true);
-//	}
-//
-//	@Override
-//	public void closeClaw(int clawMotor) throws IOException {
-//		if (isClawMoving())
-//			return;
-//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-//		setClawMoving(true);
-//	}
+	
 
 	/**
 	 * @return the commander
@@ -103,7 +90,10 @@ public class Control implements IControl{
 
 
 	/**
-	 * @return the isMoving
+	 * 
+	 * @return {@code true} hvis robotten er i bevægelse (ikke har fået en {@code stop()} kommando endnu)
+	 * <br>
+	 * {@code false} hvis robotten står stille
 	 */
 	public boolean isMoving() {
 		return inMotion;
@@ -127,4 +117,65 @@ public class Control implements IControl{
 		return 0;
 	}
 
+	@Override
+	public void openClaw(int clawMotor) throws IOException {
+		if (isClawMoving())
+			return;
+		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+		clawMoving = true;
+	}
+
+	@Override
+	public void closeClaw(int clawMotor) throws IOException {
+		if (isClawMoving())
+			return;
+		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+		clawMoving = true;
+	}
+
+	@Override
+	public void stopClaw() throws IOException {
+		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
+		clawMoving = false;
+	}
+
+
+	@Override
+	public boolean isClawMoving() {
+		return clawMoving;
+	}	
+		
+	@Override
+	public void move(boolean reverse) throws IOException {
+		move(DEFAULT_MOVE_SPEED, reverse);
+		
+	}
+
+
+	@Override
+	public void left() throws IOException {
+		left(DEFAULT_TURN_SPEED);
+		
+	}
+
+
+	@Override
+	public void right() throws IOException {
+		right(DEFAULT_TURN_SPEED);
+		
+	}
+
+
+	@Override
+	public void openClaw() throws IOException {
+		openClaw(DEFAULT_CLAW_SPEED);
+		
+	}
+
+
+	@Override
+	public void closeClaw() throws IOException {
+		closeClaw(DEFAULT_CLAW_SPEED);
+		
+	}
 }

@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="comm.jar"/>
-	<classpathentry kind="lib" path="command.jar"/>
 	<classpathentry kind="lib" path="bluecove.jar"/>
 	<classpathentry kind="lib" path="pccomm.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Commander"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Communication"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
