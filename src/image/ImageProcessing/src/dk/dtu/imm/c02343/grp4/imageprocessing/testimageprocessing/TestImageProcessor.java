@@ -33,8 +33,8 @@ public class TestImageProcessor implements ActionListener {
 	 */
 	public void run() {
 		// Opret WebCam, initialisér, hent billede til RenderedImage, og luk WebCam igen.
-		imageSource = new WebCam();
-//		imageSource = new ImageFile();
+//		imageSource = new WebCam();
+		imageSource = new ImageFile();
 		imageSource.init();
 		BufferedImage sourceImg = imageSource.getImage();
 		imageSource.close();

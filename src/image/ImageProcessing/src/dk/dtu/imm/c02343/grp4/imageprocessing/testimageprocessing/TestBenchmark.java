@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 
 /**
  * Program til at måle køretiden for et sæt beregninger
@@ -25,16 +26,18 @@ public class TestBenchmark {
 			e.printStackTrace();
 		}
 		
-		IImageSource imageSource = new ImageFile();
+//		IImageSource imageSource = new ImageFile();
+		IImageSource imageSource = new WebCam();
 		imageSource.init();
 		
 		long curTime, endTime;
 		curTime = System.currentTimeMillis();
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 100; i++) {
 			srcImage = imageSource.getImage();
 			ImageProcessor.examineImage(srcImage, true);
 		}
 		endTime = System.currentTimeMillis();
 		System.out.println("Runtime: " + (endTime-curTime) + "ms");
+		imageSource.close();
 	}
 }
