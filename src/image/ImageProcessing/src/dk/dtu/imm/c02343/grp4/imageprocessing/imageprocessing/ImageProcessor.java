@@ -45,6 +45,11 @@ public class ImageProcessor {
 	 */
 	public static final int BACKGROUND = 0;
 	
+	/**
+	 * Mindste størrelse på sammenhængende områder i kager og robot-elementer i pixels
+	 */
+	public static final int MIN_OBJECT_SIZE = 10;
+	
 	// Grænseværdier for forskellige typer objekter
 	private static Thresholds obstacleThresholds = new Thresholds(150, 150, 150, 255, 255, 255);
 	private static Thresholds cakeThresholds = new Thresholds(100, 0, 0, 255, 25, 25);
@@ -181,8 +186,8 @@ public class ImageProcessor {
 					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
 					examineTilemap(tilemap, new int[] {y, x}, type, foundmap, returnCoords);
 					
-					// Acceptér kun objekter, der spænder over min. 10 pixels
-					if (returnCoords.size() > 10) {
+					// Acceptér ikke for små objekter
+					if (returnCoords.size() > MIN_OBJECT_SIZE) {
 						// Beregn gennemsnitspositionen og føj denne til retur-listen
 						int sumX = 0;
 						int sumY = 0;
@@ -192,11 +197,9 @@ public class ImageProcessor {
 							sumX += pos[0];
 							sumY += pos[1];
 						}
-//						if (returnCoords.size() > 0) {
-							int cakeY = sumY/returnCoords.size();
-							int cakeX = sumX/returnCoords.size();
-							cakes.add(new Cake(cakeY,cakeX));
-//						}
+						int cakeY = sumY/returnCoords.size();
+						int cakeX = sumX/returnCoords.size();
+						cakes.add(new Cake(cakeY,cakeX));
 					}
 				}
 			}
@@ -301,93 +304,6 @@ public class ImageProcessor {
 			returnCoords.add(newpos);
 			// Kør metoden rekursivt
 			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
-		}
-	}
-	
-	/**
-	 * Arbejder rekursivt ud fra et punkt og finder alle sammenhængendende pixels af to bestemte typer
-	 * @param tilemap Det tilemap, der skal undersøges
-	 * @param pos Startpositionen
-	 * @param type1 Den ene værdi der søges efter i tilemap
-	 * @param type2 Den anden værdi der søges efter i tilemap
-	 * @param foundmap Matrix over fundne/behandlede felter i tilemap
-	 * @param returnCoords1 Liste over matchende koordinater af type1, som er i den undersøgte mængde
-	 * @param returnCoords2 Liste over matchende koordinater af type2, som er i den undersøgte mængde
-	 */
-	private static void examineTilemap(int[][] tilemap, int[] pos, int type1, int type2, int[][] foundmap, ArrayList<int[]> returnCoords1, ArrayList<int[]> returnCoords2) {
-		// Debug-udskrifter
-//		System.out.println("examineTilemap:");
-//		System.out.println("\ttilemap.length: " + tilemap.length);
-//		System.out.println("\ttilemap[pos[0]].length: " + tilemap[pos[0]].length);
-//		System.out.println("\tpos: (" + pos[0] + "," + pos[1] + ")");
-//		System.out.println("\ttype1: " + type1);
-//		System.out.println("\ttype2: " + type2);
-//		System.out.println("\tfoundmap.length: " + foundmap.length);
-//		System.out.println("\treturnCoords1.size(): " + returnCoords1.size());
-//		System.out.println("\treturnCoords2.size(): " + returnCoords2.size());
-		
-		// Tjek punktet til højre
-		if (pos[1]+1 < tilemap[pos[0]].length && foundmap[pos[0]][pos[1]+1] == 0 && (tilemap[pos[0]][pos[1]+1] == type1 || tilemap[pos[0]][pos[1]+1] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]][pos[1]+1] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0],pos[1]+1};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
-		}
-		
-		// Tjek punktet under
-		if (pos[0]+1 < tilemap.length && foundmap[pos[0]+1][pos[1]] == 0 && (tilemap[pos[0]+1][pos[1]] == type1 || tilemap[pos[0]+1][pos[1]] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]+1][pos[1]] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0]+1,pos[1]};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
-		}
-		
-		// Tjek punktet til venstre
-		if (pos[1]-1 >= 0 && foundmap[pos[0]][pos[1]-1] == 0 && (tilemap[pos[0]][pos[1]-1] == type1 || tilemap[pos[0]][pos[1]-1] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]][pos[1]-1] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0],pos[1]-1};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
-		}
-		
-		// Tjek punktet over
-		if (pos[0]-1 >= 0 && foundmap[pos[0]-1][pos[1]] == 0 && (tilemap[pos[0]-1][pos[1]] == type1 || tilemap[pos[0]-1][pos[1]] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]-1][pos[1]] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0]-1,pos[1]};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
 		}
 	}
 	
@@ -664,7 +580,7 @@ public class ImageProcessor {
 	 * @param type Talrepræsentationen på typen. Kan være ImageProcessor.OBSTACLE, ImageProcessor.CAKE, ImageProcessor.ROBOTN eller ImageProcessor.ROBOTS
 	 * @param thresholds Thresholds-objekt med de nye grænseværdier
 	 */
-	public void setThresholds(int type, Thresholds thresholds) {
+	public static void setThresholds(int type, Thresholds thresholds) {
 		if (type == OBSTACLE) {
 			obstacleThresholds = thresholds;
 		} else if (type == CAKE) {
