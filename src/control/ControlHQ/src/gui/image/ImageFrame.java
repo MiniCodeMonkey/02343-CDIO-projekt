@@ -1,15 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * ImageFrame.java
- *
- * Created on 05-04-2011, 17:52:26
- */
-
 package gui.image;
+
+import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
+import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -20,6 +20,8 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     /** Creates new form ImageFrame */
     public ImageFrame() {
         initComponents();
+
+
     }
 
     /** This method is called from within the constructor to
@@ -30,23 +32,304 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
+
+        imageProcessPanel = new javax.swing.JPanel();
+        imagePanel = new javax.swing.JPanel();
+        thresholdPanel = new javax.swing.JPanel();
+        minRGBpanel = new javax.swing.JPanel();
+        minRedSlider = new javax.swing.JSlider();
+        minGreenSlider = new javax.swing.JSlider();
+        minBlueSlider = new javax.swing.JSlider();
+        minRVal = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        maxRGBpanel = new javax.swing.JPanel();
+        maxRedSlider = new javax.swing.JSlider();
+        maxBlueSlider = new javax.swing.JSlider();
+        maxGreenSlider = new javax.swing.JSlider();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        imageToolbar = new javax.swing.JToolBar();
+        setimageSrcBtn = new javax.swing.JButton();
+        threadholdsBtn = new javax.swing.JToggleButton();
+
+        setResizable(true);
+        setTitle("Image Processing");
+
+        imageProcessPanel.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                imageProcessPanelComponentAdded(evt);
+            }
+        });
+        imageProcessPanel.setLayout(new java.awt.CardLayout());
+
+        javax.swing.GroupLayout imagePanelLayout = new javax.swing.GroupLayout(imagePanel);
+        imagePanel.setLayout(imagePanelLayout);
+        imagePanelLayout.setHorizontalGroup(
+            imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 298, Short.MAX_VALUE)
+        );
+        imagePanelLayout.setVerticalGroup(
+            imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 429, Short.MAX_VALUE)
+        );
+
+        imageProcessPanel.add(imagePanel, "card3");
+
+        minRGBpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
+
+        minRedSlider.setBackground(new java.awt.Color(255, 0, 0));
+        minRedSlider.setMaximum(255);
+        minRedSlider.setMinorTickSpacing(1);
+
+        minGreenSlider.setBackground(new java.awt.Color(0, 255, 0));
+        minGreenSlider.setMaximum(255);
+        minGreenSlider.setMinorTickSpacing(1);
+
+        minBlueSlider.setBackground(new java.awt.Color(0, 0, 255));
+        minBlueSlider.setMaximum(255);
+        minBlueSlider.setMinorTickSpacing(1);
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minRedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), minRVal, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minGreenSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minBlueSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout minRGBpanelLayout = new javax.swing.GroupLayout(minRGBpanel);
+        minRGBpanel.setLayout(minRGBpanelLayout);
+        minRGBpanelLayout.setHorizontalGroup(
+            minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minBlueSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minGreenSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRVal)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+        minRGBpanelLayout.setVerticalGroup(
+            minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRVal))
+                .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minGreenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(minBlueSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        minRGBpanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {minBlueSlider, minGreenSlider, minRedSlider});
+
+        maxRGBpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Max RGB"));
+
+        maxRedSlider.setBackground(new java.awt.Color(255, 0, 0));
+        maxRedSlider.setMaximum(255);
+        maxRedSlider.setMinorTickSpacing(1);
+
+        maxBlueSlider.setBackground(new java.awt.Color(0, 0, 255));
+        maxBlueSlider.setMaximum(255);
+        maxBlueSlider.setMinorTickSpacing(1);
+
+        maxGreenSlider.setBackground(new java.awt.Color(0, 255, 0));
+        maxGreenSlider.setMaximum(255);
+        maxGreenSlider.setMinorTickSpacing(1);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxRedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel4, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxGreenSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel5, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxBlueSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel6, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout maxRGBpanelLayout = new javax.swing.GroupLayout(maxRGBpanel);
+        maxRGBpanel.setLayout(maxRGBpanelLayout);
+        maxRGBpanelLayout.setHorizontalGroup(
+            maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxBlueSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxGreenSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxRedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+        maxRGBpanelLayout.setVerticalGroup(
+            maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxRedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxGreenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(maxBlueSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+        );
+
+        javax.swing.GroupLayout thresholdPanelLayout = new javax.swing.GroupLayout(thresholdPanel);
+        thresholdPanel.setLayout(thresholdPanelLayout);
+        thresholdPanelLayout.setHorizontalGroup(
+            thresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(thresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(thresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(minRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(maxRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+        thresholdPanelLayout.setVerticalGroup(
+            thresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(thresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minRGBpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(maxRGBpanel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(156, Short.MAX_VALUE))
+        );
+
+        imageProcessPanel.add(thresholdPanel, "card2");
+
+        imageToolbar.setRollover(true);
+
+        setimageSrcBtn.setText("Image source");
+        setimageSrcBtn.setFocusable(false);
+        setimageSrcBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        setimageSrcBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        setimageSrcBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setimageSrcBtnActionPerformed(evt);
+            }
+        });
+        imageToolbar.add(setimageSrcBtn);
+
+        threadholdsBtn.setText("Threadholds");
+        threadholdsBtn.setFocusable(false);
+        threadholdsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        threadholdsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        threadholdsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                threadholdsBtnActionPerformed(evt);
+            }
+        });
+        imageToolbar.add(threadholdsBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+            .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(imageToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
         );
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setimageSrcBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setimageSrcBtnActionPerformed
+        JFileChooser jFileChooser = new JFileChooser();
+
+        jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        jFileChooser.setDialogTitle("Choose image source...");
+        
+        jFileChooser.setFileFilter(new FileNameExtensionFilter("web-cam images (.png)", "png"));
+
+        int showOpenDialog_result = jFileChooser.showOpenDialog(this);
+
+
+
+        switch (showOpenDialog_result){
+            case JFileChooser.OPEN_DIALOG:
+
+                ip = new ImagePanel((jFileChooser.getSelectedFile().getAbsolutePath()));
+                imageProcessPanel.add(ip);
+                doLayout();
+
+                break;
+                default:break;
+        }
+    }//GEN-LAST:event_setimageSrcBtnActionPerformed
+
+    private void imageProcessPanelComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_imageProcessPanelComponentAdded
+        Dimension newSize = evt.getChild().getSize();
+
+        if (newSize.height > 400 || newSize.width > 400)
+            JOptionPane.showConfirmDialog(this, "Billede er over 400x400. Fortsætte?", "Advarsel", JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
+
+        if (getSize().getWidth() <=  newSize.getWidth()){
+            newSize.width += 20;
+            newSize.height = (newSize.height * 2) + 20;
+            setSize(newSize);
+            System.out.println("image panel resized!");
+        }
+    }//GEN-LAST:event_imageProcessPanelComponentAdded
+
+    private void threadholdsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_threadholdsBtnActionPerformed
+        LayoutManager l = imageProcessPanel.getLayout();
+        if (l instanceof CardLayout) {
+			CardLayout card = (CardLayout) l;
+			card.next(imageProcessPanel);
+		}
+        
+    }//GEN-LAST:event_threadholdsBtnActionPerformed
+
+    private ImagePanel ip;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel imagePanel;
+    private javax.swing.JPanel imageProcessPanel;
+    private javax.swing.JToolBar imageToolbar;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JSlider maxBlueSlider;
+    private javax.swing.JSlider maxGreenSlider;
+    private javax.swing.JPanel maxRGBpanel;
+    private javax.swing.JSlider maxRedSlider;
+    private javax.swing.JSlider minBlueSlider;
+    private javax.swing.JSlider minGreenSlider;
+    private javax.swing.JPanel minRGBpanel;
+    private javax.swing.JLabel minRVal;
+    private javax.swing.JSlider minRedSlider;
+    private javax.swing.JButton setimageSrcBtn;
+    private javax.swing.JToggleButton threadholdsBtn;
+    private javax.swing.JPanel thresholdPanel;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
 }

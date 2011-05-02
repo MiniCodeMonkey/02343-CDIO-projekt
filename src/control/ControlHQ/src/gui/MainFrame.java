@@ -6,6 +6,8 @@
 
 package gui;
 
+import java.awt.Point;
+
 import gui.image.ImageFrame;
 import gui.manualControl.ControlFrame;
 
@@ -34,6 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        aboutMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,6 +47,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
         mainMenuBar.add(jMenu2);
+
+        aboutMenu.setText("About");
+        aboutMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuActionPerformed(evt);
+            }
+        });
+        mainMenuBar.add(aboutMenu);
 
         setJMenuBar(mainMenuBar);
 
@@ -61,12 +72,18 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void aboutMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aboutMenuActionPerformed
+
 
     public void makeStartupFrames() {
 		
     	ImageFrame imageFrame = new ImageFrame();
     	ControlFrame controlFrame = new ControlFrame();
-    	
+
+        imageFrame.setLocation(dashboard.getSize().width - imageFrame.getSize().width, imageFrame.getLocation().y);
+
     	imageFrame.setVisible(true);
     	controlFrame.setVisible(true);
     	
@@ -74,7 +91,8 @@ public class MainFrame extends javax.swing.JFrame {
     	dashboard.add(controlFrame);    	
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu aboutMenu;
     private javax.swing.JDesktopPane dashboard;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu jMenu2;
