@@ -6,6 +6,9 @@
 
 package gui;
 
+import gui.image.ImageFrame;
+import gui.manualControl.ControlFrame;
+
 /**
  *
  * @author Morten Hulvej
@@ -15,6 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
+        makeStartupFrames();
     }
 
     /** This method is called from within the constructor to
@@ -58,7 +62,19 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    public void makeStartupFrames() {
+		
+    	ImageFrame imageFrame = new ImageFrame();
+    	ControlFrame controlFrame = new ControlFrame();
+    	
+    	imageFrame.setVisible(true);
+    	controlFrame.setVisible(true);
+    	
+    	dashboard.add(imageFrame);
+    	dashboard.add(controlFrame);    	
+	}
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dashboard;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu jMenu2;
