@@ -46,6 +46,20 @@ public class ImageProcessor {
 	public static final int BACKGROUND = 0;
 	
 	/**
+	 * Mindste størrelse på sammenhængende områder i kager og robot-elementer i pixels
+	 */
+	public static final int MIN_OBJECT_SIZE = 10;
+	
+	// Grænseværdier for forskellige typer objekter
+	private static Thresholds obstacleThresholds = new Thresholds(150, 150, 150, 255, 255, 255);
+	private static Thresholds cakeThresholds = new Thresholds(100, 0, 0, 255, 25, 25);
+	private static Thresholds robotNThresholds = new Thresholds(0, 70, 0, 70, 255, 90);
+	private static Thresholds robotSThresholds = new Thresholds(0, 0, 50, 20, 50, 255);
+	
+	// Buffer omkring forhindringer
+	private static int obstacleBuffer = 5;
+	
+	/**
 	 * Tom konstruktør. Metoderne bruges statisk
 	 */
 	public ImageProcessor() {
@@ -109,18 +123,19 @@ public class ImageProcessor {
 			for(int i = 0; i < width; i++) {
 				// Hent RGB-værdier
 				int[] rgb = getRGBvals(image.getRGB(i, j));
-				if (rgb[0] > 150 && rgb[1] > 150 && rgb[2] > 150) {
+				
+				if (obstacleThresholds.checkThresholds(rgb)) {
 					// Hvid farve: Forhindring
 					output[j][i] = OBSTACLE;
-				} else if (rgb[0] < 70 && rgb[1] > 70 && rgb[2] < 90) {
-					// Grøn farve: Robot N
-					output[j][i] = ROBOTN;
-				} else if (rgb[0] < 20 && rgb[1] < 50 && rgb[2] > 50) {
-					// Blå farve: Robot S
-					output[j][i] = ROBOTS;
-				} else if (rgb[0] > 100 && rgb[1] < 25 && rgb[2] < 25) {
+				} else if (cakeThresholds.checkThresholds(rgb)) {
 					// Rød farve: Kage
 					output[j][i] = CAKE;
+				} else if (robotNThresholds.checkThresholds(rgb)) {
+					// Grøn farve: Robot N
+					output[j][i] = ROBOTN;
+				} else if (robotSThresholds.checkThresholds(rgb)) {
+					// Blå farve: Robot S
+					output[j][i] = ROBOTS;
 				} else {
 					// Ikke identificeret objekt
 					output[j][i] = BACKGROUND;
@@ -171,8 +186,8 @@ public class ImageProcessor {
 					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
 					examineTilemap(tilemap, new int[] {y, x}, type, foundmap, returnCoords);
 					
-					// Acceptér kun objekter, der spænder over min. 10 pixels
-					if (returnCoords.size() > 10) {
+					// Acceptér ikke for små objekter
+					if (returnCoords.size() > MIN_OBJECT_SIZE) {
 						// Beregn gennemsnitspositionen og føj denne til retur-listen
 						int sumX = 0;
 						int sumY = 0;
@@ -182,11 +197,9 @@ public class ImageProcessor {
 							sumX += pos[0];
 							sumY += pos[1];
 						}
-//						if (returnCoords.size() > 0) {
-							int cakeY = sumY/returnCoords.size();
-							int cakeX = sumX/returnCoords.size();
-							cakes.add(new Cake(cakeY,cakeX));
-//						}
+						int cakeY = sumY/returnCoords.size();
+						int cakeX = sumX/returnCoords.size();
+						cakes.add(new Cake(cakeY,cakeX));
 					}
 				}
 			}
@@ -225,70 +238,6 @@ public class ImageProcessor {
 			System.out.println("No robot found.");
 		}
 		return robots;
-		
-/*		// matrix til at holde styr på behandlede pixels
-		int[][] foundmap = new int[tilemap.length][];
-		// Initialisér alle felter i matricen
-		for(int i = 0; i < foundmap.length; i++) {
-			foundmap[i] = new int[tilemap[i].length];
-			java.util.Arrays.fill(foundmap[i], 0);
-		}
-		// Retur-objekt med liste over positioner for objekter
-		ArrayList<IRobot> robots = new ArrayList<IRobot>();
-		// Løb igennem alle pixels
-		for(int y = 0; y < tilemap.length; y++) {
-			for(int x = 0; x < tilemap[y].length; x++) {
-				// Tjek, om pixlen er af den ønskede type, samt at den ikke er behandlet
-				if ((tilemap[y][x] == type1 || tilemap[y][x] == type2) && foundmap[y][x] == 0) {
-					// Liste til de punkter, objektet består af
-					ArrayList<int[]> return1Coords = new ArrayList<int[]>();
-					ArrayList<int[]> return2Coords = new ArrayList<int[]>();
-					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
-					examineTilemap(tilemap, new int[] {y, x}, 3, 4, foundmap, return1Coords, return2Coords);
-					
-					// Undersøg, at begge farver er repræsenteret
-					if (return1Coords.size() > 0 && return2Coords.size() > 0) {
-						// Summér hver farve
-						int sum1X = 0;
-						int sum1Y = 0;
-						int sum2X = 0;
-						int sum2Y = 0;
-						Iterator<int[]> itr1 = return1Coords.iterator();
-						Iterator<int[]> itr2 = return2Coords.iterator();
-						while(itr1.hasNext()) {
-							int[] pos1 = itr1.next();
-							sum1X += pos1[0];
-							sum1Y += pos1[1];
-						}
-						while(itr2.hasNext()) {
-							int[] pos2 = itr2.next();
-							sum2X += pos2[0];
-							sum2Y += pos2[1];
-						}
-						
-						// Beregn middel-koordinater for hver af de to farver 
-						int[] coordsN = new int[] {sum1Y/return1Coords.size(),sum1X/return1Coords.size()};
-						int[] coordsS = new int[] {sum2Y/return2Coords.size(),sum2X/return2Coords.size()};
-						
-						// Beregn vinklen mellem linjen gennem punkterne og lodret (positiv vinkel MED uret)
-						double a = coordsN[1]-coordsS[1];
-						double b = coordsN[0]-coordsS[0];
-						double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
-						double angle = Math.asin(b/c);
-						System.out.println("Angle: " + angle + "rad, " + angle*180/Math.PI + "deg");
-						
-						// Føj robot til retur-liste
-						int robotY = (coordsN[0]+coordsS[0])/2;
-						int robotX = (coordsN[1]+coordsS[1])/2;
-						robots.add(new Robot(robotY,robotX,angle));
-					} else {
-						System.out.println("Incomplete robot!");
-					}
-				}
-			}
-		}
-		
-		return robots;*/
 	}
 	
 	/**
@@ -355,93 +304,6 @@ public class ImageProcessor {
 			returnCoords.add(newpos);
 			// Kør metoden rekursivt
 			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
-		}
-	}
-	
-	/**
-	 * Arbejder rekursivt ud fra et punkt og finder alle sammenhængendende pixels af to bestemte typer
-	 * @param tilemap Det tilemap, der skal undersøges
-	 * @param pos Startpositionen
-	 * @param type1 Den ene værdi der søges efter i tilemap
-	 * @param type2 Den anden værdi der søges efter i tilemap
-	 * @param foundmap Matrix over fundne/behandlede felter i tilemap
-	 * @param returnCoords1 Liste over matchende koordinater af type1, som er i den undersøgte mængde
-	 * @param returnCoords2 Liste over matchende koordinater af type2, som er i den undersøgte mængde
-	 */
-	private static void examineTilemap(int[][] tilemap, int[] pos, int type1, int type2, int[][] foundmap, ArrayList<int[]> returnCoords1, ArrayList<int[]> returnCoords2) {
-		// Debug-udskrifter
-//		System.out.println("examineTilemap:");
-//		System.out.println("\ttilemap.length: " + tilemap.length);
-//		System.out.println("\ttilemap[pos[0]].length: " + tilemap[pos[0]].length);
-//		System.out.println("\tpos: (" + pos[0] + "," + pos[1] + ")");
-//		System.out.println("\ttype1: " + type1);
-//		System.out.println("\ttype2: " + type2);
-//		System.out.println("\tfoundmap.length: " + foundmap.length);
-//		System.out.println("\treturnCoords1.size(): " + returnCoords1.size());
-//		System.out.println("\treturnCoords2.size(): " + returnCoords2.size());
-		
-		// Tjek punktet til højre
-		if (pos[1]+1 < tilemap[pos[0]].length && foundmap[pos[0]][pos[1]+1] == 0 && (tilemap[pos[0]][pos[1]+1] == type1 || tilemap[pos[0]][pos[1]+1] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]][pos[1]+1] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0],pos[1]+1};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
-		}
-		
-		// Tjek punktet under
-		if (pos[0]+1 < tilemap.length && foundmap[pos[0]+1][pos[1]] == 0 && (tilemap[pos[0]+1][pos[1]] == type1 || tilemap[pos[0]+1][pos[1]] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]+1][pos[1]] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0]+1,pos[1]};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
-		}
-		
-		// Tjek punktet til venstre
-		if (pos[1]-1 >= 0 && foundmap[pos[0]][pos[1]-1] == 0 && (tilemap[pos[0]][pos[1]-1] == type1 || tilemap[pos[0]][pos[1]-1] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]][pos[1]-1] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0],pos[1]-1};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
-		}
-		
-		// Tjek punktet over
-		if (pos[0]-1 >= 0 && foundmap[pos[0]-1][pos[1]] == 0 && (tilemap[pos[0]-1][pos[1]] == type1 || tilemap[pos[0]-1][pos[1]] == type2)) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]-1][pos[1]] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0]-1,pos[1]};
-			// Tilføj koordinater til listen
-			if (tilemap[newpos[0]][newpos[1]] == type1) {
-				returnCoords1.add(newpos);
-			} else {
-				returnCoords2.add(newpos);
-			}
-			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type1, type2, foundmap, returnCoords1, returnCoords2);
 		}
 	}
 	
@@ -678,7 +540,7 @@ public class ImageProcessor {
 	 * @param tilemap
 	 * @return
 	 */
-	public static int[][] createObstacleMap(int[][] tilemap, int bufferzone) {
+	public static int[][] createObstacleMap(int[][] tilemap) {
 		// Initialisér output-map
 		int[][] obstaclemap = new int[tilemap.length][];
 		for (int i = 0; i < obstaclemap.length; i++) {
@@ -691,14 +553,14 @@ public class ImageProcessor {
 			for (int x = 0; x < tilemap[y].length; x++) {
 				if (tilemap[y][x] == OBSTACLE) {
 					// Sæt nuværende pixel til bufferzone-værdi, hvis der er en obstacle her
-					obstaclemap[y][x] = bufferzone;
+					obstaclemap[y][x] = obstacleBuffer;
 					// Iterér i +/- bufferzone pixels omkring pixlen
-					for (int dy = -bufferzone; dy < bufferzone; dy++) {
+					for (int dy = -obstacleBuffer; dy < obstacleBuffer; dy++) {
 						if (!(y+dy < 0 || y+dy >= obstaclemap.length)) { // Sikrer, at der ikke gøres noget uden for array-grænser
-							for (int dx = -bufferzone; dx < bufferzone; dx++) {
+							for (int dx = -obstacleBuffer; dx < obstacleBuffer; dx++) {
 								if (!(x+dx < 0 || x+dx >= obstaclemap[y+dy].length)) { // Sikrer, at der ikke gøres noget uden for array-grænser
 									// Udregn "power" ud fra afstanden til den fundne obstacle-pixel. "power" er bufferzone-værdien minus afstanden.
-									int power = bufferzone-(int)Math.floor(Math.sqrt(dy*dy+dx*dx));
+									int power = obstacleBuffer-(int)Math.floor(Math.sqrt(dy*dy+dx*dx));
 									// Den beregnede power skal kun påføres en pixel, hvis den er større end tidligere værdi.
 									if (power > obstaclemap[y+dy][x+dx]) {
 										obstaclemap[y+dy][x+dx] = power;
@@ -714,13 +576,40 @@ public class ImageProcessor {
 	}
 	
 	/**
+	 * Sæt grænseværdier for bestemmelse af objekttyper
+	 * @param type Talrepræsentationen på typen. Kan være ImageProcessor.OBSTACLE, ImageProcessor.CAKE, ImageProcessor.ROBOTN eller ImageProcessor.ROBOTS
+	 * @param thresholds Thresholds-objekt med de nye grænseværdier
+	 */
+	public static void setThresholds(int type, Thresholds thresholds) {
+		if (type == OBSTACLE) {
+			obstacleThresholds = thresholds;
+		} else if (type == CAKE) {
+			cakeThresholds = thresholds;
+		} else if (type == ROBOTN) {
+			robotNThresholds = thresholds;
+		} else if (type == ROBOTS) {
+			robotSThresholds = thresholds;
+		}
+	}
+	
+	/**
+	 * Sætter bufferzonen omkring forhindringer
+	 * @param bufferZone Ny zonebredde
+	 */
+	public static void setObstacleBufferZone(int bufferZone) {
+		if (bufferZone >= 0) {
+			obstacleBuffer = bufferZone;
+		}
+	}
+	
+	/**
 	 * Gennemfører fuld analyse af input-billede, og returnerer et Locations objekt
 	 */
 	public static ILocations examineImage(BufferedImage imageSource, boolean debug) {
 		int[][] tilemap = createTileMap(imageSource);
 		int[] tileMapBounds = findBounds(tilemap);
 		tilemap = cropTilemap(tilemap, tileMapBounds);
-		int[][] obstaclemap = createObstacleMap(tilemap, 15);
+		int[][] obstaclemap = createObstacleMap(tilemap);
 		ArrayList<ICake> cakes = findCakes(tilemap, 1);
 		ArrayList<IRobot> robots = findRobots(tilemap, 3, 4);
 		ILocations locations = new Locations(tilemap,obstaclemap,cakes,robots);
