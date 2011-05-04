@@ -3,11 +3,20 @@ package gui.image;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.sun.corba.se.spi.ior.MakeImmutable;
+
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
 
 /**
@@ -100,6 +109,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         bufzoneSlider = new javax.swing.JSlider();
         imagePanel = new javax.swing.JPanel();
         imageToolbar = new javax.swing.JToolBar();
+        connectBtn = new javax.swing.JButton();
         setimageSrcBtn = new javax.swing.JButton();
 
         setResizable(true);
@@ -700,7 +710,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         imagePanel.setLayout(imagePanelLayout);
         imagePanelLayout.setHorizontalGroup(
             imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 306, Short.MAX_VALUE)
+            .addGap(0, 327, Short.MAX_VALUE)
         );
         imagePanelLayout.setVerticalGroup(
             imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -714,20 +724,33 @@ public class ImageFrame extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageProcessPanelLayout.createSequentialGroup()
                 .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         imageProcessPanelLayout.setVerticalGroup(
             imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageProcessPanelLayout.createSequentialGroup()
-                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(imagePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(settingsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         imageToolbar.setRollover(true);
 
+        connectBtn.setText("Connect");
+        connectBtn.setFocusable(false);
+        connectBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        connectBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        connectBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectBtnActionPerformed(evt);
+            }
+        });
+        imageToolbar.add(connectBtn);
+
         setimageSrcBtn.setText("Image source (test image)");
+        setimageSrcBtn.setEnabled(false);
         setimageSrcBtn.setFocusable(false);
         setimageSrcBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         setimageSrcBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -742,10 +765,10 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
+            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -776,8 +799,8 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         switch (showOpenDialog_result){
             case JFileChooser.OPEN_DIALOG:
 
-                ip = new ImagePanel((jFileChooser.getSelectedFile().getAbsolutePath()));
-                imageProcessPanel.add(ip);
+                srcImgPanel = new ImagePanel((jFileChooser.getSelectedFile().getAbsolutePath()));
+                imageProcessPanel.add(srcImgPanel);
                 doLayout();
 
                 break;
@@ -786,25 +809,74 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_setimageSrcBtnActionPerformed
 
     private void imageProcessPanelComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_imageProcessPanelComponentAdded
-        Dimension newSize = evt.getChild().getSize();
-
-        if (newSize.height > 400 || newSize.width > 400)
-            JOptionPane.showConfirmDialog(this, "Billede er over 400x400. Fortsætte?", "Advarsel", JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
-
-        if (getSize().getWidth() <=  newSize.getWidth()){
-            newSize.width += 20;
-            newSize.height = (newSize.height * 2) + 20;
-            setSize(newSize);
-            System.out.println("image panel resized!");
-        }
+//        Dimension newSize = evt.getChild().getSize();
+//
+//        if (newSize.height > 400 || newSize.width > 400)
+//            JOptionPane.showConfirmDialog(this, "Billede er over 400x400. Fortsætte?", "Advarsel", JOptionPane.WARNING_MESSAGE,JOptionPane.YES_NO_OPTION);
+//
+//        if (getSize().getWidth() <=  newSize.getWidth()){
+//            newSize.width += 20;
+//            newSize.height = (newSize.height * 2) + 20;
+//            setSize(newSize);
+//            System.out.println("image panel resized!");
+//        }
     }//GEN-LAST:event_imageProcessPanelComponentAdded
 
-    private ImagePanel ip;
+    private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
+    	
+    	// TODO
+//    	if (imageSource == null){
+//    		JOptionPane.showMessageDialog(this, "Select a source type first!", "Error", JOptionPane.ERROR_MESSAGE);
+//    		
+//    		JOptionPane.showOptionDialog(this, "Select source-type:", "Source type", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+//    		return;
+//    	}
+    	newImageFileSource(); // TODO flyttes op i if statement
+    	
+		imageSource.init();
+		BufferedImage sourceImg = imageSource.getImage();
+		imageSource.close();
+		
+		// Opret tile-image vha. hj�lpemetode
+		ILocations locations = ImageProcessor.examineImage(sourceImg, true);
+		BufferedImage tileImg = locations.getTileImage();
+	
+		
+		// Opret JFrame samt panel til input-billede
+
+		srcImgPanel = new ImagePanel(sourceImg);
+		srcImgPanel.setMinimumSize(new Dimension(sourceImg.getWidth(),sourceImg.getHeight()));
+		imagePanel.add(srcImgPanel);
+		
+		// Opret JFrame samt panel til tile-billede
+		tileImgPanel = new ImagePanel(tileImg);
+		tileImgPanel.setMinimumSize(new Dimension(tileImg.getWidth(),tileImg.getHeight()));
+		imagePanel.add(tileImgPanel);
+		
+		
+    	
+    	imagePanel.validate();
+    	
+    }//GEN-LAST:event_connectBtnActionPerformed
+
+    
+    public void newWebcamSource() {
+    	imageSource = new WebCam();
+	}
+    public void newImageFileSource() {
+    	imageSource = new ImageFile();
+	}
+    
+    private ImagePanel srcImgPanel;
+    private ImagePanel tileImgPanel;
+    
+    private IImageSource imageSource;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bufferzonePanel;
     private javax.swing.JSlider bufzoneSlider;
     private javax.swing.JPanel cakesThresholdPanel;
+    private javax.swing.JButton connectBtn;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JPanel imageProcessPanel;
     private javax.swing.JToolBar imageToolbar;

@@ -20,7 +20,7 @@ public class MainFrame extends javax.swing.JFrame {
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
-        makeStartupFrames();
+        makeAndArrangeFrames();
     }
 
     /** This method is called from within the constructor to
@@ -77,7 +77,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMenuActionPerformed
 
 
-    public void makeStartupFrames() {
+    /**
+     * Opretter og arrangerer alle vinduer
+     * <br><br>(ImageProcessing,Comm,Path,manualControl)
+     */
+    public void makeAndArrangeFrames() {
 		
     	ImageFrame imageFrame = new ImageFrame();
     	ControlFrame controlFrame = new ControlFrame();
@@ -89,6 +93,21 @@ public class MainFrame extends javax.swing.JFrame {
     	
     	dashboard.add(imageFrame);
     	dashboard.add(controlFrame);    	
+	}
+    public void makeControlFrame() {
+		// TODO
+	}
+    public void makeImageFrrame() {
+		// TODO
+	}
+    public void makePathfindingFrame() {
+		// TODO
+	}
+    public void makeCommFrame() {
+		// TODO
+	}
+    public void arrangeFrames() {
+		// TODO
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
