@@ -1,15 +1,14 @@
 package gui.image;
 
-import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
 
 /**
  *
@@ -35,25 +34,73 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         imageProcessPanel = new javax.swing.JPanel();
-        imagePanel = new javax.swing.JPanel();
-        thresholdPanel = new javax.swing.JPanel();
+        settingsPanel = new javax.swing.JTabbedPane();
+        robotFrontThresholdPanel = new javax.swing.JPanel();
         minRGBpanel = new javax.swing.JPanel();
         minRedSlider = new javax.swing.JSlider();
         minGreenSlider = new javax.swing.JSlider();
         minBlueSlider = new javax.swing.JSlider();
         minRVal = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        minGVal = new javax.swing.JLabel();
+        minBVal = new javax.swing.JLabel();
         maxRGBpanel = new javax.swing.JPanel();
         maxRedSlider = new javax.swing.JSlider();
         maxBlueSlider = new javax.swing.JSlider();
         maxGreenSlider = new javax.swing.JSlider();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        maxRVal = new javax.swing.JLabel();
+        maxGVal = new javax.swing.JLabel();
+        maxBVal = new javax.swing.JLabel();
+        robotBackThresholdPanel = new javax.swing.JPanel();
+        minRGBpanel1 = new javax.swing.JPanel();
+        minRedSlider1 = new javax.swing.JSlider();
+        minGreenSlider1 = new javax.swing.JSlider();
+        minBlueSlider1 = new javax.swing.JSlider();
+        minRVal1 = new javax.swing.JLabel();
+        minGVal1 = new javax.swing.JLabel();
+        minBVal1 = new javax.swing.JLabel();
+        maxRGBpanel1 = new javax.swing.JPanel();
+        maxRedSlider1 = new javax.swing.JSlider();
+        maxBlueSlider1 = new javax.swing.JSlider();
+        maxGreenSlider1 = new javax.swing.JSlider();
+        maxRVal1 = new javax.swing.JLabel();
+        maxGVal1 = new javax.swing.JLabel();
+        maxBVal1 = new javax.swing.JLabel();
+        cakesThresholdPanel = new javax.swing.JPanel();
+        minRGBpanel2 = new javax.swing.JPanel();
+        minRedSlider2 = new javax.swing.JSlider();
+        minGreenSlider2 = new javax.swing.JSlider();
+        minBlueSlider2 = new javax.swing.JSlider();
+        minRVal2 = new javax.swing.JLabel();
+        minGVal2 = new javax.swing.JLabel();
+        minBVal2 = new javax.swing.JLabel();
+        maxRGBpanel2 = new javax.swing.JPanel();
+        maxRedSlider2 = new javax.swing.JSlider();
+        maxBlueSlider2 = new javax.swing.JSlider();
+        maxGreenSlider2 = new javax.swing.JSlider();
+        maxRVal2 = new javax.swing.JLabel();
+        maxGVal2 = new javax.swing.JLabel();
+        maxBVal2 = new javax.swing.JLabel();
+        obstacleThresholdPanel = new javax.swing.JPanel();
+        minRGBpanel3 = new javax.swing.JPanel();
+        minRedSlider3 = new javax.swing.JSlider();
+        minGreenSlider3 = new javax.swing.JSlider();
+        minBlueSlider3 = new javax.swing.JSlider();
+        minRVal3 = new javax.swing.JLabel();
+        minGVal3 = new javax.swing.JLabel();
+        minBVal3 = new javax.swing.JLabel();
+        maxRGBpanel3 = new javax.swing.JPanel();
+        maxRedSlider3 = new javax.swing.JSlider();
+        maxBlueSlider3 = new javax.swing.JSlider();
+        maxGreenSlider3 = new javax.swing.JSlider();
+        maxRVal3 = new javax.swing.JLabel();
+        maxGVal3 = new javax.swing.JLabel();
+        maxBVal3 = new javax.swing.JLabel();
+        miscPanel = new javax.swing.JPanel();
+        bufferzonePanel = new javax.swing.JPanel();
+        bufzoneSlider = new javax.swing.JSlider();
+        imagePanel = new javax.swing.JPanel();
         imageToolbar = new javax.swing.JToolBar();
         setimageSrcBtn = new javax.swing.JButton();
-        threadholdsBtn = new javax.swing.JToggleButton();
 
         setResizable(true);
         setTitle("Image Processing");
@@ -63,20 +110,8 @@ public class ImageFrame extends javax.swing.JInternalFrame {
                 imageProcessPanelComponentAdded(evt);
             }
         });
-        imageProcessPanel.setLayout(new java.awt.CardLayout());
 
-        javax.swing.GroupLayout imagePanelLayout = new javax.swing.GroupLayout(imagePanel);
-        imagePanel.setLayout(imagePanelLayout);
-        imagePanelLayout.setHorizontalGroup(
-            imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 298, Short.MAX_VALUE)
-        );
-        imagePanelLayout.setVerticalGroup(
-            imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
-        );
-
-        imageProcessPanel.add(imagePanel, "card3");
+        settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Threshold Settings"));
 
         minRGBpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
 
@@ -95,10 +130,10 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minRedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), minRVal, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minGreenSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minGreenSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), minGVal, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minBlueSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minBlueSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), minBVal, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout minRGBpanelLayout = new javax.swing.GroupLayout(minRGBpanel);
@@ -114,9 +149,9 @@ public class ImageFrame extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(minRVal)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(minGVal)
+                    .addComponent(minBVal))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         minRGBpanelLayout.setVerticalGroup(
             minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,9 +162,9 @@ public class ImageFrame extends javax.swing.JInternalFrame {
                     .addComponent(minRVal))
                 .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(minGreenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(minGVal))
                 .addGroup(minRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
+                    .addComponent(minBVal)
                     .addComponent(minBlueSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
@@ -150,13 +185,13 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         maxGreenSlider.setMaximum(255);
         maxGreenSlider.setMinorTickSpacing(1);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxRedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel4, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxRedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxRVal, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxGreenSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel5, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxGreenSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxGVal, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxBlueSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel6, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxBlueSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxBVal, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout maxRGBpanelLayout = new javax.swing.GroupLayout(maxRGBpanel);
@@ -171,10 +206,10 @@ public class ImageFrame extends javax.swing.JInternalFrame {
                     .addComponent(maxRedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(maxRVal)
+                    .addComponent(maxGVal)
+                    .addComponent(maxBVal))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         maxRGBpanelLayout.setVerticalGroup(
             maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,42 +217,517 @@ public class ImageFrame extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(maxRedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(maxRVal))
                 .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(maxGreenSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(maxGVal))
                 .addGroup(maxRGBpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
+                    .addComponent(maxBVal)
                     .addComponent(maxBlueSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22))
         );
 
-        javax.swing.GroupLayout thresholdPanelLayout = new javax.swing.GroupLayout(thresholdPanel);
-        thresholdPanel.setLayout(thresholdPanelLayout);
-        thresholdPanelLayout.setHorizontalGroup(
-            thresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(thresholdPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout robotFrontThresholdPanelLayout = new javax.swing.GroupLayout(robotFrontThresholdPanel);
+        robotFrontThresholdPanel.setLayout(robotFrontThresholdPanelLayout);
+        robotFrontThresholdPanelLayout.setHorizontalGroup(
+            robotFrontThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(robotFrontThresholdPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(thresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(minRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(maxRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(robotFrontThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(maxRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(minRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
-        thresholdPanelLayout.setVerticalGroup(
-            thresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(thresholdPanelLayout.createSequentialGroup()
+        robotFrontThresholdPanelLayout.setVerticalGroup(
+            robotFrontThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(robotFrontThresholdPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(minRGBpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(maxRGBpanel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
 
-        imageProcessPanel.add(thresholdPanel, "card2");
+        settingsPanel.addTab("Front", robotFrontThresholdPanel);
+
+        minRGBpanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
+
+        minRedSlider1.setBackground(new java.awt.Color(255, 0, 0));
+        minRedSlider1.setMaximum(255);
+        minRedSlider1.setMinorTickSpacing(1);
+
+        minGreenSlider1.setBackground(new java.awt.Color(0, 255, 0));
+        minGreenSlider1.setMaximum(255);
+        minGreenSlider1.setMinorTickSpacing(1);
+
+        minBlueSlider1.setBackground(new java.awt.Color(0, 0, 255));
+        minBlueSlider1.setMaximum(255);
+        minBlueSlider1.setMinorTickSpacing(1);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minRedSlider1, org.jdesktop.beansbinding.ELProperty.create("${value}"), minRVal1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minGreenSlider1, org.jdesktop.beansbinding.ELProperty.create("${value}"), minGVal1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minBlueSlider1, org.jdesktop.beansbinding.ELProperty.create("${value}"), minBVal1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout minRGBpanel1Layout = new javax.swing.GroupLayout(minRGBpanel1);
+        minRGBpanel1.setLayout(minRGBpanel1Layout);
+        minRGBpanel1Layout.setHorizontalGroup(
+            minRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minBlueSlider1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minGreenSlider1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRedSlider1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(minRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRVal1)
+                    .addComponent(minGVal1)
+                    .addComponent(minBVal1))
+                .addContainerGap(58, Short.MAX_VALUE))
+        );
+        minRGBpanel1Layout.setVerticalGroup(
+            minRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRedSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRVal1))
+                .addGroup(minRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minGreenSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minGVal1))
+                .addGroup(minRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minBVal1)
+                    .addComponent(minBlueSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        maxRGBpanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Max RGB"));
+
+        maxRedSlider1.setBackground(new java.awt.Color(255, 0, 0));
+        maxRedSlider1.setMaximum(255);
+        maxRedSlider1.setMinorTickSpacing(1);
+
+        maxBlueSlider1.setBackground(new java.awt.Color(0, 0, 255));
+        maxBlueSlider1.setMaximum(255);
+        maxBlueSlider1.setMinorTickSpacing(1);
+
+        maxGreenSlider1.setBackground(new java.awt.Color(0, 255, 0));
+        maxGreenSlider1.setMaximum(255);
+        maxGreenSlider1.setMinorTickSpacing(1);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxRedSlider1, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxRVal1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxGreenSlider1, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxGVal1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxBlueSlider1, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxBVal1, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout maxRGBpanel1Layout = new javax.swing.GroupLayout(maxRGBpanel1);
+        maxRGBpanel1.setLayout(maxRGBpanel1Layout);
+        maxRGBpanel1Layout.setHorizontalGroup(
+            maxRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxBlueSlider1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxGreenSlider1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxRedSlider1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(maxRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxRVal1)
+                    .addComponent(maxGVal1)
+                    .addComponent(maxBVal1))
+                .addContainerGap(58, Short.MAX_VALUE))
+        );
+        maxRGBpanel1Layout.setVerticalGroup(
+            maxRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxRedSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxRVal1))
+                .addGroup(maxRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxGreenSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxGVal1))
+                .addGroup(maxRGBpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxBVal1)
+                    .addComponent(maxBlueSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+        );
+
+        javax.swing.GroupLayout robotBackThresholdPanelLayout = new javax.swing.GroupLayout(robotBackThresholdPanel);
+        robotBackThresholdPanel.setLayout(robotBackThresholdPanelLayout);
+        robotBackThresholdPanelLayout.setHorizontalGroup(
+            robotBackThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(robotBackThresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(robotBackThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(minRGBpanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(maxRGBpanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        robotBackThresholdPanelLayout.setVerticalGroup(
+            robotBackThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(robotBackThresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minRGBpanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(maxRGBpanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(116, Short.MAX_VALUE))
+        );
+
+        settingsPanel.addTab("Back", robotBackThresholdPanel);
+
+        minRGBpanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
+
+        minRedSlider2.setBackground(new java.awt.Color(255, 0, 0));
+        minRedSlider2.setMaximum(255);
+        minRedSlider2.setMinorTickSpacing(1);
+
+        minGreenSlider2.setBackground(new java.awt.Color(0, 255, 0));
+        minGreenSlider2.setMaximum(255);
+        minGreenSlider2.setMinorTickSpacing(1);
+
+        minBlueSlider2.setBackground(new java.awt.Color(0, 0, 255));
+        minBlueSlider2.setMaximum(255);
+        minBlueSlider2.setMinorTickSpacing(1);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minRedSlider2, org.jdesktop.beansbinding.ELProperty.create("${value}"), minRVal2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minGreenSlider2, org.jdesktop.beansbinding.ELProperty.create("${value}"), minGVal2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minBlueSlider2, org.jdesktop.beansbinding.ELProperty.create("${value}"), minBVal2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout minRGBpanel2Layout = new javax.swing.GroupLayout(minRGBpanel2);
+        minRGBpanel2.setLayout(minRGBpanel2Layout);
+        minRGBpanel2Layout.setHorizontalGroup(
+            minRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minBlueSlider2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minGreenSlider2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRedSlider2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(minRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRVal2)
+                    .addComponent(minGVal2)
+                    .addComponent(minBVal2))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        minRGBpanel2Layout.setVerticalGroup(
+            minRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRedSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRVal2))
+                .addGroup(minRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minGreenSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minGVal2))
+                .addGroup(minRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minBVal2)
+                    .addComponent(minBlueSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        maxRGBpanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Max RGB"));
+
+        maxRedSlider2.setBackground(new java.awt.Color(255, 0, 0));
+        maxRedSlider2.setMaximum(255);
+        maxRedSlider2.setMinorTickSpacing(1);
+
+        maxBlueSlider2.setBackground(new java.awt.Color(0, 0, 255));
+        maxBlueSlider2.setMaximum(255);
+        maxBlueSlider2.setMinorTickSpacing(1);
+
+        maxGreenSlider2.setBackground(new java.awt.Color(0, 255, 0));
+        maxGreenSlider2.setMaximum(255);
+        maxGreenSlider2.setMinorTickSpacing(1);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxRedSlider2, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxRVal2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxGreenSlider2, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxGVal2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxBlueSlider2, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxBVal2, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout maxRGBpanel2Layout = new javax.swing.GroupLayout(maxRGBpanel2);
+        maxRGBpanel2.setLayout(maxRGBpanel2Layout);
+        maxRGBpanel2Layout.setHorizontalGroup(
+            maxRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxBlueSlider2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxGreenSlider2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxRedSlider2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(maxRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxRVal2)
+                    .addComponent(maxGVal2)
+                    .addComponent(maxBVal2))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        maxRGBpanel2Layout.setVerticalGroup(
+            maxRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxRedSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxRVal2))
+                .addGroup(maxRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxGreenSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxGVal2))
+                .addGroup(maxRGBpanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxBVal2)
+                    .addComponent(maxBlueSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+        );
+
+        javax.swing.GroupLayout cakesThresholdPanelLayout = new javax.swing.GroupLayout(cakesThresholdPanel);
+        cakesThresholdPanel.setLayout(cakesThresholdPanelLayout);
+        cakesThresholdPanelLayout.setHorizontalGroup(
+            cakesThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cakesThresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(cakesThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(minRGBpanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(maxRGBpanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        cakesThresholdPanelLayout.setVerticalGroup(
+            cakesThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cakesThresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minRGBpanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(maxRGBpanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(116, Short.MAX_VALUE))
+        );
+
+        settingsPanel.addTab("Cakes", cakesThresholdPanel);
+
+        minRGBpanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
+
+        minRedSlider3.setBackground(new java.awt.Color(255, 0, 0));
+        minRedSlider3.setMaximum(255);
+        minRedSlider3.setMinorTickSpacing(1);
+
+        minGreenSlider3.setBackground(new java.awt.Color(0, 255, 0));
+        minGreenSlider3.setMaximum(255);
+        minGreenSlider3.setMinorTickSpacing(1);
+
+        minBlueSlider3.setBackground(new java.awt.Color(0, 0, 255));
+        minBlueSlider3.setMaximum(255);
+        minBlueSlider3.setMinorTickSpacing(1);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minRedSlider3, org.jdesktop.beansbinding.ELProperty.create("${value}"), minRVal3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minGreenSlider3, org.jdesktop.beansbinding.ELProperty.create("${value}"), minGVal3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, minBlueSlider3, org.jdesktop.beansbinding.ELProperty.create("${value}"), minBVal3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout minRGBpanel3Layout = new javax.swing.GroupLayout(minRGBpanel3);
+        minRGBpanel3.setLayout(minRGBpanel3Layout);
+        minRGBpanel3Layout.setHorizontalGroup(
+            minRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minBlueSlider3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minGreenSlider3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRedSlider3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(minRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRVal3)
+                    .addComponent(minGVal3)
+                    .addComponent(minBVal3))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        minRGBpanel3Layout.setVerticalGroup(
+            minRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(minRGBpanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(minRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minRedSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minRVal3))
+                .addGroup(minRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minGreenSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minGVal3))
+                .addGroup(minRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(minBVal3)
+                    .addComponent(minBlueSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        maxRGBpanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Max RGB"));
+
+        maxRedSlider3.setBackground(new java.awt.Color(255, 0, 0));
+        maxRedSlider3.setMaximum(255);
+        maxRedSlider3.setMinorTickSpacing(1);
+
+        maxBlueSlider3.setBackground(new java.awt.Color(0, 0, 255));
+        maxBlueSlider3.setMaximum(255);
+        maxBlueSlider3.setMinorTickSpacing(1);
+
+        maxGreenSlider3.setBackground(new java.awt.Color(0, 255, 0));
+        maxGreenSlider3.setMaximum(255);
+        maxGreenSlider3.setMinorTickSpacing(1);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxRedSlider3, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxRVal3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxGreenSlider3, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxGVal3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, maxBlueSlider3, org.jdesktop.beansbinding.ELProperty.create("${value}"), maxBVal3, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        javax.swing.GroupLayout maxRGBpanel3Layout = new javax.swing.GroupLayout(maxRGBpanel3);
+        maxRGBpanel3.setLayout(maxRGBpanel3Layout);
+        maxRGBpanel3Layout.setHorizontalGroup(
+            maxRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxBlueSlider3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxGreenSlider3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxRedSlider3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(maxRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxRVal3)
+                    .addComponent(maxGVal3)
+                    .addComponent(maxBVal3))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        maxRGBpanel3Layout.setVerticalGroup(
+            maxRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(maxRGBpanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(maxRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxRedSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxRVal3))
+                .addGroup(maxRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxGreenSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maxGVal3))
+                .addGroup(maxRGBpanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(maxBVal3)
+                    .addComponent(maxBlueSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+        );
+
+        javax.swing.GroupLayout obstacleThresholdPanelLayout = new javax.swing.GroupLayout(obstacleThresholdPanel);
+        obstacleThresholdPanel.setLayout(obstacleThresholdPanelLayout);
+        obstacleThresholdPanelLayout.setHorizontalGroup(
+            obstacleThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(obstacleThresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(obstacleThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(minRGBpanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(maxRGBpanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        obstacleThresholdPanelLayout.setVerticalGroup(
+            obstacleThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(obstacleThresholdPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(minRGBpanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(maxRGBpanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(116, Short.MAX_VALUE))
+        );
+
+        settingsPanel.addTab("Obstacles", obstacleThresholdPanel);
+
+        bufferzonePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Bufferzone"));
+
+        bufzoneSlider.setMaximum(50);
+        bufzoneSlider.setValue(25);
+
+        javax.swing.GroupLayout bufferzonePanelLayout = new javax.swing.GroupLayout(bufferzonePanel);
+        bufferzonePanel.setLayout(bufferzonePanelLayout);
+        bufferzonePanelLayout.setHorizontalGroup(
+            bufferzonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bufferzonePanelLayout.createSequentialGroup()
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addComponent(bufzoneSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
+        );
+        bufferzonePanelLayout.setVerticalGroup(
+            bufferzonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bufferzonePanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(bufzoneSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout miscPanelLayout = new javax.swing.GroupLayout(miscPanel);
+        miscPanel.setLayout(miscPanelLayout);
+        miscPanelLayout.setHorizontalGroup(
+            miscPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(miscPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bufferzonePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        miscPanelLayout.setVerticalGroup(
+            miscPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(miscPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bufferzonePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(286, Short.MAX_VALUE))
+        );
+
+        settingsPanel.addTab("Misc", miscPanel);
+
+        javax.swing.GroupLayout imagePanelLayout = new javax.swing.GroupLayout(imagePanel);
+        imagePanel.setLayout(imagePanelLayout);
+        imagePanelLayout.setHorizontalGroup(
+            imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 306, Short.MAX_VALUE)
+        );
+        imagePanelLayout.setVerticalGroup(
+            imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 444, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout imageProcessPanelLayout = new javax.swing.GroupLayout(imageProcessPanel);
+        imageProcessPanel.setLayout(imageProcessPanelLayout);
+        imageProcessPanelLayout.setHorizontalGroup(
+            imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageProcessPanelLayout.createSequentialGroup()
+                .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        imageProcessPanelLayout.setVerticalGroup(
+            imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(imageProcessPanelLayout.createSequentialGroup()
+                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(imagePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(settingsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         imageToolbar.setRollover(true);
 
-        setimageSrcBtn.setText("Image source");
+        setimageSrcBtn.setText("Image source (test image)");
         setimageSrcBtn.setFocusable(false);
         setimageSrcBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         setimageSrcBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -228,30 +738,22 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         });
         imageToolbar.add(setimageSrcBtn);
 
-        threadholdsBtn.setText("Threadholds");
-        threadholdsBtn.setFocusable(false);
-        threadholdsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        threadholdsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        threadholdsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                threadholdsBtnActionPerformed(evt);
-            }
-        });
-        imageToolbar.add(threadholdsBtn);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-            .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(imageToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -297,38 +799,77 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_imageProcessPanelComponentAdded
 
-    private void threadholdsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_threadholdsBtnActionPerformed
-        LayoutManager l = imageProcessPanel.getLayout();
-        if (l instanceof CardLayout) {
-			CardLayout card = (CardLayout) l;
-			card.next(imageProcessPanel);
-		}
-        
-    }//GEN-LAST:event_threadholdsBtnActionPerformed
-
     private ImagePanel ip;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel bufferzonePanel;
+    private javax.swing.JSlider bufzoneSlider;
+    private javax.swing.JPanel cakesThresholdPanel;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JPanel imageProcessPanel;
     private javax.swing.JToolBar imageToolbar;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel maxBVal;
+    private javax.swing.JLabel maxBVal1;
+    private javax.swing.JLabel maxBVal2;
+    private javax.swing.JLabel maxBVal3;
     private javax.swing.JSlider maxBlueSlider;
+    private javax.swing.JSlider maxBlueSlider1;
+    private javax.swing.JSlider maxBlueSlider2;
+    private javax.swing.JSlider maxBlueSlider3;
+    private javax.swing.JLabel maxGVal;
+    private javax.swing.JLabel maxGVal1;
+    private javax.swing.JLabel maxGVal2;
+    private javax.swing.JLabel maxGVal3;
     private javax.swing.JSlider maxGreenSlider;
+    private javax.swing.JSlider maxGreenSlider1;
+    private javax.swing.JSlider maxGreenSlider2;
+    private javax.swing.JSlider maxGreenSlider3;
     private javax.swing.JPanel maxRGBpanel;
+    private javax.swing.JPanel maxRGBpanel1;
+    private javax.swing.JPanel maxRGBpanel2;
+    private javax.swing.JPanel maxRGBpanel3;
+    private javax.swing.JLabel maxRVal;
+    private javax.swing.JLabel maxRVal1;
+    private javax.swing.JLabel maxRVal2;
+    private javax.swing.JLabel maxRVal3;
     private javax.swing.JSlider maxRedSlider;
+    private javax.swing.JSlider maxRedSlider1;
+    private javax.swing.JSlider maxRedSlider2;
+    private javax.swing.JSlider maxRedSlider3;
+    private javax.swing.JLabel minBVal;
+    private javax.swing.JLabel minBVal1;
+    private javax.swing.JLabel minBVal2;
+    private javax.swing.JLabel minBVal3;
     private javax.swing.JSlider minBlueSlider;
+    private javax.swing.JSlider minBlueSlider1;
+    private javax.swing.JSlider minBlueSlider2;
+    private javax.swing.JSlider minBlueSlider3;
+    private javax.swing.JLabel minGVal;
+    private javax.swing.JLabel minGVal1;
+    private javax.swing.JLabel minGVal2;
+    private javax.swing.JLabel minGVal3;
     private javax.swing.JSlider minGreenSlider;
+    private javax.swing.JSlider minGreenSlider1;
+    private javax.swing.JSlider minGreenSlider2;
+    private javax.swing.JSlider minGreenSlider3;
     private javax.swing.JPanel minRGBpanel;
+    private javax.swing.JPanel minRGBpanel1;
+    private javax.swing.JPanel minRGBpanel2;
+    private javax.swing.JPanel minRGBpanel3;
     private javax.swing.JLabel minRVal;
+    private javax.swing.JLabel minRVal1;
+    private javax.swing.JLabel minRVal2;
+    private javax.swing.JLabel minRVal3;
     private javax.swing.JSlider minRedSlider;
+    private javax.swing.JSlider minRedSlider1;
+    private javax.swing.JSlider minRedSlider2;
+    private javax.swing.JSlider minRedSlider3;
+    private javax.swing.JPanel miscPanel;
+    private javax.swing.JPanel obstacleThresholdPanel;
+    private javax.swing.JPanel robotBackThresholdPanel;
+    private javax.swing.JPanel robotFrontThresholdPanel;
     private javax.swing.JButton setimageSrcBtn;
-    private javax.swing.JToggleButton threadholdsBtn;
-    private javax.swing.JPanel thresholdPanel;
+    private javax.swing.JTabbedPane settingsPanel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
