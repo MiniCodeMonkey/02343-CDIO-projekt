@@ -7,19 +7,31 @@
 #include "threadqueue.h"
 
 #define MAX_NUMBER_OF_PORTS     (256)
+#define MAX_NUMBER_OF_SEMAPHORES (MAX_NUMBER_OF_THREADS)
 
 /*! Describes a port. */
 struct port
 {
  int           owner;  /*!< This is an index into process_table. The
                            index corresponds to the process that owns
-                           this port. */
+                           this thread. */
  unsigned long id;     /*!< The identity number of the port. */
 
  struct thread_queue sender_queue; /*!< The queue of threads which are blocked on a send operation */
  
  int receiver; /*!< The identity of a thread which is blocked on a receive opereation. Set to -1 if no thread is receiving. */
 };
+
+
+// semaphore
+struct semaphore
+{
+	int val;	// semaphore value
+	int owner;	// index into process_table
+	struct thread_queue blocked_threads;	// queue of blocked threads
+};
+
+extern struct semaphore semaphore_table[MAX_NUMBER_OF_SEMAPHORES];
 
 extern struct port
 port_table[MAX_NUMBER_OF_PORTS];
@@ -53,6 +65,7 @@ initialize_thread_synchronization(void);
 
 /* Put any declarations you need to add to implement tasks B5, A5, B6 or A6 
    here. */
+
 
 
 #endif

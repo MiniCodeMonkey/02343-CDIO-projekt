@@ -38,10 +38,9 @@ case SYSCALL_CREATEPROCESS:
 	struct executable caller;
 	struct prepare_process_return_value return_val;
 
-	new_exe_index = (int)SYSCALL_ARGUMENTS.rdi;	// parameter
+	new_exe_index = (int)SYSCALL_ARGUMENTS.rdi; // parameter
 	kprinthex((long)new_exe_index);
 
-	// skal denne være en pointer??		Fandt ud af det: Nej!
 	caller = executable_table[new_exe_index];
 
 	int i;
@@ -55,7 +54,7 @@ case SYSCALL_CREATEPROCESS:
 	// Set the parent of the new process to be the calling process.
 	if (new_process_index != -1) {
 		process_table[new_process_index].parent = thread_table[cpu_private_data.thread_index].data.owner;
-		process_table[new_process_index].threads++;	// increments number of running thread
+		process_table[new_process_index].threads++; // increments number of running thread
 	}
 	else {
 		kprints("NO free entry in process-table found!!. Aborting!\n");
@@ -74,8 +73,12 @@ case SYSCALL_CREATEPROCESS:
 	}
 	kprints("program loaded into memory!\n");
 
-	// Allocate a new thread.	TODO  ingen ledige tråde??
+	// Allocate a new thread.
 	int thread_index = allocate_thread();
+	if (thread_index == -1) {
+		SYSCALL_ARGUMENTS.rax=ERROR;
+		break;
+	}
 	kprints("new Thread allocated!\n");
 
 	//Set the owner, rflags and rip of the allocated thread
@@ -86,24 +89,11 @@ case SYSCALL_CREATEPROCESS:
 	// indsætter den nye tråd i ready_queue, klar til at blive kørt
 	thread_queue_enqueue(&ready_queue,thread_index);
 
-
-	//kode til at tildele port
-	//------------------------
-	if(-1 == allocate_port(0,new_process_index))
-		kprints("Port allocation failed!\n");
-	else
-		kprints("Port allocation succeded!\n");
-	//kprints("ID:")
-	//kprinthex((long)new_process_index);
-	//kprints("\n");
-	//------------------------
-
 	/*	//kode som er overflødig, vi sætter sceduleren til at gøre dette istedet.
 	 KODE FRA B2
-		Switch to the new thread and let it execute
-		current_thread = thread_index;
-		kprints("current_thread SET!\n\n");*/
-
+	 Switch to the new thread and let it execute
+	 current_thread = thread_index;
+	 kprints("current_thread SET!\n\n");*/
 
 	kprints("SYSCALL_CREATEPROCESS finish!\n");
 	kprints("\n");
@@ -125,37 +115,17 @@ case SYSCALL_TERMINATE:
 	int new_running_process;
 
 	// hvis processen ikke har flere tråde
-	if (0 == process_table[current_process_index].threads){
-		new_running_process = process_table[current_process_index].parent;	// sætter new owner til den terminerende process' parent
+	if (0 >= process_table[current_process_index].threads) {
+		new_running_process = process_table[current_process_index].parent; // sætter den kørende proces til den terminerende process' parent
 		cleanup_process(current_process_index);
 	}
-
-	/*
-	//kode som er overflødig, vi sætter sceduleren til at gøre dette istedet.
-	int i;
-	for (i = 0; i < MAX_NUMBER_OF_THREADS; ++i) {
-			if (thread_table[i].data.owner == new_running_process){
-				cpu_private_data.thread_index = i;
-				break;	// hopper ud når en tråd med ejer: new_running_process, er fundet (finder første og bedste TODO!!)
-			}
-	}
-	 */
 
 	/* Force a re-schedule. */
 	schedule = 1;
 
-	SYSCALL_ARGUMENTS.rax=ALL_OK;
-	kprints("SYSCALL_TERMINATE finish!\n");
-	kprints("\n");
+	kprints("[SYSCALL end] SYSCALL_TERMINATE\n");
 
-	//Kode til at fjerne porte når en process termineres
-	//--------------------------------------------------
-	int portIndex;
-			while(-1 != find_port(0,thread_table[cpu_private_data.thread_index].data.owner)){
-				int portIndex = find_port(0,thread_table[cpu_private_data.thread_index].data.owner);
-				port_table[portIndex].owner = -1;
-			}
-	//--------------------------------------------------
+	SYSCALL_ARGUMENTS.rax=ALL_OK;
 
 	break;
 }
@@ -167,5 +137,87 @@ case SYSCALL_VERSION:
 	break;
 }
 
+case SYSCALL_CREATETHREAD:
+{
+	// næsten samme kode som i CREATE_PROCESS:
 
+	kprints("[SYSCALL] SYSCALL_CREATETHREAD!\n");
+
+	int owner = thread_table[cpu_private_data.thread_index].data.owner;
+
+	// Allocate a new thread.
+	int thread_index = allocate_thread();
+
+	// stopper hvis der ikke kan allokeres en tråd
+	if (thread_index == -1) {
+		SYSCALL_ARGUMENTS.rax=ERROR;
+		break;
+	}
+	kprints("new thread allocated\n");
+
+	// increments number of running thread
+	process_table[owner].threads++;
+
+	//Set the owner, rflags and rip of the allocated thread  ( & rsp )
+	thread_table[thread_index].data.owner = owner; // caller's owner = new thread's owner
+	thread_table[thread_index].data.registers.integer_registers.rflags = 0x200;
+	thread_table[thread_index].data.registers.integer_registers.rip = SYSCALL_ARGUMENTS.rdi;
+
+	thread_table[thread_index].data.registers.integer_registers.rsp = SYSCALL_ARGUMENTS.rsi;
+
+	// indsætter den nye tråd i ready_queue, klar til at blive kørt
+	thread_queue_enqueue(&ready_queue,thread_index);
+
+	kprints("[SYSCALL end] SYSCALL_CREATETHREAD!\n");
+
+	SYSCALL_ARGUMENTS.rax=ALL_OK;
+	break;
+}
+
+case SYSCALL_CREATESEMAPHORE:
+{
+	/* allocate new semaphore */
+	int sema_index = allocate_semaphore();
+
+	/* returns if no free semaphore could be found */
+	if (sema_index == -1) {
+		SYSCALL_ARGUMENTS.rax=ERROR;
+		break;
+	}
+
+	/* sets the semaphore-owner to be the calling process */
+	semaphore_table[sema_index].owner = thread_table[cpu_private_data.thread_index].data.owner;
+
+	/* sets the value of this semaphore */
+	semaphore_table[sema_index].val = SYSCALL_ARGUMENTS.rdi;
+
+	/* puts the calling thread into the blocked_queue in the semaphore (blocks thread)*/
+	//	  thread_queue_enqueue(&semaphore_table[sema_index].blocked_threads,cpu_private_data.thread_index);
+	//
+	//	  /* Force a re-schedule. */
+	//	  schedule = 1;
+
+	SYSCALL_ARGUMENTS.rax=sema_index;
+	break;
+}
+
+case SYSCALL_SEMAPHOREDOWN:
+{
+	int sema_index = SYSCALL_ARGUMENTS.rdi;
+
+	schedule = semaphore_down(semaphore_table[sema_index]);
+
+	SYSCALL_ARGUMENTS.rax=ALL_OK;
+	break;
+}
+
+case SYSCALL_SEMAPHOREUP:
+{
+	int sema_index = SYSCALL_ARGUMENTS.rdi;
+
+	semaphore_up(semaphore_table[sema_index]);
+
+	SYSCALL_ARGUMENTS.rax=ALL_OK;
+	break;
+}
 

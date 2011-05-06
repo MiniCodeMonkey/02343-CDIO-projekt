@@ -9,6 +9,10 @@
 struct port
 port_table[MAX_NUMBER_OF_PORTS];
 
+// table that holds all semaphores
+struct semaphore
+semaphore_table[MAX_NUMBER_OF_SEMAPHORES];
+
 void
 initialize_ports(void)
 {
@@ -87,6 +91,58 @@ void
 initialize_thread_synchronization(void)
 {
  /* In task 6, add code here. */
+
+	/* init. all semaphores*/
+	int i;
+	for (i = 0; i < MAX_NUMBER_OF_SEMAPHORES; i++) {
+		semaphore_table[i].val = 0;
+		semaphore_table[i].owner = -1;
+		thread_queue_init(&semaphore_table[i].blocked_threads);
+	}
+
+}
+/* finds a free semaphore into semaphore_table and returns the handle */
+int allocate_semaphore(void){
+
+	int i;
+	for (i = 0; i < MAX_NUMBER_OF_SEMAPHORES; i++) {
+		if (semaphore_table[i].owner == -1)
+			return i;
+	}
+	return -1;
 }
 
+void semaphore_up(struct semaphore s)
+{
+	if (!thread_queue_is_empty(&s.blocked_threads)){
+		/* release one of the threads */
+		//kprints("semaphore queue is NOT empty. Dequeuing..\n");
+		int thread = thread_queue_dequeue(&s.blocked_threads);
+		/* sets the thread into ready-queue (to run) */
+		thread_queue_enqueue(&ready_queue,thread);
+
+	}
+	else{
+
+		/* increment the count value of s */
+		s.val++;
+	}
+}
+
+int semaphore_down(struct semaphore s)
+{
+	int schedule;
+
+	if (s.val > 0){
+		/* decrement the count value of s */
+		s.val--;
+		schedule = 0;
+	}
+	else{
+		/* block the current thread */
+		/* add it to the set of blocked threads in s */
+		thread_queue_enqueue(&s.blocked_threads,cpu_private_data.thread_index);
+	}
+	return schedule;
+}
 /* Put any code you need to add to implement tasks B5, A5, B6 or A6 here. */

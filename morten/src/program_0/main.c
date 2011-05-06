@@ -1,93 +1,116 @@
 /*! \file
  *      \brief The first user program - 
- *             in a neverending loop, waits for messages from the other 
- *             processes and responds to them.
+ *             the test case follows the structure of the producer consumer 
+ *             example in Tanenbaum&Woodhull's book.
  *
  */
 
 #include <scwrapper.h>
 
-void
-main(int argc, char* argv[])
-{
- long recv_port;
- 
- /* Launch two instances of program_1 */
- if (ALL_OK != createprocess(1))
- {
-  prints("process 0: createprocess(1) failed\n");
-  debugger();
- }
+long buffer[16];
+int head = 0;
+int tail = 0;
 
- if (ALL_OK != createprocess(1))
- {
-  prints("process 0: Second instance of createprocess(1) failed\n");
-  debugger();
- }
+long empty_semaphore_handle;
+long mutex_semaphore_handle;
+long full_semaphore_handle;
 
- /* Get the port index for our own port 0 */
- recv_port=findport(0,0);
- if (recv_port < 0)
- {
-  prints("process 0: findport for process 0 failed\n");
-  debugger();
- }
+void thread(void) {
+	/* This is the consumer. */
 
+	while (1) {
+		prints("Starting to consume..\n");
+		long value;
 
- /* Go into an infinite loop, waiting for messages and sending replies. */
+		//prints(" .. consume  (semaphoredown(full_semaphore_handle))\n");
+		if (ALL_OK != semaphoredown(full_semaphore_handle)) {
+			prints("semaphoredown failed!\n");
+			break;
+		}
 
- prints("process 0: main loop\n");
- while(1)
- {
-  struct message msg;
-  unsigned long  sender, type;
-  long send_port;
+		//prints(" .. consume  (semaphoredown(mutex_semaphore_handle)))\n");
+		if (ALL_OK != semaphoredown(mutex_semaphore_handle)) {
+			prints("semaphoredown failed!\n");
+			break;
+		}
+		//prints(" .. consume\n");
+		value = buffer[tail];
+		tail = (tail + 1) & 15;
 
-  if ((ALL_OK != receive(recv_port, &msg, &sender, &type)) ||
-      (SYSCALL_MSG_SHORT != type))
-  {
-   prints("process 0: receive failed\n");
-   debugger();
-  }
-  prints("process 0: received ping\n");
+		if (ALL_OK != semaphoreup(mutex_semaphore_handle)) {
+			prints("semaphoreup failed!\n");
+			break;
+		}
 
-  /* Test message. */
-  if ((0 != msg.quad_0) ||
-      (1 != msg.quad_1) ||
-      (2 != msg.quad_2) ||
-      (3 != msg.quad_3) ||
-      (4 != msg.quad_4) ||
-      (5 != msg.quad_5) ||
-      (6 != msg.quad_6) ||
-      (7 != msg.quad_7))
-  {
-   prints("process 0: message test failed\n");
-   printhex(msg.quad_0);
-   debugger();
-  }
+		if (ALL_OK != semaphoreup(empty_semaphore_handle)) {
+			prints("semaphoreup failed!\n");
+			break;
+		}
 
-  send_port=findport(0, sender);
-  if (send_port < 0)
-  {
-   prints("process 0: findport for process failed\n");
-   debugger();
-  }
+		printhex(value);
+		prints("\n");
+		prints("Consume ending\n");
+	}
+	terminate();
+}
 
+void main(int argc, char* argv[]) {
+	register long counter = 0;
+	register long thread_stack;
 
-  msg.quad_0=7;
-  msg.quad_1=6;
-  msg.quad_2=5;
-  msg.quad_3=4;
-  msg.quad_4=3;
-  msg.quad_5=2;
-  msg.quad_6=1;
-  msg.quad_7=0;
+	empty_semaphore_handle = createsemaphore(16);
+	if (empty_semaphore_handle < 0) {
+		prints("createsemaphore failed!\n");
+		return;
+	}
 
-  if (ALL_OK != send(send_port, &msg))
-  {
-   prints("process 0: send failed\n");
-   debugger();
-  }
-  prints("process 0: sent pong\n");
- }
+	full_semaphore_handle = createsemaphore(0);
+	if (full_semaphore_handle < 0) {
+		prints("createsemaphore failed!\n");
+		return;
+	}
+
+	mutex_semaphore_handle = createsemaphore(1);
+	if (mutex_semaphore_handle < 0) {
+		prints("createsemaphore failed!\n");
+		return;
+	}
+
+	thread_stack = alloc(4096, 0);
+
+	if (0 >= thread_stack) {
+		prints("Could not allocate the thread's stack!\n");
+		return;
+	}
+
+	if (ALL_OK != createthread(thread, thread_stack + 4096)) {
+		prints("createthread failed!\n");
+		return;
+	}
+
+	/* This is the producer. */
+	while (1) {
+		if (ALL_OK != semaphoredown(empty_semaphore_handle)) {
+			prints("semaphoredown failed!\n");
+			break;
+		}
+
+		if (ALL_OK != semaphoredown(mutex_semaphore_handle)) {
+			prints("semaphoredown failed!\n");
+			break;
+		}
+
+		buffer[head] = counter++;
+		head = (head + 1) & 15;
+
+		if (ALL_OK != semaphoreup(mutex_semaphore_handle)) {
+			prints("semaphoreup failed!\n");
+			break;
+		}
+
+		if (ALL_OK != semaphoreup(full_semaphore_handle)) {
+			prints("semaphoreup failed!\n");
+			break;
+		}
+	}
 }

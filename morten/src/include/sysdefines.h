@@ -118,6 +118,83 @@
 /*! Returns the process identity of the calling thread in rax. */
 #define SYSCALL_GETPID          (15)
 
+/*! Creates a new thread in the process of the calling thread. The value of 
+    rip register of the new thread is passed in the rdi registe. The value of 
+    the rsp register of the new thread is passed in rsi. rflags of the new 
+    thread is set to 0x200. The other registers are undefinied.
+
+    The system call returns in rax ALL_OK if successful or an error code if 
+    unsuccessful.
+   */
+#define SYSCALL_CREATETHREAD    (16)
+
+/*! Creates a new semaphore and returns if successful the handle of the
+    semaphore in the rax register. The initial value of the semaphore count
+    value is passed in the rdi register.
+   
+    If unsuccessful the system call returns an error code in rax. */
+#define SYSCALL_CREATESEMAPHORE (17)
+
+/*! Performs a semaphore down operation. The handle of the semaphore is passed
+    in the rdi register.
+
+    The system call returns in rax ALL_OK if successful or an error code if 
+    unsuccessful.
+   */
+#define SYSCALL_SEMAPHOREDOWN   (18)
+
+/*! Performs an semaphore up operation. The handle of the semaphore is passed
+    in the rdi register.
+
+    The system call returns in rax ALL_OK if successful or an error code if 
+    unsuccessful.
+   */
+#define SYSCALL_SEMAPHOREUP     (19)
+
+/*! Creates a new mutex and returns if successful the handle of the mutex in 
+    the rax register. If unsuccessful the system call returns  an error code 
+    in rax. */
+#define SYSCALL_CREATEMUTEX     (20)
+
+/*! Creates a new condition variable and returns if successful the handle of 
+    the condition variable in the rax register. If unsuccessful the system 
+    call returns  an error code in rax. */
+#define SYSCALL_CREATECONDITIONVARIABLE (21)
+
+/*! Performs a mutex lock operation. The handle of the mutex is passed
+    in the rdi register.
+
+    The system call returns in rax ALL_OK if successful or an error code if 
+    unsuccessful.
+   */
+#define SYSCALL_MUTEXLOCK       (22)
+
+/*! Performs a mutex unlock operation. The handle of the mutex is passed
+    in the rdi register.
+
+    The system call returns in rax ALL_OK if successful or an error code if 
+    unsuccessful.
+   */
+#define SYSCALL_MUTEXUNLOCK     (23)
+
+/*! Performs a wait operation on a condition variable. The handle of the 
+    condition variable is passed in the rdi register. The handle of the 
+    associated mutex is passed in the rsi register.
+
+    The system call returns in rax ALL_OK if successful or an error code if 
+    unsuccessful.
+   */
+#define SYSCALL_CONDITIONVARIABLEWAIT (24)
+
+/*! Performs a signal operation on a condition variable. The handle of the 
+    condition variable is passed in the rdi register.
+
+    The system call returns in rax ALL_OK if successful or an error code if 
+    unsuccessful.
+   */
+#define SYSCALL_CONDITIONVARIABLESIGNAL (25)
+
+
 /* Type declarations. */
 
 /*! Describes a message. */
