@@ -3,8 +3,6 @@
 #  Take help from a teaching assistant!
 
 .global syscall_dummy_target
-.global dummy_interrupt
-.global timer_interrupt
 .global IDT
 .global TSS
 .global stack
@@ -205,50 +203,13 @@ interrupt_entries:
  .set interrupt_number, 0
  .rept 256
  pushq  $interrupt_number
- jmp    dummy_interrupt
+ jmp    interrupt_handler
  .align 16
  .set interrupt_number, interrupt_number+1
  .endr
 
- # Interrupt handler that catches all masked interrupt and exceptions.
- # We should not get here.
-
-dummy_interrupt:
- # Push registers onto the stack so that we do not overwrite them
- push   %rax
- push   %rdx
-
- # Check for spurious interrupt
- mov    16(%rsp),%rax
- cmp    $0x27,%rax
- jnz    debugger
-
- # Spurious interrupt occurred. This could happen if we spend too long time
- # with interrupts disabled.
-
- # Just acknowledge the interrupt and return
-
- mov    $0x20,%rdx
- mov    %rdx,%rax
- out    %al,(%dx)
-
- pop    %rdx
- pop    %rax
- add    $8,%rsp
- iretq
-
- # Go into the debugger
-debugger:
- mov    $0x8a00,%rdx
- mov    %rdx,%rax
- outw   %ax,%dx
- mov    $0x8ae0,%rax
- outw   %ax,%dx
- jmp    debugger
-
-
- # Interrupt handler for the timer interrupt
-timer_interrupt:
+ # Handler for all interrupts and exceptions
+interrupt_handler:
  swapgs
 
  # Push a scratch register onto the stack so that we do not overwrite it
@@ -269,9 +230,25 @@ timer_interrupt:
  jns    not_in_kernel
  # The idle thread was interrupted. Just remove a stack frame and call the
  # C code.
- add    $48,%rsp
- jmp    go_to_c
+	
+ # Check if we got an exception or interrupt
+ mov    8(%rsp),%rdi
+ add    $48+8,%rsp
+ cmp    $32,%rdi
+ jge    go_to_c
 
+ # Go into the debugger if we get an exception.
+interrupt_handle_exception:
+ push   %rax
+ push   %rdx
+debugger:
+ mov    $0x8a00,%rdx
+ mov    %rdx,%rax
+ outw   %ax,%dx
+ mov    $0x8ae0,%rax
+ outw   %ax,%dx
+ jmp    debugger
+ 	
 not_in_kernel:
  # Interrupt occured outside the idle thread
  # Save all registers.
@@ -305,6 +282,9 @@ not_in_kernel:
  mov    %r14,14*8(%rbp)
  mov    %r15,15*8(%rbp)
 
+ # Pop interrupt number
+ popq   %rdi
+	
  popq   17*8(%rbp)         # Pop the rip
  pop    %rax
  popq   16*8(%rbp)         # Pop the rflags
@@ -318,7 +298,7 @@ not_in_kernel:
 
 go_to_c:
  # Call the timer interrupt handler
- call   timer_interrupt_handler
+ call   interrupt_dispatcher
  # Return back to user mode through the system call code
  jmp    return_to_user_mode
 

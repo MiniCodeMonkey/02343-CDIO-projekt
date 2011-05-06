@@ -79,7 +79,7 @@ case SYSCALL_CREATEPROCESS:
 		SYSCALL_ARGUMENTS.rax=ERROR;
 		break;
 	}
-	kprints("new Thread allocated!\n");
+	//kprints("new Thread allocated!\n");
 
 	//Set the owner, rflags and rip of the allocated thread
 	thread_table[thread_index].data.owner = new_process_index;
@@ -89,14 +89,9 @@ case SYSCALL_CREATEPROCESS:
 	// indsætter den nye tråd i ready_queue, klar til at blive kørt
 	thread_queue_enqueue(&ready_queue,thread_index);
 
-	/*	//kode som er overflødig, vi sætter sceduleren til at gøre dette istedet.
-	 KODE FRA B2
-	 Switch to the new thread and let it execute
-	 current_thread = thread_index;
-	 kprints("current_thread SET!\n\n");*/
 
-	kprints("SYSCALL_CREATEPROCESS finish!\n");
-	kprints("\n");
+	//kprints("SYSCALL_CREATEPROCESS finish!\n");
+	//kprints("\n");
 
 	SYSCALL_ARGUMENTS.rax=ALL_OK;
 

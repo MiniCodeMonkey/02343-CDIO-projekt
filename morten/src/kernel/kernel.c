@@ -44,57 +44,26 @@ timer_queue_head=-1;
 long
 system_time=0;
 
+/*! Size of the keyboard scan code buffer. */
+#define KEYBOARD_BUFFER_SIZE 16
+
+/*! Buffer which holds the keyboard scan codes coming from the keyboard
+    interrupt handler. */
+static unsigned char
+keyboard_scancode_buffer[KEYBOARD_BUFFER_SIZE];
+
+/*! Low water mark for the scan code buffer. */
+static int
+keyboard_scancode_low_marker = 0;
+
+/*! High water mark for the scan code buffer. */
+static int
+keyboard_scancode_high_marker = 0;
+
+/*! List of threads blocked waiting for scan codes. */
+struct thread_queue keyboard_blocked_threads;
+
 /* Function definitions */
-
-/* The outb and outw functions are used when accessing hardware devices. */
-
-/*! Wrapper for a byte out instruction. */
-inline static void
-outb(const short port_number, const char output_value)
-{
- __asm volatile("outb %%al,%%dx" : : "d" (port_number), "a" (output_value));
-}
-
-/*! Wrapper for a word out instruction. */
-inline static void
-outw(const short port_number, const short output_value)
-{
- __asm volatile("outw %%ax,%%dx" : : "d" (port_number), "a" (output_value));
-}
-
-void
-kprints(const char* string)
-{
- /* Loop until we have found the null character. */
- while(1)
- {
-  register const char curr = *string++;
-
-  if (curr)
-  {
-   outb(0xe9, curr);
-  }
-  else
-  {
-   return;
-  }
- }
-}
-
-void
-kprinthex(const register long value)
-{
- const static char hex_helper[16]="0123456789abcdef";
- register int      i;
-
- /* Print each character of the hexadecimal number. This is a very inefficient
-    way of printing hexadecimal numbers. It is, however, very compact in terms
-    of the number of source code lines. */
- for(i=15; i>=0; i--)
- {
-  outb(0xe9, hex_helper[(value>>(i*4))&15]);
- }
-}
 
 /*! Helper struct that is used to return values from prepare_process. */
 struct prepare_process_return_value
@@ -285,6 +254,8 @@ initialize(void)
 {
  register int i;
 
+ clear_screen();
+
  /* Loop over all threads in the thread table and reset the owner. */
  for(i=0; i<MAX_NUMBER_OF_THREADS; i++)
  {
@@ -303,6 +274,9 @@ initialize(void)
 
  /* Initialize the ready queue. */
  thread_queue_init(&ready_queue);
+
+ /* Initialize the list of blocked threads waiting for the keyboard. */
+ thread_queue_init(&keyboard_blocked_threads);
 
  /* Calculate the number of pages. */
  memory_pages = memory_size/(4*1024);
@@ -593,7 +567,58 @@ initialize(void)
  outb(0x40, 78);
  outb(0x40, 23);
 
- /* Now we set up the interrupt controller to allow timer interrupts. */
+ /* Set up the keyboard controller. */
+ 
+ /* Empty the keyboard buffer. */
+ {
+  register unsigned char status_byte;
+  do
+  {
+   status_byte=inb(0x64);
+   if ((status_byte&3)==1)
+   {
+    inb(0x60);
+   }
+  } while((status_byte&0x3)!=0x0);
+ }
+
+ /* Change the command byte to enable interrupts. */
+ outb(0x64, 0x20);
+ {
+  register unsigned char keyboard_controller_command_byte;
+
+  {
+   register unsigned char status_byte;
+   do
+   {
+    status_byte=inb(0x64);
+   } while((status_byte&3)!=1);
+  }
+
+  keyboard_controller_command_byte=inb(0x60);
+
+  /* Enable keyboard interrupts. */
+  keyboard_controller_command_byte|=1;
+
+  kprints("Keyboard controller command byte:");
+  kprinthex(keyboard_controller_command_byte);
+  kprints("\n");
+
+  outb(0x64, 0x60);
+  outb(0x60, keyboard_controller_command_byte);
+
+  /* Wait until command is done. */
+  {
+   register unsigned char status_byte;
+   do
+   {
+    status_byte=inb(0x64);
+   } while((status_byte&0x2)!=0x0);
+  }
+ } 
+
+ /* Now we set up the interrupt controller to allow timer and keyboard 
+    interrupts. */
  outb(0x20, 0x11);
  outb(0xA0, 0x11);
 
@@ -606,10 +631,14 @@ initialize(void)
  outb(0x21, 1);
  outb(0xA1, 1);
 
- outb(0x21, 0xfe);
+ outb(0x21, 0xfc);
  outb(0xA1, 0xff);
 
- kprints("\n\n\nThe kernel has booted!\n\n\n");
+
+ test_screen();
+
+ //kprints("\n\n\nThe kernel has booted!\n\n\n");
+
  /* Now go back to the assembly language code and let the process run. */
 }
 
@@ -819,6 +848,69 @@ system_call_handler(void)
   break;
   }
 
+  case SYSCALL_GETSCANCODE:
+  {
+   /* Check if there is data in the scan code buffer. */
+   if (keyboard_scancode_high_marker!=keyboard_scancode_low_marker)
+   {
+    /* There is data in the buffer. Get it! */
+    SYSCALL_ARGUMENTS.rax=keyboard_scancode_buffer
+     [(keyboard_scancode_low_marker++)&(KEYBOARD_BUFFER_SIZE-1)];
+   }
+   else
+   {
+    /* No data in the buffer. We will block waiting for data. */
+    register int current_thread_index;
+
+    /* Set the default return value to be an error. */
+    SYSCALL_ARGUMENTS.rax=ERROR;
+    /* Take the current thread out of the ready queue. */
+    current_thread_index=cpu_private_data.thread_index;
+    /* Tell the scheduler that it will have to reschedule. */
+    schedule=1;
+    thread_queue_enqueue(&keyboard_blocked_threads, current_thread_index);
+   }
+   break;
+  }
+
+  case SYSCALL_PRINTAT:
+  {
+	  int row = SYSCALL_ARGUMENTS.rdi;
+	  int column = SYSCALL_ARGUMENTS.rsi;
+	  char* string = SYSCALL_ARGUMENTS.rdx;
+
+	  // sanity check to arguments. Returns if row or column not within range
+	  if (!(0 <= row < MAX_ROWS) || !(0 <= column < MAX_COLS) ){
+		  SYSCALL_ARGUMENTS.rax=ERROR;
+		  return;
+	  }
+
+	  while (column <= MAX_COLS){
+		  char first_char = *string++;
+
+		  if (first_char){
+			  if (first_char == '\n') {
+					continue;
+				}
+			  screen_pointer->positions[row][column].character = first_char;
+			  screen_pointer->positions[row][column].attribute = 15;
+			  column++;
+		  }
+		  else	break;
+
+
+	  }
+
+	  SYSCALL_ARGUMENTS.rax=ALL_OK;
+	  break;
+  }
+  case SYSCALL_CLEARSCREEN :
+  {
+	  clear_screen();
+
+	  SYSCALL_ARGUMENTS.rax=ALL_OK;
+	  break;
+  }
 
 #include "syscall.c"
   default:
@@ -861,6 +953,10 @@ timer_interrupt_handler(void)
    if (-1 == cpu_private_data.thread_index)
    {
     cpu_private_data.thread_index = tmp_thread_index;
+
+    cpu_private_data.page_table_root = 
+     process_table[thread_table[tmp_thread_index].data.owner].
+      page_table_root;
    }
    else
    {
@@ -870,7 +966,100 @@ timer_interrupt_handler(void)
   }
  }
 #include "pscheduler.c"
+}
 
+/*! Keyboard interrupt handler. */
+static inline void
+keyboard_interrupt_handler(void)
+{
+ register unsigned char status_byte=inb(0x64);
+
+ if ((status_byte&1)==1)
+ {
+  register unsigned char data=inb(0x60);
+
+  /* Is a thread waiting for data? */
+  if (thread_queue_is_empty(&keyboard_blocked_threads))
+  {
+   /* Store scan code in the buffer if there is space in the buffer. */
+   register int buffer_size=keyboard_scancode_high_marker-
+                            keyboard_scancode_low_marker;
+   if (buffer_size<KEYBOARD_BUFFER_SIZE)
+   {
+    keyboard_scancode_buffer
+     [(keyboard_scancode_high_marker++)&(KEYBOARD_BUFFER_SIZE-1)]=data;
+   }
+  }
+  else
+  {
+   /* Let the first blocked thread get the scan code. */
+   register int blocked_thread_index=
+    thread_queue_dequeue(&keyboard_blocked_threads);
+   thread_table[blocked_thread_index].data.registers.integer_registers.rax=
+    data;
+
+   /* Let the woken thread run if the CPU is not running any thread. */
+   if (-1 == cpu_private_data.thread_index)
+   {
+    cpu_private_data.thread_index = blocked_thread_index;
+
+    cpu_private_data.page_table_root = 
+     process_table[thread_table[blocked_thread_index].data.owner].
+      page_table_root;
+   }
+   else
+   {
+    thread_queue_enqueue(&ready_queue, blocked_thread_index);
+   }
+  }
+ }
+}
+
+extern void
+interrupt_dispatcher(const unsigned long interrupt_number)
+{
+ /* Select a handler based on interrupt source. */
+ switch(interrupt_number)
+ {
+  case 32:
+  {
+   timer_interrupt_handler();
+   break;
+  }
+
+  case 33:
+  {
+   keyboard_interrupt_handler();
+   break;
+  }
+
+  case 39:
+  {
+   /* Spurious interrupt occurred. This could happen if we spend too long 
+      time with interrupts disabled. */
+   break;
+  }
+
+  default:
+  {
+   kprints("Unknown interrupt. Vector:");
+   kprinthex(interrupt_number);
+   kprints("\n");
+   while(1)
+   {
+    outw(0x8a00, 0x8a00);
+    outw(0x8a00, 0x8ae0);
+   }
+  }
+ }
+ 
  /* Acknowledge interrupt so that new interrupts can be sent to the CPU. */
- outb(0x20, 0x20);
+ if (interrupt_number < 48)
+ {
+  if (interrupt_number >= 40)
+  {
+   outb(0xa0, 0x20);
+  }
+  outb(0x20, 0x20);
+ }
 }

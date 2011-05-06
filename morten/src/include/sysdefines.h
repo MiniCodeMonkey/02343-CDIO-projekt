@@ -16,7 +16,10 @@
 #define ERROR_ILLEGAL_SYSCALL   (-2)
 /*! Return code when a message is too long. */
 #define ERROR_MESSAGE_TOO_LONG  (-3)
-
+/*! Max number of columns in VGA buffer. */
+#define MAX_COLS                (80)
+/*! Max number of columns in VGA buffer. */
+#define MAX_ROWS                (25)
 
 /*! System call that returns the version of the kernel. */
 #define SYSCALL_VERSION         (0)
@@ -193,6 +196,31 @@
     unsuccessful.
    */
 #define SYSCALL_CONDITIONVARIABLESIGNAL (25)
+
+/*! Prints a string at a specific place on the screen. The pointer to the
+    string, i.e., the address of the first byte of the string is passed
+    in register rdx. The position on the screen is defined with a row and
+    column pair. The column is passed in register rsi and the row is
+    passed in register rdi.
+
+    The system call returns ALL_OK in rax if successful or an error code if
+    unsuccessful.
+   */
+#define SYSCALL_PRINTAT         (26)
+
+/*! Returns the next scan code from the keyboard in the rax register. The
+    system call blocks until data is available.
+
+    The system call returns a keyboard scan code in rax if successful or an 
+    error code if unsuccessful.
+ */
+#define SYSCALL_GETSCANCODE     (27)
+
+
+/*
+ *
+ */
+#define SYSCALL_CLEARSCREEN     (28)
 
 
 /* Type declarations. */

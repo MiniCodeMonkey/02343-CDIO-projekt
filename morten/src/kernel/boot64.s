@@ -86,21 +86,6 @@ interrupt_setup_loop:
  dec    %rdx
  jnz    interrupt_setup_loop
 
- # Write the address of the timer interrupt handler into the interrupt handler
- # table
- mov    $timer_interrupt,%rax
- mov    $IDT+16*32,%rbp
- mov    %eax,%ebx
- and    $0xffff,%ebx
- or     $24*0x10000,%ebx
- mov    %ebx,(%rbp)
- mov    %eax,%ebx
- and    $0xffff0000,%ebx
- or     $0x8e00,%ebx
- mov    %ebx,4(%rbp)
- shr    $32,%rax
- mov    %eax,8(%rbp)
-
  # Force the CPU to use the new TSS
  mov    $40,%eax
  ltr    %ax

@@ -37,6 +37,18 @@ prints(const char* const string)
  return return_value;
 }
 
+static inline long
+sys_clear_screen(void)
+{
+long return_value;
+ __asm volatile("syscall" :
+		 	 	 "=a" (return_value) :
+                 "a" (SYSCALL_CLEARSCREEN) :
+                 "cc", "%rcx", "%r11");
+ return return_value;
+}
+
+
 /*! Wrapper for the system call that prints a hexadecimal value.
  * @param value hexadecimal value to be printed.
  */
@@ -394,6 +406,33 @@ conditionvariablesignal(long condition_variable_handle)
                  "a" (SYSCALL_CONDITIONVARIABLESIGNAL), 
                  "D" (condition_variable_handle) :
                  "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that allows you to write at arbitrary 
+    locations on the screen. */
+static inline long
+printat(unsigned long row, unsigned long column,
+        const char* const string)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_PRINTAT), "D" (row), "S" (column),
+                 "d" (string):
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that returns the next keyboard scan code. */
+static inline long
+getscancode(void)
+{
+ long return_value;
+ __asm volatile("syscall" : 
+                 "=a" (return_value) :
+                 "a" (SYSCALL_GETSCANCODE) : 
+                 "cc", "%rcx", "%r11");
  return return_value;
 }
 

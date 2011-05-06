@@ -271,7 +271,26 @@ struct CPU_private
                                  /*!< Can be used by a preemptive scheduler. */
 };
 
+struct screen_position
+{
+ unsigned char character; /*!< The character part of the byte tuple used for
+                               each screen position. */
+ unsigned char attribute; /*!< The character part of the byte tuple used for
+                               each screen position. */
+};
+/*!< Defines a VGA text mode screen position. */
+
+struct screen
+{
+ struct screen_position positions[25][80];
+};
+/*!< Defines a VGA text mode screen. */
+
 /* Variable declarations */
+
+extern struct screen* const
+screen_pointer;
+/*!< Points to the VGA screen. */
 
 extern union thread
 thread_table[MAX_NUMBER_OF_THREADS];
@@ -325,7 +344,14 @@ initialize(void);
 extern void
 system_call_handler(void);
 
-/*! This function gets called from the interrupt handler and manages timer
+/*! This function gets called from the interrupt handler and dispatches 
+    interrupts to interrupt handlers. */
+extern void
+interrupt_dispatcher(const unsigned long interrupt_number /*!< The number of 
+                                                               the interrupt 
+                                                               vector.*/);
+
+/*! This function gets called from the interrupt dispatcher and manages timer
     interrupts. */
 extern void
 timer_interrupt_handler(void);
@@ -333,12 +359,55 @@ timer_interrupt_handler(void);
 /*! Outputs a string to the bochs console. */
 extern void
 kprints(const char* const string
-        /*!< points to a null terminated string */
+        /*!< Points to a null terminated string */
         );
 
 /*! Prints a long formatted as a hexadecimal number to the bochs console. */
 extern void
 kprinthex(const register long value
-          /*!< the value to be written */);
+          /*!< The value to be written */);
+
+
+/*! Clears the VGA buffer which is used in task 7. */
+extern void
+clear_screen(void);
+
+
+/* Function definitions. */
+extern void dialogWindow(char* text,int upper,int left,int width,int heigth);
+
+/* The outb and outw functions are used when accessing hardware devices. */
+
+/*! Wrapper for a byte out instruction. */
+inline static void
+outb(const short port_number, const char output_value)
+{
+ __asm volatile("outb %%al,%%dx" : : "d" (port_number), "a" (output_value));
+}
+
+/*! Wrapper for a word out instruction. */
+inline static void
+outw(const short port_number, const short output_value)
+{
+ __asm volatile("outw %%ax,%%dx" : : "d" (port_number), "a" (output_value));
+}
+
+/*! Wrapper for a byte in instruction. */
+inline static char
+inb(const short port_number)
+{
+ char return_value;
+ __asm volatile("inb %%dx,%%al" : "=a" (return_value) : "d" (port_number));
+ return return_value;
+}
+
+/*! Wrapper for a word in instruction. */
+inline static short
+inw(const short port_number)
+{
+ short return_value;
+ __asm volatile("inw %%dx,%%ax" : "=a" (return_value) : "d" (port_number));
+ return return_value;
+}
 
 #endif
