@@ -268,4 +268,133 @@ getpid(void)
  return return_value;
 }
 
+/*! Wrapper for the system call that creates a thread. */
+static inline long
+createthread(void (*thread)(void), void* stack)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_CREATETHREAD), "D" (thread), "S" (stack) :
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that creates a semaphore. */
+static inline long
+createsemaphore(long initial_count)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_CREATESEMAPHORE), "D" (initial_count) :
+                 "cc", "%rcx", "%r11", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that performs a down operation on a 
+    semaphore. */
+static inline long
+semaphoredown(long semaphore_handle)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_SEMAPHOREDOWN), "D" (semaphore_handle) :
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that performs an up operation on a 
+    semaphore */
+static inline long
+semaphoreup(long semaphore_handle)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_SEMAPHOREUP), "D" (semaphore_handle) :
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that creates a mutex. */
+static inline long
+createmutex(void)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_CREATEMUTEX) :
+                 "cc", "%rcx", "%r11", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that performs a lock operation on a 
+    mutex. */
+static inline long
+mutex_lock(long mutex_handle)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_MUTEXLOCK), "D" (mutex_handle) :
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that performs a lock operation on a mutex. */
+static inline long
+mutex_unlock(long mutex_handle)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_MUTEXUNLOCK), "D" (mutex_handle) :
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that creates a condition variable.*/
+static inline long
+createconditionvariable(void)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_CREATECONDITIONVARIABLE) :
+                 "cc", "%rcx", "%r11", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that performs a wait operation on a condition
+    variable. */
+static inline long
+conditionvariablewait(long condition_variable_handle,
+                      long mutex_handle)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_CONDITIONVARIABLEWAIT), 
+                 "D" (condition_variable_handle),
+                 "S" (mutex_handle) :
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
+/*! Wrapper for the system call that performs a signal operation on a 
+    condition variable. */
+static inline long
+conditionvariablesignal(long condition_variable_handle)
+{
+ long return_value;
+ __asm volatile("syscall" :
+                 "=a" (return_value) :
+                 "a" (SYSCALL_CONDITIONVARIABLESIGNAL), 
+                 "D" (condition_variable_handle) :
+                 "cc", "%r11", "%rcx", "memory");
+ return return_value;
+}
+
 #endif
