@@ -221,13 +221,9 @@ public class ImageProcessor {
 			int[] posN = findCakes(tilemap, type1).get(0).getPos();
 			int[] posS = findCakes(tilemap, type2).get(0).getPos();
 			int[] coords = new int[] {(posN[0]+posS[0])/2,(posN[1]+posS[1])/2};
-//			double a = posN[1]-posS[1];
-//			double b = posN[0]-posS[0];
 			double dy = posN[0]-posS[0];
 			double dx = posN[1]-posS[1];
 			double angle = 0.0;
-//			double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
-//			angle = Math.asin(b/c);
 			if (dy == 0) {
 				// Grænsetilfælde: Robot vender mod højre eller venstre
 				if (dx > 0) {
@@ -247,15 +243,11 @@ public class ImageProcessor {
 			} else {
 				// Generelt
 				angle = -Math.atan(dx/dy);
-	//			if (a > 0 && b < 0) {
 				if (dx > 0 && dy > 0) {
 					// 3. kvadrant
-	//				angle = -Math.PI-angle;
 					angle = Math.PI+angle;
-	//			} else if (a > 0 && b >= 0) {
 				} else if (dx < 0 && dy > 0) {
 					// 4. kvadrant
-	//				angle = Math.PI-angle;
 					angle = -Math.PI+angle;
 				}
 			}
