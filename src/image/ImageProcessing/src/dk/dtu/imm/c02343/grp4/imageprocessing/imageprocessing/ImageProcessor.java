@@ -184,7 +184,7 @@ public class ImageProcessor {
 					// Liste til de punkter, objektet består af
 					ArrayList<int[]> returnCoords = new ArrayList<int[]>();
 					// Benyt examineTilemap til at finde alle sammenhængende punkter af typen fra dette punkt
-					examineTilemap(tilemap, new int[] {y, x}, type, foundmap, returnCoords);
+					findObject(tilemap, new int[] {y, x}, type, foundmap, returnCoords);
 					
 					// Acceptér ikke for små objekter
 					if (returnCoords.size() > MIN_OBJECT_SIZE) {
@@ -194,8 +194,8 @@ public class ImageProcessor {
 						Iterator<int[]> itr = returnCoords.iterator();
 						while(itr.hasNext()) {
 							int[] pos = itr.next();
-							sumX += pos[0];
-							sumY += pos[1];
+							sumY += pos[0];
+							sumX += pos[1];
 						}
 						int cakeY = sumY/returnCoords.size();
 						int cakeX = sumX/returnCoords.size();
@@ -221,17 +221,35 @@ public class ImageProcessor {
 			int[] posN = findCakes(tilemap, type1).get(0).getPos();
 			int[] posS = findCakes(tilemap, type2).get(0).getPos();
 			int[] coords = new int[] {(posN[0]+posS[0])/2,(posN[1]+posS[1])/2};
-			double a = posN[1]-posS[1];
-			double b = posN[0]-posS[0];
+			double dy = posN[0]-posS[0];
+			double dx = posN[1]-posS[1];
 			double angle = 0.0;
-			double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
-			angle = Math.asin(b/c);
-			if (a > 0 && b < 0) {
-				// 3. kvadrant
-				angle = -Math.PI-angle;
-			} else if (a > 0 && b >= 0) {
-				// 4. kvadrant
-				angle = Math.PI-angle;
+			if (dy == 0) {
+				// Grænsetilfælde: Robot vender mod højre eller venstre
+				if (dx > 0) {
+					angle = Math.PI/2;
+				} else if (dx < 0) {
+					angle = -Math.PI/2;
+				} else {
+					angle = 0;
+				}
+			} else if (dx == 0) {
+				// Grænsetilfælde: Robot vender op eller ned
+				if (dy > 0) {
+					angle = Math.PI;
+				} else {
+					angle = 0;
+				}
+			} else {
+				// Generelt
+				angle = -Math.atan(dx/dy);
+				if (dx > 0 && dy > 0) {
+					// 3. kvadrant
+					angle = Math.PI+angle;
+				} else if (dx < 0 && dy > 0) {
+					// 4. kvadrant
+					angle = -Math.PI+angle;
+				}
 			}
 			robots.add(new Robot(coords[0],coords[1],angle));
 		} catch (IndexOutOfBoundsException e) {
@@ -248,7 +266,7 @@ public class ImageProcessor {
 	 * @param foundmap Matrix over fundne/behandlede felter i tilemap
 	 * @param returnCoords Liste over matchende koordinater, som er i den undersøgte mængde
 	 */
-	private static void examineTilemap(int[][] tilemap, int[] pos, int type, int[][] foundmap, ArrayList<int[]> returnCoords) {
+	private static void findObject(int[][] tilemap, int[] pos, int type, int[][] foundmap, ArrayList<int[]> returnCoords) {
 		// Debug-udskrifter
 //		System.out.println("examineTilemap:");
 //		System.out.println("\ttilemap.length: " + tilemap.length);
@@ -267,7 +285,7 @@ public class ImageProcessor {
 			// Tilføj koordinater til listen
 			returnCoords.add(newpos);
 			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
+			findObject(tilemap, newpos, type, foundmap, returnCoords);
 		}
 		
 		// Tjek punktet under
@@ -279,7 +297,7 @@ public class ImageProcessor {
 			// Tilføj koordinater til listen
 			returnCoords.add(newpos);
 			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
+			findObject(tilemap, newpos, type, foundmap, returnCoords);
 		}
 		
 		// Tjek punktet til venstre
@@ -291,7 +309,7 @@ public class ImageProcessor {
 			// Tilføj koordinater til listen
 			returnCoords.add(newpos);
 			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
+			findObject(tilemap, newpos, type, foundmap, returnCoords);
 		}
 		
 		// Tjek punktet over
@@ -303,7 +321,7 @@ public class ImageProcessor {
 			// Tilføj koordinater til listen
 			returnCoords.add(newpos);
 			// Kør metoden rekursivt
-			examineTilemap(tilemap, newpos, type, foundmap, returnCoords);
+			findObject(tilemap, newpos, type, foundmap, returnCoords);
 		}
 	}
 	

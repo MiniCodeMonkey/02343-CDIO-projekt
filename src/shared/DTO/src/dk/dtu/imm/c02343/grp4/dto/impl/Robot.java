@@ -101,4 +101,13 @@ public class Robot implements dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot {
 	public double getAngle() {
 		return this.angle;
 	}
+	
+	public String toString() {
+		String out = "";
+		
+		out += "Position (y,x): (" + this.y + "," + this.x + ")\n";
+		out += "Angle    (deg): " + this.angle*180/Math.PI;
+		
+		return out;
+	}
 }
