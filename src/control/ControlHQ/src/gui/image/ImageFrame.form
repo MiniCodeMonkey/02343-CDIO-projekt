@@ -43,15 +43,13 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="imageProcessPanel">
-      <Events>
-        <EventHandler event="componentAdded" listener="java.awt.event.ContainerListener" parameters="java.awt.event.ContainerEvent" handler="imageProcessPanelComponentAdded"/>
-      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <Component id="imagePanel" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="imagePanel" pref="317" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="settingsPanel" min="-2" pref="310" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -60,9 +58,9 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="imagePanel" alignment="0" max="32767" attributes="1"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="imagePanel" alignment="0" pref="444" max="32767" attributes="1"/>
                       <Component id="settingsPanel" alignment="0" min="-2" pref="444" max="-2" attributes="1"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -79,10 +77,16 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="robotFrontThresholdPanel">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                   <JTabbedPaneConstraints tabName="Front">
@@ -100,7 +104,7 @@
                               <Component id="maxRGBpanel" alignment="0" max="32767" attributes="1"/>
                               <Component id="minRGBpanel" alignment="0" max="32767" attributes="1"/>
                           </Group>
-                          <EmptySpace pref="17" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -125,6 +129,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -142,7 +149,7 @@
                                   <Component id="minGVal" min="-2" max="-2" attributes="0"/>
                                   <Component id="minBVal" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="22" max="32767" attributes="0"/>
+                              <EmptySpace pref="34" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -175,7 +182,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="0"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minGreenSlider">
                       <Properties>
@@ -184,7 +195,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="70"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minBlueSlider">
                       <Properties>
@@ -193,7 +208,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="0"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="minRVal">
                       <BindingProperties>
@@ -220,6 +239,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -237,7 +259,7 @@
                                   <Component id="maxGVal" min="-2" max="-2" attributes="0"/>
                                   <Component id="maxBVal" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="22" max="32767" attributes="0"/>
+                              <EmptySpace pref="28" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -270,7 +292,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="70"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxBlueSlider">
                       <Properties>
@@ -279,7 +305,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="90"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxGreenSlider">
                       <Properties>
@@ -288,7 +318,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="255"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="maxRVal">
                       <BindingProperties>
@@ -310,6 +344,9 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="robotBackThresholdPanel">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                   <JTabbedPaneConstraints tabName="Back">
@@ -352,6 +389,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -369,7 +409,7 @@
                                   <Component id="minGVal1" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="minBVal1" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="58" max="32767" attributes="0"/>
+                              <EmptySpace pref="64" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -402,7 +442,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="0"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minGreenSlider1">
                       <Properties>
@@ -411,7 +455,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="0"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minBlueSlider1">
                       <Properties>
@@ -421,6 +469,9 @@
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="minRVal1">
                       <BindingProperties>
@@ -447,6 +498,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -497,7 +551,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="20"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxBlueSlider1">
                       <Properties>
@@ -506,7 +564,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="255"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxGreenSlider1">
                       <Properties>
@@ -515,7 +577,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="20"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="maxRVal1">
                       <BindingProperties>
@@ -537,6 +603,9 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="cakesThresholdPanel">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                   <JTabbedPaneConstraints tabName="Cakes">
@@ -579,6 +648,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -596,7 +668,7 @@
                                   <Component id="minGVal2" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="minBVal2" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="44" max="32767" attributes="0"/>
+                              <EmptySpace pref="50" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -629,7 +701,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="100"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minGreenSlider2">
                       <Properties>
@@ -638,7 +714,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="0"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minBlueSlider2">
                       <Properties>
@@ -647,7 +727,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="0"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="minRVal2">
                       <BindingProperties>
@@ -674,6 +758,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -691,7 +778,7 @@
                                   <Component id="maxGVal2" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="maxBVal2" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="44" max="32767" attributes="0"/>
+                              <EmptySpace pref="50" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -724,7 +811,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="255"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxBlueSlider2">
                       <Properties>
@@ -733,7 +824,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="25"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxGreenSlider2">
                       <Properties>
@@ -742,7 +837,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="25"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="maxRVal2">
                       <BindingProperties>
@@ -764,6 +863,9 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="obstacleThresholdPanel">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                   <JTabbedPaneConstraints tabName="Obstacles">
@@ -806,6 +908,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -823,7 +928,7 @@
                                   <Component id="minGVal3" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="minBVal3" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="44" max="32767" attributes="0"/>
+                              <EmptySpace pref="50" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -856,7 +961,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="150"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minGreenSlider3">
                       <Properties>
@@ -865,7 +974,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="150"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="minBlueSlider3">
                       <Properties>
@@ -874,7 +987,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="150"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="minRVal3">
                       <BindingProperties>
@@ -901,6 +1018,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -918,7 +1038,7 @@
                                   <Component id="maxGVal3" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="maxBVal3" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="44" max="32767" attributes="0"/>
+                              <EmptySpace pref="50" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -951,7 +1071,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="255"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxBlueSlider3">
                       <Properties>
@@ -960,7 +1084,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="255"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JSlider" name="maxGreenSlider3">
                       <Properties>
@@ -969,7 +1097,11 @@
                         </Property>
                         <Property name="maximum" type="int" value="255"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
+                        <Property name="value" type="int" value="255"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="maxRVal3">
                       <BindingProperties>
@@ -991,6 +1123,9 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="miscPanel">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                   <JTabbedPaneConstraints tabName="Misc">
@@ -1028,6 +1163,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                  </AuxValues>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -1053,8 +1191,17 @@
                     <Component class="javax.swing.JSlider" name="bufzoneSlider">
                       <Properties>
                         <Property name="maximum" type="int" value="50"/>
-                        <Property name="value" type="int" value="25"/>
+                        <Property name="value" type="int" value="30"/>
                       </Properties>
+                      <AccessibilityProperties>
+                        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="bufferzone"/>
+                      </AccessibilityProperties>
+                      <BindingProperties>
+                        <BindingProperty name="toolTipText" source="bufzoneSlider" sourcePath="${value}" target="bufzoneSlider" targetPath="toolTipText" updateStrategy="0" immediately="false"/>
+                      </BindingProperties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1063,18 +1210,14 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="imagePanel">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
 
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="327" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="444" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+            <Property name="columns" type="int" value="1"/>
+            <Property name="rows" type="int" value="2"/>
+            <Property name="verticalGap" type="int" value="20"/>
           </Layout>
         </Container>
       </SubComponents>
@@ -1086,27 +1229,43 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="connectBtn">
+        <Component class="javax.swing.JButton" name="webcamBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Connect"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/icons/webcam_icon.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Webcam source"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="webcamBtnActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="testimageBtn">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/icons/imagefile_icon.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Image source (test images)"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="connectBtnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="testimageBtnActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="setimageSrcBtn">
+        <Component class="javax.swing.JButton" name="nextTestImgBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Image source (test image)"/>
+            <Property name="text" type="java.lang.String" value="Skift test-billede"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setimageSrcBtnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextTestImgBtnActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

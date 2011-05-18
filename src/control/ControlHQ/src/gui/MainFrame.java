@@ -20,6 +20,8 @@ public class MainFrame extends javax.swing.JFrame {
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
+        
+        
         makeAndArrangeFrames();
     }
 
@@ -35,25 +37,31 @@ public class MainFrame extends javax.swing.JFrame {
         dashboard = new javax.swing.JDesktopPane();
         mainMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         aboutMenu = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
 
         dashboard.setBackground(new java.awt.Color(204, 204, 204));
 
         fileMenu.setText("File");
+
+        jMenuItem1.setText("jMenuItem1");
+        fileMenu.add(jMenuItem1);
+
         mainMenuBar.add(fileMenu);
 
         jMenu2.setText("Edit");
         mainMenuBar.add(jMenu2);
 
         aboutMenu.setText("About");
-        aboutMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutMenuActionPerformed(evt);
-            }
-        });
+
+        jMenuItem2.setText("jMenuItem2");
+        aboutMenu.add(jMenuItem2);
+
         mainMenuBar.add(aboutMenu);
 
         setJMenuBar(mainMenuBar);
@@ -72,33 +80,31 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void aboutMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_aboutMenuActionPerformed
-
 
     /**
      * Opretter og arrangerer alle vinduer
      * <br><br>(ImageProcessing,Comm,Path,manualControl)
      */
     public void makeAndArrangeFrames() {
-		
-    	ImageFrame imageFrame = new ImageFrame();
-    	ControlFrame controlFrame = new ControlFrame();
-
-        imageFrame.setLocation(dashboard.getSize().width - imageFrame.getSize().width, imageFrame.getLocation().y);
-
-    	imageFrame.setVisible(true);
-    	controlFrame.setVisible(true);
-    	
-    	dashboard.add(imageFrame);
-    	dashboard.add(controlFrame);    	
+    	// TODO
 	}
     public void makeControlFrame() {
 		// TODO
+    	ControlFrame controlFrame = new ControlFrame();
+    	
+    	controlFrame.setVisible(true);
+    	dashboard.add(controlFrame); 
 	}
-    public void makeImageFrrame() {
-		// TODO
+    /**
+     * Opretter panel med funktioner vedr. al image-processing
+     */
+    public void makeImageFrame() {
+    	ImageFrame imageFrame = new ImageFrame();
+    	
+        imageFrame.setLocation(dashboard.getSize().width - imageFrame.getSize().width, imageFrame.getLocation().y);
+
+    	imageFrame.setVisible(true);
+    	dashboard.add(imageFrame);
 	}
     public void makePathfindingFrame() {
 		// TODO
@@ -115,6 +121,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JDesktopPane dashboard;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar mainMenuBar;
     // End of variables declaration//GEN-END:variables
 
