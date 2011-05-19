@@ -1,21 +1,25 @@
 package gui.image;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
 
-/**Fælles Listener klasse for alle sliders..
+/**Fælles Listener klasse for alle control i image-processing..
  * @author Morten Hulvej
  *
  */
-public class SliderChangeListener implements ChangeListener {
+public class ImageChangeListener implements ChangeListener, ItemListener {
 
 	ImageFrame frame;
 	
-	public SliderChangeListener(ImageFrame f) {
+	public ImageChangeListener(ImageFrame f) {
 		frame = f;
 	}
 	
@@ -68,9 +72,24 @@ public class SliderChangeListener implements ChangeListener {
 			}
 			
 			
+		}else if (evt.getSource() instanceof JSpinner){
+			JSpinner spinner = (JSpinner) evt.getSource();
+			frame.time_slice = (Float) spinner.getValue();
 		}
 		
 		
+		
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		
+		if (e.getStateChange() == e.SELECTED)
+			frame.webcamFeedPaused = true;
+		else if (e.getStateChange() == e.DESELECTED){
+			frame.webcamFeedPaused = false;
+		}
+			
 		
 	}
 
