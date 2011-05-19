@@ -62,7 +62,7 @@ public class TestPathfinding implements ActionListener {
 		buttonPanel.add(disconnect);
 		
 		// Definér størrelse på vindue
-		frame.setSize(400, 600);
+		frame.setSize(400, 650);
 		frame.setVisible(true);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

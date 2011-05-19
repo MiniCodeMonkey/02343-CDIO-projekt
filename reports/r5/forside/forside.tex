@@ -1,0 +1,106 @@
+\begin{titlepage}
+	%\changepage{textheight}{textwidth}{evensidemargin}{oddsidemargin}{columnsep}{topmargin}{headheight}{headsep}{footskip}
+	\changepage{4cm}{4cm}{-2cm}{-2cm}{}{-2cm}{0cm}{}{}% Små margener
+	%
+	% Logo øverst til højre på siden
+	\begin{flushright}
+		\includegraphics[width=0.4\textwidth]{forside/DTU_DK_CMYK}
+	\end{flushright}
+	%
+	% Centrér og lad være med at indentere nye afsnit
+	\centering \parindent=0pt%
+	%
+	% Ny makro til at lave tyk vandret linje
+	\newcommand{\HRule}{\rule{0.9\textwidth}{1mm}}%
+	% Lav lodret mellemrum og sæt en vandret linje efterfulgt af 1cm lodret mellemrum
+	\vspace*{\stretch{1}} \color{DTUred}\HRule\\[1cm]%
+	% Skriv titler
+	\color{black}\huge\bfseries \titlea\\[0.7cm]%
+	\LARGE \titleb\\[1cm]%
+	% Ny vandret linje	
+	\color{DTUred}\HRule%\\[1cm]
+	% Lav mellemrum ned til næste elementer
+	\vspace*{\stretch{0.75}}
+	% Udarbejdet af: del
+	\color{black}%
+	\large%
+	\begin{tabular}{l l}%
+		\taa & \tba \\
+		\tab & \tbb \\
+		\tac & \tbc \\
+		\tad & \tbd
+	\end{tabular}%
+	\\[1.5cm]
+%	\ifx\group\empty% Tjek om gruppen er tom
+%	\else
+%		\large Udarbejdet af:\\[0.5cm]%
+%		\Large \group\\[0.5cm]% Ellers skriv den
+%	\fi
+	% Medlemmer af gruppen
+	\begin{minipage}[t]{0.9\linewidth}
+	%
+		% "For-loop" der itererer gennem elementerne i Student*
+		\multido{\iStudent=1+1}{\value{StudentCount}}{
+			% Minipage på lidt under halvdelen af forælderens bredde
+			\begin{minipage}[b]{0.495\textwidth}
+				\large
+				% Minipage til billede
+				\begin{minipage}[b]{0.2\textwidth}
+					\checkStudentId(\iStudent)% Cache StudentId (idet \includegraphics ikke kan håndtere arrayet som del af en parameter
+					\includegraphics[width=\textwidth]{forside/\cachedata}
+				\end{minipage}
+				% Minipage til navn mv.
+				\begin{minipage}[b]{0.79\textwidth}
+					\flushleft
+					% Placér indhold i bunden af minipage
+					\vfill
+					% Placér signatur-note hvis den er der
+					\ifx \@signature \@empty
+%						\relax
+					\else
+%					\ifx \@signature \@empty
+%					\ifdef\signature
+						\begin{center}
+							\scriptsize
+							\textnormal{\signature}
+						\end{center}
+					\fi
+					% Underskriftslinje
+					\rule{\textwidth}{1pt}
+					% Navn mv. for deltageren
+					\normalsize \StudentId(\iStudent) - \StudentLName(\iStudent), \StudentFName(\iStudent)\\\scriptsize{\textnormal{\StudentNote(\iStudent)}}
+				\end{minipage}
+			\end{minipage}
+			% Fyld ud til højre for minipage, hvis det er en ulige iteration (venstreplaceret deltager)
+			\ifodd\iStudent
+				\hfill
+			\fi
+		}%
+		%
+	\end{minipage}
+ 	\\[2cm]
+%	
+	\ifx\studentend\empty
+	\else
+		\studentend
+		\\[0.5cm]
+	\fi
+%
+% Venstre gruppering nederst på siden
+	\begin{minipage}[b]{0.45\linewidth}
+		\normalsize
+		\vfill% Sørg for at indholdet kommer nederst i minipagen
+		\includegraphics[height=35pt]{forside/\institutelogo}\\% Institutlogo
+		\color{DTUgray2}\bl% Tekst under institutlogo
+	\end{minipage}%
+%	
+	\hfill% Sørg for at næste minipage kommer helt ud til højre
+%	
+	\begin{minipage}[b]{0.45\linewidth}
+		\normalsize
+		\color{DTUgray2}\raggedleft% Højrestil
+%		\bra\\
+		\brb\\
+		\brc
+	\end{minipage}
+\end{titlepage}

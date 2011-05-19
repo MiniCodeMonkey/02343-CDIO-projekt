@@ -42,7 +42,15 @@ public class TileMap
 
 	public boolean blocked(IRobot robot, int ty, int tx)
 	{
-		return (obstacleMap[ty][tx] != 0);//(tileMap[ty][tx] == 2);
+		// Is robot inside bounding box?
+		if (obstacleMap[robot.getY()][robot.getX()] > 0)
+		{
+			return (obstacleMap[ty][tx] <= 5);
+		}
+		else
+		{
+			return (obstacleMap[ty][tx] != 0);
+		}
 	}
 
 	public float getCost(IRobot robot, int sy, int sx, int ty, int tx)

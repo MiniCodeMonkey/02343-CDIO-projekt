@@ -48,16 +48,16 @@ public class ImageProcessor {
 	/**
 	 * Mindste størrelse på sammenhængende områder i kager og robot-elementer i pixels
 	 */
-	public static final int MIN_OBJECT_SIZE = 10;
+	public static final int MIN_OBJECT_SIZE = 15;
 	
 	// Grænseværdier for forskellige typer objekter
-	private static Thresholds obstacleThresholds = new Thresholds(150, 150, 150, 255, 255, 255);
-	private static Thresholds cakeThresholds = new Thresholds(100, 0, 0, 255, 25, 25);
+	private static Thresholds obstacleThresholds = new Thresholds(140, 140, 140, 255, 255, 255);
+	private static Thresholds cakeThresholds = new Thresholds(70, 0, 0, 255, 25, 25);
 	private static Thresholds robotNThresholds = new Thresholds(0, 70, 0, 70, 255, 90);
-	private static Thresholds robotSThresholds = new Thresholds(0, 0, 50, 20, 50, 255);
+	private static Thresholds robotSThresholds = new Thresholds(0, 0, 40, 20, 50, 255);
 	
 	// Buffer omkring forhindringer
-	private static int obstacleBuffer = 5;
+	private static int obstacleBuffer = 15;
 	
 	/**
 	 * Tom konstruktør. Metoderne bruges statisk
@@ -143,6 +143,96 @@ public class ImageProcessor {
 			}
 		}
 		return output;
+	}
+	
+	/**
+	 * Filtrerer for små objekter fra et tilemap
+	 * @param tilemap Tilemap, som skal filtreres.
+	 * @return filtreret tilemap
+	 */
+	public static int[][] filterTileMap(int[][] tilemap) {
+		// matrix til at holde styr på behandlede pixels
+		int[][] foundmap = new int[tilemap.length][];
+		// Initialisér alle felter i matricen
+		for(int i = 0; i < foundmap.length; i++) {
+			foundmap[i] = new int[tilemap[i].length];
+			java.util.Arrays.fill(foundmap[i], BACKGROUND);
+		}
+		
+		// matrix til output
+		int[][] filtered = new int[tilemap.length][];
+		// Initialisér alle felter i matricen
+		for(int i = 0; i < filtered.length; i++) {
+			filtered[i] = new int[tilemap[i].length];
+			java.util.Arrays.fill(filtered[i], BACKGROUND);
+		}
+		
+		for (int y = 0; y < tilemap.length; y++) {
+			for (int x = 0; x < tilemap[0].length; x++) {
+				if (tilemap[y][x] != BACKGROUND && foundmap[y][x] == BACKGROUND) {
+					int type = tilemap[y][x];
+					ArrayList<int[]> positions = new ArrayList<int[]>();
+					filterTileMapHelper(tilemap, foundmap, new int[] {y,x}, type, positions);
+					if (positions.size() > MIN_OBJECT_SIZE) {
+						for (int[] pos : positions) {
+							filtered[pos[0]][pos[1]] = type;
+						}
+					}
+				}
+			}
+		}
+		
+		return filtered;
+	}
+	
+	private static void filterTileMapHelper(int[][] tilemap, int[][] foundmap, int[] pos, int type, List<int[]> returnPos) {
+		// Tjek punktet til højre
+		if (pos[1]+1 < tilemap[pos[0]].length && foundmap[pos[0]][pos[1]+1] == 0 && tilemap[pos[0]][pos[1]+1] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]][pos[1]+1] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0],pos[1]+1};
+			// Tilføj koordinater til listen
+			returnPos.add(newpos);
+			// Kør metoden rekursivt
+			filterTileMapHelper(tilemap, foundmap, newpos, type, returnPos);
+		}
+		
+		// Tjek punktet under
+		if (pos[0]+1 < tilemap.length && foundmap[pos[0]+1][pos[1]] == 0 && tilemap[pos[0]+1][pos[1]] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]+1][pos[1]] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0]+1,pos[1]};
+			// Tilføj koordinater til listen
+			returnPos.add(newpos);
+			// Kør metoden rekursivt
+			filterTileMapHelper(tilemap, foundmap, newpos, type, returnPos);
+		}
+		
+		// Tjek punktet til venstre
+		if (pos[1]-1 >= 0 && foundmap[pos[0]][pos[1]-1] == 0 && tilemap[pos[0]][pos[1]-1] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]][pos[1]-1] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0],pos[1]-1};
+			// Tilføj koordinater til listen
+			returnPos.add(newpos);
+			// Kør metoden rekursivt
+			filterTileMapHelper(tilemap, foundmap, newpos, type, returnPos);
+		}
+		
+		// Tjek punktet over
+		if (pos[0]-1 >= 0 && foundmap[pos[0]-1][pos[1]] == 0 && tilemap[pos[0]-1][pos[1]] == type) {
+			// Markér punktet som besøgt
+			foundmap[pos[0]-1][pos[1]] = 1;
+			// Beregn næste position, der skal undersøges
+			int[] newpos = new int[] {pos[0]-1,pos[1]};
+			// Tilføj koordinater til listen
+			returnPos.add(newpos);
+			// Kør metoden rekursivt
+			filterTileMapHelper(tilemap, foundmap, newpos, type, returnPos);
+		}
 	}
 	
 	/**
@@ -531,11 +621,11 @@ public class ImageProcessor {
 		while(cakeItr.hasNext()) {
 			ICake cake = cakeItr.next();
 			System.out.println("Object at (" + cake.getY() + "," + cake.getX() + ").");
-			tileImage.setRGB(cake.getY(), cake.getX(), 0xFF00FFFF);
-			tileImage.setRGB(cake.getY()+1, cake.getX(), 0xFF00FFFF);
-			tileImage.setRGB(cake.getY()-1, cake.getX(), 0xFF00FFFF);
-			tileImage.setRGB(cake.getY(), cake.getX()+1, 0xFF00FFFF);
-			tileImage.setRGB(cake.getY(), cake.getX()-1, 0xFF00FFFF);
+			tileImage.setRGB(cake.getX(), cake.getY(), 0xFF00FFFF);
+			tileImage.setRGB(cake.getX()+1, cake.getY(), 0xFF00FFFF);
+			tileImage.setRGB(cake.getX()-1, cake.getY(), 0xFF00FFFF);
+			tileImage.setRGB(cake.getX(), cake.getY()+1, 0xFF00FFFF);
+			tileImage.setRGB(cake.getX(), cake.getY()-1, 0xFF00FFFF);
 		}
 		
 		List<IRobot> robots = locations.getRobots();
@@ -543,11 +633,11 @@ public class ImageProcessor {
 		while(robotItr.hasNext()) {
 			IRobot robot = robotItr.next();
 			System.out.println("Robot at (" + robot.getY() + "," + robot.getX() + ") angle: " + robot.getAngle() + "rad = " + robot.getAngle()*180/Math.PI + " deg");
-			tileImage.setRGB(robot.getY(),robot.getX(), 0xFF00FF00);
-			tileImage.setRGB(robot.getY()+1,robot.getX(), 0xFF00FF00);
-			tileImage.setRGB(robot.getY()-1,robot.getX(), 0xFF00FF00);
-			tileImage.setRGB(robot.getY(),robot.getX()+1, 0xFF00FF00);
-			tileImage.setRGB(robot.getY(),robot.getX()-1, 0xFF00FF00);
+			tileImage.setRGB(robot.getX(),robot.getY(), 0xFF00FF00);
+			tileImage.setRGB(robot.getX()+1,robot.getY(), 0xFF00FF00);
+			tileImage.setRGB(robot.getX()-1,robot.getY(), 0xFF00FF00);
+			tileImage.setRGB(robot.getX(),robot.getY()+1, 0xFF00FF00);
+			tileImage.setRGB(robot.getX(),robot.getY()-1, 0xFF00FF00);
 		}
 		
 		return tileImage;
@@ -564,6 +654,14 @@ public class ImageProcessor {
 		for (int i = 0; i < obstaclemap.length; i++) {
 			obstaclemap[i] = new int[tilemap[0].length];
 			java.util.Arrays.fill(obstaclemap[i], 0);
+		}
+		
+		// matrix til at holde styr på behandlede pixels
+		int[][] foundmap = new int[tilemap.length][];
+		// Initialisér alle felter i matricen
+		for(int i = 0; i < foundmap.length; i++) {
+			foundmap[i] = new int[tilemap[i].length];
+			java.util.Arrays.fill(foundmap[i], BACKGROUND);
 		}
 		
 		// Iterér over positioner i tilemap
@@ -625,6 +723,7 @@ public class ImageProcessor {
 	 */
 	public static ILocations examineImage(BufferedImage imageSource, boolean debug) {
 		int[][] tilemap = createTileMap(imageSource);
+		tilemap = filterTileMap(tilemap);
 		int[] tileMapBounds = findBounds(tilemap);
 		tilemap = cropTilemap(tilemap, tileMapBounds);
 		int[][] obstaclemap = createObstacleMap(tilemap);
