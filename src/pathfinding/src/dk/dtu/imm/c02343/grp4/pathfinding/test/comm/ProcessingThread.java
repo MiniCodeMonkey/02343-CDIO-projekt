@@ -41,6 +41,18 @@ public class ProcessingThread extends Thread {
 		bertaCommando = new BertaCommando();
 		bertaControl = bertaCommando.getControl();
 		
+		try {
+			bertaControl.closeClaw();
+			Thread.sleep(2000);
+			bertaControl.stopClaw();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		running = true;
 		
 		while (running)
@@ -203,8 +215,116 @@ public class ProcessingThread extends Thread {
 			
 			bertaControl.stop();
 			
+			double distance = calculateDistance(robot.getX(), robot.getY(), cake.getX(), cake.getY());
+			System.out.println("Distance to target: " + distance);
+			
+			if (distance < 64)
+			{
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			if (distance < 32)
+			{
+				//running = false;
+				System.out.println("CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKE!!!!!!!!!");
+				bertaControl.openClaw();
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				bertaControl.stopClaw();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				System.out.println("Moving forward");
+				bertaControl.move(100, false);
+				
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("Closing claw");
+				bertaControl.closeClaw();
+				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				bertaControl.stop();
+				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				System.out.println("Reversing");
+				bertaControl.move(50, true);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				bertaControl.stop();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("Opening claw");
+				bertaControl.openClaw();
+				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				bertaControl.stopClaw();
+				
+				System.out.println("Done");
+				try {
+					Thread.sleep(60000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				return;
+			}
+			
 			// Is current angle as it is supposed to be?
-			if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*10) // ~10 deg
+			if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*45)
+			{
+				// Rotate
+				if (robot.getAngle() < supposedToBeAngle)
+				{
+					bertaControl.right(100);
+				}
+				else
+				{
+					bertaControl.left(100);
+				}
+			}
+			else if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*10) // ~10 deg
 			{
 				// Rotate
 				if (robot.getAngle() < supposedToBeAngle)
@@ -263,5 +383,10 @@ public class ProcessingThread extends Thread {
 		}
 		bertaCommando.disconnect();
 		imageSource.close();
+	}
+	
+	private double calculateDistance(int x1, int y1, int x2, int y2)
+	{
+		return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
 	}
 }

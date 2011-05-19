@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public interface IControl {
 	
-	int CLAW_LIMIT = 175;
+	int CLAW_LIMIT = 100;
 	int DEFAULT_CLAW_SPEED = 15;
 	
 	int DEFAULT_MOVE_SPEED = 15;
