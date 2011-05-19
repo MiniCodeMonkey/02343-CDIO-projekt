@@ -36,7 +36,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
 
     private void initListeners() {
 		
-    	SliderChangeListener stateChangeListener = new SliderChangeListener(this);
+    	ImageChangeListener stateChangeListener = new ImageChangeListener(this);
 		// TODO init. sliders p� en smartere m�de..
 
 		// min-sliders
@@ -73,41 +73,9 @@ public class ImageFrame extends javax.swing.JInternalFrame {
 		
 		bufzoneSlider.addChangeListener(stateChangeListener);
 		
-//		// setting names
-//		minRedSlider.setName(ImageProcessor.ROBOTN	+""+	MIN_R);
-//		minRedSlider1.setName(ImageProcessor.ROBOTS	+""+	MIN_R);
-//		minRedSlider2.setName(ImageProcessor.CAKE	+""+	MIN_R);
-//		minRedSlider3.setName(ImageProcessor.OBSTACLE	+""+	MIN_R);
-//		
-//		minGreenSlider.setName(ImageProcessor.ROBOTN	+""+	MIN_G);
-//		minGreenSlider1.setName(ImageProcessor.ROBOTS	+""+	MIN_G);
-//		minGreenSlider2.setName(ImageProcessor.CAKE		+""+	MIN_G);
-//		minGreenSlider3.setName(ImageProcessor.OBSTACLE	+""+	MIN_G);
-//		
-//		minBlueSlider.setName(ImageProcessor.ROBOTN		+""+	MIN_B);
-//		minBlueSlider1.setName(ImageProcessor.ROBOTS	+""+	MIN_B);
-//		minBlueSlider2.setName(ImageProcessor.CAKE		+""+	MIN_B);
-//		minBlueSlider3.setName(ImageProcessor.OBSTACLE	+""+	MIN_B);
-//		
-//		
-//		maxRedSlider.setName(ImageProcessor.ROBOTN	+""+	MAX_R);
-//		maxRedSlider1.setName(ImageProcessor.ROBOTS	+""+	MAX_R);
-//		maxRedSlider2.setName(ImageProcessor.CAKE	+""+	MAX_R);
-//		maxRedSlider3.setName(ImageProcessor.OBSTACLE	+""+	MAX_R);
-//		
-//		maxGreenSlider.setName(ImageProcessor.ROBOTN	+""+	MAX_G);
-//		maxGreenSlider1.setName(ImageProcessor.ROBOTS	+""+	MAX_G);
-//		maxGreenSlider2.setName(ImageProcessor.CAKE		+""+	MAX_G);
-//		maxGreenSlider3.setName(ImageProcessor.OBSTACLE	+""+	MAX_G);
-//		
-//		maxBlueSlider.setName(ImageProcessor.ROBOTN		+""+	MAX_B);
-//		maxBlueSlider1.setName(ImageProcessor.ROBOTS	+""+	MAX_B);
-//		maxBlueSlider2.setName(ImageProcessor.CAKE		+""+	MAX_B);
-//		maxBlueSlider3.setName(ImageProcessor.OBSTACLE	+""+	MAX_B);
-//		
-//		
-//		// buffer slider
-//		
+		pauseTBtn.addItemListener(stateChangeListener);
+		
+		updateIntervalSpinner.addChangeListener(stateChangeListener);
 		
 	}
 
@@ -189,6 +157,11 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         imagePanel = new javax.swing.JPanel();
         imageToolbar = new javax.swing.JToolBar();
         webcamBtn = new javax.swing.JButton();
+        pauseTBtn = new javax.swing.JToggleButton();
+        stopWebcamBtn = new javax.swing.JButton();
+        updateIntvlabel = new javax.swing.JLabel();
+        updateIntervalSpinner = new javax.swing.JSpinner();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
         testimageBtn = new javax.swing.JButton();
         nextTestImgBtn = new javax.swing.JButton();
 
@@ -808,7 +781,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
 
         settingsPanel.addTab("Misc", miscPanel);
 
-        imagePanel.setLayout(new java.awt.GridLayout(2, 1, 0, 20));
+        imagePanel.setLayout(new java.awt.GridLayout(2, 1, 0, 5));
 
         javax.swing.GroupLayout imageProcessPanelLayout = new javax.swing.GroupLayout(imageProcessPanel);
         imageProcessPanel.setLayout(imageProcessPanelLayout);
@@ -816,7 +789,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
             imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageProcessPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -824,18 +797,21 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         imageProcessPanelLayout.setVerticalGroup(
             imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageProcessPanelLayout.createSequentialGroup()
-                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(imagePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
-                    .addComponent(settingsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(imageProcessPanelLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         imageToolbar.setRollover(true);
 
         webcamBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/webcam_icon.png"))); // NOI18N
-        webcamBtn.setToolTipText("Webcam source");
+        webcamBtn.setText("Start Webcam");
+        webcamBtn.setToolTipText("Start Webcam");
         webcamBtn.setFocusable(false);
-        webcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        webcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         webcamBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 webcamBtnActionPerformed(evt);
@@ -843,11 +819,45 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         });
         imageToolbar.add(webcamBtn);
 
+        pauseTBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pause.png"))); // NOI18N
+        pauseTBtn.setSelected(true);
+        pauseTBtn.setText("Pause Webcam");
+        pauseTBtn.setToolTipText("Pause Webcam");
+        pauseTBtn.setEnabled(false);
+        pauseTBtn.setFocusable(false);
+        pauseTBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        imageToolbar.add(pauseTBtn);
+
+        stopWebcamBtn.setText("Stop Webcam");
+        stopWebcamBtn.setToolTipText("Stop Webcam");
+        stopWebcamBtn.setEnabled(false);
+        stopWebcamBtn.setFocusable(false);
+        stopWebcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        stopWebcamBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopWebcamBtnActionPerformed(evt);
+            }
+        });
+        imageToolbar.add(stopWebcamBtn);
+
+        updateIntvlabel.setLabelFor(updateIntervalSpinner);
+        updateIntvlabel.setText("Update interval:");
+        updateIntvlabel.setEnabled(false);
+        imageToolbar.add(updateIntvlabel);
+
+        updateIntervalSpinner.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.100000024f), Float.valueOf(0.05f), Float.valueOf(10.0f), Float.valueOf(0.1f)));
+        updateIntervalSpinner.setEnabled(false);
+        updateIntervalSpinner.setMaximumSize(new java.awt.Dimension(50, 20));
+        updateIntervalSpinner.setMinimumSize(new java.awt.Dimension(30, 20));
+        updateIntervalSpinner.setPreferredSize(new java.awt.Dimension(50, 20));
+        imageToolbar.add(updateIntervalSpinner);
+        imageToolbar.add(jSeparator1);
+
         testimageBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagefile_icon.png"))); // NOI18N
+        testimageBtn.setText("Start Test-Billeder");
         testimageBtn.setToolTipText("Image source (test images)");
         testimageBtn.setFocusable(false);
-        testimageBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        testimageBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        testimageBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         testimageBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 testimageBtnActionPerformed(evt);
@@ -871,10 +881,10 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
+            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -924,22 +934,52 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         updateImagePanel();
     }//GEN-LAST:event_nextTestImgBtnActionPerformed
 
+    private void stopWebcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopWebcamBtnActionPerformed
+        if (webcamRunning)
+        	imageSource.close();
+        webcamRunning = false;
+        imageSource = null;
+        updateImagePanel();
+    }//GEN-LAST:event_stopWebcamBtnActionPerformed
+
     public void setFeed(IImageSource src){
 
-        if (src instanceof ImageFile) {
-			nextTestImgBtn.setEnabled(true);}
-        else   	nextTestImgBtn.setEnabled(false);
+		if (src instanceof ImageFile) {	// file src
+			nextTestImgBtn.setEnabled(true);
+			
+			updateIntervalSpinner.setEnabled(false);
+			updateIntvlabel.setEnabled(false);
+			pauseTBtn.setEnabled(false);
+			stopWebcamBtn.setEnabled(false);
+			webcamRunning = false;
+		} else{	// webcam src
+			nextTestImgBtn.setEnabled(false);
+			
+			updateIntervalSpinner.setEnabled(true);
+			updateIntvlabel.setEnabled(true);
+			pauseTBtn.setEnabled(true);
+			stopWebcamBtn.setEnabled(true);
+			webcamRunning = true;
+		}
     	
         imageSource = src;
         imageSource.init();
+        
+        if (webcamRunning){
+        	runWebcamloop();
+        	return;
+        }
+        	
         
         updateImagePanel();
 
     }
     
-    public void updateImagePanel() {
+    public synchronized void updateImagePanel() {
     	
     	imagePanel.removeAll();
+    	
+    	if (imageSource == null) return;
     	
     	BufferedImage sourceImg = imageSource.getImage();
 
@@ -957,13 +997,41 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         tileImgPanel.setMinimumSize(new Dimension(tileImg.getWidth(), tileImg.getHeight()));
         imagePanel.add(tileImgPanel);
 
+        
+        imagePanel.repaint();
         imagePanel.validate();
+	}
+    
+    public void runWebcamloop() {
+		
+    	new Thread("webcam-loop"){
+    		@Override
+    		public void run() {
+				
+    			while (webcamRunning) {
+					while (webcamFeedPaused);
+					
+					updateImagePanel();
+					
+					try {
+						Thread.sleep((long) (time_slice*1000));
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+    		}
+    	}.start();
+    	
 	}
     
     private ImagePanel srcImgPanel;
     private ImagePanel tileImgPanel;
     
     private IImageSource imageSource;
+    
+    boolean webcamRunning;
+    boolean webcamFeedPaused = true;
+    float time_slice = 0.1f;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JPanel bufferzonePanel;
@@ -972,6 +1040,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     javax.swing.JPanel imagePanel;
     private javax.swing.JPanel imageProcessPanel;
     private javax.swing.JToolBar imageToolbar;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JLabel maxBVal;
     private javax.swing.JLabel maxBVal1;
     private javax.swing.JLabel maxBVal2;
@@ -1031,10 +1100,14 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     javax.swing.JPanel miscPanel;
     private javax.swing.JButton nextTestImgBtn;
     javax.swing.JPanel obstacleThresholdPanel;
+    private javax.swing.JToggleButton pauseTBtn;
     javax.swing.JPanel robotBackThresholdPanel;
     javax.swing.JPanel robotFrontThresholdPanel;
     javax.swing.JTabbedPane settingsPanel;
+    private javax.swing.JButton stopWebcamBtn;
     private javax.swing.JButton testimageBtn;
+    private javax.swing.JSpinner updateIntervalSpinner;
+    private javax.swing.JLabel updateIntvlabel;
     private javax.swing.JButton webcamBtn;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

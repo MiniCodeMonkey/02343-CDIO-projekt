@@ -22,7 +22,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         
         
-        makeAndArrangeFrames();
+        makeImageFrame();
     }
 
     /** This method is called from within the constructor to
