@@ -15,22 +15,11 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
  * @author Morten Hulvej
  */
 public class ImageFrame extends javax.swing.JInternalFrame {
-	
-	
-	final int MIN_R = 0;
-	final int MIN_G = 1;
-	final int MIN_B = 2;
-	
-	final int MAX_R = 3;
-	final int MAX_G = 4;
-	final int MAX_B = 5;
-	
+		
 
     /** Creates new form ImageFrame */
     public ImageFrame() {
         initComponents();
-        
-
         initListeners();
     }
 
@@ -165,6 +154,7 @@ public class ImageFrame extends javax.swing.JInternalFrame {
         testimageBtn = new javax.swing.JButton();
         nextTestImgBtn = new javax.swing.JButton();
 
+        setIconifiable(true);
         setResizable(true);
         setTitle("Image Processing");
 
@@ -903,25 +893,6 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     private void testimageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testimageBtnActionPerformed
 
     	setFeed(new ImageFile());
-    	
-//        JFileChooser jFileChooser = new JFileChooser();
-//
-//        jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-//        jFileChooser.setDialogTitle("Choose image source...");
-//        
-//        jFileChooser.setFileFilter(new FileNameExtensionFilter("web-cam images (.png)", "png"));
-//
-//        int showOpenDialog_result = jFileChooser.showOpenDialog(this);
-//        switch (showOpenDialog_result){
-//            case JFileChooser.OPEN_DIALOG:
-//
-//                srcImgPanel = new ImagePanel((jFileChooser.getSelectedFile().getAbsolutePath()));
-//                imageProcessPanel.add(srcImgPanel);
-//                doLayout();
-//
-//                break;
-//                default:break;
-//        }
     }//GEN-LAST:event_testimageBtnActionPerformed
 
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed

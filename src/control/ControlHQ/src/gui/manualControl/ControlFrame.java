@@ -11,12 +11,36 @@
 
 package gui.manualControl;
 
-/**
- *
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Image;
+import java.io.IOException;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import lejos.pc.comm.NXTCommException;
+
+import bluetooth.interfaces.IBTConnector;
+
+import command.impl.Control;
+import command.interfaces.IClawControl;
+import command.interfaces.IControl;
+
+/** GUI fra Manual-test..
+ * <br> - Kan v�re buggy!
+ * 
+ * 
  * @author Morten Hulvej
  */
 public class ControlFrame extends javax.swing.JInternalFrame {
 
+	private static final long serialVersionUID = -693154801145671834L;
+	IControl controller;
+	IClawControl claw;
+	IBTConnector con;
+	boolean connected;
+	
     /** Creates new form ControlFrame */
     public ControlFrame() {
         initComponents();
@@ -31,22 +55,599 @@ public class ControlFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        movePanel = new javax.swing.JPanel();
+        leftBtn = new javax.swing.JButton();
+        rightBtn = new javax.swing.JButton();
+        fwrBtn = new javax.swing.JButton();
+        BckwBtn = new javax.swing.JButton();
+        clawCloseBtn = new javax.swing.JButton();
+        clawOpenBtn = new javax.swing.JButton();
+        stopBtn = new javax.swing.JButton();
+        isReversedChkBox = new javax.swing.JCheckBox();
+        connectBtn = new javax.swing.JButton();
+        statusLabel = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        statusPtyLabel = new javax.swing.JLabel();
+        sensorPanel = new javax.swing.JPanel();
+        batteryLevelBar = new javax.swing.JProgressBar();
+        speedPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        speedSlider = new javax.swing.JSlider();
+        turnspeedSlider = new javax.swing.JSlider();
+        clawspeedSlider = new javax.swing.JSlider();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        aboutBtn = new javax.swing.JButton();
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+        setIconifiable(true);
+
+        movePanel.setFocusable(false);
+
+        leftBtn.setText("<");
+        leftBtn.setBorderPainted(false);
+        leftBtn.setEnabled(false);
+        leftBtn.setFocusPainted(false);
+        leftBtn.setFocusable(false);
+        leftBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftBtnActionPerformed(evt);
+            }
+        });
+
+        rightBtn.setText(">");
+        rightBtn.setBorderPainted(false);
+        rightBtn.setEnabled(false);
+        rightBtn.setFocusPainted(false);
+        rightBtn.setFocusable(false);
+        rightBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightBtnActionPerformed(evt);
+            }
+        });
+
+        fwrBtn.setText("/\\");
+            fwrBtn.setBorderPainted(false);
+            fwrBtn.setEnabled(false);
+            fwrBtn.setFocusPainted(false);
+            fwrBtn.setFocusable(false);
+            fwrBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    fwrBtnActionPerformed(evt);
+                }
+            });
+
+            BckwBtn.setText("\\/");
+            BckwBtn.setBorderPainted(false);
+            BckwBtn.setEnabled(false);
+            BckwBtn.setFocusPainted(false);
+            BckwBtn.setFocusable(false);
+            BckwBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    BckwBtnActionPerformed(evt);
+                }
+            });
+
+            clawCloseBtn.setText(">-<");
+            clawCloseBtn.setToolTipText("Luk KLO");
+            clawCloseBtn.setBorderPainted(false);
+            clawCloseBtn.setEnabled(false);
+            clawCloseBtn.setFocusPainted(false);
+            clawCloseBtn.setFocusable(false);
+            clawCloseBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    clawCloseBtnActionPerformed(evt);
+                }
+            });
+
+            clawOpenBtn.setText("<->");
+            clawOpenBtn.setToolTipText("Åbn KLO");
+            clawOpenBtn.setBorderPainted(false);
+            clawOpenBtn.setEnabled(false);
+            clawOpenBtn.setFocusPainted(false);
+            clawOpenBtn.setFocusable(false);
+            clawOpenBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    clawOpenBtnActionPerformed(evt);
+                }
+            });
+
+            stopBtn.setFont(new java.awt.Font("Tahoma", 1, 11));
+            stopBtn.setForeground(new java.awt.Color(255, 0, 0));
+            stopBtn.setText("STOP ALT");
+            stopBtn.setToolTipText("Stop alt !");
+            stopBtn.setBorderPainted(false);
+            stopBtn.setEnabled(false);
+            stopBtn.setFocusPainted(false);
+            stopBtn.setFocusable(false);
+            stopBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    stopBtnActionPerformed(evt);
+                }
+            });
+
+            isReversedChkBox.setText("Reverse");
+            isReversedChkBox.setEnabled(false);
+            isReversedChkBox.setFocusPainted(false);
+            isReversedChkBox.setFocusable(false);
+
+            javax.swing.GroupLayout movePanelLayout = new javax.swing.GroupLayout(movePanel);
+            movePanel.setLayout(movePanelLayout);
+            movePanelLayout.setHorizontalGroup(
+                movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(movePanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(stopBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                        .addGroup(movePanelLayout.createSequentialGroup()
+                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(clawCloseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(leftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(BckwBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                                .addComponent(fwrBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(movePanelLayout.createSequentialGroup()
+                                    .addGap(9, 9, 9)
+                                    .addComponent(clawOpenBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(movePanelLayout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(isReversedChkBox)
+                                        .addComponent(rightBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addContainerGap())
+            );
+            movePanelLayout.setVerticalGroup(
+                movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(movePanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(movePanelLayout.createSequentialGroup()
+                            .addComponent(fwrBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(BckwBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(movePanelLayout.createSequentialGroup()
+                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(clawOpenBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(clawCloseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(movePanelLayout.createSequentialGroup()
+                                    .addGap(46, 46, 46)
+                                    .addComponent(leftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                                .addGroup(movePanelLayout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(rightBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(11, 11, 11)
+                            .addComponent(isReversedChkBox)))
+                    .addGap(15, 15, 15)
+                    .addComponent(stopBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                    .addContainerGap())
+            );
+
+            connectBtn.setText("CONNECT!");
+            connectBtn.setFocusable(false);
+            connectBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    connectBtnActionPerformed(evt);
+                }
+            });
+
+            statusLabel.setText("Status:");
+            statusLabel.setFocusable(false);
+
+            statusPtyLabel.setText("NOT CONNECTED");
+            statusPtyLabel.setFocusable(false);
+
+            sensorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Batteri"));
+            sensorPanel.setFocusable(false);
+
+            batteryLevelBar.setOrientation(1);
+            batteryLevelBar.setToolTipText("Batteri-niveau");
+            batteryLevelBar.setFocusable(false);
+
+            javax.swing.GroupLayout sensorPanelLayout = new javax.swing.GroupLayout(sensorPanel);
+            sensorPanel.setLayout(sensorPanelLayout);
+            sensorPanelLayout.setHorizontalGroup(
+                sensorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(sensorPanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(batteryLevelBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
+            sensorPanelLayout.setVerticalGroup(
+                sensorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(sensorPanelLayout.createSequentialGroup()
+                    .addGap(38, 38, 38)
+                    .addComponent(batteryLevelBar, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                    .addContainerGap())
+            );
+
+            speedPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Speed"));
+            speedPanel.setFocusable(false);
+
+            jLabel1.setText("Hastighed . . . . . .");
+
+            jLabel2.setText("Vende-hastighed  .");
+
+            jLabel3.setText("Klo . . . . . . . . . . .");
+
+            speedSlider.setPaintTicks(true);
+            speedSlider.setEnabled(false);
+            speedSlider.setFocusable(false);
+
+            turnspeedSlider.setPaintTicks(true);
+            turnspeedSlider.setEnabled(false);
+            turnspeedSlider.setFocusable(false);
+
+            clawspeedSlider.setMaximum(50);
+            clawspeedSlider.setPaintTicks(true);
+            clawspeedSlider.setValue(25);
+            clawspeedSlider.setEnabled(false);
+            clawspeedSlider.setFocusable(false);
+
+            javax.swing.GroupLayout speedPanelLayout = new javax.swing.GroupLayout(speedPanel);
+            speedPanel.setLayout(speedPanelLayout);
+            speedPanelLayout.setHorizontalGroup(
+                speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(speedPanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(speedPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(4, 4, 4)
+                            .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(speedPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(turnspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(speedPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(clawspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(85, Short.MAX_VALUE))
+            );
+            speedPanelLayout.setVerticalGroup(
+                speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(speedPanelLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel2)
+                        .addComponent(turnspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(clawspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)))
+            );
+
+            jScrollPane1.setBorder(null);
+            jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+            jTextArea1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+            jTextArea1.setColumns(20);
+            jTextArea1.setEditable(false);
+            jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 11));
+            jTextArea1.setLineWrap(true);
+            jTextArea1.setRows(5);
+            jTextArea1.setText("Pil-taster kan bruges til styring\nCTRL og SPACE til klo");
+            jTextArea1.setWrapStyleWord(true);
+            jTextArea1.setBorder(null);
+            jScrollPane1.setViewportView(jTextArea1);
+
+            aboutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/help_button.png"))); // NOI18N
+            aboutBtn.setContentAreaFilled(false);
+            aboutBtn.setFocusPainted(false);
+            aboutBtn.setFocusable(false);
+            aboutBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    aboutBtnActionPerformed(evt);
+                }
+            });
+
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(speedPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(sensorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(statusLabel)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+                                .addComponent(connectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(28, 28, 28)
+                            .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap())
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(connectBtn)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(statusLabel)
+                                .addComponent(statusPtyLabel)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(4, 4, 4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(sensorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(speedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            );
+
+            pack();
+        }// </editor-fold>//GEN-END:initComponents
+
+    private void leftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftBtnActionPerformed
+    	moveLeft();
+    }//GEN-LAST:event_leftBtnActionPerformed
+
+    private void rightBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightBtnActionPerformed
+    	moveRight();
+    }//GEN-LAST:event_rightBtnActionPerformed
+
+    private void fwrBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fwrBtnActionPerformed
+    	if (isReversedChkBox.isSelected())
+			moveBackward();
+		else
+			moveForward();
+    }//GEN-LAST:event_fwrBtnActionPerformed
+
+    private void BckwBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BckwBtnActionPerformed
+    	if (isReversedChkBox.isSelected())
+			moveForward();
+		else
+			moveBackward();
+    }//GEN-LAST:event_BckwBtnActionPerformed
+
+    private void clawCloseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clawCloseBtnActionPerformed
+    	closeClaw();
+    }//GEN-LAST:event_clawCloseBtnActionPerformed
+
+    private void clawOpenBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clawOpenBtnActionPerformed
+    	openClaw();
+    }//GEN-LAST:event_clawOpenBtnActionPerformed
+
+    private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
+    	allStop();
+    }//GEN-LAST:event_stopBtnActionPerformed
+
+    private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
+        if (connected) {
+			try {
+				con.disconnect();
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+						JOptionPane.ERROR_MESSAGE);
+			} finally {
+				reset();
+			}
+		} else {
+			int result = -1;
+//			setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			try {
+				result = con.searchAndConnect(false);
+				controller = new Control(con.getNxtCommand());
+			} catch (NXTCommException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+						JOptionPane.ERROR_MESSAGE);
+			} finally {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+
+
+			switch (result) {
+			case IBTConnector.BERTA_FOUND:
+				statusPtyLabel.setText("Forbundet til B.E.R.T.A.");
+				statusPtyLabel.setForeground(Color.green);
+				enableControls(true);
+				connected = true;
+                                try {
+                                    batteryLevelBar.setValue(controller.getBatteryLevel());
+                                } catch (IOException e) {
+                                    JOptionPane.showMessageDialog(this, "Kunne ikke læse batteri-niveau", "Fejl",
+                                                    JOptionPane.ERROR_MESSAGE);
+                                }
+				break;
+			case IBTConnector.NO_NXT_FOUND:
+				statusPtyLabel.setText("Ingen NXT-enheder fundet");
+				statusPtyLabel.setForeground(Color.red);
+				reset();
+				break;
+			case IBTConnector.NO_BERTA_FOUND:
+				statusPtyLabel.setText("Enheder fundet, men ingen B.E.R.T.A.");
+				statusPtyLabel.setForeground(Color.yellow);
+				break;
+			default:
+				reset();
+				break;
+			}
+		}
+    }//GEN-LAST:event_connectBtnActionPerformed
+
+    private void aboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutBtnActionPerformed
+
+        Image icon = new ImageIcon(getClass().getResource("/icons/BERTA.png")).getImage().getScaledInstance(-1, 480, Image.SCALE_FAST);
+        JOptionPane.showMessageDialog(null,
+                "Orn'lig syg about box til basis kontrol-HQ-2theMaX!\n"
+                + "Brugt til test af orn'lig syg B.E.R.T.A!"
+                + "\n"
+                + "For�r 2011 (c) Gruppe 4 - CDIO Projekt", "Orn'lig syg",
+                JOptionPane.WARNING_MESSAGE,new ImageIcon(icon));
+}//GEN-LAST:event_aboutBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BckwBtn;
+    private javax.swing.JButton aboutBtn;
+    private javax.swing.JProgressBar batteryLevelBar;
+    private javax.swing.JButton clawCloseBtn;
+    private javax.swing.JButton clawOpenBtn;
+    private javax.swing.JSlider clawspeedSlider;
+    private javax.swing.JButton connectBtn;
+    private javax.swing.JButton fwrBtn;
+    private javax.swing.JCheckBox isReversedChkBox;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton leftBtn;
+    private javax.swing.JPanel movePanel;
+    private javax.swing.JButton rightBtn;
+    private javax.swing.JPanel sensorPanel;
+    private javax.swing.JPanel speedPanel;
+    private javax.swing.JSlider speedSlider;
+    private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel statusPtyLabel;
+    private javax.swing.JButton stopBtn;
+    private javax.swing.JSlider turnspeedSlider;
     // End of variables declaration//GEN-END:variables
 
+	public void reset() {
+		connectBtn.setText("CONNECT!");
+		statusPtyLabel.setText("NOT CONNECTED");
+		statusPtyLabel.setForeground(Color.black);
+		connected = false;
+		enableControls(connected);
+
+	}
+
+	public void enableControls(boolean en) {
+		Component[] c = movePanel.getComponents();
+		for (Component comp : c) {
+			comp.setEnabled(en);
+		}
+		c = speedPanel.getComponents();
+		for (Component comp : c) {
+			comp.setEnabled(en);
+		}
+		if (en)
+			connectBtn.setText("Disconnect");
+	}
+
+	public void moveForward() {
+		try {
+			controller.move(speedSlider.getValue(), false);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+
+	public void moveBackward() {
+		try {
+			controller.move(speedSlider.getValue(), true);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+
+	public void moveLeft() {
+		try {
+			controller.left(turnspeedSlider.getValue());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+
+	public void moveRight() {
+		try {
+			controller.right(turnspeedSlider.getValue());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+
+	public void openClaw() {
+		try {
+			controller.openClaw(clawspeedSlider.getValue());
+			// claw.openClaw(clawspeedSlider.getValue());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+
+	public void closeClaw() {
+		try {
+			controller.closeClaw(clawspeedSlider.getValue());
+			// claw.closeClaw(clawspeedSlider.getValue());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+
+	public void allStop() {
+		try {
+			controller.stop();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+
+	public void updateReadings() {
+		try {
+			System.out.print("Updating..");
+			if (connected) {
+				int voltage = controller.getBatteryLevel();
+				batteryLevelBar.setValue(voltage);
+				System.out.println("OK");
+				if (voltage < 50)
+					JOptionPane
+							.showMessageDialog(
+									this,
+									"Batteri-spændingen er nu under 50%.\n"
+											+ "Bemærk at spændingen IKKE falder linært,\n"
+											+ "hvorfor det anbefales at skifte/lade batteri.",
+									"Advarsel", JOptionPane.WARNING_MESSAGE);
+			} else
+				System.out.println("FAIL");
+
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(this,
+					"Kunne ikke læse batteri-niveau", "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
+    
 }
