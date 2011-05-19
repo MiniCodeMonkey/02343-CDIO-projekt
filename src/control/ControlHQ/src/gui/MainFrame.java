@@ -23,6 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         
         makeImageFrame();
+        makeControlFrame();
     }
 
     /** This method is called from within the constructor to
