@@ -84,4 +84,8 @@ public class Cake implements ICake {
 	public int getX() {
 		return this.x;
 	}
+	
+	public String toString() {
+		return "Cake at (y,x): (" + y + "," + x + ")";
+	}
 }
