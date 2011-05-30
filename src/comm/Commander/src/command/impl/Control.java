@@ -27,7 +27,7 @@ public class Control implements IControl{
 	public void move(int speed, boolean reverse) throws IOException {
 		if (isMoving())
 			return;
-		if(reverse)
+		if(!reverse)
 			speed *= -1;
 		
 		commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
@@ -123,7 +123,7 @@ public class Control implements IControl{
 //		if (isClawMoving())
 //			return;
 //		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
-		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
 
@@ -132,7 +132,7 @@ public class Control implements IControl{
 //		if (isClawMoving())
 //			return;
 //		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
-		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
 
