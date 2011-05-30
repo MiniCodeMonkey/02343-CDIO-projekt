@@ -4,3 +4,6 @@
 /src/image/WebCam/bin/dk
 /src/image/ImageProcessing/bin
 /src/image/ImageProcessing/bin
+/src/control/ControlHQ/bin
+/src/control/ControlTest/bin
+/src/pathfinding/bin

@@ -12,7 +12,9 @@ import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
@@ -24,6 +26,7 @@ public class ProcessingThread extends Thread {
 	private BertaCommando bertaCommando;
 	private IControl bertaControl;
 	private IImageSource imageSource;
+	private IImageProcessor imageProcessor;
 	private TestPathfinding testPathfinding;
 	private boolean running;
 	private boolean headingForHome = false;
@@ -40,6 +43,7 @@ public class ProcessingThread extends Thread {
 		System.out.println("Starting processing thread.");
 		imageSource = new WebCam();
 		imageSource.init();
+		imageProcessor = new ImageProcessor2();
 		bertaCommando = new BertaCommando();
 		bertaControl = bertaCommando.getControl();
 		
@@ -58,7 +62,7 @@ public class ProcessingThread extends Thread {
 		while (running)
 		{
 			BufferedImage image = imageSource.getImage();
-			ILocations locations = ImageProcessor.examineImage(image, true);
+			ILocations locations = imageProcessor.examineImage(image, true);
 			try {
 				calculatePath(locations);
 			} catch (IOException e) {
