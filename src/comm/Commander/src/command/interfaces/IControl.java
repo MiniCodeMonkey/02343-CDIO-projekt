@@ -97,5 +97,7 @@ public interface IControl {
 	
 	boolean isClawMoving();
 	
+	void reverse(int speed, int duration);
+	
 	
 }

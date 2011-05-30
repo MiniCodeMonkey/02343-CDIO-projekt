@@ -5,15 +5,16 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
 import command.BertaCommando;
 import command.interfaces.IControl;
 
+import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
@@ -25,8 +26,10 @@ public class ProcessingThread extends Thread {
 	private BertaCommando bertaCommando;
 	private IControl bertaControl;
 	private IImageSource imageSource;
+	private IImageProcessor imageProcessor;
 	private TestPathfinding testPathfinding;
 	private boolean running;
+	private boolean headingForHome = false;
 	
 	public void setPathfinding(TestPathfinding testPathfinding)
 	{
@@ -38,6 +41,7 @@ public class ProcessingThread extends Thread {
 		System.out.println("Starting processing thread.");
 		imageSource = new WebCam();
 		imageSource.init();
+		imageProcessor = new ImageProcessor2();
 		bertaCommando = new BertaCommando();
 		bertaControl = bertaCommando.getControl();
 		
@@ -46,10 +50,8 @@ public class ProcessingThread extends Thread {
 			Thread.sleep(2000);
 			bertaControl.stopClaw();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -58,7 +60,7 @@ public class ProcessingThread extends Thread {
 		while (running)
 		{
 			BufferedImage image = imageSource.getImage();
-			ILocations locations = ImageProcessor.examineImage(image, true);
+			ILocations locations = imageProcessor.examineImage(image, true);
 			try {
 				calculatePath(locations);
 			} catch (IOException e) {
@@ -74,13 +76,14 @@ public class ProcessingThread extends Thread {
 				e.printStackTrace();
 			}*/
 		}
+		System.out.println("Ending ProcessingThread");
 	}
 
 	private void calculatePath(ILocations locations) throws IOException
 	{
 		System.out.println("Calculating path...");
 		
-		if (locations.getRobots().size() <= 0 || locations.getCakes().size() <= 0)
+		if (locations.getRobots().size() <= 0 || (locations.getCakes().size() <= 0 && !headingForHome))
 		{
 			System.out.println("Missing cake and/or robot on image. (robots: "+ locations.getRobots().size() +", cakes: "+ locations.getCakes().size() +")");
 			
@@ -90,7 +93,16 @@ public class ProcessingThread extends Thread {
 		TileMap tileMap = new TileMap();
 		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
 		IRobot robot = locations.getRobots().get(0);
-		ICake cake = locations.getCakes().get(0);
+		ICake cake;
+		
+		if (!headingForHome)
+		{
+			cake = locations.getCakes().get(0);
+		}
+		else
+		{
+			cake = new Cake(locations.getTileImage().getHeight() - 20, locations.getTileImage().getWidth() / 2);
+		}
 		
 		if (robot.getAngle()*180/Math.PI < 0)
 		{
@@ -151,10 +163,6 @@ public class ProcessingThread extends Thread {
 			System.out.println("step: " + step.getX() + "," + step.getY());
 			System.out.println("robot: " + robot.getX() + "," + robot.getY());
 			
-//			double a = robot.getX() - step.getX();
-//			double b = robot.getY() - step.getY();
-//			double supposedToBeAngle = 0.0;
-//			double c = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
 			double dy = step.getY()-robot.getY();
 			double dx = step.getX()-robot.getX();
 			double supposedToBeAngle = 0.0;
@@ -185,31 +193,6 @@ public class ProcessingThread extends Thread {
 					supposedToBeAngle = -Math.PI+supposedToBeAngle;
 				}
 			}
-//			supposedToBeAngle = Math.asin(b/c);
-//			if (a > 0 && b < 0) {
-				// 3. kvadrant
-//				System.out.println("3. kvadrant");
-//				supposedToBeAngle = -Math.PI-supposedToBeAngle;
-//			} else if (a > 0 && b >= 0) {
-				// 4. kvadrant
-//				System.out.println("4. kvadrant");
-//				supposedToBeAngle = Math.PI-supposedToBeAngle;
-//			}
-//			supposedToBeAngle += Math.PI;
-//			if (supposedToBeAngle > Math.PI)
-//				supposedToBeAngle -= 2*Math.PI;
-/*			if (step.getX() - robot.getX() == 0) {
-				if (step.getY() > robot.getY()) {
-					supposedToBeAngle = Math.PI;
-				}
-			} else {
-				supposedToBeAngle = Math.atan(
-						(step.getY() - robot.getY())
-						/
-						(step.getX() - robot.getX())
-				) + Math.PI / 2;
-				supposedToBeAngle = -supposedToBeAngle;
-			}*/
 			
 			System.out.println("Current robot angle: " + (robot.getAngle()*180/Math.PI) + ", supposed to be angle: " + (supposedToBeAngle*180/Math.PI));
 			
@@ -218,97 +201,169 @@ public class ProcessingThread extends Thread {
 			double distance = calculateDistance(robot.getX(), robot.getY(), cake.getX(), cake.getY());
 			System.out.println("Distance to target: " + distance);
 			
-			if (distance < 64)
+			if (!headingForHome)
 			{
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (distance < 64)
+				{
+	/*				try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}*/
+					if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*2)
+					{
+						// Rotate
+						if (robot.getAngle() < supposedToBeAngle)
+						{
+							bertaControl.right(100);
+						}
+						else
+						{
+							bertaControl.left(100);
+						}
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						bertaControl.stop();
+					}
+					
 				}
-				
+				if (distance < 40)
+				{
+					//running = false;
+					System.out.println("CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKE!!!!!!!!!");
+					
+	/*				while (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*3) {
+						// Rotate
+						if (robot.getAngle() < supposedToBeAngle)
+						{
+							bertaControl.right(10);
+						}
+						else
+						{
+							bertaControl.left(10);
+						}
+						try {
+							Thread.sleep(100);
+							bertaControl.stop();
+						} catch (InterruptedException e) {
+							
+						}
+					}*/
+					
+					bertaControl.openClaw();
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					bertaControl.stopClaw();
+	
+					System.out.println("Moving forward");
+					bertaControl.move(100, false);
+					
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					bertaControl.stop();
+					
+					System.out.println("Closing claw");
+					bertaControl.closeClaw();
+					
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					bertaControl.stopClaw();
+					
+					System.out.println("Reversing");
+					bertaControl.move(50, true);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+					bertaControl.stop();
+					/*System.out.println("Opening claw");
+					bertaControl.openClaw();
+					
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					bertaControl.stopClaw();
+					
+					System.out.println("Done");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}*/
+					headingForHome = true;
+					System.out.println("Heading for home...");
+	
+					return;
+				}
 			}
-			if (distance < 32)
+			else
 			{
-				//running = false;
-				System.out.println("CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKE!!!!!!!!!");
-				bertaControl.openClaw();
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (distance < 32)
+				{
+					// Move forward
+					bertaControl.move(50, false);
+					System.out.println("FOUND HOME!!!!!");
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					bertaControl.stop();
+					
+					// Open claw
+					bertaControl.openClaw();
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					bertaControl.stopClaw();
+					
+					// Move backwards
+					bertaControl.reverse(50, 4000);
+					
+					System.out.println("Cake delivered");
+					
+					// Close claw
+					bertaControl.closeClaw();
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					bertaControl.stopClaw();
+					
+					// Reset variables
+					headingForHome = false;
+					return;
 				}
-				bertaControl.stopClaw();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				System.out.println("Moving forward");
-				bertaControl.move(100, false);
-				
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("Closing claw");
-				bertaControl.closeClaw();
-				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				bertaControl.stop();
-				
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				System.out.println("Reversing");
-				bertaControl.move(50, true);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				bertaControl.stop();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				System.out.println("Opening claw");
-				bertaControl.openClaw();
-				
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				bertaControl.stopClaw();
-				
-				System.out.println("Done");
-				try {
-					Thread.sleep(60000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				return;
 			}
 			
 			// Is current angle as it is supposed to be?

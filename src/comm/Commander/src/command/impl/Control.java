@@ -68,6 +68,7 @@ public class Control implements IControl{
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
 //		System.out.println("STOPPING");
+//		lejos.nxt.Sound.playSoundFile("tires.rso");
 		setMoving(false);
 	}
 
@@ -119,17 +120,19 @@ public class Control implements IControl{
 
 	@Override
 	public void openClaw(int clawMotor) throws IOException {
-		if (isClawMoving())
-			return;
-		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+//		if (isClawMoving())
+//			return;
+//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
 
 	@Override
 	public void closeClaw(int clawMotor) throws IOException {
-		if (isClawMoving())
-			return;
-		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+//		if (isClawMoving())
+//			return;
+//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
 
@@ -177,5 +180,31 @@ public class Control implements IControl{
 	public void closeClaw() throws IOException {
 		closeClaw(DEFAULT_CLAW_SPEED);
 		
+	}
+
+	@Override
+	public void reverse(int speed, int duration) {
+		try {
+			move(speed, true);
+			try {
+				Thread.sleep(duration);
+			} catch (InterruptedException e) {
+				
+			}
+			stop();
+//			
+//			for (int i = 0; i <= duration; i += 700)
+//			{
+//				lejos.nxt.Sound.playTone(600, 700);
+//				Thread.sleep(700);
+//			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+		}
 	}
 }
