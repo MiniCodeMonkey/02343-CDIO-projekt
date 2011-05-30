@@ -27,6 +27,8 @@ public class ProcessingThread extends Thread {
 	private TestPathfinding testPathfinding;
 	private boolean running;
 	private boolean headingForHome = false;
+	private boolean foundCake = false;
+	private ICake homeCake;
 	
 	public void setPathfinding(TestPathfinding testPathfinding)
 	{
@@ -77,12 +79,14 @@ public class ProcessingThread extends Thread {
 
 	private void calculatePath(ILocations locations) throws IOException
 	{
+		bertaControl.stop();
 		System.out.println("Calculating path...");
 		
 		if (locations.getRobots().size() <= 0 || (locations.getCakes().size() <= 0 && !headingForHome))
 		{
 			System.out.println("Missing cake and/or robot on image. (robots: "+ locations.getRobots().size() +", cakes: "+ locations.getCakes().size() +")");
 			
+			bertaControl.reverse(100, 600);
 			return;
 		}
 		
@@ -97,12 +101,7 @@ public class ProcessingThread extends Thread {
 		}
 		else
 		{
-			cake = new Cake(locations.getTileImage().getHeight() - 20, locations.getTileImage().getWidth() / 2);
-		}
-		
-		if (robot.getAngle()*180/Math.PI < 0)
-		{
-			//robot.setAngle(robot.getAngle() + Math.PI * 2);
+			cake = homeCake;
 		}
 		
 		PathFinder pathFinder = new PathFinder(tileMap, 1500, true);
@@ -118,6 +117,7 @@ public class ProcessingThread extends Thread {
 		
 		if (path == null)
 		{
+			System.out.println("Could not find path between robot and target");
 //			JOptionPane.showMessageDialog(null, "Could not find path between " + robot.getX() +"," + robot.getY() + " and " + cake.getX() + "," + cake.getY() + ".");
 			bertaControl.stop();
 			return;
@@ -154,7 +154,7 @@ public class ProcessingThread extends Thread {
 				step = path.getStep(n);
 				n++;
 			}
-			while (step.getX() == robot.getX() && step.getY() == robot.getY());
+			while (n < path.getLength() && step.getX() == robot.getX() && step.getY() == robot.getY());
 			
 			System.out.println("step: " + step.getX() + "," + step.getY());
 			System.out.println("robot: " + robot.getX() + "," + robot.getY());
@@ -192,134 +192,113 @@ public class ProcessingThread extends Thread {
 			
 			System.out.println("Current robot angle: " + (robot.getAngle()*180/Math.PI) + ", supposed to be angle: " + (supposedToBeAngle*180/Math.PI));
 			
-			bertaControl.stop();
-			
 			double distance = calculateDistance(robot.getX(), robot.getY(), cake.getX(), cake.getY());
 			System.out.println("Distance to target: " + distance);
 			
 			if (!headingForHome)
 			{
-				if (distance < 64)
+				if (distance < 32)
 				{
-	/*				try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
-					if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*2)
+					if (!foundCake)
 					{
-						// Rotate
-						if (robot.getAngle() < supposedToBeAngle)
-						{
-							bertaControl.right(100);
-						}
-						else
-						{
-							bertaControl.left(100);
-						}
+						foundCake = true;
+						//running = false;
+						System.out.println("CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKE!!!!!!!!!");
+					}
+					
+					if (Math.abs(robot.getAngle() - supposedToBeAngle) <= (Math.PI / 180)*10)
+					{
+						bertaControl.openClaw();
 						try {
-							Thread.sleep(100);
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						bertaControl.stopClaw();
+		
+						System.out.println("Moving forward");
+						bertaControl.move(100, false);
+						
+						try {
+							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						bertaControl.stop();
-					}
-					
-				}
-				if (distance < 40)
-				{
-					//running = false;
-					System.out.println("CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKE!!!!!!!!!");
-					
-	/*				while (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*3) {
-						// Rotate
-						if (robot.getAngle() < supposedToBeAngle)
-						{
-							bertaControl.right(10);
-						}
-						else
-						{
-							bertaControl.left(10);
-						}
+						
+						System.out.println("Closing claw");
+						bertaControl.closeClaw();
+						
 						try {
-							Thread.sleep(100);
-							bertaControl.stop();
+							Thread.sleep(3000);
 						} catch (InterruptedException e) {
-							
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-					}*/
-					
-					bertaControl.openClaw();
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						bertaControl.stopClaw();
+						
+						System.out.println("Reversing");
+						bertaControl.move(50, true);
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						
+						bertaControl.stop();
+						/*System.out.println("Opening claw");
+						bertaControl.openClaw();
+						
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						bertaControl.stopClaw();
+						
+						System.out.println("Done");
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}*/
+						
+						ICake homes[] = {
+								new Cake(locations.getTileImage().getHeight() - 1, locations.getTileImage().getWidth() / 2),
+								new Cake(locations.getTileImage().getHeight() / 2, locations.getTileImage().getWidth() - 1),
+								new Cake(1, locations.getTileImage().getWidth() / 2),
+								new Cake(locations.getTileImage().getHeight() / 2, 1)
+						};
+						
+						double bestDistance = Double.MAX_VALUE;
+						for (ICake home : homes)
+						{
+							double currentDistance = Math.sqrt(Math.pow(home.getX() - robot.getX(), 2) + Math.pow(home.getY()- robot.getY(), 2));
+							
+							if (currentDistance < bestDistance)
+							{
+								bestDistance = currentDistance;
+								homeCake = home;
+							}
+						}
+						
+						headingForHome = true;
+						foundCake = false;
+						System.out.println("Heading for home...");
+						
+						return;
 					}
-					bertaControl.stopClaw();
-	
-					System.out.println("Moving forward");
-					bertaControl.move(100, false);
-					
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					bertaControl.stop();
-					
-					System.out.println("Closing claw");
-					bertaControl.closeClaw();
-					
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					bertaControl.stopClaw();
-					
-					System.out.println("Reversing");
-					bertaControl.move(50, true);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					bertaControl.stop();
-					/*System.out.println("Opening claw");
-					bertaControl.openClaw();
-					
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					bertaControl.stopClaw();
-					
-					System.out.println("Done");
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
-					headingForHome = true;
-					System.out.println("Heading for home...");
-	
-					return;
 				}
 			}
 			else
 			{
 				if (distance < 32)
-				{
+				{	
 					// Move forward
 					bertaControl.move(50, false);
 					System.out.println("FOUND HOME!!!!!");
@@ -341,10 +320,20 @@ public class ProcessingThread extends Thread {
 					}
 					bertaControl.stopClaw();
 					
-					// Move backwards
-					bertaControl.reverse(50, 4000);
-					
+					// Move forwards
+					bertaControl.move(100, false);
+					try {
+						Thread.sleep(1500);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					System.out.println("Cake delivered");
+					bertaControl.stop();
+					
+					// Move backwards
+					bertaControl.reverse(50, 5750);
+					bertaControl.stop();
 					
 					// Close claw
 					bertaControl.closeClaw();
@@ -363,19 +352,19 @@ public class ProcessingThread extends Thread {
 			}
 			
 			// Is current angle as it is supposed to be?
-			if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*45)
+			if (distance >= 40 && !foundCake && Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*45)
 			{
 				// Rotate
 				if (robot.getAngle() < supposedToBeAngle)
 				{
-					bertaControl.right(100);
+					bertaControl.right(30);
 				}
 				else
 				{
-					bertaControl.left(100);
+					bertaControl.left(30);
 				}
 			}
-			else if (Math.abs(robot.getAngle() - supposedToBeAngle) > (Math.PI / 180)*10) // ~10 deg
+			else if (foundCake || (distance < 40 && Math.abs(robot.getAngle() - supposedToBeAngle) >= (Math.PI / 180)*10))
 			{
 				// Rotate
 				if (robot.getAngle() < supposedToBeAngle)
@@ -392,7 +381,7 @@ public class ProcessingThread extends Thread {
 				System.out.println("Full steam ahead! ---- Aye aye captain, full steam ahead. TUUUUUUUT TUUUUUUUT");
 				
 				// MOVE!
-				bertaControl.move(100, false);
+				bertaControl.move(40, false);
 			}
 		}
 	}

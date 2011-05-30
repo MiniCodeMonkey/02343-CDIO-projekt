@@ -95,8 +95,7 @@ public class TestPathfinding implements ActionListener {
 	public void updateImages(final BufferedImage sourceImage, final BufferedImage tileImage) {
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	System.out.println("Setting images");
-        		panel1.removeAll();
+            	panel1.removeAll();
     			panel1.setSize(sourceImage.getWidth(), sourceImage.getHeight());
     			panel1.setImage((Image) sourceImage);
     			panel1.paint(panel1.getGraphics());

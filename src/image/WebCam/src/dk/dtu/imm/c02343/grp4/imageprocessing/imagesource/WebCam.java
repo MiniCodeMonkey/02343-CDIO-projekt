@@ -15,6 +15,7 @@ import javax.media.NoPlayerException;
 import javax.media.Player;
 import javax.media.control.FormatControl;
 import javax.media.control.FrameGrabbingControl;
+import javax.media.format.RGBFormat;
 import javax.media.format.VideoFormat;
 import javax.media.util.BufferToImage;
 
@@ -50,6 +51,7 @@ public class WebCam implements IImageSource {
 	public void init() {
 		// Hent webcam info
 		CaptureDeviceInfo deviceInfo = CaptureDeviceManager.getDevice("vfw:Microsoft WDM Image Capture (Win32):0");
+		
 		// Opret player med forbindelse til webcam
 		try {
 			player = Manager.createRealizedPlayer(deviceInfo.getLocator());
