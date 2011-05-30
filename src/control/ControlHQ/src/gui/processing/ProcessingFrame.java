@@ -1,10 +1,12 @@
-package gui.image;
+package gui.processing;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
-import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.imageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
@@ -14,18 +16,18 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
  *
  * @author Morten Hulvej
  */
-public class ImageFrame extends javax.swing.JInternalFrame {
+public class ProcessingFrame extends javax.swing.JInternalFrame {
 		
-
+	
     /** Creates new form ImageFrame */
-    public ImageFrame() {
+    public ProcessingFrame() {
         initComponents();
         initListeners();
     }
 
     private void initListeners() {
 		
-    	ImageChangeListener stateChangeListener = new ImageChangeListener(this);
+    	stateChangeListener = new ImageChangeListener(this);
 		// TODO init. sliders p� en smartere m�de..
 
 		// min-sliders
@@ -893,11 +895,16 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     private void testimageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testimageBtnActionPerformed
 
     	setFeed(new ImageFile());
+    	
+    	stateChangeListener.setImageProcessor(new ImageProcessor2());
+    	
     }//GEN-LAST:event_testimageBtnActionPerformed
 
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed
     	
-    	setFeed(new WebCam());	
+    	setFeed(new WebCam());
+    	
+    	stateChangeListener.setImageProcessor(new ImageProcessor2());
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
 
@@ -954,8 +961,8 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     	
     	BufferedImage sourceImg = imageSource.getImage();
 
-        // Opret tile-image vha. hj�lpemetode
-        ILocations locations = ImageProcessor.examineImage(sourceImg, true);
+        // Opret tile-image vha. hj�lpemetode    	
+        ILocations locations = stateChangeListener.getImageProcessor().examineImage(sourceImg, true);
         BufferedImage tileImg = locations.getTileImage();
 		
     	// Opret JFrame samt panel til input-billede
@@ -997,6 +1004,8 @@ public class ImageFrame extends javax.swing.JInternalFrame {
     
     private ImagePanel srcImgPanel;
     private ImagePanel tileImgPanel;
+    
+    private ImageChangeListener stateChangeListener;
     
     private IImageSource imageSource;
     

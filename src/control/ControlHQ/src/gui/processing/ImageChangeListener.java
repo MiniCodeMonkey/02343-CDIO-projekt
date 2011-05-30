@@ -1,14 +1,16 @@
-package gui.image;
+package gui.processing;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.imageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
 
 /**Fælles Listener klasse for alle control i image-processing..
@@ -17,23 +19,37 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
  */
 public class ImageChangeListener implements ChangeListener, ItemListener {
 
-	ImageFrame frame;
+	ProcessingFrame frame;
+	IImageProcessor imageProcessor;
 	
-	public ImageChangeListener(ImageFrame f) {
+	public IImageProcessor getImageProcessor() {
+		return imageProcessor;
+	}
+
+	public void setImageProcessor(IImageProcessor ip) {
+		this.imageProcessor = ip;
+	}
+
+	public ImageChangeListener(ProcessingFrame f) {
 		frame = f;
 	}
 	
 	@Override
 	public void stateChanged(ChangeEvent evt) {
-		
+				
 		if (evt.getSource() instanceof JSlider) {
 			JSlider slider = (JSlider) evt.getSource();
+			
+			if (imageProcessor == null){
+				JOptionPane.showMessageDialog(frame, "Mangler at initalisere imageProcessor", "Fejl", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			
 			// TODO isValueAdjusting   hvis det kører for tungt!
 			
 			if (slider.getParent().getParent()
 					.equals(frame.robotFrontThresholdPanel)) {
-				ImageProcessor.setThresholds(ImageProcessor.ROBOTN,
+				imageProcessor.setThresholds(imageProcessor.ROBOTN,
 						new Thresholds(frame.minRedSlider.getValue(),
 								frame.minGreenSlider.getValue(),
 								frame.minBlueSlider.getValue(),
@@ -42,7 +58,7 @@ public class ImageChangeListener implements ChangeListener, ItemListener {
 								frame.maxBlueSlider.getValue()));
 			} else if (slider.getParent().getParent()
 					.equals(frame.robotBackThresholdPanel)) {
-				ImageProcessor.setThresholds(ImageProcessor.ROBOTS,
+				imageProcessor.setThresholds(imageProcessor.ROBOTS,
 						new Thresholds(frame.minRedSlider1.getValue(),
 								frame.minGreenSlider1.getValue(),
 								frame.minBlueSlider1.getValue(),
@@ -51,7 +67,7 @@ public class ImageChangeListener implements ChangeListener, ItemListener {
 								frame.maxBlueSlider1.getValue()));
 			} else if (slider.getParent().getParent()
 					.equals(frame.cakesThresholdPanel)) {
-				ImageProcessor.setThresholds(ImageProcessor.CAKE,
+				imageProcessor.setThresholds(imageProcessor.CAKE,
 						new Thresholds(frame.minRedSlider2.getValue(),
 								frame.minGreenSlider2.getValue(),
 								frame.minBlueSlider2.getValue(),
@@ -60,7 +76,7 @@ public class ImageChangeListener implements ChangeListener, ItemListener {
 								frame.maxBlueSlider2.getValue()));
 			} else if (slider.getParent().getParent()
 					.equals(frame.obstacleThresholdPanel)) {
-				ImageProcessor.setThresholds(ImageProcessor.OBSTACLE,
+				imageProcessor.setThresholds(imageProcessor.OBSTACLE,
 						new Thresholds(frame.minRedSlider3.getValue(),
 								frame.minGreenSlider3.getValue(),
 								frame.minBlueSlider3.getValue(),
@@ -68,7 +84,7 @@ public class ImageChangeListener implements ChangeListener, ItemListener {
 								frame.maxGreenSlider3.getValue(),
 								frame.maxBlueSlider3.getValue()));
 			} else if (slider.getParent().equals(frame.bufferzonePanel)) {
-				ImageProcessor.setObstacleBufferZone(frame.bufzoneSlider.getValue());
+				imageProcessor.setObstacleBufferZone(frame.bufzoneSlider.getValue());
 			}
 			
 			

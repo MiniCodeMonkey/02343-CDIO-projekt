@@ -8,8 +8,8 @@ package gui;
 
 import java.awt.Point;
 
-import gui.image.ImageFrame;
 import gui.manualControl.ControlFrame;
+import gui.processing.ProcessingFrame;
 
 /**
  *
@@ -21,7 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
-        
+        makePathfindingFrame();
         makeImageFrame();
         makeControlFrame();
     }
@@ -100,12 +100,12 @@ public class MainFrame extends javax.swing.JFrame {
      * Opretter panel med funktioner vedr. al image-processing
      */
     public void makeImageFrame() {
-    	ImageFrame imageFrame = new ImageFrame();
+    	ProcessingFrame processFrame = new ProcessingFrame();
     	
-        imageFrame.setLocation(dashboard.getSize().width - imageFrame.getSize().width, imageFrame.getLocation().y);
+        processFrame.setLocation(dashboard.getSize().width - processFrame.getSize().width, processFrame.getLocation().y);
 
-    	imageFrame.setVisible(true);
-    	dashboard.add(imageFrame);
+    	processFrame.setVisible(true);
+    	dashboard.add(processFrame);
 	}
     public void makePathfindingFrame() {
 		// TODO
