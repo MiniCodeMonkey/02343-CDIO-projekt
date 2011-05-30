@@ -40,22 +40,22 @@ public interface IImageProcessor {
 	/**
 	 * Mindste størrelse på sammenhængende områder i kager og robot-elementer i pixels
 	 */
-	public static final int MIN_OBJECT_SIZE = 15;
+	public static final int MIN_OBJECT_SIZE = 20;
 	
 	/**
 	 * Standard størrelse på forhindrings-sikkerhedszone
 	 */
-	public static final int OBSTACLE_BUFFER = 20;
+	public static final int OBSTACLE_BUFFER = 30;
 	
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
 	 */
-	public static final Thresholds OBSTACLE_THRESHOLDS = new Thresholds(140, 140, 140, 255, 255, 255);
+	public static final Thresholds OBSTACLE_THRESHOLDS = new Thresholds(160, 160, 160, 255, 255, 255);
 	
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
 	 */
-	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(70, 0, 0, 255, 25, 25);
+	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(50, 0, 0, 255, 35, 35);
 	
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
@@ -81,5 +81,9 @@ public interface IImageProcessor {
 	
 	public void setThresholds(int type, Thresholds thresholds);
 	
+	public Thresholds getThresholds(int type);
+	
 	public void setObstacleBufferZone(int bufferZone);
+	
+	public int getObstacleBufferZone();
 }
