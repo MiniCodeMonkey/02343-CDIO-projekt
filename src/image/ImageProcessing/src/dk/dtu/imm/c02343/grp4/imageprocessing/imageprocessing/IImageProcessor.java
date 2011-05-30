@@ -74,4 +74,12 @@ public interface IImageProcessor {
 	 * @return ILocations objekt med tilemap, forhindringsmap og robot- og kagepositioner
 	 */
 	public ILocations examineImage(BufferedImage sourceImage, boolean debug);
+	
+	public BufferedImage getSourceImage();
+	
+	public void setSourceImage(BufferedImage sourceImage);
+	
+	public void setThresholds(int type, Thresholds thresholds);
+	
+	public void setObstacleBufferZone(int bufferZone);
 }
