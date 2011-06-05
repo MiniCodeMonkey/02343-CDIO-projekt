@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="pccomm.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Commander"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Communication"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/pathfinding"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -67,19 +67,18 @@ public class PathFinder {
 		}
 	}
 	
-	public int getNextNextMove(ILocations locations, int robotNo, int cakeNo)
-	{
-		
-		
-		return 0;
-	}
-	
 	/**
 	 * @see PathFinder#findPath(Robot, int, int, int, int)
 	 */
-	public Path findPath(IRobot robot, int sy, int sx, int ty, int tx) {
+	public Path findPath(IRobot robot, Location targetLocation)
+	{
+		int sy = robot.getY();
+		int sx = robot.getX();
+		
+		int ty = targetLocation.GetY();
+		int tx = targetLocation.GetX();
+		
 		// easy first check, if the destination is blocked, we can't get there
-
 		if (map.blocked(robot, ty, tx)) {
 			return null;
 		}
