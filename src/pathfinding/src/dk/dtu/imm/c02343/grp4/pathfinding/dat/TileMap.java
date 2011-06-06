@@ -42,8 +42,9 @@ public class TileMap
 
 	public boolean blocked(IRobot robot, int ty, int tx)
 	{
+		/*
 		// Is robot inside bounding box?
-		if (obstacleMap[robot.getY()][robot.getX()] > 0)
+		if (obstacleMap[robot.getY()][robot.getX()] > 0)	
 		{
 			return (obstacleMap[ty][tx] <= 5);
 		}
@@ -51,11 +52,35 @@ public class TileMap
 		{
 			return (obstacleMap[ty][tx] != 0);
 		}
+		*/
+		
+		boolean blocked = true;
+		
+		try
+		{
+			blocked = (obstacleMap[ty][tx] > 25);
+		}
+		catch (ArrayIndexOutOfBoundsException e)
+		{
+			
+		}
+		return blocked;
 	}
 
 	public float getCost(IRobot robot, int sy, int sx, int ty, int tx)
 	{
-		return 1;
+		/*for (int y = 0; y < obstacleMap.length; y++)
+		{
+			for (int x = 0; x < obstacleMap[0].length; x++)
+			{
+				System.out.print(obstacleMap[y][x]);
+			}
+			System.out.println();
+		}
+		
+		System.out.println("\n\n\n\n");*/
+		
+		return obstacleMap[ty][tx];
 	}
 
 	public void pathFinderVisited(int y, int x)

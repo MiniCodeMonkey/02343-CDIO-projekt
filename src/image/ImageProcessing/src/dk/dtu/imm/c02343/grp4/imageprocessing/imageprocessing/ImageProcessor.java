@@ -52,12 +52,12 @@ public class imageProcessor {
 	
 	// Grænseværdier for forskellige typer objekter
 	private static Thresholds obstacleThresholds = new Thresholds(140, 140, 140, 255, 255, 255);
-	private static Thresholds cakeThresholds = new Thresholds(70, 0, 0, 255, 25, 25);
+	private static Thresholds cakeThresholds = new Thresholds(70, 0, 0, 255, 40, 40);
 	private static Thresholds robotNThresholds = new Thresholds(0, 60, 0, 70, 255, 90);
 	private static Thresholds robotSThresholds = new Thresholds(0, 0, 30, 20, 50, 255);
 	
 	// Buffer omkring forhindringer
-	private static int obstacleBuffer = 20;
+	private static int obstacleBuffer = 30;
 	
 	/**
 	 * Tom konstruktør. Metoderne bruges statisk
