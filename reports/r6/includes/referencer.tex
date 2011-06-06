@@ -1,0 +1,41 @@
+%%%%%%%%%%%%%%%%%%%%%% Referencer %%%%%%%%%%%%%%%%%%%%%%
+\usepackage{url} %til referencerne. sætter det i en verbatim-agtig font
+
+\usepackage{varioref} % skal bruges til \vref
+\usepackage{prettyref} % skal bruges til \prettyref. underline'r referencer og gør dem klikbare
+\newcommand*{\pref}{\prettyref} % man er vel doven?
+%\usepackage{mfirstuc}
+%\newcommand*{\Pref}[1]{\xxmakefirstuc{\prettyref{#1}}}
+% følgende retter vref-kommandoen til danske ord:
+\newrefformat{cha}{kapitel~\vref{#1}}
+\newrefformat{sec}{afsnit~\vref{#1}}
+\newrefformat{fig}{figur~\vref{#1}}
+\newrefformat{eq}{formel~\vref{#1}}
+\newrefformat{tab}{tabel~\vref{#1}}
+\newrefformat{app}{appendiks~\vref{#1}}
+% Farverne på links
+
+\usepackage{titletoc}
+\usepackage[
+    colorlinks%
+%    ,linkcolor={darkgreend}%
+    ,linkcolor={DTU9}%
+    ,citecolor={DTU8}%
+    ,urlcolor={DTU7}%
+    %,plainpages=false%
+    %,pdfpagelabels%
+    %,bookmarks
+    ,breaklinks=true%Tillad at dele bl.a. links i TOC over flere linjer
+    ]{hyperref}% angiver hvilke farver links har. samme farve til alle links er at foretrække.
+    
+%\titlecontents{section}[1.5em]{}{\contentslabel{2.3em}}{\hspace*{-2.3em}}{\titlerule*[1pc]{.}\contentspage}
+\contentsmargin{2em}
+\dottedcontents{chapter}[1.5em]{\vspace{-0.4em}\Large\bf}{1em}{1pc}
+\dottedcontents{section}[3em]{\vspace{-0.5em}\large\bf}{1.5em}{1pc}
+\dottedcontents{subsection}[5em]{\vspace{-0.6em}\normalsize}{2.2em}{1pc}
+\dottedcontents{figure}[3em]{\vspace{-0.9em}}{1.5em}{1pc}
+\dottedcontents{table}[3em]{\vspace{-0.9em}}{1.5em}{1pc}
+%\setlength{\cftbeforesecskip}{0.5ex}
+
+%\usepackage{minitoc} % Ekstra TOC med forskellig dybde
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
