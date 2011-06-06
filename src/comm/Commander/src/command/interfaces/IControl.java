@@ -2,6 +2,8 @@ package command.interfaces;
 
 import java.io.IOException;
 
+import command.BertaCommando;
+
 /**
  * Interface til primitiv styring af robot (the basics)
  * 
@@ -101,5 +103,10 @@ public interface IControl {
 	
 	void reverse(int speed, int duration);
 	
+	/** Lukker forbindelsen til Robotten. <br>
+	 * - gør det samme som  {@link BertaCommando}{@code .disconnect()}
+	 * @throws IOException
+	 */
+	void disconnect() throws IOException;
 	
 }
