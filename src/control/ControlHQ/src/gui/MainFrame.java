@@ -6,10 +6,10 @@
 
 package gui;
 
-import java.awt.Point;
-
-import gui.image.ImageFrame;
+import gui.comm.CommFrame;
 import gui.manualControl.ControlFrame;
+import gui.processing.ProcessingFrame;
+import control.FramePlaceHolder;
 
 /**
  *
@@ -21,9 +21,11 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
+//        makeProcessingFrame();
+//        makeControlFrame();
+        makeCommFrame();
         
-        makeImageFrame();
-        makeControlFrame();
+        FramePlaceHolder.setMainFrame(this);
     }
 
     /** This method is called from within the constructor to
@@ -91,6 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
 	}
     public void makeControlFrame() {
 		// TODO
+    	
     	ControlFrame controlFrame = new ControlFrame();
     	
     	controlFrame.setVisible(true);
@@ -99,23 +102,30 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Opretter panel med funktioner vedr. al image-processing
      */
-    public void makeImageFrame() {
-    	ImageFrame imageFrame = new ImageFrame();
+    public void makeProcessingFrame() {
+    	ProcessingFrame processFrame = new ProcessingFrame();
     	
-        imageFrame.setLocation(dashboard.getSize().width - imageFrame.getSize().width, imageFrame.getLocation().y);
+        processFrame.setLocation(dashboard.getSize().width - processFrame.getSize().width, processFrame.getLocation().y);
 
-    	imageFrame.setVisible(true);
-    	dashboard.add(imageFrame);
+    	processFrame.setVisible(true);
+    	dashboard.add(processFrame);
 	}
     public void makePathfindingFrame() {
 		// TODO
 	}
     public void makeCommFrame() {
 		// TODO
+    	CommFrame commFrame = new CommFrame();
+    	commFrame.setVisible(true);
+    	
+    	dashboard.add(commFrame);
 	}
     public void arrangeFrames() {
 		// TODO
 	}
+    public javax.swing.JDesktopPane getDashboard(){
+    	return dashboard;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;

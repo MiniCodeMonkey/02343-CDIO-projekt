@@ -2,6 +2,7 @@ package command.impl;
 
 import java.io.IOException;
 
+import lejos.nxt.Sound;
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
 import command.interfaces.IControl;
@@ -68,7 +69,9 @@ public class Control implements IControl{
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
 //		System.out.println("STOPPING");
-//		lejos.nxt.Sound.playSoundFile("tires.rso");
+		//lejos.nxt.Sound.playSoundFile("tires.rso");
+		//lejos.nxt.Sound.playSoundFile("Hooray.rso");
+		Sound.playTone(500, 10);
 		setMoving(false);
 	}
 
@@ -206,5 +209,15 @@ public class Control implements IControl{
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public boolean hasCake() {
+		
+		Sound.playTone(440, 500);
+		
+		
+		return false;
 	}
 }

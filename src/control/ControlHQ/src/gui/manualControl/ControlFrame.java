@@ -19,32 +19,30 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import lejos.pc.comm.NXTCommException;
-
-import bluetooth.interfaces.IBTConnector;
-
-import command.impl.Control;
-import command.interfaces.IClawControl;
-import command.interfaces.IControl;
+import control.FramePlaceHolder;
 
 /** GUI fra Manual-test..
- * <br> - Kan være buggy!
+ * <br> - Kan vï¿½re buggy!
  * 
  * 
  * @author Morten Hulvej
  */
 public class ControlFrame extends javax.swing.JInternalFrame {
 
-	private static final long serialVersionUID = -693154801145671834L;
-	IControl controller;
-	IClawControl claw;
-	IBTConnector con;
+	ManControlChangeListener listener;
 	boolean connected;
 	
     /** Creates new form ControlFrame */
     public ControlFrame() {
         initComponents();
+        
+        initListeners();
+        FramePlaceHolder.setControlFrame(this);
     }
+    
+    public void initListeners() {
+    	enManControlBtn.addItemListener(listener);
+	}
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -54,6 +52,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         movePanel = new javax.swing.JPanel();
         leftBtn = new javax.swing.JButton();
@@ -64,7 +63,6 @@ public class ControlFrame extends javax.swing.JInternalFrame {
         clawOpenBtn = new javax.swing.JButton();
         stopBtn = new javax.swing.JButton();
         isReversedChkBox = new javax.swing.JCheckBox();
-        connectBtn = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         statusPtyLabel = new javax.swing.JLabel();
@@ -80,6 +78,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         aboutBtn = new javax.swing.JButton();
+        enManControlBtn = new javax.swing.JToggleButton();
 
         setIconifiable(true);
 
@@ -226,14 +225,6 @@ public class ControlFrame extends javax.swing.JInternalFrame {
                     .addContainerGap())
             );
 
-            connectBtn.setText("CONNECT!");
-            connectBtn.setFocusable(false);
-            connectBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    connectBtnActionPerformed(evt);
-                }
-            });
-
             statusLabel.setText("Status:");
             statusLabel.setFocusable(false);
 
@@ -258,9 +249,9 @@ public class ControlFrame extends javax.swing.JInternalFrame {
             );
             sensorPanelLayout.setVerticalGroup(
                 sensorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(sensorPanelLayout.createSequentialGroup()
-                    .addGap(38, 38, 38)
-                    .addComponent(batteryLevelBar, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sensorPanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(batteryLevelBar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                     .addContainerGap())
             );
 
@@ -350,54 +341,71 @@ public class ControlFrame extends javax.swing.JInternalFrame {
                 }
             });
 
+            enManControlBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Panic.png"))); // NOI18N
+            enManControlBtn.setContentAreaFilled(false);
+            enManControlBtn.setFocusPainted(false);
+            enManControlBtn.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Panic_over.png"))); // NOI18N
+
+            org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), enManControlBtn, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+            bindingGroup.addBinding(binding);
+
+            enManControlBtn.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                    enManControlBtnItemStateChanged(evt);
+                }
+            });
+
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
             layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(speedPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(speedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
                             .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(sensorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(statusLabel)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
-                                .addComponent(connectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(statusLabel)
+                            .addGap(18, 18, 18)
+                            .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
-                            .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(22, 22, 22)
+                            .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(enManControlBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap())
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(enManControlBtn)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(connectBtn)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(statusLabel)
-                                .addComponent(statusPtyLabel)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(29, 29, 29)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(statusLabel)
+                                        .addComponent(statusPtyLabel)))
+                                .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(4, 4, 4)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(sensorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(speedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             );
+
+            bindingGroup.bind();
 
             pack();
         }// </editor-fold>//GEN-END:initComponents
@@ -436,60 +444,6 @@ public class ControlFrame extends javax.swing.JInternalFrame {
     	allStop();
     }//GEN-LAST:event_stopBtnActionPerformed
 
-    private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
-        if (connected) {
-			try {
-				con.disconnect();
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
-						JOptionPane.ERROR_MESSAGE);
-			} finally {
-				reset();
-			}
-		} else {
-			int result = -1;
-//			setCursor(new Cursor(Cursor.WAIT_CURSOR));
-			try {
-				result = con.searchAndConnect(false);
-				controller = new Control(con.getNxtCommand());
-			} catch (NXTCommException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
-						JOptionPane.ERROR_MESSAGE);
-			} finally {
-//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-
-
-
-			switch (result) {
-			case IBTConnector.BERTA_FOUND:
-				statusPtyLabel.setText("Forbundet til B.E.R.T.A.");
-				statusPtyLabel.setForeground(Color.green);
-				enableControls(true);
-				connected = true;
-                                try {
-                                    batteryLevelBar.setValue(controller.getBatteryLevel());
-                                } catch (IOException e) {
-                                    JOptionPane.showMessageDialog(this, "Kunne ikke lÃ¦se batteri-niveau", "Fejl",
-                                                    JOptionPane.ERROR_MESSAGE);
-                                }
-				break;
-			case IBTConnector.NO_NXT_FOUND:
-				statusPtyLabel.setText("Ingen NXT-enheder fundet");
-				statusPtyLabel.setForeground(Color.red);
-				reset();
-				break;
-			case IBTConnector.NO_BERTA_FOUND:
-				statusPtyLabel.setText("Enheder fundet, men ingen B.E.R.T.A.");
-				statusPtyLabel.setForeground(Color.yellow);
-				break;
-			default:
-				reset();
-				break;
-			}
-		}
-    }//GEN-LAST:event_connectBtnActionPerformed
-
     private void aboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutBtnActionPerformed
 
         Image icon = new ImageIcon(getClass().getResource("/icons/BERTA.png")).getImage().getScaledInstance(-1, 480, Image.SCALE_FAST);
@@ -497,19 +451,23 @@ public class ControlFrame extends javax.swing.JInternalFrame {
                 "Orn'lig syg about box til basis kontrol-HQ-2theMaX!\n"
                 + "Brugt til test af orn'lig syg B.E.R.T.A!"
                 + "\n"
-                + "Forår 2011 (c) Gruppe 4 - CDIO Projekt", "Orn'lig syg",
+                + "Forï¿½r 2011 (c) Gruppe 4 - CDIO Projekt", "Orn'lig syg",
                 JOptionPane.WARNING_MESSAGE,new ImageIcon(icon));
 }//GEN-LAST:event_aboutBtnActionPerformed
+
+    private void enManControlBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_enManControlBtnItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enManControlBtnItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BckwBtn;
     private javax.swing.JButton aboutBtn;
-    private javax.swing.JProgressBar batteryLevelBar;
+    public javax.swing.JProgressBar batteryLevelBar;
     private javax.swing.JButton clawCloseBtn;
     private javax.swing.JButton clawOpenBtn;
     private javax.swing.JSlider clawspeedSlider;
-    private javax.swing.JButton connectBtn;
+    private javax.swing.JToggleButton enManControlBtn;
     private javax.swing.JButton fwrBtn;
     private javax.swing.JCheckBox isReversedChkBox;
     private javax.swing.JLabel jLabel1;
@@ -528,10 +486,12 @@ public class ControlFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel statusPtyLabel;
     private javax.swing.JButton stopBtn;
     private javax.swing.JSlider turnspeedSlider;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
+    
+    
 	public void reset() {
-		connectBtn.setText("CONNECT!");
 		statusPtyLabel.setText("NOT CONNECTED");
 		statusPtyLabel.setForeground(Color.black);
 		connected = false;
@@ -548,13 +508,11 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 		for (Component comp : c) {
 			comp.setEnabled(en);
 		}
-		if (en)
-			connectBtn.setText("Disconnect");
 	}
 
 	public void moveForward() {
 		try {
-			controller.move(speedSlider.getValue(), false);
+			.move(speedSlider.getValue(), false);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);
@@ -564,7 +522,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 
 	public void moveBackward() {
 		try {
-			controller.move(speedSlider.getValue(), true);
+			.move(speedSlider.getValue(), true);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);
@@ -574,7 +532,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 
 	public void moveLeft() {
 		try {
-			controller.left(turnspeedSlider.getValue());
+			.left(turnspeedSlider.getValue());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);
@@ -584,7 +542,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 
 	public void moveRight() {
 		try {
-			controller.right(turnspeedSlider.getValue());
+			.right(turnspeedSlider.getValue());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);
@@ -594,7 +552,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 
 	public void openClaw() {
 		try {
-			controller.openClaw(clawspeedSlider.getValue());
+			.openClaw(clawspeedSlider.getValue());
 			// claw.openClaw(clawspeedSlider.getValue());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
@@ -605,7 +563,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 
 	public void closeClaw() {
 		try {
-			controller.closeClaw(clawspeedSlider.getValue());
+			.closeClaw(clawspeedSlider.getValue());
 			// claw.closeClaw(clawspeedSlider.getValue());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
@@ -616,7 +574,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 
 	public void allStop() {
 		try {
-			controller.stop();
+			.stop();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);
@@ -628,7 +586,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
 		try {
 			System.out.print("Updating..");
 			if (connected) {
-				int voltage = controller.getBatteryLevel();
+				int voltage = .getBatteryLevel();
 				batteryLevelBar.setValue(voltage);
 				System.out.println("OK");
 				if (voltage < 50)

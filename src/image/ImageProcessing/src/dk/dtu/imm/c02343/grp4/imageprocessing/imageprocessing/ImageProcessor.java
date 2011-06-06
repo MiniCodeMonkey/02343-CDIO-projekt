@@ -23,7 +23,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
  * @author PC
  *
  */
-public class ImageProcessor {
+public class imageProcessor {
 	/**
 	 * Integer-repræsentation af en forhindring i tilemap
 	 */
@@ -62,7 +62,7 @@ public class ImageProcessor {
 	/**
 	 * Tom konstruktør. Metoderne bruges statisk
 	 */
-	public ImageProcessor() {
+	public imageProcessor() {
 	}
 	
 	/**
