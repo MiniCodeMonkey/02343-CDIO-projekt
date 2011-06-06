@@ -222,7 +222,7 @@ public class ProcessingThread extends Thread {
 						bertaControl.stopClaw();
 		
 						System.out.println("Moving forward");
-						bertaControl.move(100, false);
+						bertaControl.move(40, false);
 						
 						try {
 							Thread.sleep(1000);
@@ -361,11 +361,11 @@ public class ProcessingThread extends Thread {
 				// Rotate
 				if (robot.getAngle() < supposedToBeAngle)
 				{
-					bertaControl.right(30);
+					bertaControl.right(50);
 				}
 				else
 				{
-					bertaControl.left(30);
+					bertaControl.left(50);
 				}
 			}
 			else if (foundCake || (distance < 40 && Math.abs(robot.getAngle() - supposedToBeAngle) >= (Math.PI / 180)*10))
@@ -373,11 +373,11 @@ public class ProcessingThread extends Thread {
 				// Rotate
 				if (robot.getAngle() < supposedToBeAngle)
 				{
-					bertaControl.right(10);
+					bertaControl.right(25);
 				}
 				else
 				{
-					bertaControl.left(10);
+					bertaControl.left(25);
 				}
 			}
 			else

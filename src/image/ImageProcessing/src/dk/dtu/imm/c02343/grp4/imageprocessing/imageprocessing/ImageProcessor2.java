@@ -166,25 +166,25 @@ public class ImageProcessor2 implements IImageProcessor {
 							// Opret kage-objekt og føj til liste
 							Cake cake = new Cake(pos[0], pos[1]);
 							cakes.add(cake);
-							System.out.println(cake);
+//							System.out.println(cake);
 						} catch (InsufficientObjectException e) {
-							System.out.println(e.getMessage());
+//							System.out.println(e.getMessage());
 						}
 					} else if (tilemap[y][x] == ROBOTN) {
 						try {
 							// Behandl objekt
 							robotNpos = collect(y, x, ROBOTN, foundmap);
-							System.out.println("Robot front at (y,x): (" + robotNpos[0] + "," + robotNpos[1] + ")");
+//							System.out.println("Robot front at (y,x): (" + robotNpos[0] + "," + robotNpos[1] + ")");
 						} catch (InsufficientObjectException e) {
-							System.out.println(e.getMessage());
+//							System.out.println(e.getMessage());
 						}
 					} else if (tilemap[y][x] == ROBOTS) {
 						try {
 							// Behandl objekt
 							robotSpos = collect(y, x, ROBOTS, foundmap);
-							System.out.println("Robot rear at (y,x): (" + robotSpos[0] + "," + robotSpos[1] + ")");
+//							System.out.println("Robot rear at (y,x): (" + robotSpos[0] + "," + robotSpos[1] + ")");
 						} catch (InsufficientObjectException e) {
-							System.out.println(e.getMessage());
+//							System.out.println(e.getMessage());
 						}
 					}
 				}
@@ -484,12 +484,12 @@ public class ImageProcessor2 implements IImageProcessor {
 	}
 	
 	/**
-	 * Returnerer en grafik over det tolkede billede til visuel debug
+	 * Genererer grafik over det tolkede billede til visuel debug
 	 * @return Billede af tilemap
 	 */
 	public void createTileImage() {
 		tileImage = new BufferedImage(tilemap[0].length, tilemap.length, BufferedImage.TYPE_INT_ARGB);
-		System.out.println("Dimensions: " + tileImage.getHeight() + "x" + tileImage.getWidth());
+//		System.out.println("Dimensions: " + tileImage.getHeight() + "x" + tileImage.getWidth());
 		// Iterér over alle vandrette linjer
 		for(int i = 0; i < tilemap.length; i++) {
 			// Iterér over alle punkter
@@ -526,7 +526,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		Iterator<ICake> cakeItr = cakes.iterator();
 		while(cakeItr.hasNext()) {
 			ICake cake = cakeItr.next();
-			System.out.println("Object at (" + cake.getY() + "," + cake.getX() + ").");
+//			System.out.println("Object at (" + cake.getY() + "," + cake.getX() + ").");
 			tileImage.setRGB(cake.getX(), cake.getY(), 0xFF00FFFF);
 			tileImage.setRGB(cake.getX()+1, cake.getY(), 0xFF00FFFF);
 			tileImage.setRGB(cake.getX()-1, cake.getY(), 0xFF00FFFF);
@@ -537,7 +537,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		Iterator<IRobot> robotItr = robots.iterator();
 		while(robotItr.hasNext()) {
 			IRobot robot = robotItr.next();
-			System.out.println("Robot at (" + robot.getY() + "," + robot.getX() + ") angle: " + robot.getAngle() + "rad = " + robot.getAngle()*180/Math.PI + " deg");
+//			System.out.println("Robot at (" + robot.getY() + "," + robot.getX() + ") angle: " + robot.getAngle() + "rad = " + robot.getAngle()*180/Math.PI + " deg");
 			tileImage.setRGB(robot.getX(),robot.getY(), 0xFF00FF00);
 			tileImage.setRGB(robot.getX()+1,robot.getY(), 0xFF00FF00);
 			tileImage.setRGB(robot.getX()-1,robot.getY(), 0xFF00FF00);
@@ -561,6 +561,32 @@ public class ImageProcessor2 implements IImageProcessor {
 		} else if (type == ROBOTS) {
 			robotSThresholds = thresholds;
 		}
+	}
+	
+	/**
+	 * Hent grænseværdier for bestemmelse af objekttyper
+	 * @param type Talrepræsentationen på typen. Kan være ImageProcessor.OBSTACLE, ImageProcessor.CAKE, ImageProcessor.ROBOTN eller ImageProcessor.ROBOTS
+	 * @return Thresholds-objekt med de ønskede grænseværdier
+	 */
+	public Thresholds getThresholds(int type) {
+		if (type == OBSTACLE) {
+			return obstacleThresholds;
+		} else if (type == CAKE) {
+			return cakeThresholds;
+		} else if (type == ROBOTN) {
+			return robotNThresholds;
+		} else if (type == ROBOTS) {
+			return robotSThresholds;
+		}
+		return null;
+	}
+	
+	/**
+	 * Henter bufferzonen omkring forhindringer
+	 * @return Zonebredde
+	 */
+	public int getObstacleBufferZone() {
+		return obstacleBuffer;
 	}
 	
 	/**
