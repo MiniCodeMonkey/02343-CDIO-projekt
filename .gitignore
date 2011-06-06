@@ -10,3 +10,6 @@
 /src/pathfinding/bin
 /src/shared/DTO/bin
 /src/pathfinding/bin
+/src/comm/Commander/bin
+/src/comm/Commnication/bin
+/src/shared/DTO/bin
