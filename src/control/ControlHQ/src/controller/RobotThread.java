@@ -179,7 +179,7 @@ public class RobotThread extends Thread
 								if (currentDistance < bestDistance)
 								{
 									bestDistance = currentDistance;
-									homeCake = home;
+									targetLocation = deliveryLocation;
 								}
 							}
 							
@@ -214,7 +214,7 @@ public class RobotThread extends Thread
 					}
 				}
 				
-					if (distance < 32)
+					/*if (distance < 32)
 					{	
 						// Move forward
 						bertaControl.move(50, false);
@@ -299,7 +299,7 @@ public class RobotThread extends Thread
 					
 					// MOVE!
 					bertaControl.move(40, false);
-				}
+				}*/
 			}
 		}
 	}
