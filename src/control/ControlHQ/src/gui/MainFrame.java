@@ -21,8 +21,6 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
-//        makeProcessingFrame();
-//        makeControlFrame();
         makeCommFrame();
         
         FramePlaceHolder.setMainFrame(this);
@@ -97,7 +95,7 @@ public class MainFrame extends javax.swing.JFrame {
     	ControlFrame controlFrame = new ControlFrame();
     	
     	controlFrame.setVisible(true);
-    	dashboard.add(controlFrame); 
+    	dashboard.add(controlFrame);
 	}
     /**
      * Opretter panel med funktioner vedr. al image-processing

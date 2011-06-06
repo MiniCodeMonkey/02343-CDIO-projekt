@@ -11,11 +11,16 @@
 
 package gui.comm;
 
+import java.awt.Robot;
+
 import lejos.pc.comm.NXTCommException;
 import command.BertaCommando;
 import command.PropCommando;
 
 import control.FramePlaceHolder;
+import controller.MainController;
+import controller.RobotThread;
+import controller.RobotThread.RobotType;
 
 
 /**
@@ -91,18 +96,18 @@ public class CommFrame extends javax.swing.JInternalFrame {
      */
     private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
     		
-    	// TODO  - TEST
-    	PropCommando commando = null;
-		try {
-			commando = new PropCommando();
-			commando.getControl();
-		} catch (NXTCommException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	// TODO
     	
+//    	MainController.getInstance();
+    	
+    	/*
+    	 * hvis begge robotter virker?
+    	 * 		-> makeProcessingFrame();
+    	 * 		-> makeControlFrame    x 2 (TODO understøttelse af 2 robotter)
+    	 */
     	
     	FramePlaceHolder.getMainFrame().makeProcessingFrame();
+    	FramePlaceHolder.getMainFrame().makeControlFrame();
 			
     }//GEN-LAST:event_connectBtnActionPerformed
 

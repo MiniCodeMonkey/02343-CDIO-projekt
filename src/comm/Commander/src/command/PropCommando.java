@@ -42,7 +42,7 @@ public class PropCommando {
 		
 		if (info.length == 0) {
 			System.out.println("...no NXT(s) found!");
-			throw new NoRobotFoundException(Constants.NXT_NAME);
+			throw new NoRobotFoundException(Constants.NXT_NAME2);
 		}
 
 		System.out.println(" OK");
@@ -53,8 +53,7 @@ public class PropCommando {
 			System.out.println("   " + d + ". " + nxtInfo.name + " "
 					+ nxtInfo.deviceAddress);
 			d++;
-			if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR)
-					|| nxtInfo.deviceAddress.equals(Constants.NXT_ADR2)) {
+			if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR2)) {
 				propNXTInfo = nxtInfo;
 				System.out.println("P.R.O.P. found");
 			}
@@ -63,8 +62,7 @@ public class PropCommando {
 
 		if (propNXTInfo == null){
 			System.err.println("P.R.O.P. not found!");
-			//TODO exception
-			return;
+			throw new NoRobotFoundException(Constants.NXT_NAME2);
 		}
 		
 		// CONNECT ////////////////////////////////////////

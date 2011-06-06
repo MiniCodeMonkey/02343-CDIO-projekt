@@ -60,8 +60,7 @@ public class BertaCommando {
 		}
 		if (bertaNXTInfo == null){
 			System.err.println("B.E.R.T.A. not found!");
-			//TODO exception
-			return;
+			throw new NoRobotFoundException(Constants.NXT_NAME);
 		}
 
 		// CONNECT ////////////////////////////////////////

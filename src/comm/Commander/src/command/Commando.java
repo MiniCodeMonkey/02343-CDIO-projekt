@@ -1,8 +1,10 @@
 package command;
 
+import bluetooth.constants.Constants;
 import command.impl.Control;
 import command.interfaces.IControl;
 
+import exceptions.MasterRobotNotFound;
 import exceptions.NoRobotFoundException;
 import exceptions.RobotConnectException;
 import lejos.pc.comm.NXTCommException;
@@ -17,8 +19,10 @@ public class Commando {
 	
 	/**Opretter forbindelse til B.E.R.T.A. og P.R.O.P. -  i denne rækkefølge
 	 * <br> 
+	 * Systemet kan ikke køre uden B.E.R.T.A...
+	 * @throws MasterRobotNotFound - hvis B.E.R.T.A. ikke kan findes
 	 */
-	public Commando()  {
+	public Commando() throws MasterRobotNotFound  {
 		
 			try {
 				bertaCom = new BertaCommando();
@@ -28,6 +32,10 @@ public class Commando {
 			} catch (NoRobotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				if (!isBertaConnected())
+					throw new MasterRobotNotFound(
+							"Cannot run without master-robot: "+Constants.NXT_NAME+" not found!");
 			}
 			try {
 				propCom = new PropCommando();
