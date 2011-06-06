@@ -135,6 +135,7 @@ public class ProcessingThread extends Thread
 			{
 				// Update path for robot thread
 				robotThread.setPath(newPath);
+				robotThread.setMapSize(locations.getTileImage().getHeight(), locations.getTileImage().getWidth());
 				
 				// Draw the path onto the tile image
 				locations.setTileImage(drawPath(locations.getTileImage(), robotThread.getPath()));
@@ -164,34 +165,6 @@ public class ProcessingThread extends Thread
 		
 		return sourceImage;
 	}
-
-	/*private Path resizePath(Path path)
-	{
-		if (path == null || path.getLength() <= 0)
-			return path;
-		
-		Path returnPath = new Path();
-		
-		Step step = path.getStep(0);
-		Step lastStep;
-		
-		returnPath.appendStep(step.getY(), step.getX());
-		
-		for (int i = 1; i < path.getLength(); i++)
-		{
-			step = path.getStep(i);
-			lastStep = returnPath.getStep(returnPath.getLength() - 1);
-			
-			if (Math.sqrt(Math.pow(step.getX() - lastStep.getX(), 2) + Math.pow(step.getY() - lastStep.getY(), 2)) > 20)
-			{
-				returnPath.appendStep(step.getY(), step.getX());
-			}
-		}
-		
-		System.out.println("Reduced path from " + path.getLength() + " steps to " + returnPath.getLength());
-		
-		return returnPath;
-	}*/
 
 	public void stopThread()
 	{

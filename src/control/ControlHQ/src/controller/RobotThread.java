@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 
 import command.interfaces.IControl;
@@ -21,6 +22,7 @@ public class RobotThread extends Thread
 	
 	private IRobot robotLocation = null;
 	private Location targetLocation = null;
+	private Rectangle mapSize = new Rectangle();
 	private Path path = null;
 	private boolean pathWasUpdated = false;
 	
@@ -49,6 +51,11 @@ public class RobotThread extends Thread
 		}
 	}
 	
+	/**
+	 * Initialize the robot
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	private void initialize() throws IOException, InterruptedException
 	{
 		// Initialize master/slave configuration
@@ -68,7 +75,12 @@ public class RobotThread extends Thread
 		Thread.sleep(2000);
 		robotControl.stopClaw();
 	}
-
+	
+	/**
+	 * Calculates a new path for the robot and navigates the robot
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	private void navigate() throws IOException, InterruptedException
 	{
 		if (pathWasUpdated)
@@ -121,6 +133,7 @@ public class RobotThread extends Thread
 				// Difference between robot angle and target angle
 				double targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
 				
+				// Perform actions according to the robot state
 				switch (this.robotState)
 				{
 					case HEADING_FOR_CAKE:
@@ -164,17 +177,16 @@ public class RobotThread extends Thread
 							
 							// Decide delivery location
 							Location deliveryLocations[] = {
-									new Location(locations.getTileImage().getHeight() - 1, locations.getTileImage().getWidth() / 2),
-									new Location(locations.getTileImage().getHeight() / 2, locations.getTileImage().getWidth() - 1),
-									new Location(1, locations.getTileImage().getWidth() / 2),
-									new Location(locations.getTileImage().getHeight() / 2, 1)
+									new Location((int)mapSize.getHeight() - 1, (int)mapSize.getWidth() / 2),
+									new Location((int)mapSize.getHeight() / 2, (int)mapSize.getWidth() - 1),
+									new Location(1, (int)mapSize.getWidth() / 2),
+									new Location((int)mapSize.getHeight() / 2, 1)
 							};
 							
 							double bestDistance = Double.MAX_VALUE;
 							for (Location deliveryLocation : deliveryLocations)
 							{
 								double currentDistance = calculateDistance(deliveryLocation.GetY(), robotLocation.getY(), deliveryLocation.GetX(), robotLocation.getX());
-								//Math.sqrt(Math.pow(home.getX() - robotLocation.getX(), 2) + Math.pow(home.getY()- robotLocation.getY(), 2));
 								
 								if (currentDistance < bestDistance)
 								{
@@ -214,92 +226,38 @@ public class RobotThread extends Thread
 					}
 				}
 				
-					/*if (distance < 32)
-					{	
-						// Move forward
-						bertaControl.move(50, false);
-						System.out.println("FOUND HOME!!!!!");
-						try {
-							Thread.sleep(3000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
+				{
+					// We are very very close to the correct angle, so drive forward
+					if (targetAngleDifference <= Math.toRadians(5))
+					{
+						robotControl.move(50, false);
+					}
+					else if (targetAngleDifference <= Math.toRadians(30)) // Do minor corrections
+					{
+						// Rotate
+						if (robotLocation.getAngle() < targetAngle)
+						{
+							robotControl.right(10);
 						}
-						bertaControl.stop();
-						
-						// Open claw
-						bertaControl.openClaw();
-						try {
-							Thread.sleep(3000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						else
+						{
+							robotControl.left(10);
 						}
-						bertaControl.stopClaw();
-						
-						// Move forwards
-						bertaControl.move(100, false);
-						try {
-							Thread.sleep(1500);
-						} catch (InterruptedException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+					}
+					else // Do major corrections
+					{
+						// Rotate
+						if (robotLocation.getAngle() < targetAngle)
+						{
+							robotControl.right(30);
 						}
-						System.out.println("Cake delivered");
-						bertaControl.stop();
-						
-						// Move backwards
-						bertaControl.reverse(50, 5750);
-						bertaControl.stop();
-						
-						// Close claw
-						bertaControl.closeClaw();
-						try {
-							Thread.sleep(3000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						else
+						{
+							robotControl.left(30);
 						}
-						bertaControl.stopClaw();
-						
-						// Reset variables
-						headingForHome = false;
-						return;
 					}
 				}
-				
-				// Is current angle as it is supposed to be?
-				if (distance >= 40 && !foundCake && Math.abs(robotLocation.getAngle() - targetAngle) > (Math.PI / 180)*45)
-				{
-					// Rotate
-					if (robotLocation.getAngle() < targetAngle)
-					{
-						bertaControl.right(30);
-					}
-					else
-					{
-						bertaControl.left(30);
-					}
-				}
-				else if (foundCake || (distance < 40 && Math.abs(robotLocation.getAngle() - targetAngle) >= (Math.PI / 180)*10))
-				{
-					// Rotate
-					if (robotLocation.getAngle() < targetAngle)
-					{
-						bertaControl.right(10);
-					}
-					else
-					{
-						bertaControl.left(10);
-					}
-				}
-				else
-				{
-					System.out.println("Full steam ahead! ---- Aye aye captain, full steam ahead. TUUUUUUUT TUUUUUUUT");
-					
-					// MOVE!
-					bertaControl.move(40, false);
-				}*/
 			}
 		}
 	}
@@ -338,5 +296,10 @@ public class RobotThread extends Thread
 	public Path getPath()
 	{
 		return this.path;
+	}
+
+	public void setMapSize(int height, int width)
+	{
+		mapSize.setSize(width, height);
 	}
 }
