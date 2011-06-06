@@ -27,11 +27,19 @@ public interface IImageProcessor {
 	/**
 	 * Integer-repræsentation af en robot-front i tilemap
 	 */
-	public static final int ROBOTN = 3;
+	public static final int ROBOT1N = 3;
 	/**
 	 * Integer-repræsentation af en robot-bagdel i tilemap
 	 */
-	public static final int ROBOTS = 4;
+	public static final int ROBOT1S = 4;
+	/**
+	 * Integer-repræsentation af en robot-front i tilemap
+	 */
+	public static final int ROBOT2N = 5;
+	/**
+	 * Integer-repræsentation af en robot-bagdel i tilemap
+	 */
+	public static final int ROBOT2S = 6;
 	/**
 	 * Integer-repræsentation af baggrund i tilemap
 	 */
@@ -53,19 +61,29 @@ public interface IImageProcessor {
 	public static final Thresholds OBSTACLE_THRESHOLDS = new Thresholds(160, 160, 160, 255, 255, 255);
 	
 	/**
-	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
+	 * Standard grænseværdier for mapping af kager fra billedkilde
 	 */
 	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(50, 0, 0, 255, 35, 35);
 	
 	/**
-	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
+	 * Standard grænseværdier for mapping af robot1 front fra billedkilde
 	 */
-	public static final Thresholds ROBOT_N_THRESHOLDS = new Thresholds(0, 60, 0, 70, 255, 90);
+	public static final Thresholds ROBOT1_N_THRESHOLDS = new Thresholds(0, 60, 0, 70, 255, 90);
 	
 	/**
-	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
+	 * Standard grænseværdier for mapping af robot1 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT_S_THRESHOLDS = new Thresholds(0, 0, 30, 20, 50, 255);
+	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 30, 20, 50, 255);
+	
+	/**
+	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
+	 */
+	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(120, 40, 0, 180, 100, 20);
+	
+	/**
+	 * Standard grænseværdier for mapping af robot2 bag fra billedkilde
+	 */
+	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(110, 110, 0, 180, 180, 30);
 	
 	/**
 	 * Behandler et billede og genererer forhindrings-map samt robot- og kage-positioner

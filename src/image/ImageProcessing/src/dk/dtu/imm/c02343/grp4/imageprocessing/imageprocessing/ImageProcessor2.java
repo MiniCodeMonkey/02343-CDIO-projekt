@@ -20,8 +20,10 @@ public class ImageProcessor2 implements IImageProcessor {
 	// Grænseværdier for forskellige typer objekter
 	private Thresholds obstacleThresholds;
 	private Thresholds cakeThresholds;
-	private Thresholds robotNThresholds;
-	private Thresholds robotSThresholds;
+	private Thresholds robot1NThresholds;
+	private Thresholds robot1SThresholds;
+	private Thresholds robot2NThresholds;
+	private Thresholds robot2SThresholds;
 	
 	// Buffer omkring forhindringer
 	private int obstacleBuffer = OBSTACLE_BUFFER;
@@ -58,8 +60,10 @@ public class ImageProcessor2 implements IImageProcessor {
 	public ImageProcessor2() {
 		obstacleThresholds = OBSTACLE_THRESHOLDS;
 		cakeThresholds = CAKE_THRESHOLDS;
-		robotNThresholds = ROBOT_N_THRESHOLDS;
-		robotSThresholds = ROBOT_S_THRESHOLDS;
+		robot1NThresholds = ROBOT1_N_THRESHOLDS;
+		robot1SThresholds = ROBOT1_S_THRESHOLDS;
+		robot2NThresholds = ROBOT2_N_THRESHOLDS;
+		robot2SThresholds = ROBOT2_S_THRESHOLDS;
 		sourceImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
 		tileImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
 		cakes = new ArrayList<ICake>();
@@ -92,12 +96,18 @@ public class ImageProcessor2 implements IImageProcessor {
 				} else if (cakeThresholds.checkThresholds(rgb)) {
 					// Rød farve: Kage
 					tilemap[j][i] = CAKE;
-				} else if (robotNThresholds.checkThresholds(rgb)) {
-					// Grøn farve: Robot N
-					tilemap[j][i] = ROBOTN;
-				} else if (robotSThresholds.checkThresholds(rgb)) {
-					// Blå farve: Robot S
-					tilemap[j][i] = ROBOTS;
+				} else if (robot1NThresholds.checkThresholds(rgb)) {
+					// Grøn farve: Robot 1 N
+					tilemap[j][i] = ROBOT1N;
+				} else if (robot1SThresholds.checkThresholds(rgb)) {
+					// Blå farve: Robot 1 S
+					tilemap[j][i] = ROBOT1S;
+				} else if (robot2NThresholds.checkThresholds(rgb)) {
+					// Orange farve: Robot 2 N
+					tilemap[j][i] = ROBOT2N;
+				} else if (robot2SThresholds.checkThresholds(rgb)) {
+					// Gul farve: Robot 2 S
+					tilemap[j][i] = ROBOT2S;
 				} else {
 					// Ikke identificeret objekt
 					tilemap[j][i] = BACKGROUND;
@@ -129,8 +139,10 @@ public class ImageProcessor2 implements IImageProcessor {
 		cakes = new ArrayList<ICake>();
 		robots = new ArrayList<IRobot>();
 		
-		int[] robotNpos = new int[] {-1,-1};
-		int[] robotSpos = new int[] {-1,-1};
+		int[] robot1Npos = new int[] {-1,-1};
+		int[] robot1Spos = new int[] {-1,-1};
+		int[] robot2Npos = new int[] {-1,-1};
+		int[] robot2Spos = new int[] {-1,-1};
 		
 		// Iterér over positioner i tilemap
 		for (int y = 0; y < tilemap.length; y++) {
@@ -170,18 +182,34 @@ public class ImageProcessor2 implements IImageProcessor {
 						} catch (InsufficientObjectException e) {
 //							System.out.println(e.getMessage());
 						}
-					} else if (tilemap[y][x] == ROBOTN) {
+					} else if (tilemap[y][x] == ROBOT1N) {
 						try {
 							// Behandl objekt
-							robotNpos = collect(y, x, ROBOTN, foundmap);
+							robot1Npos = collect(y, x, ROBOT1N, foundmap);
 //							System.out.println("Robot front at (y,x): (" + robotNpos[0] + "," + robotNpos[1] + ")");
 						} catch (InsufficientObjectException e) {
 //							System.out.println(e.getMessage());
 						}
-					} else if (tilemap[y][x] == ROBOTS) {
+					} else if (tilemap[y][x] == ROBOT1S) {
 						try {
 							// Behandl objekt
-							robotSpos = collect(y, x, ROBOTS, foundmap);
+							robot1Spos = collect(y, x, ROBOT1S, foundmap);
+//							System.out.println("Robot rear at (y,x): (" + robotSpos[0] + "," + robotSpos[1] + ")");
+						} catch (InsufficientObjectException e) {
+//							System.out.println(e.getMessage());
+						}
+					} else if (tilemap[y][x] == ROBOT2N) {
+						try {
+							// Behandl objekt
+							robot2Npos = collect(y, x, ROBOT2N, foundmap);
+//							System.out.println("Robot front at (y,x): (" + robotNpos[0] + "," + robotNpos[1] + ")");
+						} catch (InsufficientObjectException e) {
+//							System.out.println(e.getMessage());
+						}
+					} else if (tilemap[y][x] == ROBOT2S) {
+						try {
+							// Behandl objekt
+							robot2Spos = collect(y, x, ROBOT2S, foundmap);
 //							System.out.println("Robot rear at (y,x): (" + robotSpos[0] + "," + robotSpos[1] + ")");
 						} catch (InsufficientObjectException e) {
 //							System.out.println(e.getMessage());
@@ -191,13 +219,25 @@ public class ImageProcessor2 implements IImageProcessor {
 			}
 		}
 		
-		// Opret robot-objekt
-		if (robotNpos[0] > 0 && robotNpos[1] > 0 && robotSpos[0] > 0 && robotSpos[1] > 0) {
-			cakes.add(new Cake((robotNpos[0]+robotSpos[0])/2,(robotNpos[1]+robotSpos[1])/2));
-			int[] robotPos = new int[] {(robotNpos[0]+robotSpos[0])/2, (robotNpos[1]+robotSpos[1])/2};
-			double robotAngle = calculateAngle(robotNpos, robotSpos);
+		// Opret robot-objekter
+		if (robot1Npos[0] > 0 && robot1Npos[1] > 0 && robot1Spos[0] > 0 && robot1Spos[1] > 0) {
+			int[] robotPos = new int[] {(robot1Npos[0]+robot1Spos[0])/2, (robot1Npos[1]+robot1Spos[1])/2};
+			double robotAngle = calculateAngle(robot1Npos, robot1Spos);
 			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
 			robots.add(new Robot(robotPos[0],robotPos[1],robotAngle));
+		} else {
+			// Robot ikke fundet. Opret dummy objekt.
+			robots.add(new Robot(-1,-1,0));
+		}
+		
+		if (robot2Npos[0] > 0 && robot2Npos[1] > 0 && robot2Spos[0] > 0 && robot2Spos[1] > 0) {
+			int[] robotPos = new int[] {(robot2Npos[0]+robot2Spos[0])/2, (robot2Npos[1]+robot2Spos[1])/2};
+			double robotAngle = calculateAngle(robot2Npos, robot2Spos);
+			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
+			robots.add(new Robot(robotPos[0],robotPos[1],robotAngle));
+		} else {
+			// Robot ikke fundet. Opret dummy objekt.
+			robots.add(new Robot(-1,-1,0));
 		}
 	}
 	
@@ -503,11 +543,17 @@ public class ImageProcessor2 implements IImageProcessor {
 					case OBSTACLE:
 						rgb = 0xFFFFFFFF;
 						break;
-					case ROBOTN:
+					case ROBOT1N:
 						rgb = 0xFF00FF00;
 						break;
-					case ROBOTS:
+					case ROBOT1S:
 						rgb = 0xFF0000FF;
+						break;
+					case ROBOT2N:
+						rgb = 0xFFFF7700;
+						break;
+					case ROBOT2S:
+						rgb = 0xFFFFFF00;
 						break;
 					default:
 						rgb = 0xFF000000;
@@ -556,10 +602,14 @@ public class ImageProcessor2 implements IImageProcessor {
 			obstacleThresholds = thresholds;
 		} else if (type == CAKE) {
 			cakeThresholds = thresholds;
-		} else if (type == ROBOTN) {
-			robotNThresholds = thresholds;
-		} else if (type == ROBOTS) {
-			robotSThresholds = thresholds;
+		} else if (type == ROBOT1N) {
+			robot1NThresholds = thresholds;
+		} else if (type == ROBOT1S) {
+			robot1SThresholds = thresholds;
+		} else if (type == ROBOT2N) {
+			robot2NThresholds = thresholds;
+		} else if (type == ROBOT2S) {
+			robot2SThresholds = thresholds;
 		}
 	}
 	
@@ -573,10 +623,14 @@ public class ImageProcessor2 implements IImageProcessor {
 			return obstacleThresholds;
 		} else if (type == CAKE) {
 			return cakeThresholds;
-		} else if (type == ROBOTN) {
-			return robotNThresholds;
-		} else if (type == ROBOTS) {
-			return robotSThresholds;
+		} else if (type == ROBOT1N) {
+			return robot1NThresholds;
+		} else if (type == ROBOT1S) {
+			return robot1SThresholds;
+		} else if (type == ROBOT2N) {
+			return robot2NThresholds;
+		} else if (type == ROBOT2S) {
+			return robot2SThresholds;
 		}
 		return null;
 	}
