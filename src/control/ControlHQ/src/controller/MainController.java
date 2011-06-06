@@ -7,7 +7,22 @@ public class MainController
 {
 	private ProcessingThread processingThread = null;
 	
-	public MainController()
+	// Implement singleton pattern
+	private static MainController instance = new MainController();
+	public static MainController getInstance()
+	{
+		return instance;
+	}
+	
+	// Keep the constructor private
+	private MainController()
+	{
+	}
+	
+	/**
+	 * Initialize the webcam and processor
+	 */
+	public void initialize()
 	{
 		// Initialize webcam
 		IImageSource imageSource = new WebCam();
@@ -18,13 +33,30 @@ public class MainController
 		processingThread.start();
 	}
 	
+	/**
+	 * Returns the current number of robots detected by the image processor
+	 * @return number of robots
+	 */
 	public int currentRobotsCount()
 	{
 		return processingThread.getRobotsCount();
 	}
 	
+	/**
+	 * Returns the current number of cakes detected by the image processor
+	 * @return number of cakes
+	 */
 	public int currentCakesCount()
 	{
 		return processingThread.getCakesCount();
+	}
+	
+	/**
+	 * Stops the controller and destroys all threads
+	 */
+	public void stop()
+	{
+		if (processingThread != null)
+			processingThread.stopThread();
 	}
 }

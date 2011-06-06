@@ -4,6 +4,17 @@ public class Location
 {
 	private int x;
 	private int y;
+	
+	/**
+	 * Construct a new location
+	 * @param y
+	 * @param x
+	 */
+	public Location(int y, int x)
+	{
+		this.y = y;
+		this.x = x;
+	}
 
 	/**
 	 * Gets the location on the x axis

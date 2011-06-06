@@ -18,31 +18,31 @@ import bluetooth.constants.Constants;
  * @author Morten Hulvej ( og Terkel)
  *
  */
-public class BertaCommando {
+public class PropCommando {
 	
 	private NXTCommand nxtCommand;
 
 	/**
-	 * Opretter forbindelse til BERTA (MAC: 00:16:53:09:1C:AE)
+	 * Opretter forbindelse til PROP (MAC: 00:16:53:09:18:d4)
 	 * <br>
 	 * @throws NXTCommException
-	 * @throws NoRobotFoundException 
+	 * @throws NoRobotFoundException
 	 */
-	public BertaCommando() throws NXTCommException, NoRobotFoundException {
-		NXTInfo bertaNXTInfo = null;
+	public PropCommando() throws NXTCommException, NoRobotFoundException {
+		NXTInfo propNXTInfo = null;
 
 		nxtCommand = new NXTCommand();
 		NXTConnector conn = new NXTConnector();
 
 		// SEARCH /////////////////////////////////////////
-
+		
 		System.out.print("Searching for NXTs...");
-		NXTInfo[] info = conn.search(null, Constants.NXT_ADR, NXTCommFactory.BLUETOOTH);
+		NXTInfo[] info = conn.search(null, Constants.NXT_ADR2, NXTCommFactory.BLUETOOTH);
 		
 		
 		if (info.length == 0) {
 			System.out.println("...no NXT(s) found!");
-			throw new NoRobotFoundException(Constants.NXT_NAME);
+			throw new NoRobotFoundException(Constants.NXT_NAME2);
 		}
 
 		System.out.println(" OK");
@@ -53,25 +53,27 @@ public class BertaCommando {
 			System.out.println("   " + d + ". " + nxtInfo.name + " "
 					+ nxtInfo.deviceAddress);
 			d++;
-			if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR)) {
-				bertaNXTInfo = nxtInfo;
-				System.out.println("B.E.R.T.A. found");
+			if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR2)) {
+				propNXTInfo = nxtInfo;
+				System.out.println("P.R.O.P. found");
 			}
-		}
-		if (bertaNXTInfo == null){
-			System.err.println("B.E.R.T.A. not found!");
-			throw new NoRobotFoundException(Constants.NXT_NAME);
+
 		}
 
+		if (propNXTInfo == null){
+			System.err.println("P.R.O.P. not found!");
+			throw new NoRobotFoundException(Constants.NXT_NAME2);
+		}
+		
 		// CONNECT ////////////////////////////////////////
 
 		NXTComm nxtComm = null;
 		nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH);
 
 		System.out.println();
-		System.out.println("Connected to " + bertaNXTInfo.name);
+		System.out.println("Connected to " +propNXTInfo.name);
 		System.out.println("Success?  "
-				+ nxtComm.open(bertaNXTInfo, lejos.pc.comm.NXTComm.LCP));
+				+ nxtComm.open(propNXTInfo,	lejos.pc.comm.NXTComm.LCP));
 
 		nxtCommand.setNXTComm(nxtComm);
 	}
