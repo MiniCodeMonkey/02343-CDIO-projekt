@@ -1,0 +1,35 @@
+%%%%%%%%%%%%%%%%%%%%% Header/footer pakke og konfiguration %%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+%\usepackage{color}
+\pagestyle{fancy}
+
+\renewcommand{\headrulewidth}{0.8pt}% Bredden af stregen under header
+\renewcommand{\footrulewidth}{0.8pt}% Bredden af stregen over footer
+%
+\makeatletter
+\renewcommand{\headrule}{{\color{headfootrule}\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi
+\hrule\@height\headrulewidth\@width\headwidth
+\vskip-\headrulewidth}}
+\makeatother
+%
+\renewcommand{\footrule}{{\color{headfootrule}%
+\vskip-\footruleskip\vskip-\footrulewidth
+\hrule width\headwidth height\footrulewidth \vskip\footruleskip}}
+
+%\lhead[\color{headfoot}\headinner]{\color{headfoot}\headouter} %
+%\chead{\color{headfoot}\headcenter}%
+%\rhead[\color{headfoot}\headouter]{\color{headfoot}\headinner}%
+%\lfoot[\color{headfoot}\footinner]{\color{headfoot}\footouter}%
+%\cfoot{\color{headfoot}\footcenter}%
+%\rfoot[\color{headfoot}\footouter]{\color{headfoot}\footinner}%
+\fancyhead[LE,RO]{\headinner}
+\fancyhead[LO,RE]{\headouter}
+\fancyhead[C]{\headcenter}
+\fancyfoot[LE,RO]{\footinner}
+\fancyfoot[LO,RE]{\footouter}
+\fancyfoot[C]{\footcenter}
+
+% Sørg for korrekt page style, selv ved chapter headings mv. (omskriv plain)
+\fancypagestyle{plain}{%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
