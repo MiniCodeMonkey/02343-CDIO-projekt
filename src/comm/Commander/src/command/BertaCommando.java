@@ -22,40 +22,45 @@ public class BertaCommando {
 	private NXTCommand nxtCommand;
 
 	/**
-	 * Opretter forbindelse til BERTA (virker pt. kun med NXT: 001653091CAE)
+	 * Opretter forbindelse til BERTA (MAC: 00:16:53:09:1C:AE)
 	 * <br>
 	 * @throws NXTCommException hvis ingen BERTA fundet
 	 */
 	public BertaCommando() throws NXTCommException {
 		NXTInfo bertaNXTInfo = null;
-		System.out.println("Bluetooth test | PC -> NXT");
 
 		nxtCommand = new NXTCommand();
 		NXTConnector conn = new NXTConnector();
 
 		// SEARCH /////////////////////////////////////////
 
-		NXTInfo[] info = conn.search("", null, NXTCommFactory.BLUETOOTH);
-
+		System.out.print("Searching for NXTs...");
+		NXTInfo[] info = conn.search(null, Constants.NXT_ADR, NXTCommFactory.BLUETOOTH);
+		
+		
 		if (info.length == 0) {
-			System.out.println();
-			System.out.println("...No NXT(s) found!");
-			System.exit(1);
-		} else {
+			System.out.println("...no NXT(s) found!");
+			// TODO exception!
+			return;
+		}
 
-			System.out.println("Found " + info.length + " devices");
-			int d = 1;
-			for (NXTInfo nxtInfo : info) {
-				System.out.println("   " + d + ". " + nxtInfo.name + " "
-						+ nxtInfo.deviceAddress);
-				d++;
-				if (/*nxtInfo.deviceAddress.equals(Constants.NXT_ADR)
-						|| */nxtInfo.deviceAddress.equals(Constants.NXT_ADR2)) {
-					bertaNXTInfo = nxtInfo;
-					System.out.println("NXT chosen");
-				}
-
+		System.out.println(" OK");
+		System.out.println();
+		System.out.println("Found " + info.length + " devices");
+		int d = 1;
+		for (NXTInfo nxtInfo : info) {
+			System.out.println("   " + d + ". " + nxtInfo.name + " "
+					+ nxtInfo.deviceAddress);
+			d++;
+			if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR)) {
+				bertaNXTInfo = nxtInfo;
+				System.out.println("B.E.R.T.A. found");
 			}
+		}
+		if (bertaNXTInfo == null){
+			System.err.println("B.E.R.T.A. not found!");
+			//TODO exception
+			return;
 		}
 
 		// CONNECT ////////////////////////////////////////
@@ -68,17 +73,10 @@ public class BertaCommando {
 			e2.printStackTrace();
 		}
 
-		if (bertaNXTInfo != null) {
-			System.out.println();
-			System.out.println("Connecting to B.E.R.T.A...");
-				System.out
-						.println("Success?  "
-								+ nxtComm.open(bertaNXTInfo,
-										lejos.pc.comm.NXTComm.LCP));
-		}
-
-		else
-			System.err.println("B.E.R.T.A. not found!");
+		System.out.println();
+		System.out.println("Connected to " + bertaNXTInfo.name);
+		System.out.println("Success?  "
+				+ nxtComm.open(bertaNXTInfo, lejos.pc.comm.NXTComm.LCP));
 
 		nxtCommand.setNXTComm(nxtComm);
 	}

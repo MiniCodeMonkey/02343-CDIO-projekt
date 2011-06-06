@@ -220,4 +220,11 @@ public class Control implements IControl{
 		
 		return false;
 	}
+
+
+	@Override
+	public void disconnect() throws IOException {
+		commander.close();
+	}
+
 }

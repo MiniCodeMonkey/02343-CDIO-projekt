@@ -1,0 +1,59 @@
+Plan
+
+Steder hvor der IKKE er vægtet, skal der vægtes ligeligt
+
+56.2%	komponenter	(vægt 50%)
+		
+		64%	Robot
+			
+			100%	Kommunikation
+				
+				-100% Bluetooth-forbindelse
+			
+			70%	Bygning
+	
+				-90%	Design
+				-80%	Konstruktion
+
+			50%	Programmering
+
+				-100%	Styring af motorer (vægt 25%)
+				-100%	Modtagelse/udførsel af kommandoer på NXT(25%)
+				-70%	Programmering/Kontrolenhed(50%)
+
+			50%	Test
+
+				-100%	Kommunikation
+				-90%	Programmering/Kontrolenhed
+		
+		46.5%	Billedbehandling
+
+			-100%	Hentning af billede fra webcam
+			
+			-100% Positionsbestemmelse
+
+				-100%	Bestemme position for ensfarvet objekt
+				-100%	Bestemme position og retning for tofarvet objekt
+
+			-70%	Test/Kalibrering
+		
+		66%	Stifinding
+
+			-100%	Bestem en effektiv rutefindingsalgoritme
+			-100%	Implementér rutefinding
+			-60%	Test
+	
+0%	Samling		(tæller 50%)
+
+		0%	Styring
+			-20%	Sammensæt ovenstående
+				(Robot,Billedbeh.,Stifinding,Komm.)
+
+0%	Videreudvikling (tæller ikke med i samlet %)
+		
+		0%	Fejlhåndtering
+		0%	2 Robotter
+_______________________________________________________________________________________
+Samlet til dd.
+
+~ 21%
