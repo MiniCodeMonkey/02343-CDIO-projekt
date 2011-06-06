@@ -25,8 +25,8 @@ public class PropCommando {
 	/**
 	 * Opretter forbindelse til PROP (MAC: 00:16:53:09:18:d4)
 	 * <br>
-	 * @throws NXTCommException hvis forbindelsen på én af robotterne fejler
-	 * @throws NoRobotFoundException hvis en robot ikke bliver fundet
+	 * @throws NXTCommException
+	 * @throws NoRobotFoundException
 	 */
 	public PropCommando() throws NXTCommException, NoRobotFoundException {
 		NXTInfo propNXTInfo = null;

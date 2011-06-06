@@ -25,8 +25,8 @@ public class BertaCommando {
 	/**
 	 * Opretter forbindelse til BERTA (MAC: 00:16:53:09:1C:AE)
 	 * <br>
-	 * @throws NXTCommException hvis forbindelsen på én af robotterne fejler
-	 * @throws NoRobotFoundException hvis en robot ikke bliver fundet
+	 * @throws NXTCommException
+	 * @throws NoRobotFoundException 
 	 */
 	public BertaCommando() throws NXTCommException, NoRobotFoundException {
 		NXTInfo bertaNXTInfo = null;
