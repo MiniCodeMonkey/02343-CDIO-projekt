@@ -24,8 +24,9 @@ public class BertaCommando {
 	/**
 	 * Opretter forbindelse til BERTA (virker pt. kun med NXT: 001653091CAE)
 	 * <br>
+	 * @throws NXTCommException hvis ingen BERTA fundet
 	 */
-	public BertaCommando() {
+	public BertaCommando() throws NXTCommException {
 		NXTInfo bertaNXTInfo = null;
 		System.out.println("Bluetooth test | PC -> NXT");
 
@@ -48,9 +49,10 @@ public class BertaCommando {
 				System.out.println("   " + d + ". " + nxtInfo.name + " "
 						+ nxtInfo.deviceAddress);
 				d++;
-				if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR)
-						|| nxtInfo.deviceAddress.equals(Constants.NXT_ADR2)) {
+				if (/*nxtInfo.deviceAddress.equals(Constants.NXT_ADR)
+						|| */nxtInfo.deviceAddress.equals(Constants.NXT_ADR2)) {
 					bertaNXTInfo = nxtInfo;
+					System.out.println("NXT chosen");
 				}
 
 			}
@@ -69,15 +71,10 @@ public class BertaCommando {
 		if (bertaNXTInfo != null) {
 			System.out.println();
 			System.out.println("Connecting to B.E.R.T.A...");
-			try {
 				System.out
 						.println("Success?  "
 								+ nxtComm.open(bertaNXTInfo,
 										lejos.pc.comm.NXTComm.LCP));
-			} catch (NXTCommException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 
 		else

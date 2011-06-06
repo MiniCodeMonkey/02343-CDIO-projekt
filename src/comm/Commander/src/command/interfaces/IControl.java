@@ -97,6 +97,8 @@ public interface IControl {
 	
 	boolean isClawMoving();
 	
+	boolean hasCake();
+	
 	void reverse(int speed, int duration);
 	
 	

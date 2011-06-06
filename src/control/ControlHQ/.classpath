@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ImageProcessing"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/WebCam"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/DTO"/>
-	<classpathentry kind="lib" path="beansbinding-1.2.1.jar"/>
-	<classpathentry kind="lib" path="bluecove.jar"/>
-	<classpathentry kind="lib" path="pccomm.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Commander"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Communication"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/pathfinding"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

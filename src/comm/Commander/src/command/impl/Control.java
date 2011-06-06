@@ -210,4 +210,14 @@ public class Control implements IControl{
 //			e.printStackTrace();
 		}
 	}
+
+
+	@Override
+	public boolean hasCake() {
+		
+		Sound.playTone(440, 500);
+		
+		
+		return false;
+	}
 }
