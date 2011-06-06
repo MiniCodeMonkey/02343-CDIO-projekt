@@ -4,7 +4,7 @@
   <Properties>
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="Image Processing"/>
+    <Property name="title" type="java.lang.String" value="Processing"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -1240,6 +1240,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Start Webcam"/>
             <Property name="toolTipText" type="java.lang.String" value="Start Webcam"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="4"/>
           </Properties>
@@ -1307,6 +1308,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Start Test-Billeder"/>
             <Property name="toolTipText" type="java.lang.String" value="Image source (test images)"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="4"/>
           </Properties>

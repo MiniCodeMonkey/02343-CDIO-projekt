@@ -6,10 +6,10 @@
 
 package gui;
 
-import java.awt.Point;
-
+import gui.comm.CommFrame;
 import gui.manualControl.ControlFrame;
 import gui.processing.ProcessingFrame;
+import control.FramePlaceHolder;
 
 /**
  *
@@ -21,9 +21,11 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
-        makePathfindingFrame();
-        makeImageFrame();
-        makeControlFrame();
+//        makeProcessingFrame();
+//        makeControlFrame();
+        makeCommFrame();
+        
+        FramePlaceHolder.setMainFrame(this);
     }
 
     /** This method is called from within the constructor to
@@ -91,6 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
 	}
     public void makeControlFrame() {
 		// TODO
+    	
     	ControlFrame controlFrame = new ControlFrame();
     	
     	controlFrame.setVisible(true);
@@ -99,7 +102,7 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Opretter panel med funktioner vedr. al image-processing
      */
-    public void makeImageFrame() {
+    public void makeProcessingFrame() {
     	ProcessingFrame processFrame = new ProcessingFrame();
     	
         processFrame.setLocation(dashboard.getSize().width - processFrame.getSize().width, processFrame.getLocation().y);
@@ -112,10 +115,17 @@ public class MainFrame extends javax.swing.JFrame {
 	}
     public void makeCommFrame() {
 		// TODO
+    	CommFrame commFrame = new CommFrame();
+    	commFrame.setVisible(true);
+    	
+    	dashboard.add(commFrame);
 	}
     public void arrangeFrames() {
 		// TODO
 	}
+    public javax.swing.JDesktopPane getDashboard(){
+    	return dashboard;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;

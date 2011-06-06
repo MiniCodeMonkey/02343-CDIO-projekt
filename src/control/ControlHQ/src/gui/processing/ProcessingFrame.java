@@ -3,6 +3,8 @@ package gui.processing;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import control.FramePlaceHolder;
+
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.imageProcessor;
@@ -11,6 +13,8 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
+import exceptions.ErrorMessage;
+import exceptions.WebcamException;
 
 /**
  *
@@ -23,6 +27,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     public ProcessingFrame() {
         initComponents();
         initListeners();
+        FramePlaceHolder.setProcessingFrame(this);
     }
 
     private void initListeners() {
@@ -158,7 +163,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 
         setIconifiable(true);
         setResizable(true);
-        setTitle("Image Processing");
+        setTitle("Processing");
 
         settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Threshold Settings"));
 
@@ -802,6 +807,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         webcamBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/webcam_icon.png"))); // NOI18N
         webcamBtn.setText("Start Webcam");
         webcamBtn.setToolTipText("Start Webcam");
+        webcamBtn.setEnabled(false);
         webcamBtn.setFocusable(false);
         webcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         webcamBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -848,6 +854,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         testimageBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagefile_icon.png"))); // NOI18N
         testimageBtn.setText("Start Test-Billeder");
         testimageBtn.setToolTipText("Image source (test images)");
+        testimageBtn.setEnabled(false);
         testimageBtn.setFocusable(false);
         testimageBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         testimageBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -921,7 +928,15 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_stopWebcamBtnActionPerformed
 
     public void setFeed(IImageSource src){
-
+    	
+        imageSource = src;
+        try {
+			imageSource.init();
+		} catch (Exception e) {
+			new ErrorMessage("Webcam ikke tilg�ngeligt");
+		}
+        
+		// LABELS
 		if (src instanceof ImageFile) {	// file src
 			nextTestImgBtn.setEnabled(true);
 			
@@ -939,15 +954,12 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 			stopWebcamBtn.setEnabled(true);
 			webcamRunning = true;
 		}
-    	
-        imageSource = src;
-        imageSource.init();
-        
+		
+		// start webcam thread
         if (webcamRunning){
         	runWebcamloop();
         	return;
         }
-        	
         
         updateImagePanel();
 
