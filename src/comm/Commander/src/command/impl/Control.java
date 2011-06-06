@@ -2,6 +2,7 @@ package command.impl;
 
 import java.io.IOException;
 
+import lejos.nxt.Sound;
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
 import command.interfaces.IControl;
@@ -206,5 +207,15 @@ public class Control implements IControl{
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public boolean hasCake() {
+		
+		Sound.playTone(440, 500);
+		
+		
+		return false;
 	}
 }
