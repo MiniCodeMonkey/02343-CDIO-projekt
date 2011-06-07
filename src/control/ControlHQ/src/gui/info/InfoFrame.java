@@ -1221,6 +1221,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
     }
     private void updateXtiles(int x){
         Tile_X_Count_label.setText(x+"");
+        
     }
     private void updateYtiles(int y){
         Tile_Y_Count_Label.setText(y+"");
@@ -1250,8 +1251,8 @@ public class InfoFrame extends javax.swing.JInternalFrame {
     
     //B.E.R.T.A. Panel
     //Overview
-    private void updateBertaState(String state){
-    Berta_State_label.setText(state);
+    private void updateBertaState(){
+    Berta_State_label.setText(MainController.getInstance().getRobotState()[0]+"");
     }
     private void updateBertaSpeed(){
         //TODO: Lav speed update metode. Nok noget med wheeldiameter og tacocount
@@ -1292,8 +1293,8 @@ public class InfoFrame extends javax.swing.JInternalFrame {
    
    //P.R.O.P. Panel
     //Overview
-    private void updatePropState(String state){
-    Prop_State_label.setText(state);
+    private void updatePropState(){
+    Prop_State_label.setText(MainController.getInstance().getRobotState()[1]+"");
     }
     private void updatePropSpeed(){
         //TODO: Lav speed update metode. Nok noget med wheeldiameter og tacocount

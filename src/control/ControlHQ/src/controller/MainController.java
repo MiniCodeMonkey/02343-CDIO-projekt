@@ -59,4 +59,7 @@ public class MainController
 		if (processingThread != null)
 			processingThread.stopThread();
 	}
+	public RobotThread.RobotState[] getRobotState(){
+		return processingThread.getRobotStates();
+	}
 }
