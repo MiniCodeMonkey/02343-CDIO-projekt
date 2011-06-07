@@ -7,6 +7,7 @@ import lejos.nxt.addon.RCXLightSensor;
 import lejos.pc.comm.NXTCommException;
 
 import command.BertaCommando;
+import command.exception.NoRobotFoundException;
 import command.interfaces.IControl;
 
 public class TestCommands {
@@ -18,6 +19,9 @@ public class TestCommands {
 		} catch (NXTCommException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (NoRobotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		IControl bertaControl = bertaCommando.getControl();
 		

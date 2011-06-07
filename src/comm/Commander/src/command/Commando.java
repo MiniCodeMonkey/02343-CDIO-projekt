@@ -4,9 +4,9 @@ import bluetooth.constants.Constants;
 import command.impl.Control;
 import command.interfaces.IControl;
 
-import exceptions.MasterRobotNotFound;
-import exceptions.NoRobotFoundException;
-import exceptions.RobotConnectException;
+import command.exception.MasterRobotNotFound;
+import command.exception.NoRobotFoundException;
+import command.exception.RobotConnectException;
 import lejos.pc.comm.NXTCommException;
 
 /** 
