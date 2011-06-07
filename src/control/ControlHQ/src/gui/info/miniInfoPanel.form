@@ -22,7 +22,7 @@
                   <Component id="PropToolbar" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="BertaToolbar" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="423" max="32767" attributes="0"/>
+              <EmptySpace pref="513" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,7 +49,7 @@
         <Component class="javax.swing.JLabel" name="BertaNameLabel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/robot-transformer-icone-6452-32.png"/>
+              <Image iconType="3" name="/icons/robot.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="B.E.R.T.A."/>
           </Properties>
@@ -57,7 +57,7 @@
         <Component class="javax.swing.JLabel" name="BertaStartStopLabel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/stop-icone-9514-32.png"/>
+              <Image iconType="3" name="/icons/stop.png"/>
             </Property>
           </Properties>
         </Component>
@@ -66,7 +66,7 @@
         <Component class="javax.swing.JLabel" name="BertaStateLabel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/mathematica-icone-7540-48.png"/>
+              <Image iconType="3" name="/icons/state.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="State"/>
           </Properties>
@@ -82,7 +82,7 @@
         <Component class="javax.swing.JLabel" name="BertaAngleLabel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/Angle White.png"/>
+              <Image iconType="3" name="/icons/angle.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Angle"/>
           </Properties>
@@ -99,7 +99,7 @@
         <Component class="javax.swing.JLabel" name="PropNameLabel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/marvin-robot-icone-8189-32.png"/>
+              <Image iconType="3" name="/icons/robot.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="P.R.O.P."/>
           </Properties>
@@ -107,7 +107,7 @@
         <Component class="javax.swing.JLabel" name="PropStartStopLAbel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/green-check-icone-4881-48.png"/>
+              <Image iconType="3" name="/icons/ok.png"/>
             </Property>
           </Properties>
         </Component>
@@ -116,7 +116,7 @@
         <Component class="javax.swing.JLabel" name="PropStateLabel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/mathematica-icone-7540-48.png"/>
+              <Image iconType="3" name="/icons/state.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="State"/>
           </Properties>
@@ -132,7 +132,7 @@
         <Component class="javax.swing.JLabel" name="PropAngelLabel">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/Angle White.png"/>
+              <Image iconType="3" name="/icons/angle.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Angle"/>
           </Properties>
