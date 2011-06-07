@@ -114,6 +114,7 @@ public class ProcessingThread extends Thread
 			try
 			{
 				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
+				robotThread.setAllRobotLocations(locations.getRobots());
 			}
 			catch (IndexOutOfBoundsException e)
 			{
