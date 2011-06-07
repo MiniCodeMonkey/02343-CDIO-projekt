@@ -10,6 +10,9 @@ import gui.comm.CommFrame;
 import gui.manualControl.ControlFrame;
 import gui.processing.ProcessingFrame;
 import control.FramePlaceHolder;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,10 +41,11 @@ public class MainFrame extends javax.swing.JFrame {
         dashboard = new javax.swing.JDesktopPane();
         mainMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        importMenuItem = new javax.swing.JMenuItem();
+        exportMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         aboutMenu = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -50,18 +54,26 @@ public class MainFrame extends javax.swing.JFrame {
 
         fileMenu.setText("File");
 
-        jMenuItem1.setText("jMenuItem1");
-        fileMenu.add(jMenuItem1);
+        importMenuItem.setText("Import config..");
+        fileMenu.add(importMenuItem);
+
+        exportMenuItem.setText("Export config..");
+        fileMenu.add(exportMenuItem);
 
         mainMenuBar.add(fileMenu);
 
         jMenu2.setText("Edit");
         mainMenuBar.add(jMenu2);
 
-        aboutMenu.setText("About");
+        aboutMenu.setText("?");
 
-        jMenuItem2.setText("jMenuItem2");
-        aboutMenu.add(jMenuItem2);
+        aboutMenuItem.setText("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
+        aboutMenu.add(aboutMenuItem);
 
         mainMenuBar.add(aboutMenu);
 
@@ -80,6 +92,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        Image icon = new ImageIcon(getClass().getResource("/icons/BERTA.png")).getImage().getScaledInstance(-1, 480, Image.SCALE_FAST);
+		JOptionPane.showMessageDialog(null,
+                "Orn'lig syg about box til basis kontrol-HQ-2theMaX!\n"
+                + "Brugt til test af orn'lig syg B.E.R.T.A!"
+                + "\n"
+                + "Forår 2011 (c) Gruppe 4 - CDIO Projekt - Morten Hulvej", "Orn'lig syg",
+			JOptionPane.WARNING_MESSAGE,new ImageIcon(icon));
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
 
 
     /**
@@ -127,11 +149,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JDesktopPane dashboard;
+    private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar mainMenuBar;
     // End of variables declaration//GEN-END:variables
 
