@@ -1,16 +1,19 @@
-package control;
+package gui;
 
-import gui.MainFrame;
 import gui.comm.CommFrame;
 import gui.manualControl.ControlFrame;
+import gui.path.PathToleranceFrame;
 import gui.processing.ProcessingFrame;
+import gui.speed.SpeedFrame;
 
 public class FramePlaceHolder {
 	
-	private static MainFrame mf;
-	private static ProcessingFrame pf;
-	private static CommFrame commf;
-	private static ControlFrame conf;
+	private static MainFrame mf = null;
+	private static ProcessingFrame pf = null;
+	private static CommFrame commf = null;
+	private static ControlFrame conf = null;
+	private static PathToleranceFrame pathf = null;
+	private static SpeedFrame speedf = null;
 
 	public static synchronized void setMainFrame(MainFrame frame) {
 		mf = frame;
@@ -24,7 +27,6 @@ public class FramePlaceHolder {
 	public static synchronized void setControlFrame(ControlFrame frame) {
 		conf = frame;
 	}
-	
 	public static synchronized MainFrame getMainFrame() {
 		return mf;
 	}
@@ -36,6 +38,18 @@ public class FramePlaceHolder {
 	}
 	public static synchronized ControlFrame getControlFrame() {
 		return conf;
+	}
+	public static synchronized void setPathf(PathToleranceFrame pathf) {
+		FramePlaceHolder.pathf = pathf;
+	}
+	public static synchronized PathToleranceFrame getPathf() {
+		return pathf;
+	}
+	public static void setSpeedf(SpeedFrame speedf) {
+		FramePlaceHolder.speedf = speedf;
+	}
+	public static SpeedFrame getSpeedf() {
+		return speedf;
 	}
 	
 }

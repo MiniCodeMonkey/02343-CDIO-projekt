@@ -108,5 +108,9 @@ public class PropCommando {
 		return result;
 		
 	}
+	
+	public boolean isConnected() {
+		return nxtCommand.isOpen();
+	}
 
 }

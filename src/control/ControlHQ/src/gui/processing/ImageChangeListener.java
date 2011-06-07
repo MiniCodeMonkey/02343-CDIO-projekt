@@ -1,5 +1,7 @@
 package gui.processing;
 
+import gui.FramePlaceHolder;
+
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -8,6 +10,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
@@ -18,7 +21,7 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
  */
 public class ImageChangeListener implements ChangeListener, ItemListener {
 
-	ProcessingFrame frame;
+	ProcessingFrame frame = FramePlaceHolder.getProcessingFrame();
 	IImageProcessor imageProcessor;
 	
 	public IImageProcessor getImageProcessor() {
@@ -27,10 +30,6 @@ public class ImageChangeListener implements ChangeListener, ItemListener {
 
 	public void setImageProcessor(IImageProcessor ip) {
 		this.imageProcessor = ip;
-	}
-
-	public ImageChangeListener(ProcessingFrame f) {
-		frame = f;
 	}
 	
 	@Override

@@ -11,13 +11,14 @@
 
 package gui.comm;
 
+import gui.FramePlaceHolder;
+
 import java.awt.Robot;
 
 import lejos.pc.comm.NXTCommException;
 import command.BertaCommando;
 import command.PropCommando;
 
-import control.FramePlaceHolder;
 import controller.MainController;
 import controller.RobotThread;
 import controller.RobotThread.RobotType;

@@ -106,5 +106,8 @@ public class BertaCommando {
 		return result;
 		
 	}
+	public boolean isConnected() {
+		return nxtCommand.isOpen();
+	}
 
 }

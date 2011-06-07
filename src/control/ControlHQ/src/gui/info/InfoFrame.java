@@ -1,10 +1,10 @@
 package gui.info;
+import gui.FramePlaceHolder;
 import gui.processing.*;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
-import control.FramePlaceHolder;
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
