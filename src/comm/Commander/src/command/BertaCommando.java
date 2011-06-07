@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import command.impl.Control;
 import command.interfaces.IControl;
-import exceptions.NoRobotFoundException;
+import command.exception.NoRobotFoundException;
 
 import lejos.nxt.remote.NXTCommand;
 import lejos.pc.comm.NXTComm;
