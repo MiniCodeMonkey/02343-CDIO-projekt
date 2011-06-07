@@ -139,7 +139,7 @@ public class RobotThread extends Thread
 					case HEADING_FOR_CAKE:
 					{
 						// If close enough to the cake
-						if (distanceToTarget < 32)
+						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToCake())
 						{
 							this.robotState = RobotState.POSITIONING;
 						}
@@ -150,7 +150,7 @@ public class RobotThread extends Thread
 					case POSITIONING:
 					{
 						// Is the rotation close enough?
-						if (targetAngleDifference <= Math.toRadians(10))
+						if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationClose()))
 						{
 							// Now picking up cake
 							this.robotState = RobotState.PICKING_UP;
@@ -203,11 +203,11 @@ public class RobotThread extends Thread
 							// Rotate slowly to cake
 							if (robotLocation.getAngle() < targetAngle)
 							{
-								robotControl.right(20);
+								robotControl.right(Thresholds.getInstance().getSlowSpeed());
 							}
 							else
 							{
-								robotControl.left(20);
+								robotControl.left(Thresholds.getInstance().getSlowSpeed());
 							}
 						}
 						
@@ -217,7 +217,7 @@ public class RobotThread extends Thread
 					case HEADING_FOR_DELIVERY:
 					{
 						// If close enough to the delivery location
-						if (distanceToTarget < 32)
+						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToDelivery())
 						{
 							this.robotState = RobotState.POSITIONING;
 						}
@@ -229,20 +229,20 @@ public class RobotThread extends Thread
 				if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 				{
 					// We are very very close to the correct angle, so drive forward
-					if (targetAngleDifference <= Math.toRadians(5))
+					if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationClose()))
 					{
-						robotControl.move(50, false);
+						robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
 					}
-					else if (targetAngleDifference <= Math.toRadians(30)) // Do minor corrections
+					else if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationFairlyClose())) // Do minor corrections
 					{
 						// Rotate
 						if (robotLocation.getAngle() < targetAngle)
 						{
-							robotControl.right(10);
+							robotControl.right(Thresholds.getInstance().getSlowSpeed());
 						}
 						else
 						{
-							robotControl.left(10);
+							robotControl.left(Thresholds.getInstance().getSlowSpeed());
 						}
 					}
 					else // Do major corrections
@@ -250,11 +250,11 @@ public class RobotThread extends Thread
 						// Rotate
 						if (robotLocation.getAngle() < targetAngle)
 						{
-							robotControl.right(30);
+							robotControl.right(Thresholds.getInstance().getMediumSpeed());
 						}
 						else
 						{
-							robotControl.left(30);
+							robotControl.left(Thresholds.getInstance().getMediumSpeed());
 						}
 					}
 				}

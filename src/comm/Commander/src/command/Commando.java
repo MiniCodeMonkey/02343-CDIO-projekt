@@ -1,13 +1,11 @@
 package command;
 
+import lejos.pc.comm.NXTCommException;
 import bluetooth.constants.Constants;
-import command.impl.Control;
-import command.interfaces.IControl;
 
 import command.exception.MasterRobotNotFound;
 import command.exception.NoRobotFoundException;
-import command.exception.RobotConnectException;
-import lejos.pc.comm.NXTCommException;
+import command.interfaces.IControl;
 
 /** 
  * @author Morten Hulvej
@@ -71,6 +69,12 @@ public class Commando {
 	}
 	public boolean isPropConnected(){
 		return propCom != null? true : false;
+	}
+	public int disconnect(){
+		int result = 0;
+		result = bertaCom.disconnect();
+		result += propCom.disconnect();
+		return result;
 	}
 	
 }
