@@ -574,27 +574,22 @@ public class ImageProcessor2 implements IImageProcessor {
 				// Sæt RGB-værdi til output-billede ud fra tilemap værdi. To første hex-værdier er alpha-værdi: RGB = 0xAARRGGBB.
 				switch (tilemap[i][j]) {
 					case CAKE:
-//						rgb = 0xFFFF0000;
-						rgb = 0xFF000000;
+						rgb = 0xFFFF0000;
 						break;
 					case OBSTACLE:
 						rgb = 0xFFFFFFFF;
 						break;
 					case ROBOT1N:
-//						rgb = 0xFF00FF00;
-						rgb = 0xFF000000;
+						rgb = 0xFF00FF00;
 						break;
 					case ROBOT1S:
-//						rgb = 0xFF0000FF;
-						rgb = 0xFF000000;
+						rgb = 0xFF0000FF;
 						break;
 					case ROBOT2N:
-//						rgb = 0xFFFF7700;
-						rgb = 0xFF000000;
+						rgb = 0xFFFF7700;
 						break;
 					case ROBOT2S:
-//						rgb = 0xFFFFFF00;
-						rgb = 0xFF000000;
+						rgb = 0xFFFFFF00;
 						break;
 					default:
 						rgb = 0xFF000000;
