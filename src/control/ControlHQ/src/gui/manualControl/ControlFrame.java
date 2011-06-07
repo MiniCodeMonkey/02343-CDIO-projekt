@@ -20,9 +20,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import control.FramePlaceHolder;
+import controller.RobotThread.RobotType;
 
 /** GUI fra Manual-test..
- * <br> - Kan v�re buggy!
+ * <br> - Buggy!
  * 
  * 
  * @author Morten Hulvej
@@ -489,7 +490,9 @@ public class ControlFrame extends javax.swing.JInternalFrame {
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
-    
+    public void minimize(boolean m){
+    	this.
+    }
     
 	public void reset() {
 		statusPtyLabel.setText("NOT CONNECTED");
