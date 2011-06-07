@@ -78,12 +78,12 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(120, 40, 0, 180, 100, 20);
+	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 100, 0, 255, 180, 50);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(110, 110, 0, 180, 180, 30);
+	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(200, 180, 0, 255, 220, 40);
 	
 	/**
 	 * Behandler et billede og genererer forhindrings-map samt robot- og kage-positioner

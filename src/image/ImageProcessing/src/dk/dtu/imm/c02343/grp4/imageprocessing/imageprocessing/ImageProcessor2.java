@@ -1,5 +1,7 @@
 package dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -580,16 +582,24 @@ public class ImageProcessor2 implements IImageProcessor {
 			tileImage.setRGB(cake.getX(), cake.getY()-1, 0xFF00FFFF);
 		}
 		
-		Iterator<IRobot> robotItr = robots.iterator();
-		while(robotItr.hasNext()) {
-			IRobot robot = robotItr.next();
+		for (IRobot robot : robots) {
 //			System.out.println("Robot at (" + robot.getY() + "," + robot.getX() + ") angle: " + robot.getAngle() + "rad = " + robot.getAngle()*180/Math.PI + " deg");
-			tileImage.setRGB(robot.getX(),robot.getY(), 0xFF00FF00);
-			tileImage.setRGB(robot.getX()+1,robot.getY(), 0xFF00FF00);
-			tileImage.setRGB(robot.getX()-1,robot.getY(), 0xFF00FF00);
-			tileImage.setRGB(robot.getX(),robot.getY()+1, 0xFF00FF00);
-			tileImage.setRGB(robot.getX(),robot.getY()-1, 0xFF00FF00);
+			if (robot.getX() >= 0 && robot.getX() < tileImage.getWidth() && robot.getY() >= 0 && robot.getY() < tileImage.getHeight()) {
+				tileImage.setRGB(robot.getX(),robot.getY(), 0xFFFF0000);
+				if (robot.getX() < tileImage.getWidth())
+					tileImage.setRGB(robot.getX()+1,robot.getY(), 0xFFFF0000);
+				if (robot.getX() >= 0)
+					tileImage.setRGB(robot.getX()-1,robot.getY(), 0xFFFF0000);
+				if (robot.getY() < tileImage.getHeight())
+					tileImage.setRGB(robot.getX(),robot.getY()+1, 0xFFFF0000);
+				if (robot.getY() >= 0)
+					tileImage.setRGB(robot.getX(),robot.getY()-1, 0xFFFF0000);
+			}
 		}
+		
+		Graphics2D gc = tileImage.createGraphics();
+		gc.setColor(new Color(0).green);
+		gc.drawLine(20, 20, 5, 10);
 	}
 	
 	/**
