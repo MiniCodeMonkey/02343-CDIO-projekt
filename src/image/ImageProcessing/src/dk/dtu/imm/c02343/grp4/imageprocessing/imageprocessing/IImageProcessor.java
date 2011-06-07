@@ -58,12 +58,12 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
 	 */
-	public static final Thresholds OBSTACLE_THRESHOLDS = new Thresholds(160, 160, 160, 255, 255, 255);
+	public static final Thresholds OBSTACLE_THRESHOLDS = new Thresholds(140, 140, 140, 255, 255, 255);
 	
 	/**
 	 * Standard grænseværdier for mapping af kager fra billedkilde
 	 */
-	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(50, 0, 0, 255, 35, 35);
+	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(80, 0, 0, 255, 45, 45);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot1 front fra billedkilde
@@ -78,12 +78,12 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 100, 0, 255, 180, 50);
+	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 60, 0, 220, 90, 40);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(200, 180, 0, 255, 220, 40);
+	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(170, 170, 0, 230, 230, 90);
 	
 	/**
 	 * Behandler et billede og genererer forhindrings-map samt robot- og kage-positioner

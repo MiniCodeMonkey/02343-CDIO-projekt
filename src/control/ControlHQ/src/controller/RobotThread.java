@@ -2,10 +2,10 @@ package controller;
 
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.List;
 
 import command.interfaces.IControl;
-import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
-import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
+
 import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
@@ -13,7 +13,7 @@ import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
 
 public class RobotThread extends Thread
 {
-	public enum RobotState { IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING };
+	public enum RobotState { IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY };
 	public enum RobotType { MASTER, SLAVE };
 	
 	private IControl robotControl;
@@ -25,6 +25,7 @@ public class RobotThread extends Thread
 	private Rectangle mapSize = new Rectangle();
 	private Path path = null;
 	private boolean pathWasUpdated = false;
+	private List<IRobot> allRobotLocations = null;
 	
 	private static boolean masterIsDefined = false;
 
@@ -95,34 +96,7 @@ public class RobotThread extends Thread
 				// Calculate target angle
 				double dy = step.getY() - robotLocation.getY();
 				double dx = step.getX() - robotLocation.getX();
-				double targetAngle = 0.0;
-				if (dy == 0) {
-					// Grænsetilfælde: Robot vender mod højre eller venstre
-					if (dx > 0) {
-						targetAngle = Math.PI/2;
-					} else if (dx < 0) {
-						targetAngle = -Math.PI/2;
-					} else {
-						targetAngle = 0;
-					}
-				} else if (dx == 0) {
-					// Grænsetilfælde: Robot vender op eller ned
-					if (dy > 0) {
-						targetAngle = Math.PI;
-					} else {
-						targetAngle = 0;
-					}
-				} else {
-					// Generelt
-					targetAngle = -Math.atan(dx/dy);
-					if (dx > 0 && dy > 0) {
-						// 3. kvadrant
-						targetAngle = Math.PI+targetAngle;
-					} else if (dx < 0 && dy > 0) {
-						// 4. kvadrant
-						targetAngle = -Math.PI+targetAngle;
-					}
-				}
+				double targetAngle = calculateTargetAngle(dy, dx);
 				
 				// Birds-eye-view distance from robot to target (cake, delivery location, etc.)
 				double distanceToTarget = calculateDistance(
@@ -143,7 +117,6 @@ public class RobotThread extends Thread
 						{
 							this.robotState = RobotState.POSITIONING;
 						}
-						
 						break;
 					}
 					
@@ -221,40 +194,76 @@ public class RobotThread extends Thread
 						{
 							this.robotState = RobotState.POSITIONING;
 						}
-						
 						break;
 					}
 				}
 				
+				// Reset yield status
+				if (this.robotState == RobotState.YIELD_CAKE)
+					this.robotState = RobotState.HEADING_FOR_CAKE;
+				
+				if (this.robotState == RobotState.YIELD_DELIVERY)
+					this.robotState = RobotState.HEADING_FOR_DELIVERY;
+				
+				// If we are heading somewhere
 				if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 				{
-					// We are very very close to the correct angle, so drive forward
-					if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationClose()))
+					// Slaves should yield for the master
+					if (this.robotType == RobotType.SLAVE)
 					{
-						robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
+						// Is any robots nearby?
+						for (IRobot otherRobotLocation : allRobotLocations)
+						{
+							if (!otherRobotLocation.equals(robotLocation) && otherRobotLocation.getX() >= 0)
+							{
+								double distance = calculateDistance(robotLocation.getX(), robotLocation.getY(), otherRobotLocation.getX(), otherRobotLocation.getY());
+								
+								if (distance < Thresholds.getInstance().getYieldDistance())
+								{
+									robotControl.stop();
+									
+									if (this.robotState == RobotState.HEADING_FOR_CAKE)
+										this.robotState = RobotState.YIELD_CAKE;
+									
+									if (this.robotState == RobotState.HEADING_FOR_DELIVERY)
+										this.robotState = RobotState.YIELD_DELIVERY;
+									
+									break;
+								}
+							}
+						}
 					}
-					else if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationFairlyClose())) // Do minor corrections
+					
+					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 					{
-						// Rotate
-						if (robotLocation.getAngle() < targetAngle)
+						// We are very very close to the correct angle, so drive forward
+						if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationClose()))
 						{
-							robotControl.right(Thresholds.getInstance().getSlowSpeed());
+							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
 						}
-						else
+						else if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationFairlyClose())) // Do minor corrections
 						{
-							robotControl.left(Thresholds.getInstance().getSlowSpeed());
+							// Rotate
+							if (robotLocation.getAngle() < targetAngle)
+							{
+								robotControl.right(Thresholds.getInstance().getSlowSpeed());
+							}
+							else
+							{
+								robotControl.left(Thresholds.getInstance().getSlowSpeed());
+							}
 						}
-					}
-					else // Do major corrections
-					{
-						// Rotate
-						if (robotLocation.getAngle() < targetAngle)
+						else // Do major corrections
 						{
-							robotControl.right(Thresholds.getInstance().getMediumSpeed());
-						}
-						else
-						{
-							robotControl.left(Thresholds.getInstance().getMediumSpeed());
+							// Rotate
+							if (robotLocation.getAngle() < targetAngle)
+							{
+								robotControl.right(Thresholds.getInstance().getMediumSpeed());
+							}
+							else
+							{
+								robotControl.left(Thresholds.getInstance().getMediumSpeed());
+							}
 						}
 					}
 				}
@@ -262,6 +271,40 @@ public class RobotThread extends Thread
 		}
 	}
 		
+	private double calculateTargetAngle(double dy, double dx)
+	{
+		double targetAngle = 0.0;
+		if (dy == 0) {
+			// Grænsetilfælde: Robot vender mod højre eller venstre
+			if (dx > 0) {
+				targetAngle = Math.PI/2;
+			} else if (dx < 0) {
+				targetAngle = -Math.PI/2;
+			} else {
+				targetAngle = 0;
+			}
+		} else if (dx == 0) {
+			// Grænsetilfælde: Robot vender op eller ned
+			if (dy > 0) {
+				targetAngle = Math.PI;
+			} else {
+				targetAngle = 0;
+			}
+		} else {
+			// Generelt
+			targetAngle = -Math.atan(dx/dy);
+			if (dx > 0 && dy > 0) {
+				// 3. kvadrant
+				targetAngle = Math.PI+targetAngle;
+			} else if (dx < 0 && dy > 0) {
+				// 4. kvadrant
+				targetAngle = -Math.PI+targetAngle;
+			}
+		}
+		
+		return targetAngle;
+	}
+
 	private double calculateDistance(int x1, int y1, int x2, int y2)
 	{
 		return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
@@ -293,6 +336,14 @@ public class RobotThread extends Thread
 		this.pathWasUpdated = true;
 	}
 
+	public RobotType getRobotType() {
+		return robotType;
+	}
+
+	public void setRobotType(RobotType robotType) {
+		this.robotType = robotType;
+	}
+
 	public Path getPath()
 	{
 		return this.path;
@@ -301,5 +352,10 @@ public class RobotThread extends Thread
 	public void setMapSize(int height, int width)
 	{
 		mapSize.setSize(width, height);
+	}
+
+	public void setAllRobotLocations(List<IRobot> robots)
+	{
+		allRobotLocations = robots;
 	}
 }
