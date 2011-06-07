@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import command.BertaCommando;
 import command.interfaces.IControl;
+import controller.RobotThread.RobotState;
 
 import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
@@ -26,15 +27,15 @@ public class ProcessingThread extends Thread
 	private IImageSource imageSource;
 	private IImageProcessor imageProcessor;
 	private boolean running;
-	
+
 	private int robotsCount = 0;
 	private int cakesCount = 0;
-	
+
 	public ProcessingThread(IImageSource imageSource)
 	{
 		this.imageSource = imageSource;
 	}
-	
+
 	public void run()
 	{
 		try
@@ -55,20 +56,20 @@ public class ProcessingThread extends Thread
 		imageProcessor = new ImageProcessor2();
 		BertaCommando bertaCommando = new BertaCommando();
 		IControl[] robotControls = bertaCommando.getControls();
-		
+
 		// Initialize all robots and start threads
 		int robotIndex = 0;
 		for (IControl robotControl : robotControls)
 		{
 			robotThreads[robotIndex] = new RobotThread(robotControl);
 			robotThreads[robotIndex].start();
-			
+
 			robotIndex++;
 		}
-		
+
 		running = true;
 	}
-	
+
 	private void runLoop() throws ControllerException
 	{
 		// Main processing loop
@@ -76,10 +77,10 @@ public class ProcessingThread extends Thread
 		{
 			// Get image from camera
 			BufferedImage image = imageSource.getImage();
-			
+
 			// Process the image
 			ILocations locations = imageProcessor.examineImage(image, true);
-			
+
 			calculatePaths(locations);
 		}
 	}
@@ -89,23 +90,23 @@ public class ProcessingThread extends Thread
 		// Save number of robots and cakes
 		robotsCount = locations.getRobots().size();
 		cakesCount = locations.getCakes().size();
-		
+
 		// Is no robots available?
 		if (locations.getRobots().size() <= 0)
 		{
 			return;
 		}
-		
+
 		// Is no cakes available?
 		if (locations.getCakes().size() <= 0)
 		{
 			return;
 		}
-		
+
 		// Create a new tile map from the locations object
 		TileMap tileMap = new TileMap();
 		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
-		
+
 		// Find a path for each robot
 		int robotIndex = 0;
 		for (RobotThread robotThread : robotThreads)
@@ -114,19 +115,20 @@ public class ProcessingThread extends Thread
 			try
 			{
 				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
+				robotThread.setAllRobotLocations(locations.getRobots());
 			}
 			catch (IndexOutOfBoundsException e)
 			{
 				throw new ControllerException("Could not visually find robot " + robotThread.toString());
 			}
-			
+
 			// Find path for robot
 			PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
-			
+
 			// Note: We used to resize path here
 			// TODO: Generate path with less steps directly in pathfinder class instead
 			Path newPath = pathFinder.findPath(robotThread.getRobotLocation(), robotThread.getTargetLocation());
-			
+
 			if (newPath == null)
 			{
 				throw new ControllerException("Could not find path for robot " + robotThread.toString());
@@ -136,11 +138,11 @@ public class ProcessingThread extends Thread
 				// Update path for robot thread
 				robotThread.setPath(newPath);
 				robotThread.setMapSize(locations.getTileImage().getHeight(), locations.getTileImage().getWidth());
-				
+
 				// Draw the path onto the tile image
 				locations.setTileImage(drawPath(locations.getTileImage(), robotThread.getPath()));
 			}
-			
+
 			robotIndex++;
 		}
 	}
@@ -151,27 +153,27 @@ public class ProcessingThread extends Thread
 		{
 			return sourceImage;
 		}
-		
+
 		Graphics g = sourceImage.getGraphics();
 		g.setColor(Color.white);
-		
+
 		for (int i = 0; i < path.getLength(); i++)
 		{
 			Step step = path.getStep(i);
 			Step nextStep = path.getStep(i + 1);
-			
+
 			g.drawLine(step.getX(), step.getY(), nextStep.getX(), nextStep.getY());
 		}
-		
+
 		return sourceImage;
 	}
 
 	public void stopThread()
 	{
 		running = false;
-		
+
 		// FIXME: Not fully implemented
-		
+
 		imageSource.close();
 	}
 
@@ -183,5 +185,25 @@ public class ProcessingThread extends Thread
 	public int getCakesCount()
 	{
 		return cakesCount;
+	}
+	/**
+	 * Get'er til Robot States
+	 * @return
+	 */
+	public RobotState[] getRobotStates(){
+		RobotState[] states = null;
+		if(robotThreads[0].getRobotType().equals(RobotThread.RobotType.MASTER)){
+			states[0]=robotThreads[0].getRobotState();
+		}
+		else{
+			states[1]=robotThreads[0].getRobotState();
+		}
+		if(robotThreads[1].getRobotType().equals(RobotThread.RobotType.SLAVE)){
+			states[1]=robotThreads[1].getRobotState();
+		}
+		else{
+			states[0]=robotThreads[1].getRobotState();
+		}
+		return states;
 	}
 }

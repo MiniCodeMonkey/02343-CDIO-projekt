@@ -23,6 +23,7 @@ public class Thresholds
 	
 	private double rotationClose = Math.toRadians(10);
 	private double rotationFairlyClose = Math.toRadians(30);
+	private int yieldDistance;
 	
 	/**
 	 * Returns the slow speed set
@@ -148,5 +149,23 @@ public class Thresholds
 	public void setRotationFairlyClose(double rotation)
 	{
 		rotationFairlyClose = rotation;
+	}
+	
+	/**
+	 * Returns the distance the master has to be from the slave to make the slave yield
+	 * @return distance in pixels
+	 */
+	public int getYieldDistance()
+	{
+		return yieldDistance;
+	}
+	
+	/**
+	 * Returns the distance the master has to be from the slave to make the slave yield
+	 * @param length distance in pixels
+	 */
+	public void setYieldDistance(int length)
+	{
+		yieldDistance = length;
 	}
 }
