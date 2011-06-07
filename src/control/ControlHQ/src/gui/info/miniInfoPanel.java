@@ -47,15 +47,15 @@ public class miniInfoPanel extends javax.swing.JPanel {
 
         BertaToolbar.setRollover(true);
 
-        BertaNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/robot-transformer-icone-6452-32.png"))); // NOI18N
+        BertaNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/robot.png"))); // NOI18N
         BertaNameLabel.setText("B.E.R.T.A.");
         BertaToolbar.add(BertaNameLabel);
 
-        BertaStartStopLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/stop-icone-9514-32.png"))); // NOI18N
+        BertaStartStopLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/stop.png"))); // NOI18N
         BertaToolbar.add(BertaStartStopLabel);
         BertaToolbar.add(jSeparator1);
 
-        BertaStateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/mathematica-icone-7540-48.png"))); // NOI18N
+        BertaStateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/state.png"))); // NOI18N
         BertaStateLabel.setText("State");
         BertaToolbar.add(BertaStateLabel);
 
@@ -63,21 +63,21 @@ public class miniInfoPanel extends javax.swing.JPanel {
         BertaPosLabel.setText("Position");
         BertaToolbar.add(BertaPosLabel);
 
-        BertaAngleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Angle White.png"))); // NOI18N
+        BertaAngleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/angle.png"))); // NOI18N
         BertaAngleLabel.setText("Angle");
         BertaToolbar.add(BertaAngleLabel);
 
         PropToolbar.setRollover(true);
 
-        PropNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/marvin-robot-icone-8189-32.png"))); // NOI18N
+        PropNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/robot.png"))); // NOI18N
         PropNameLabel.setText("P.R.O.P.");
         PropToolbar.add(PropNameLabel);
 
-        PropStartStopLAbel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/green-check-icone-4881-48.png"))); // NOI18N
+        PropStartStopLAbel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ok.png"))); // NOI18N
         PropToolbar.add(PropStartStopLAbel);
         PropToolbar.add(jSeparator2);
 
-        PropStateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/mathematica-icone-7540-48.png"))); // NOI18N
+        PropStateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/state.png"))); // NOI18N
         PropStateLabel.setText("State");
         PropToolbar.add(PropStateLabel);
 
@@ -85,7 +85,7 @@ public class miniInfoPanel extends javax.swing.JPanel {
         PropPosLabel.setText("Position");
         PropToolbar.add(PropPosLabel);
 
-        PropAngelLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Angle White.png"))); // NOI18N
+        PropAngelLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/angle.png"))); // NOI18N
         PropAngelLabel.setText("Angle");
         PropToolbar.add(PropAngelLabel);
 
@@ -98,7 +98,7 @@ public class miniInfoPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PropToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BertaToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(423, Short.MAX_VALUE))
+                .addContainerGap(513, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,4 +126,34 @@ public class miniInfoPanel extends javax.swing.JPanel {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     // End of variables declaration//GEN-END:variables
+
+//Berta Info Update
+    private void updateBertaOnOff(){
+        //TODO: Lav on/off metode
+        BertaStartStopLabel.setIcon(();
+    }
+    private void updateBertaState(String state){
+    BertaStateLabel.setText(state);
+    }
+    private void updateBertaPos(int x, int y){
+        BertaPosLabel.setText("("+x+","+y+")");
+    }
+    private void updateBertaAngle(int angle){
+       BertaAngleLabel.setText(angle+"°");
+   }
+    
+//Prop Info Update
+    private void updatePropOnOff(){
+        //TODO: Lav on/off metode
+        PropStartStopLAbel.setIcon(();
+    }
+    private void updatePropState(String state){
+    PropStateLabel.setText(state);
+    }
+    private void updatePropPos(int x, int y){
+        PropPosLabel.setText("("+x+","+y+")");
+    }
+    private void updatePropAngle(int angle){
+       PropAngelLabel.setText(angle+"°");
+   }
 }

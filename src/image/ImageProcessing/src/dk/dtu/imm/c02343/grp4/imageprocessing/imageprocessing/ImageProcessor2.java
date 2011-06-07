@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.sun.xml.internal.bind.v2.runtime.FilterTransducer;
+
 import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.impl.Locations;
 import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
@@ -113,6 +115,35 @@ public class ImageProcessor2 implements IImageProcessor {
 				} else {
 					// Ikke identificeret objekt
 					tilemap[j][i] = BACKGROUND;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Filtrerer forhindrings-pixels i tilemap, så enkelte pixels sorteres fra
+	 */
+	private void filterObstacles() {
+		// matrix til at holde styr på behandlede pixels
+		int[][] foundmap = new int[tilemap.length][];
+		// Initialisér alle felter i matricen
+		for(int i = 0; i < foundmap.length; i++) {
+			foundmap[i] = new int[tilemap[i].length];
+			java.util.Arrays.fill(foundmap[i], BACKGROUND);
+		}
+		
+		for (int y = 0; y < tilemap.length; y++) {
+			for (int x = 0; x < tilemap[0].length; x++) {
+				if (foundmap[y][x] == 0) {
+					foundmap[y][x] = 1;
+					ArrayList<int[]> coordinates = new ArrayList<int[]>();
+					collectRecursion(new int[]{y,x}, OBSTACLE, foundmap, coordinates);
+					if (coordinates.size() < MIN_OBJECT_SIZE) {
+//						System.out.println("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
+						for (int[] coordinate : coordinates) {
+							tilemap[coordinate[0]][coordinate[1]] = BACKGROUND;
+						}
+					}
 				}
 			}
 		}
@@ -248,7 +279,10 @@ public class ImageProcessor2 implements IImageProcessor {
 		ArrayList<int[]> coordinates = new ArrayList<int[]>();
 		collectRecursion(new int[]{y,x}, type, foundmap, coordinates);
 		if (coordinates.size() < MIN_OBJECT_SIZE) {
-			throw new InsufficientObjectException("Not enough points for object of type " + type);
+//			System.out.println("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
+			throw new InsufficientObjectException("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
+		} else if (type == OBSTACLE) {
+			System.out.println("Found " + coordinates.size() + "points.");
 		}
 		
 		int oy = 0;
@@ -596,10 +630,6 @@ public class ImageProcessor2 implements IImageProcessor {
 					tileImage.setRGB(robot.getX(),robot.getY()-1, 0xFFFF0000);
 			}
 		}
-		
-		Graphics2D gc = tileImage.createGraphics();
-		gc.setColor(new Color(0).green);
-		gc.drawLine(20, 20, 5, 10);
 	}
 	
 	/**
@@ -670,6 +700,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		setSourceImage(imageSource);
 		generateTileMap();
 		crop();
+		filterObstacles();
 		processTilemap();
 		ILocations locations = new Locations(tilemap, obstaclemap, cakes, robots);
 		if (debug) {
