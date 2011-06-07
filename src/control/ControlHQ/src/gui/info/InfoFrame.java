@@ -1,5 +1,7 @@
 package gui.info;
 
+import controller.MainController;
+
 /**
  *
  * @author Terkel
@@ -1211,8 +1213,8 @@ public class InfoFrame extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     //Course Info updates
-    private void updateNumberOfCake(int cake_nr){
-        cake_Count_Lbl.setText(cake_nr+"");
+    private void updateNumberOfCake(){
+        cake_Count_Lbl.setText(MainController.getInstance().currentCakesCount()+"");
     }
     private void updateNumberOfObstacles(int ob_nr){
         obstacleCount_Lbl.setText(ob_nr+"");

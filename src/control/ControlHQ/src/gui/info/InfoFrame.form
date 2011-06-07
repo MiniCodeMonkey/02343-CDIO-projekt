@@ -44,7 +44,7 @@
               <Component id="robot_info" min="-2" max="-2" attributes="1"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="Berta_info" min="-2" pref="279" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="10" max="32767" attributes="0"/>
               <Component id="Prop_info" min="-2" pref="279" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -774,7 +774,7 @@
                               <Component id="Berta_Type_panel2" max="32767" attributes="1"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="155" max="32767" attributes="0"/>
+                              <EmptySpace pref="119" max="32767" attributes="0"/>
                               <Component id="Berta_Angle_panel" min="-2" max="-2" attributes="1"/>
                           </Group>
                       </Group>
@@ -784,7 +784,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="Berta_TargetLoc_panel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="184" max="32767" attributes="0"/>
+                          <EmptySpace pref="212" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -866,7 +866,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="Berta_Type_Lbl2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="46" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1554,7 +1554,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="Prop_TargetLoc_panel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="184" max="32767" attributes="0"/>
+                          <EmptySpace pref="212" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
