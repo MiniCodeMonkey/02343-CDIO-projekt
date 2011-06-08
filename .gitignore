@@ -16,3 +16,5 @@
 /src/pathfinding/bin
 
 /src/pathfinding/bin
+/src/control/ControlTest/build
+/src/control/ControlHQ/build

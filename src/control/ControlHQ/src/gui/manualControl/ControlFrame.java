@@ -11,6 +11,8 @@
 
 package gui.manualControl;
 
+import gui.FramePlaceHolder;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -19,7 +21,6 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import control.FramePlaceHolder;
 import controller.RobotThread.RobotType;
 
 /** GUI fra Manual-test..

@@ -86,6 +86,16 @@ public interface IImageProcessor {
 	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(170, 170, 0, 230, 230, 90);
 	
 	/**
+	 * Standard værdi for X-opløsningen i behandlingen
+	 */
+	public static final int RESOLUTION_X = 2;
+	
+	/**
+	 * Standard værdi for Y-opløsningen i behandlingen
+	 */
+	public static final int RESOLUTION_Y = 2;
+	
+	/**
 	 * Behandler et billede og genererer forhindrings-map samt robot- og kage-positioner
 	 * @param sourceImage Billedet, der skal behandles
 	 * @param debug Hvidt der skal køres i debug-mode, hvor ekstra billede genereres til illustration af behandlingen
@@ -104,4 +114,12 @@ public interface IImageProcessor {
 	public void setObstacleBufferZone(int bufferZone);
 	
 	public int getObstacleBufferZone();
+	
+	public void setResolutionX(int resolution);
+	
+	public void setResolutionY(int resolution);
+	
+	public int getResolutionX();
+	
+	public int getResolutionY();
 }

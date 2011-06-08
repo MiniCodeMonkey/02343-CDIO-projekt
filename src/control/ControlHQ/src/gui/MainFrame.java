@@ -8,8 +8,10 @@ package gui;
 
 import gui.comm.CommFrame;
 import gui.manualControl.ControlFrame;
+import gui.path.PathToleranceFrame;
 import gui.processing.ProcessingFrame;
-import control.FramePlaceHolder;
+import gui.speed.SpeedFrame;
+
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -43,7 +45,9 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        settingsMenu = new javax.swing.JMenu();
+        speedMenuItem = new javax.swing.JMenuItem();
+        toleranceMenuItem = new javax.swing.JMenuItem();
         aboutMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -62,8 +66,25 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainMenuBar.add(fileMenu);
 
-        jMenu2.setText("Edit");
-        mainMenuBar.add(jMenu2);
+        settingsMenu.setText("Instillinger");
+
+        speedMenuItem.setText("Hastigheder");
+        speedMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                speedMenuItemActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(speedMenuItem);
+
+        toleranceMenuItem.setText("Tolerancer");
+        toleranceMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toleranceMenuItemActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(toleranceMenuItem);
+
+        mainMenuBar.add(settingsMenu);
 
         aboutMenu.setText("?");
 
@@ -99,9 +120,17 @@ public class MainFrame extends javax.swing.JFrame {
                 "Orn'lig syg about box til basis kontrol-HQ-2theMaX!\n"
                 + "Brugt til test af orn'lig syg B.E.R.T.A!"
                 + "\n"
-                + "Forår 2011 (c) Gruppe 4 - CDIO Projekt - Morten Hulvej", "Orn'lig syg",
+                + "Forï¿½r 2011 (c) Gruppe 4 - CDIO Projekt - Morten Hulvej", "Orn'lig syg",
 			JOptionPane.WARNING_MESSAGE,new ImageIcon(icon));
     }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    private void speedMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_speedMenuItemActionPerformed
+        makeSpeedSettingsFrame();
+    }//GEN-LAST:event_speedMenuItemActionPerformed
+
+    private void toleranceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toleranceMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toleranceMenuItemActionPerformed
 
 
     /**
@@ -130,8 +159,13 @@ public class MainFrame extends javax.swing.JFrame {
     	processFrame.setVisible(true);
     	dashboard.add(processFrame);
 	}
-    public void makePathfindingFrame() {
+    public void makeToleranceSettingsFrame() {
 		// TODO
+    	
+    	PathToleranceFrame pathframe = new PathToleranceFrame();
+    	
+    	pathframe.setVisible(true);
+    	dashboard.add(pathframe);
 	}
     public void makeCommFrame() {
 		// TODO
@@ -146,6 +180,14 @@ public class MainFrame extends javax.swing.JFrame {
     public javax.swing.JDesktopPane getDashboard(){
     	return dashboard;
     }
+    public void makeSpeedSettingsFrame() {
+		// TODO
+    	
+    	SpeedFrame speedFrame = new SpeedFrame();
+    	speedFrame.setVisible(true);
+    	dashboard.add(speedFrame);
+    	
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;
@@ -154,8 +196,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem importMenuItem;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JMenu settingsMenu;
+    private javax.swing.JMenuItem speedMenuItem;
+    private javax.swing.JMenuItem toleranceMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }

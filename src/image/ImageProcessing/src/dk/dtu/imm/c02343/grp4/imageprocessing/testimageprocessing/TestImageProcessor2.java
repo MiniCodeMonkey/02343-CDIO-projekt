@@ -3,6 +3,7 @@ package dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -33,10 +34,15 @@ public class TestImageProcessor2 implements ActionListener {
 	 */
 	public void run() {
 		// Opret WebCam, initialisér, hent billede til RenderedImage, og luk WebCam igen.
-//		imageSource = new WebCam();
-		imageSource = new ImageFile();
+		imageSource = new WebCam();
+//		imageSource = new ImageFile();
 		imageProcessor = new ImageProcessor2();
-		imageSource.init();
+		try {
+			imageSource.init();
+		} catch (Exception e) {
+			imageSource = new ImageFile();
+			imageSource.init();
+		}
 		BufferedImage sourceImg = imageSource.getImage();
 		imageSource.close();
 		
@@ -98,17 +104,21 @@ public class TestImageProcessor2 implements ActionListener {
 			// Initialisér ImageSource
 			imageSource.init();
 		} else if (ae.getActionCommand().equals("update")) {
-			// Hent billede fra ImageSource og vis dette i panel
-			BufferedImage sourceImg = imageSource.getImage();
-			ILocations locations = imageProcessor.examineImage(sourceImg, true);
-				
-			// Opdatér billeder
-			panel1.setImage((Image) sourceImg);
-			panel1.paint(panel1.getGraphics());
-			panel2.removeAll();
-			panel2.setSize(locations.getTileImage().getWidth(), locations.getTileImage().getHeight());
-			panel2.setImage((Image) locations.getTileImage());
-			panel2.paint(panel2.getGraphics());
+			int count = 10;
+			while(count > 0) {
+				// Hent billede fra ImageSource og vis dette i panel
+				BufferedImage sourceImg = imageSource.getImage();
+				ILocations locations = imageProcessor.examineImage(sourceImg, true);
+					
+				// Opdatér billeder
+				panel1.setImage((Image) sourceImg);
+				panel1.paint(panel1.getGraphics());
+				panel2.removeAll();
+				panel2.setSize(locations.getTileImage().getWidth(), locations.getTileImage().getHeight());
+				panel2.setImage((Image) locations.getTileImage());
+				panel2.paint(panel2.getGraphics());
+				count--;
+			}
 		} else if (ae.getActionCommand().equals("close")) {
 			// Luk ImageSource
 			imageSource.close();

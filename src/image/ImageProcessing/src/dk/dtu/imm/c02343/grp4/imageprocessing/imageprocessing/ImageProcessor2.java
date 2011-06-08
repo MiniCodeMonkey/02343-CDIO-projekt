@@ -52,6 +52,10 @@ public class ImageProcessor2 implements IImageProcessor {
 	// Obstacle map
 	private int[][] obstaclemap;
 	
+	// Processing resolution
+	private int resX = RESOLUTION_X;
+	private int resY = RESOLUTION_Y;
+	
 	// Liste af kager
 	private ArrayList<ICake> cakes;
 	
@@ -178,8 +182,8 @@ public class ImageProcessor2 implements IImageProcessor {
 		int[] robot2Spos = new int[] {-1,-1};
 		
 		// Iterér over positioner i tilemap
-		for (int y = 0; y < tilemap.length; y++) {
-			for (int x = 0; x < tilemap[y].length; x++) {
+		for (int y = 0; y < tilemap.length; y = y + resY) {
+			for (int x = 0; x < tilemap[y].length; x = x + resX) {
 				if (foundmap[y][x] == 0) {
 					if (tilemap[y][x] == BACKGROUND) {
 						// Markér punktet som behandlet
@@ -256,7 +260,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		if (robot1Npos[0] > 0 && robot1Npos[1] > 0 && robot1Spos[0] > 0 && robot1Spos[1] > 0) {
 			int[] robotPos = new int[] {(robot1Npos[0]+robot1Spos[0])/2, (robot1Npos[1]+robot1Spos[1])/2};
 			double robotAngle = calculateAngle(robot1Npos, robot1Spos);
-			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
+//			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
 			robots.add(new Robot(robotPos[0],robotPos[1],robotAngle));
 		} else {
 			// Robot ikke fundet. Opret dummy objekt.
@@ -266,7 +270,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		if (robot2Npos[0] > 0 && robot2Npos[1] > 0 && robot2Spos[0] > 0 && robot2Spos[1] > 0) {
 			int[] robotPos = new int[] {(robot2Npos[0]+robot2Spos[0])/2, (robot2Npos[1]+robot2Spos[1])/2};
 			double robotAngle = calculateAngle(robot2Npos, robot2Spos);
-			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
+//			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
 			robots.add(new Robot(robotPos[0],robotPos[1],robotAngle));
 		} else {
 			// Robot ikke fundet. Opret dummy objekt.
@@ -282,7 +286,7 @@ public class ImageProcessor2 implements IImageProcessor {
 //			System.out.println("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
 			throw new InsufficientObjectException("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
 		} else if (type == OBSTACLE) {
-			System.out.println("Found " + coordinates.size() + "points.");
+//			System.out.println("Found " + coordinates.size() + "points.");
 		}
 		
 		int oy = 0;
@@ -693,6 +697,22 @@ public class ImageProcessor2 implements IImageProcessor {
 		}
 	}
 	
+	public int getResolutionX() {
+		return resX;
+	}
+
+	public void setResolutionX(int resolution) {
+		this.resX = resolution;
+	}
+
+	public int getResolutionY() {
+		return resY;
+	}
+
+	public void setResolutionY(int resolution) {
+		this.resY = resolution;
+	}
+
 	/**
 	 * Gennemfører fuld analyse af input-billede, og returnerer et Locations objekt
 	 */
