@@ -36,7 +36,6 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        miniInfoPanel = new javax.swing.JPanel();
         BertaToolbar = new javax.swing.JToolBar();
         BertaNameLabel = new javax.swing.JLabel();
         BertaStartStopLabel = new javax.swing.JLabel();
@@ -52,6 +51,9 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         PropPosLabel = new javax.swing.JLabel();
         PropAngleLabel = new javax.swing.JLabel();
 
+        setTitle("Robot Information");
+
+        BertaToolbar.setBackground(java.awt.Color.cyan);
         BertaToolbar.setRollover(true);
 
         BertaNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/robot.png"))); // NOI18N
@@ -74,6 +76,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         BertaAngleLabel.setText("Angle");
         BertaToolbar.add(BertaAngleLabel);
 
+        PropToolbar.setBackground(java.awt.Color.pink);
         PropToolbar.setRollover(true);
 
         PropNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/robot.png"))); // NOI18N
@@ -96,38 +99,22 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         PropAngleLabel.setText("Angle");
         PropToolbar.add(PropAngleLabel);
 
-        javax.swing.GroupLayout miniInfoPanelLayout = new javax.swing.GroupLayout(miniInfoPanel);
-        miniInfoPanel.setLayout(miniInfoPanelLayout);
-        miniInfoPanelLayout.setHorizontalGroup(
-            miniInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(miniInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(miniInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PropToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BertaToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(114, Short.MAX_VALUE))
-        );
-        miniInfoPanelLayout.setVerticalGroup(
-            miniInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(miniInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BertaToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PropToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(miniInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(BertaToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PropToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(miniInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(PropToolbar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BertaToolbar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -149,7 +136,6 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JToolBar PropToolbar;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JPanel miniInfoPanel;
     // End of variables declaration//GEN-END:variables
 
     //Berta Info Update
