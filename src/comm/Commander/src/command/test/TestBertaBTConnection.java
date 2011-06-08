@@ -3,32 +3,36 @@ package command.test;
 import command.Commando;
 import command.interfaces.IControl;
 
-public class TestCommands {
+public class TestBertaBTConnection {
 
 	public static void main(String[] args) {
 		
 		try {
 			
-			Commando com = new Commando(1);
+			System.out.println("BERTA program running");
+			
+			
+			Commando com = new Commando(0);
 			IControl[] control = com.getControls();
 			
 			// using berta's control:
-			control[1].move(false);
-			wait(500);
+			control[0].move(true);
+			wait(8000);
 			
-			control[1].move(true);
-			wait(500);
-			control[1].stop();
-			
-			control[1].disconnect();
+			control[0].stop();
 			
 			
+//			control[0].disconnect();	
 			
+			System.out.println("BERTA program finished");
+			
+			wait(30000);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
+	
 	
 	public static void wait(int millis) {
 		try {
