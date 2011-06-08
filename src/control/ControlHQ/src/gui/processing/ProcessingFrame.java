@@ -3,6 +3,8 @@ package gui.processing;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import controller.MainController;
+
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
@@ -801,7 +803,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         webcamBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/webcam_icon.png"))); // NOI18N
         webcamBtn.setText("Start Webcam");
         webcamBtn.setToolTipText("Start Webcam");
-        webcamBtn.setEnabled(false);
         webcamBtn.setFocusable(false);
         webcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         webcamBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -812,10 +813,8 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imageToolbar.add(webcamBtn);
 
         pauseTBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pause.png"))); // NOI18N
-        pauseTBtn.setSelected(true);
         pauseTBtn.setText("Pause Webcam");
         pauseTBtn.setToolTipText("Pause Webcam");
-        pauseTBtn.setEnabled(false);
         pauseTBtn.setFocusable(false);
         pauseTBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         imageToolbar.add(pauseTBtn);
@@ -838,7 +837,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imageToolbar.add(updateIntvlabel);
 
         updateIntervalSpinner.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.100000024f), Float.valueOf(0.05f), Float.valueOf(10.0f), Float.valueOf(0.1f)));
-        updateIntervalSpinner.setEnabled(false);
         updateIntervalSpinner.setMaximumSize(new java.awt.Dimension(50, 20));
         updateIntervalSpinner.setMinimumSize(new java.awt.Dimension(30, 20));
         updateIntervalSpinner.setPreferredSize(new java.awt.Dimension(50, 20));
@@ -903,9 +901,10 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed
     	
-    	setFeed(new WebCam());
-    	
-    	stateChangeListener.setImageProcessor(new ImageProcessor2());
+    	//setFeed(new WebCam());
+    	//stateChangeListener.setImageProcessor(new ImageProcessor2());
+
+        updateLoop();
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
 
@@ -963,13 +962,22 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	
     	imagePanel.removeAll();
     	
-    	if (imageSource == null) return;
+    	ILocations locations = MainController.getInstance().getImages();
     	
-    	BufferedImage sourceImg = imageSource.getImage();
+    	// kilde billede
+    	BufferedImage sourceImg = locations.getSourceImage();
+    	
+    	// behandlet billede
+    	BufferedImage tileImg = locations.getTileImage();
+    	
+//    	if (imageSource == null) return;
+//    	BufferedImage sourceImg = imageSource.getImage();
 
         // Opret tile-image vha. hj�lpemetode    	
-        ILocations locations = stateChangeListener.getImageProcessor().examineImage(sourceImg, true);
-        BufferedImage tileImg = locations.getTileImage();
+//        ILocations locations = stateChangeListener.getImageProcessor().examineImage(sourceImg, true);
+    	
+    	
+//        BufferedImage tileImg = locations.getTileImage();
 		
     	// Opret JFrame samt panel til input-billede
         srcImgPanel = new ImagePanel(sourceImg);
@@ -986,6 +994,30 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imagePanel.validate();
 	}
     
+    public void updateLoop() {
+    	System.out.println("updateloop started");
+		new Thread(){
+			@Override
+			public void run() {
+				
+				while(webcamRunning){
+
+                                        while(webcamFeedPaused);
+                                        
+					updateImagePanel();
+					
+					try {
+						Thread.sleep((long) (time_slice*1000));
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}
+		};
+	}
+    
+    @Deprecated
     public void runWebcamloop() {
 		
     	new Thread("webcam-loop"){
@@ -1015,8 +1047,11 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     
     private IImageSource imageSource;
     
-    boolean webcamRunning;
-    boolean webcamFeedPaused = true;
+    boolean refreshRunning;
+    boolean refreshPaused;
+    
+    boolean webcamRunning = true;
+    boolean webcamFeedPaused = false;
     float time_slice = 0.1f;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

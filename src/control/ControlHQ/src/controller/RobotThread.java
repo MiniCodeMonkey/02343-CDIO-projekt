@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import command.interfaces.IControl;
@@ -13,6 +14,7 @@ import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
 
 public class RobotThread extends Thread
 {
+
 	public enum RobotState { IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY };
 	public enum RobotType { MASTER, SLAVE };
 	
@@ -33,23 +35,29 @@ public class RobotThread extends Thread
 	{
 		this.robotControl = robotControl;
 		
-		try
-		{
-			initialize();
-			
-			while (true)
-			{
-				if (robotState != RobotState.IDLE)
-				{
-					navigate();
+	}
+	
+	/**
+	 * Starts this robot as a new Thread via the Runnable interface
+	 */
+
+	@Override
+	public void run() {
+			try {
+				Thread.currentThread().setName("Robot Thread");
+				initialize();
+				
+				while (true){
+					if (robotState != RobotState.IDLE){
+						navigate();
+					}
 				}
 			}
-		}
-		catch (Exception e)
-		{
-			// TODO
-			e.printStackTrace();
-		}
+			catch (Exception e){
+				// TODO
+				e.printStackTrace();
+			}
+		
 	}
 	
 	/**
@@ -72,9 +80,9 @@ public class RobotThread extends Thread
 		}
 		
 		// Initialize claw
-		robotControl.closeClaw();
-		Thread.sleep(2000);
-		robotControl.stopClaw();
+//		robotControl.closeClaw();
+//		Thread.sleep(2000);
+//		robotControl.stopClaw();
 	}
 	
 	/**

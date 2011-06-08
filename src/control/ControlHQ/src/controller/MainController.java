@@ -1,6 +1,7 @@
 package controller;
 
 import controller.RobotThread.RobotState;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 
@@ -32,6 +33,10 @@ public class MainController
 		// Start processing thread
 		processingThread = new ProcessingThread(imageSource);
 		processingThread.start();
+	}
+	
+	public ILocations getImages() {
+		return processingThread.getLocations();
 	}
 	
 	/**

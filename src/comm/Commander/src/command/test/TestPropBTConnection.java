@@ -22,12 +22,10 @@ public class TestPropBTConnection {
 //		wait(2000);
 		int rounds = 0;
 		
-		while(rounds < 10){
 			control[1].left();
 			wait(5000);
 			control[1].right();
 			wait(5000);
-		}
 		
 		
 		control[1].stop();
