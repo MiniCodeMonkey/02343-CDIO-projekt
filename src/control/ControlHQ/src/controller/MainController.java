@@ -64,8 +64,22 @@ public class MainController
 	 * get'er til RobotStates
 	 * @return enum typen {@link RobotState}
 	 */
-	public RobotThread.RobotState[] getRobotState(){
-		return processingThread.getRobotStates();
+//	public RobotThread.RobotState[] getRobotState(){
+//		return processingThread.getRobotStates();
+//	}
+	/**
+	 * Get'er til Bertas {@link RobotState}. 
+	 * @return {@link RobotState}
+	 */
+	public RobotState getBertaState(){
+		return processingThread.getBertaState();
+	}
+	/**
+	 * Get'er til Bertas {@link RobotState}. 
+	 * @return {@link RobotState}
+	 */
+	public RobotState getPropState(){
+		return processingThread.getPropState();
 	}
 	/**get'er til Bertas Position
 	 * @return int[] på formen yx
@@ -92,5 +106,11 @@ public class MainController
 	 */
 	public double getPropAngle(){
 		return processingThread.getPropAngle();
+	}
+	public boolean isBertaConnected(){
+		return processingThread.isBertaConnected();
+	}
+	public boolean isPropConnected(){
+		return processingThread.isPropConnected();
 	}
 }

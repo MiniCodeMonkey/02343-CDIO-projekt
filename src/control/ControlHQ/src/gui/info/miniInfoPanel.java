@@ -42,7 +42,7 @@ public class miniInfoPanel extends javax.swing.JPanel {
         BertaAngleLabel = new javax.swing.JLabel();
         PropToolbar = new javax.swing.JToolBar();
         PropNameLabel = new javax.swing.JLabel();
-        PropStartStopLAbel = new javax.swing.JLabel();
+        PropStartStopLabel = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         PropStateLabel = new javax.swing.JLabel();
         PropPosLabel = new javax.swing.JLabel();
@@ -76,8 +76,8 @@ public class miniInfoPanel extends javax.swing.JPanel {
         PropNameLabel.setText("P.R.O.P.");
         PropToolbar.add(PropNameLabel);
 
-        PropStartStopLAbel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ok.png"))); // NOI18N
-        PropToolbar.add(PropStartStopLAbel);
+        PropStartStopLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ok.png"))); // NOI18N
+        PropToolbar.add(PropStartStopLabel);
         PropToolbar.add(jSeparator2);
 
         PropStateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/state.png"))); // NOI18N
@@ -123,7 +123,7 @@ public class miniInfoPanel extends javax.swing.JPanel {
     private javax.swing.JLabel PropAngleLabel;
     private javax.swing.JLabel PropNameLabel;
     private javax.swing.JLabel PropPosLabel;
-    private javax.swing.JLabel PropStartStopLAbel;
+    private javax.swing.JLabel PropStartStopLabel;
     private javax.swing.JLabel PropStateLabel;
     private javax.swing.JToolBar PropToolbar;
     private javax.swing.JToolBar.Separator jSeparator1;
@@ -132,12 +132,16 @@ public class miniInfoPanel extends javax.swing.JPanel {
 
 //Berta Info Update
     private void updateBertaOnOff(){
-        //TODO: Lav on/off metode
+        if(MainController.getInstance().isBertaConnected()){
         BertaStartStopLabel.setIcon(new ImageIcon("/icons/on_lille"));
-    }
+    }else{
+             BertaStartStopLabel.setIcon(new ImageIcon("/icons/off_lille"));
+        }
+           
+     }
     private void updateBertaState(){
-        String text = MainController.getInstance().getRobotState()[0].toString();
-    if(!text.equals(null)){
+        String text = MainController.getInstance().getBertaState().toString();
+    if(!text.equals("")){
         BertaStateLabel.setText(text);
     }else{
         BertaStateLabel.setText("N/A");
@@ -165,12 +169,15 @@ public class miniInfoPanel extends javax.swing.JPanel {
     
 //Prop Info Update
     private void updatePropOnOff(){
-        //TODO: Lav on/off metode
-        PropStartStopLAbel.setIcon(();
+        if(MainController.getInstance().isPropConnected()){
+        PropStartStopLabel.setIcon(new ImageIcon("/icons/on_lille"));
+    }else{
+             PropStartStopLabel.setIcon(new ImageIcon("/icons/off_lille"));
+        }
     }
     private void updatePropState(){
-     String text = MainController.getInstance().getRobotState()[1].toString();
-    if(!text.equals(null)){
+     String text = MainController.getInstance().getPropState().toString();
+    if(!text.equals("")){
         PropStateLabel.setText(text);
     }else{
         PropStateLabel.setText("N/A");
@@ -194,4 +201,21 @@ public class miniInfoPanel extends javax.swing.JPanel {
         PropAngleLabel.setText(radAngle*180/Math.PI+"°");
        }
        }
+
+public void updateBertaInfo(){
+    updateBertaAngle();
+    updateBertaOnOff();
+    updateBertaPos();
+    updateBertaState();
+}
+public void updatePropInfo(){
+    updatePropAngle();
+    updatePropOnOff();
+    updatePropPos();
+    updatePropState();
+}
+public void UpdateBothRobots(){
+    updateBertaInfo();
+    updatePropInfo();
+}
 }
