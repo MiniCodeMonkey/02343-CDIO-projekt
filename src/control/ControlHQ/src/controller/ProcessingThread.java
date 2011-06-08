@@ -8,6 +8,7 @@ import java.io.IOException;
 import command.BertaCommando;
 import command.interfaces.IControl;
 import controller.RobotThread.RobotState;
+import controller.RobotThread.RobotType;
 
 import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
@@ -187,8 +188,8 @@ public class ProcessingThread extends Thread
 		return cakesCount;
 	}
 	/**
-	 * Get'er til Robot States
-	 * @return
+	 * Get'er til {@link RobotState}. 
+	 * @return array af {@link RobotState} hvor {@link RobotType} MASTER er det første element
 	 */
 	public RobotState[] getRobotStates(){
 		RobotState[] states = null;
@@ -205,5 +206,31 @@ public class ProcessingThread extends Thread
 			states[0]=robotThreads[1].getRobotState();
 		}
 		return states;
+	}
+	/**get'er til Bertas Position
+	 * @return int[] på formen yx
+	 */	
+	public int[] getBertaPos(){
+		return robotThreads[0].getRobotLocation().getPos();
+	}
+	/**get'er til Props Position
+	 * @return int[] på formen yx
+	 */
+	public int[] getPropPos(){
+		return robotThreads[1].getRobotLocation().getPos();	
+	}
+	/**
+	 * Get'er til Bertas Vinkel
+	 * @return vink´len som en double, i radianer
+	 */
+	public double getBertaAngle(){
+		return robotThreads[0].getRobotLocation().getAngle();
+	}
+	/**
+	 * Get'er til Bertas Vinkel
+	 * @return vink´len som en double, i radianer
+	 */
+	public double getPropAngle(){
+		return robotThreads[1].getRobotLocation().getAngle();
 	}
 }
