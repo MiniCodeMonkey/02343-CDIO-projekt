@@ -28,7 +28,7 @@ public class BertaCommando {
 	 * @throws NXTCommException
 	 * @throws NoRobotFoundException 
 	 */
-	public BertaCommando() throws NXTCommException, NoRobotFoundException {
+	BertaCommando() throws NXTCommException, NoRobotFoundException {
 		NXTInfo bertaNXTInfo = null;
 
 		nxtCommand = new NXTCommand();

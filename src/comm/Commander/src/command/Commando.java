@@ -1,5 +1,7 @@
 package command;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
+
 import lejos.pc.comm.NXTCommException;
 import bluetooth.constants.Constants;
 
@@ -22,28 +24,61 @@ public class Commando {
 	 */
 	public Commando() throws MasterRobotNotFound  {
 		
+			initBothRobots();
+	}
+	
+	/**Opretter forbindelse til én robot
+	 * 
+	 * @param robot - {@code int}, 0 for BERTA, 1 for PROP
+	 */
+	public Commando(int robot){
+		switch (robot) {
+		case 0:
 			try {
-				bertaCom = new BertaCommando();
-			} catch (NXTCommException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoRobotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if (!isBertaConnected())
-					throw new MasterRobotNotFound(
-							"Cannot run without master-robot: "+Constants.NXT_NAME+" not found!");
-			}
-			try {
-				propCom = new PropCommando();
-			} catch (NXTCommException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoRobotFoundException e) {
-				// TODO Auto-generated catch block
+				initBerta();
+			} catch (MasterRobotNotFound e) {
 				e.printStackTrace();
 			}
+			break;
+		case 1:
+			initProp();
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void initBothRobots() throws MasterRobotNotFound {
+		initBerta();
+		initProp();
+	}
+
+	private void initBerta() throws MasterRobotNotFound {
+		try {
+			bertaCom = new BertaCommando();
+		} catch (NXTCommException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoRobotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (!isBertaConnected())
+				throw new MasterRobotNotFound(
+						"Cannot run without master-robot: "+Constants.NXT_NAME+" not found!");
+		}
+	}
+
+	private void initProp() {
+		try {
+			propCom = new PropCommando();
+		} catch (NXTCommException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoRobotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
