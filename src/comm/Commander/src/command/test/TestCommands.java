@@ -1,39 +1,32 @@
 package command.test;
 
-import java.io.IOException;
-
-import lejos.nxt.SensorPort;
-import lejos.nxt.addon.RCXLightSensor;
-import lejos.pc.comm.NXTCommException;
-
-import command.BertaCommando;
-import command.exception.NoRobotFoundException;
+import command.Commando;
 import command.interfaces.IControl;
 
 public class TestCommands {
 
 	public static void main(String[] args) {
-		BertaCommando bertaCommando = null;
-		try {
-			bertaCommando = new BertaCommando();
-		} catch (NXTCommException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoRobotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		IControl bertaControl = bertaCommando.getControl();
 		
 		try {
 			
-		
+			Commando com = new Commando(1);
+			IControl[] control = com.getControls();
+			
+			// using berta's control:
+			control[1].move(false);
+			wait(500);
+			
+			control[1].move(true);
+			wait(500);
+			control[1].stop();
+			
+			control[1].disconnect();
 			
 			
 			
 			
-		} finally {
-			bertaCommando.disconnect();
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 	

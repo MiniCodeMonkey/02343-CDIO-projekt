@@ -7,7 +7,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
-import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;

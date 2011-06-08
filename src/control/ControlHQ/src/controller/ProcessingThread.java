@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import command.BertaCommando;
+import command.Commando;
+import command.exception.MasterRobotNotFound;
 import command.interfaces.IControl;
 import controller.RobotThread.RobotState;
 import controller.RobotThread.RobotType;
@@ -48,14 +50,17 @@ public class ProcessingThread extends Thread
 		{
 			// TODO: Error message should go to GUI
 			e.printStackTrace();
+		} catch (MasterRobotNotFound e) {
+			// TODO: Error message should go to GUI
+			e.printStackTrace();
 		}
 	}
 
-	private void initialize() throws ControllerException
+	private void initialize() throws ControllerException, MasterRobotNotFound
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		BertaCommando bertaCommando = new BertaCommando();
+		Commando bertaCommando = new Commando();
 		IControl[] robotControls = bertaCommando.getControls();
 
 		// Initialize all robots and start threads
