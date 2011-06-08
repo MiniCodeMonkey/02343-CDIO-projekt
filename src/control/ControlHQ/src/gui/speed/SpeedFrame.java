@@ -14,7 +14,7 @@ public class SpeedFrame extends javax.swing.JInternalFrame {
         initComponents(); 
         
         initListenerAndValues();
-        FramePlaceHolder.setSpeedf(this);
+        FramePlaceHolder.setSpeedFrame(this);
     }
 
 

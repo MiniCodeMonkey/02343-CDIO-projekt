@@ -33,6 +33,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
     /** Creates new form CommFrame */
     public CommFrame() {
         initComponents();
+        FramePlaceHolder.setCommFrame(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -91,20 +92,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
      * @param evt
      */
     private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
-    		
-    	// TODO
-    	
-//    	MainController.getInstance();
-    	
-    	/*
-    	 * hvis begge robotter virker?
-    	 * 		-> makeProcessingFrame();
-    	 * 		-> makeControlFrame    x 2 (TODO understøttelse af 2 robotter)
-    	 */
-    	
-    	FramePlaceHolder.getMainFrame().makeProcessingFrame();
-    	FramePlaceHolder.getMainFrame().makeControlFrame();
-			
+    		connect();
     }//GEN-LAST:event_connectBtnActionPerformed
 
 
@@ -118,7 +106,20 @@ public class CommFrame extends javax.swing.JInternalFrame {
      * connects or disconnects (if connected) to/from B.E.R.T.A.
      */
     public void connect() {
-
+		// TODO
+		    	
+    	/*
+    	 * hvis begge robotter virker?
+    	 * 		-> makeProcessingFrame();
+    	 * 		-> makeControlFrame    x 2 (TODO understøttelse af 2 robotter)
+    	 */
+    	
+    	// initializing control unit
+    	MainController.getInstance().initialize();
+    	
+    	FramePlaceHolder.getMainFrame().makeProcessingFrame();
+    	FramePlaceHolder.getMainFrame().makeControlFrame();
+			
 	}
     
 }

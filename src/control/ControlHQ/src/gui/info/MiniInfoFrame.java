@@ -4,10 +4,11 @@
  */
 
 /*
- * miniInfoPanel.java
+ * MiniInfoFrame.java
  *
- * Created on 07-06-2011, 10:24:34
+ * Created on 08-06-2011, 13:17:30
  */
+
 package gui.info;
 
 import gui.FramePlaceHolder;
@@ -16,12 +17,12 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Terkel
+ * @author Morten Hulvej
  */
-public class MiniInfoPanel extends javax.swing.JInternalFrame {
+public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
-    /** Creates new form miniInfoPanel */
-    public MiniInfoPanel() {
+    /** Creates new form MiniInfoFrame */
+    public MiniInfoFrame() {
         initComponents();
         FramePlaceHolder.setMinInfoFrame(this);
     }
@@ -126,11 +127,13 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(miniInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(miniInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BertaAngleLabel;
     private javax.swing.JLabel BertaNameLabel;
@@ -149,14 +152,14 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
     private javax.swing.JPanel miniInfoPanel;
     // End of variables declaration//GEN-END:variables
 
-//Berta Info Update
+    //Berta Info Update
     private void updateBertaOnOff(){
         if(MainController.getInstance().isBertaConnected()){
         BertaStartStopLabel.setIcon(new ImageIcon("/icons/on_lille"));
     }else{
              BertaStartStopLabel.setIcon(new ImageIcon("/icons/off_lille"));
         }
-           
+
      }
     private void updateBertaState(){
         String text = MainController.getInstance().getBertaState().toString();
@@ -166,7 +169,7 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         BertaStateLabel.setText("N/A");
     }
     }
-    
+
     private void updateBertaPos(){
         int[]yx = MainController.getInstance().getBertaPos();
         if(yx[0]==0 && yx[1]==0){
@@ -185,7 +188,7 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         BertaAngleLabel.setText(radAngle*180/Math.PI+"°");
        }
    }
-    
+
 //Prop Info Update
     private void updatePropOnOff(){
         if(MainController.getInstance().isPropConnected()){
@@ -221,20 +224,22 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
        }
        }
 
-	public void updateBertaInfo(){
-	    updateBertaAngle();
-	    updateBertaOnOff();
-	    updateBertaPos();
-	    updateBertaState();
-	}
-	public void updatePropInfo(){
-	    updatePropAngle();
-	    updatePropOnOff();
-	    updatePropPos();
-	    updatePropState();
-	}
-	public void UpdateBothRobots(){
-	    updateBertaInfo();
-	    updatePropInfo();
-	}
+public void updateBertaInfo(){
+    updateBertaAngle();
+    updateBertaOnOff();
+    updateBertaPos();
+    updateBertaState();
+}
+public void updatePropInfo(){
+    updatePropAngle();
+    updatePropOnOff();
+    updatePropPos();
+    updatePropState();
+}
+public void UpdateBothRobots(){
+    updateBertaInfo();
+//    updatePropInfo();
+}
+
+
 }

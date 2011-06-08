@@ -7,6 +7,8 @@
 package gui;
 
 import gui.comm.CommFrame;
+import gui.info.MiniInfoFrame;
+import gui.info.MiniInfoPanel;
 import gui.manualControl.ControlFrame;
 import gui.path.PathToleranceFrame;
 import gui.processing.ProcessingFrame;
@@ -15,6 +17,8 @@ import gui.speed.SpeedFrame;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import controller.MainController;
 
 /**
  *
@@ -26,7 +30,9 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
+        makeMiniInfoFrame();
         makeCommFrame();
+        
         
         FramePlaceHolder.setMainFrame(this);
     }
@@ -48,6 +54,7 @@ public class MainFrame extends javax.swing.JFrame {
         settingsMenu = new javax.swing.JMenu();
         speedMenuItem = new javax.swing.JMenuItem();
         toleranceMenuItem = new javax.swing.JMenuItem();
+        updateMenuItem = new javax.swing.JMenuItem();
         aboutMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -83,6 +90,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         settingsMenu.add(toleranceMenuItem);
+
+        updateMenuItem.setText("Update info");
+        updateMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateMenuItemActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(updateMenuItem);
 
         mainMenuBar.add(settingsMenu);
 
@@ -131,6 +146,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void toleranceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toleranceMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_toleranceMenuItemActionPerformed
+
+    private void updateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMenuItemActionPerformed
+        FramePlaceHolder.getMinInfoFrame().UpdateBothRobots();
+    }//GEN-LAST:event_updateMenuItemActionPerformed
 
 
     /**
@@ -188,6 +207,11 @@ public class MainFrame extends javax.swing.JFrame {
     	dashboard.add(speedFrame);
     	
 	}
+    public void makeMiniInfoFrame() {
+		MiniInfoFrame miniFrame = new MiniInfoFrame();
+		miniFrame.setVisible(true);
+		dashboard.add(miniFrame);
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;
@@ -200,6 +224,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu settingsMenu;
     private javax.swing.JMenuItem speedMenuItem;
     private javax.swing.JMenuItem toleranceMenuItem;
+    private javax.swing.JMenuItem updateMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
