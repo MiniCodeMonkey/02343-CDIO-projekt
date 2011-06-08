@@ -1,5 +1,6 @@
 package controller;
 
+import controller.RobotThread.RobotState;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 
@@ -59,7 +60,57 @@ public class MainController
 		if (processingThread != null)
 			processingThread.stopThread();
 	}
-	public RobotThread.RobotState[] getRobotState(){
-		return processingThread.getRobotStates();
+	/**
+	 * get'er til RobotStates
+	 * @return enum typen {@link RobotState}
+	 */
+//	public RobotThread.RobotState[] getRobotState(){
+//		return processingThread.getRobotStates();
+//	}
+	/**
+	 * Get'er til Bertas {@link RobotState}. 
+	 * @return {@link RobotState}
+	 */
+	public RobotState getBertaState(){
+		return processingThread.getBertaState();
+	}
+	/**
+	 * Get'er til Bertas {@link RobotState}. 
+	 * @return {@link RobotState}
+	 */
+	public RobotState getPropState(){
+		return processingThread.getPropState();
+	}
+	/**get'er til Bertas Position
+	 * @return int[] på formen yx
+	 */
+	public int[] getBertaPos(){
+		return processingThread.getBertaPos();
+	}
+	/**get'er til Props Position
+	 * @return int[] på formen yx
+	 */
+	public int[] getPropPos(){
+		return processingThread.getPropPos();
+	}
+	/**
+	 * Get'er til Bertas Vinkel
+	 * @return vink´len som en double, i radianer
+	 */
+	public double getBertaAngle(){
+		return processingThread.getBertaAngle();
+	}
+	/**
+	 * Get'er til Props Vinkel
+	 * @return vink´len som en double, i radianer
+	 */
+	public double getPropAngle(){
+		return processingThread.getPropAngle();
+	}
+	public boolean isBertaConnected(){
+		return processingThread.isBertaConnected();
+	}
+	public boolean isPropConnected(){
+		return processingThread.isPropConnected();
 	}
 }
