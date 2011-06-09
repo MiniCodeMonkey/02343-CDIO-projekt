@@ -343,6 +343,11 @@ public class RobotThread extends Thread
 	{
 		return targetLocation;
 	}
+	
+	public void setTargetLocation(Location targetLocation)
+	{
+		this.targetLocation = targetLocation;
+	}
 
 	public void setPath(Path newPath)
 	{
