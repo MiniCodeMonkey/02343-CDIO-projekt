@@ -170,8 +170,6 @@ public class ProcessingThread extends Thread
 			}
 			
 			
-			// setting path for robot to follow
-			robotThread.setPath(newPath);
 			
 			// starting robot cycle
 			if (robotThread.getRobotState() == RobotState.IDLE)
@@ -218,6 +216,18 @@ public class ProcessingThread extends Thread
 		running = false;
 
 		// FIXME: Not fully implemented
+		
+		// TODO stop robot threads;
+		for (RobotThread robot : robotThreads) {
+			if (robot != null){
+				robot.setRobotState(RobotState.IDLE);
+				robot.setRunning(false);
+			}
+			
+		}
+		
+		// disconnecting all robots
+		robotsCommando.disconnect();
 
 		imageSource.close();
 	}

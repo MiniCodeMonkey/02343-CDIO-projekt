@@ -112,7 +112,7 @@ public class Commando {
 	public int disconnect(){
 		int result = 0;
 		result = bertaCom.disconnect();
-		result += propCom.disconnect();
+//		result += propCom.disconnect();
 		return result;
 	}
 	
