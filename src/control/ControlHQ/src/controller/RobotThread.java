@@ -149,6 +149,9 @@ public class RobotThread extends Thread
 				}		
 				
 				
+				
+				
+				
 //				 Calculate target angle
 				double dy = step.getY() - robotLocation.getY();
 				double dx = step.getX() - robotLocation.getX();
