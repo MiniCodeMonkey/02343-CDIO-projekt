@@ -160,6 +160,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setResizable(true);
         setTitle("Processing");
+        setNormalBounds(new java.awt.Rectangle(490, 10, 650, 528));
 
         settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Threshold Settings"));
 
@@ -925,7 +926,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         try {
 
 		} catch (Exception e) {
-			new ErrorMessage("Webcam ikke tilgængeligt");
+			new ErrorMessage("Webcam ikke tilgï¿½ngeligt");
 		}
         
 		// LABELS

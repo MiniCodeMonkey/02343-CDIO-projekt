@@ -55,4 +55,10 @@ public interface IRobot {
 	 * @return Robottens vinkel i radianer
 	 */
 	public double getAngle();
+	
+	/**
+	 * Tjekker om robotten er synlig
+	 * @return	boolean
+	 */
+	public boolean isActive();
 }

@@ -338,7 +338,7 @@ public class ProcessingThread extends Thread {
 					bertaControl.stop();
 					
 					// Move backwards
-					bertaControl.reverse(50, 5750);
+					bertaControl.move(50, true);
 					bertaControl.stop();
 					
 					// Close claw

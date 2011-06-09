@@ -70,8 +70,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Prop_State_label = new javax.swing.JLabel();
         Prop_Speed_panel = new javax.swing.JPanel();
         Prop_Speed_Lbl = new javax.swing.JLabel();
-        Prop_Type_panel = new javax.swing.JPanel();
-        Prop_Type_Lbl = new javax.swing.JLabel();
         Prop_CakeID_panel = new javax.swing.JPanel();
         Prop_CakeID_Lbl = new javax.swing.JLabel();
         Prop_Pos_panel2 = new javax.swing.JPanel();
@@ -91,8 +89,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Prop_Pos_panel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         Prop_Pos_lbl = new javax.swing.JLabel();
-        Prop_Type_panel2 = new javax.swing.JPanel();
-        Prop_Type_Lbl2 = new javax.swing.JLabel();
         Prop_Angle_panel = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         Prop_SupAngle_lbl = new javax.swing.JLabel();
@@ -102,6 +98,8 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Prop_TargetLoc_panel = new javax.swing.JPanel();
         Prop_TargetLoc_Lbl = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+
+        setNormalBounds(new java.awt.Rectangle(440, 550, 820, 321));
 
         Cousre.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Info"));
 
@@ -297,7 +295,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                         .addComponent(Berta_Pos_panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Berta_Battery_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Berta_Overview_panelLayout.setVerticalGroup(
             Berta_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -419,7 +417,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                         .addComponent(Berta_TacoCount_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(Berta_Dist_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         Berta_Mortor_panelLayout.setVerticalGroup(
             Berta_Mortor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -538,7 +536,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                 .addGroup(Berta_Pos_panelLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(Berta_TargetLoc_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(184, Short.MAX_VALUE)))
+                    .addContainerGap(183, Short.MAX_VALUE)))
         );
         Berta_Pos_panelLayout.setVerticalGroup(
             Berta_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -623,25 +621,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
             .addComponent(Prop_Speed_Lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        Prop_Type_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Type"));
-
-        Prop_Type_Lbl.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
-        Prop_Type_Lbl.setText("Slave");
-
-        javax.swing.GroupLayout Prop_Type_panelLayout = new javax.swing.GroupLayout(Prop_Type_panel);
-        Prop_Type_panel.setLayout(Prop_Type_panelLayout);
-        Prop_Type_panelLayout.setHorizontalGroup(
-            Prop_Type_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Prop_Type_panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Prop_Type_Lbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        Prop_Type_panelLayout.setVerticalGroup(
-            Prop_Type_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Prop_Type_Lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
         Prop_CakeID_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Cake ID"));
 
         Prop_CakeID_Lbl.setFont(new java.awt.Font("Verdana", 1, 11));
@@ -695,12 +674,10 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                             .addComponent(Prop_Speed_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Prop_CakeID_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(Prop_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Prop_Pos_panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Prop_Type_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(Prop_Pos_panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Prop_Battery_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Prop_Overview_panelLayout.setVerticalGroup(
             Prop_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -711,9 +688,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Prop_Overview_panelLayout.createSequentialGroup()
                         .addComponent(Prop_State_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(Prop_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Prop_Type_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Prop_Speed_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(Prop_Speed_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(Prop_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Prop_CakeID_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -824,7 +799,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                         .addComponent(Prop_TacoCount_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(Prop_Dist_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         Prop_Mortor_panelLayout.setVerticalGroup(
             Prop_Mortor_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -858,27 +833,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(Prop_Pos_lbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        Prop_Type_panel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Robot Type"));
-
-        Prop_Type_Lbl2.setFont(new java.awt.Font("Verdana", 0, 24));
-        Prop_Type_Lbl2.setText("Master");
-
-        javax.swing.GroupLayout Prop_Type_panel2Layout = new javax.swing.GroupLayout(Prop_Type_panel2);
-        Prop_Type_panel2.setLayout(Prop_Type_panel2Layout);
-        Prop_Type_panel2Layout.setHorizontalGroup(
-            Prop_Type_panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Prop_Type_panel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Prop_Type_Lbl2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        Prop_Type_panel2Layout.setVerticalGroup(
-            Prop_Type_panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Prop_Type_panel2Layout.createSequentialGroup()
-                .addComponent(Prop_Type_Lbl2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -955,27 +909,22 @@ public class InfoFrame extends javax.swing.JInternalFrame {
             Prop_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Prop_Pos_panelLayout.createSequentialGroup()
                 .addGroup(Prop_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Prop_Pos_panelLayout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(Prop_Type_panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(Prop_Pos_panelLayout.createSequentialGroup()
                         .addContainerGap(119, Short.MAX_VALUE)
                         .addComponent(Prop_Angle_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(92, 92, 92))
+                .addGap(238, 238, 238))
             .addGroup(Prop_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(Prop_Pos_panelLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(Prop_TargetLoc_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(184, Short.MAX_VALUE)))
+                    .addContainerGap(183, Short.MAX_VALUE)))
         );
         Prop_Pos_panelLayout.setVerticalGroup(
             Prop_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Prop_Pos_panelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(Prop_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Prop_Type_panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Prop_Angle_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(48, Short.MAX_VALUE))
@@ -988,31 +937,32 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Prop_info.addTab("Position", Prop_Pos_panel);
 
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Berta_info, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                    .addComponent(Cousre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Prop_info, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                    .addComponent(jSeparator1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(Cousre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(Berta_info, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Prop_info, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Cousre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Berta_info, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Prop_info, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(92, 92, 92))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Prop_info, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Cousre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Berta_info, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))))
         );
 
         pack();
@@ -1070,10 +1020,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Prop_TacoCount_panel;
     private javax.swing.JLabel Prop_TargetLoc_Lbl;
     private javax.swing.JPanel Prop_TargetLoc_panel;
-    private javax.swing.JLabel Prop_Type_Lbl;
-    private javax.swing.JLabel Prop_Type_Lbl2;
-    private javax.swing.JPanel Prop_Type_panel;
-    private javax.swing.JPanel Prop_Type_panel2;
     private javax.swing.JLabel Prop_WheelDia_Lbl;
     private javax.swing.JPanel Prop_WheelDia_panel;
     private javax.swing.JTabbedPane Prop_info;
@@ -1171,7 +1117,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
    //P.R.O.P. Panel
     //Overview
     private void updatePropState(){
-    Prop_State_label.setText(MainController.getInstance().getRobotState()[1]+"");
+    Prop_State_label.setText(MainController.getInstance().getPropState()+"");
     }
     private void updatePropSpeed(){
         //TODO: Lav speed update metode. Nok noget med wheeldiameter og tacocount
