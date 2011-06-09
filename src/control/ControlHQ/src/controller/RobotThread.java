@@ -329,6 +329,10 @@ public class RobotThread extends Thread
 		return robotState;
 	}
 
+	public void setRobotState(RobotState robotState) {
+		this.robotState = robotState;
+	}
+
 	public void setRobotLocation(IRobot robotLocation)
 	{
 		this.robotLocation = robotLocation;

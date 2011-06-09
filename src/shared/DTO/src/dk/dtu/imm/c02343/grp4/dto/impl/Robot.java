@@ -110,4 +110,10 @@ public class Robot implements dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot {
 		
 		return out;
 	}
+
+	@Override
+	public boolean isActive() {
+		
+		return (x == -1 && y == -1)? false: true;
+	}
 }
