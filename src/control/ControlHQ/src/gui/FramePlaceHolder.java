@@ -1,6 +1,7 @@
 package gui;
 
 import gui.comm.CommFrame;
+import gui.debug.DebugFrame;
 import gui.info.MiniInfoFrame;
 import gui.manualControl.ControlFrame;
 import gui.path.PathToleranceFrame;
@@ -16,6 +17,7 @@ public class FramePlaceHolder {
 	private static PathToleranceFrame pathf = null;
 	private static SpeedFrame speedf = null;
 	private static MiniInfoFrame minInfof = null;
+	private static DebugFrame debugf = null;
 
 	public static synchronized void setMainFrame(MainFrame frame) {
 		mf = frame;
@@ -59,5 +61,12 @@ public class FramePlaceHolder {
 	public static MiniInfoFrame getMinInfoFrame() {
 		return minInfof;
 	}
+	public static void setDebugf(DebugFrame debugf) {
+		FramePlaceHolder.debugf = debugf;
+	}
+	public static DebugFrame getDebugf() {
+		return debugf;
+	}
+	
 	
 }

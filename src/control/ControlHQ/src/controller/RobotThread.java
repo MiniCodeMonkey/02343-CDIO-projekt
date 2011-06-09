@@ -32,7 +32,7 @@ public class RobotThread extends Thread
 	private boolean pathWasUpdated = false;
 	private int currentStep = 0;
 	
-	private boolean navigateHasRun = false;
+	
 	
 	private List<IRobot> allRobotLocations = null;
 	
@@ -109,13 +109,10 @@ public class RobotThread extends Thread
 	 */
 	private void navigate() throws IOException, InterruptedException
 	{
-		if (navigateHasRun)
-			return;
-		navigateHasRun = true;
 		
 		if (pathWasUpdated)
 		{
-			pathWasUpdated = false;
+//			pathWasUpdated = false;
 			
 			if (path != null && path.getLength() > 0)
 			{
@@ -137,16 +134,16 @@ public class RobotThread extends Thread
 //				while (currentStep < path.getLength() && step.getX() == robotLocation.getX() && step.getY() == robotLocation.getY());
 				
 				
-				step = path.getStep(currentStep);
+				step = path.getStep(0);
 				
-				while(currentStep < path.getLength() && step.getX() == robotLocation.getX() && step.getY() == robotLocation.getY()){
-					
-					currentStep++;
-					step = path.getStep(currentStep);
-					
-					
-					
-				}		
+//				while(currentStep < path.getLength() && step.getX() == robotLocation.getX() && step.getY() == robotLocation.getY()){
+//					
+//					currentStep++;
+//					step = path.getStep(currentStep);
+//					
+//					
+//					
+//				}		
 				
 				
 				
