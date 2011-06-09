@@ -14,22 +14,32 @@ import command.interfaces.IControl;
 public class Control implements IControl{
 	
 	private NXTCommand commander;
-	private boolean inMotion;
+	private boolean inForwardMotion = false;
+	private boolean inBackwardMotion = false;
+	private boolean inLeftMotion = false;
+	private boolean inRightMotion = false;
+	
+	
 	private boolean clawMoving;
 	
 
 	public Control(NXTCommand commander) {
 		this.commander = commander;
-		setMoving(false);
 	}
 	
 
 	@Override
 	public void move(int speed, boolean reverse) throws IOException {
-		if (isMoving())
+		if (isInForwardMotion() && !reverse)
 			return;
-		if(!reverse)
-			speed *= -1;
+		
+		if(reverse){
+			speed = -speed;
+			setInBackwardMotion(true);
+		}else{
+			setInForwardMotion(true);
+		}
+			
 		
 		commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
@@ -39,40 +49,41 @@ public class Control implements IControl{
 //		else	print="Forwards";
 //		System.out.println("MOVING: "+print);
 		
-		setMoving(true);
 	}
 
 
 	@Override
 	public void left(int turnSpeed) throws IOException {
-		if (isMoving())
+		if (isInForwardMotion())
 			return;
 		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 //		System.out.println("TURNING: left");
-		setMoving(true);
+		setInLeftMotion(true);
 	}
 
 	@Override
 	public void right(int turnSpeed) throws IOException {
-		if (isMoving())
+		if (isInForwardMotion())
 			return;
 		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 //		System.out.println("TURNING: right");
-		setMoving(true);
+		setInForwardMotion(true);
 	}
 
 	@Override
 	public void stop() throws IOException {
+		System.out.println("STOPPING ROBOT");
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
 //		System.out.println("STOPPING");
 		//lejos.nxt.Sound.playSoundFile("tires.rso");
 		//lejos.nxt.Sound.playSoundFile("Hooray.rso");
-		Sound.playTone(500, 10);
-		setMoving(false);
+//		Sound.playTone(500, 10);
+		setInBackwardMotion(false);
+		setInForwardMotion(false);
 	}
 
 	
@@ -86,21 +97,55 @@ public class Control implements IControl{
 
 
 	/**
-	 * @param isMoving the isMoving to set
-	 */
-	public void setMoving(boolean isMoving) {
-		this.inMotion = isMoving;
-	}
-
-
-	/**
 	 * 
 	 * @return {@code true} hvis robotten er i bevægelse (ikke har fået en {@code stop()} kommando endnu)
 	 * <br>
 	 * {@code false} hvis robotten står stille
 	 */
-	public boolean isMoving() {
-		return inMotion;
+	public boolean isInForwardMotion() {
+		return inForwardMotion;
+	}
+
+
+	/**
+	 * @param inForwardMoving the isMoving to set
+	 */
+	public void setInForwardMotion(boolean inForwardMoving) {
+		this.inForwardMotion = inForwardMoving;
+		inBackwardMotion = !inForwardMoving;
+	}
+
+
+	public boolean isInBackwardMotion() {
+		return inBackwardMotion;
+	}
+
+
+	public void setInBackwardMotion(boolean inBackwardMotion) {
+		this.inBackwardMotion = inBackwardMotion;
+		inForwardMotion = !inBackwardMotion;
+	}
+
+
+	public boolean isInLeftMotion() {
+		return inLeftMotion;
+	}
+
+
+	public void setInLeftMotion(boolean inLeftMotion) {
+		this.inLeftMotion = inLeftMotion;
+		this.inRightMotion = !inLeftMotion;
+	}
+
+
+	public boolean isInRightMotion() {
+		return inRightMotion;
+	}
+
+
+	public void setInRightMotion(boolean inRightMotion) {
+		this.inRightMotion = inRightMotion;
+		this.inLeftMotion = !inRightMotion;
 	}
 
 
@@ -125,8 +170,8 @@ public class Control implements IControl{
 	public void openClaw(int clawMotor) throws IOException {
 //		if (isClawMoving())
 //			return;
-//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
-		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
 
@@ -134,8 +179,8 @@ public class Control implements IControl{
 	public void closeClaw(int clawMotor) throws IOException {
 //		if (isClawMoving())
 //			return;
-//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
-		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
 

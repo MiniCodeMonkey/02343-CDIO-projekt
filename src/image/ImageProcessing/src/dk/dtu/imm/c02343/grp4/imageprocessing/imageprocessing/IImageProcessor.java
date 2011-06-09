@@ -88,12 +88,12 @@ public interface IImageProcessor {
 	/**
 	 * Standard værdi for X-opløsningen i behandlingen
 	 */
-	public static final int RESOLUTION_X = 2;
+	public static final int RESOLUTION_X = 3;
 	
 	/**
 	 * Standard værdi for Y-opløsningen i behandlingen
 	 */
-	public static final int RESOLUTION_Y = 2;
+	public static final int RESOLUTION_Y = 3;
 	
 	/**
 	 * Behandler et billede og genererer forhindrings-map samt robot- og kage-positioner

@@ -4,10 +4,11 @@
  */
 
 /*
- * miniInfoPanel.java
+ * MiniInfoFrame.java
  *
- * Created on 07-06-2011, 10:24:34
+ * Created on 08-06-2011, 13:17:30
  */
+
 package gui.info;
 
 import gui.FramePlaceHolder;
@@ -16,12 +17,12 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Terkel
+ * @author Morten Hulvej
  */
-public class MiniInfoPanel extends javax.swing.JInternalFrame {
+public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
-    /** Creates new form miniInfoPanel */
-    public MiniInfoPanel() {
+    /** Creates new form MiniInfoFrame */
+    public MiniInfoFrame() {
         initComponents();
         FramePlaceHolder.setMinInfoFrame(this);
     }
@@ -35,7 +36,6 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        miniInfoPanel = new javax.swing.JPanel();
         BertaToolbar = new javax.swing.JToolBar();
         BertaNameLabel = new javax.swing.JLabel();
         BertaStartStopLabel = new javax.swing.JLabel();
@@ -51,6 +51,9 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         PropPosLabel = new javax.swing.JLabel();
         PropAngleLabel = new javax.swing.JLabel();
 
+        setTitle("Robot Information");
+
+        BertaToolbar.setBackground(java.awt.Color.cyan);
         BertaToolbar.setRollover(true);
 
         BertaNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/robot.png"))); // NOI18N
@@ -73,6 +76,7 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         BertaAngleLabel.setText("Angle");
         BertaToolbar.add(BertaAngleLabel);
 
+        PropToolbar.setBackground(java.awt.Color.pink);
         PropToolbar.setRollover(true);
 
         PropNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/robot.png"))); // NOI18N
@@ -95,42 +99,28 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         PropAngleLabel.setText("Angle");
         PropToolbar.add(PropAngleLabel);
 
-        javax.swing.GroupLayout miniInfoPanelLayout = new javax.swing.GroupLayout(miniInfoPanel);
-        miniInfoPanel.setLayout(miniInfoPanelLayout);
-        miniInfoPanelLayout.setHorizontalGroup(
-            miniInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(miniInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(miniInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PropToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BertaToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(114, Short.MAX_VALUE))
-        );
-        miniInfoPanelLayout.setVerticalGroup(
-            miniInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(miniInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BertaToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PropToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(miniInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(BertaToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PropToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(miniInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(PropToolbar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BertaToolbar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BertaAngleLabel;
     private javax.swing.JLabel BertaNameLabel;
@@ -146,17 +136,16 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
     private javax.swing.JToolBar PropToolbar;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JPanel miniInfoPanel;
     // End of variables declaration//GEN-END:variables
 
-//Berta Info Update
+    //Berta Info Update
     private void updateBertaOnOff(){
         if(MainController.getInstance().isBertaConnected()){
         BertaStartStopLabel.setIcon(new ImageIcon("/icons/on_lille"));
     }else{
              BertaStartStopLabel.setIcon(new ImageIcon("/icons/off_lille"));
         }
-           
+
      }
     private void updateBertaState(){
         String text = MainController.getInstance().getBertaState().toString();
@@ -166,7 +155,7 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         BertaStateLabel.setText("N/A");
     }
     }
-    
+
     private void updateBertaPos(){
         int[]yx = MainController.getInstance().getBertaPos();
         if(yx[0]==0 && yx[1]==0){
@@ -185,7 +174,7 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
         BertaAngleLabel.setText(radAngle*180/Math.PI+"°");
        }
    }
-    
+
 //Prop Info Update
     private void updatePropOnOff(){
         if(MainController.getInstance().isPropConnected()){
@@ -221,20 +210,22 @@ public class MiniInfoPanel extends javax.swing.JInternalFrame {
        }
        }
 
-	public void updateBertaInfo(){
-	    updateBertaAngle();
-	    updateBertaOnOff();
-	    updateBertaPos();
-	    updateBertaState();
-	}
-	public void updatePropInfo(){
-	    updatePropAngle();
-	    updatePropOnOff();
-	    updatePropPos();
-	    updatePropState();
-	}
-	public void UpdateBothRobots(){
-	    updateBertaInfo();
-	    updatePropInfo();
-	}
+public void updateBertaInfo(){
+    updateBertaAngle();
+    updateBertaOnOff();
+    updateBertaPos();
+    updateBertaState();
+}
+public void updatePropInfo(){
+    updatePropAngle();
+    updatePropOnOff();
+    updatePropPos();
+    updatePropState();
+}
+public void UpdateBothRobots(){
+    updateBertaInfo();
+//    updatePropInfo();
+}
+
+
 }

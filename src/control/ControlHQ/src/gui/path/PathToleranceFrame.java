@@ -18,7 +18,7 @@ public class PathToleranceFrame extends javax.swing.JInternalFrame {
         initComponents();
         initValues();
         
-        FramePlaceHolder.setPathf(this);
+        FramePlaceHolder.setPathFrame(this);
     }
     
     @SuppressWarnings("unchecked")

@@ -10,7 +10,7 @@ import controller.Thresholds;
 
 public class SpeedChangeListener implements ChangeListener {
 
-	SpeedFrame frame = FramePlaceHolder.getSpeedf();
+	SpeedFrame frame = FramePlaceHolder.getSpeedFrame();
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
