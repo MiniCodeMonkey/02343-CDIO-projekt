@@ -57,7 +57,7 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		robotsCommando = new Commando(0);
+		robotsCommando = new Commando();
 		IControl[] robotControls = robotsCommando.getControls();
 		
 		// initialize RobotThread[]
@@ -93,7 +93,7 @@ public class ProcessingThread extends Thread
 			// Process the image
 			locations = imageProcessor.examineImage(image, true);
 			
-//			calculatePaths(locations);
+			calculatePaths(locations);
 		}
 	}
 
@@ -123,6 +123,12 @@ public class ProcessingThread extends Thread
 		int robotIndex = 0;
 		for (RobotThread robotThread : robotThreads)
 		{
+			if (robotThreads == null){
+				System.out.println("robotThread null");
+				continue;
+			}
+				
+			
 			// Get physical robot location
 			try
 			{
@@ -180,7 +186,7 @@ public class ProcessingThread extends Thread
 		return sourceImage;
 	}
 
-	public ILocations getLocations() {
+	public synchronized ILocations getLocations() {
 		return locations;
 	}
 

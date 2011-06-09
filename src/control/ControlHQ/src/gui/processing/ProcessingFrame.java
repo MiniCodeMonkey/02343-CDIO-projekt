@@ -890,7 +890,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    @Deprecated
     private void testimageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testimageBtnActionPerformed
 
     	setFeed(new ImageFile());
@@ -907,26 +907,25 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         updateLoop();
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
-
+    @Deprecated
     private void nextTestImgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextTestImgBtnActionPerformed
         updateImagePanel();
     }//GEN-LAST:event_nextTestImgBtnActionPerformed
 
     private void stopWebcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopWebcamBtnActionPerformed
-        if (webcamRunning)
-        	imageSource.close();
-        webcamRunning = false;
-        imageSource = null;
-        updateImagePanel();
-    }//GEN-LAST:event_stopWebcamBtnActionPerformed
+        if (webcamRunning){
+        	webcamRunning = false;
+        }
 
+    }//GEN-LAST:event_stopWebcamBtnActionPerformed
+    @Deprecated
     public void setFeed(IImageSource src){
     	
-        imageSource = src;
+
         try {
-			imageSource.init();
+
 		} catch (Exception e) {
-			new ErrorMessage("Webcam ikke tilgï¿½ngeligt");
+			new ErrorMessage("Webcam ikke tilgængeligt");
 		}
         
 		// LABELS
@@ -969,15 +968,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	
     	// behandlet billede
     	BufferedImage tileImg = locations.getTileImage();
-    	
-//    	if (imageSource == null) return;
-//    	BufferedImage sourceImg = imageSource.getImage();
-
-        // Opret tile-image vha. hjï¿½lpemetode    	
-//        ILocations locations = stateChangeListener.getImageProcessor().examineImage(sourceImg, true);
-    	
-    	
-//        BufferedImage tileImg = locations.getTileImage();
 		
     	// Opret JFrame samt panel til input-billede
         srcImgPanel = new ImagePanel(sourceImg);
@@ -996,25 +986,26 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     
     public void updateLoop() {
     	System.out.println("updateloop started");
-		new Thread(){
+		new Thread("ImagePanel Thread"){
 			@Override
 			public void run() {
 				
 				while(webcamRunning){
 
-                                        while(webcamFeedPaused);
-                                        
+                    while(webcamFeedPaused);
+                    
 					updateImagePanel();
 					
 					try {
-						Thread.sleep((long) (time_slice*1000));
+//						Thread.sleep((long) (time_slice*1000));
+						Thread.sleep((long) (500));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					
 				}
 			}
-		};
+		}.start();
 	}
     
     @Deprecated
@@ -1044,11 +1035,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     private ImagePanel tileImgPanel;
     
     private ImageChangeListener stateChangeListener;
-    
-    private IImageSource imageSource;
-    
-    boolean refreshRunning;
-    boolean refreshPaused;
     
     boolean webcamRunning = true;
     boolean webcamFeedPaused = false;
