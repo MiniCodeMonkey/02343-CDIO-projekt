@@ -44,11 +44,17 @@ public class RobotThread extends Thread
 	@Override
 	public void run() {
 			try {
-				Thread.currentThread().setName("Robot Thread");
+				
+				// setting master/slave configs + claw init
 				initialize();
+				
+					if (robotType == RobotType.MASTER)
+						Thread.currentThread().setName("RobotThread BERTA");
+					else	Thread.currentThread().setName("RobotThread PROP");
 				
 				while (true){
 					if (robotState != RobotState.IDLE){
+						System.out.println(Thread.currentThread().getName() + ": navigating");
 						navigate();
 					}
 				}
@@ -68,9 +74,9 @@ public class RobotThread extends Thread
 	private void initialize() throws IOException, InterruptedException
 	{
 		// Initialize master/slave configuration
-		if (RobotThread.masterIsDefined)
+		if (!RobotThread.masterIsDefined)
 		{
-			RobotThread.masterIsDefined = false;
+			RobotThread.masterIsDefined = true;
 			
 			this.robotType = RobotType.MASTER;
 		}
