@@ -1,5 +1,7 @@
 package command;
 
+import javax.swing.JOptionPane;
+
 import com.sun.org.apache.bcel.internal.classfile.Code;
 
 import lejos.pc.comm.NXTCommException;
@@ -73,11 +75,9 @@ public class Commando {
 		try {
 			propCom = new PropCommando();
 		} catch (NXTCommException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Prop not found! (NXTCommExc)");
 		} catch (NoRobotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Prop not found!");
 		}
 	}
 	

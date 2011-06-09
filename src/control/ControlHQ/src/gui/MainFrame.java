@@ -26,13 +26,14 @@ import controller.MainController;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    /** Creates new form MainFrame */
+    
+	/** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
         
-        makeMiniInfoFrame();
+       
         makeCommFrame();
-        
+        makeMiniInfoFrame();
         
         FramePlaceHolder.setMainFrame(this);
     }

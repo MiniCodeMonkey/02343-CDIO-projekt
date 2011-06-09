@@ -2,7 +2,6 @@ package gui;
 
 import gui.comm.CommFrame;
 import gui.info.MiniInfoFrame;
-import gui.info.MiniInfoPanel;
 import gui.manualControl.ControlFrame;
 import gui.path.PathToleranceFrame;
 import gui.processing.ProcessingFrame;

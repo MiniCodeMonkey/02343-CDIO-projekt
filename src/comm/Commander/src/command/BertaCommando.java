@@ -10,6 +10,7 @@ import lejos.nxt.remote.NXTCommand;
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
+import lejos.pc.comm.NXTConnectionState;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
 import bluetooth.constants.Constants;

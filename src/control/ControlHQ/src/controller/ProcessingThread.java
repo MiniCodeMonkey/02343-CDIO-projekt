@@ -23,6 +23,9 @@ public class ProcessingThread extends Thread
 	private IImageSource imageSource;
 	private IImageProcessor imageProcessor;
 	private boolean running;
+	
+	// bruges af GUI
+	private ILocations locations;
 
 	private int robotsCount = 0;
 	private int cakesCount = 0;
@@ -34,6 +37,7 @@ public class ProcessingThread extends Thread
 
 	public void run()
 	{
+		Thread.currentThread().setName("Processing Thread");
 		try
 		{
 			initialize();
@@ -55,11 +59,20 @@ public class ProcessingThread extends Thread
 		imageProcessor = new ImageProcessor2();
 		robotsCommando = new Commando();
 		IControl[] robotControls = robotsCommando.getControls();
+		
+		// initialize RobotThread[]
+		robotThreads = new RobotThread[2];
 
 		// Initialize all robots and start threads
 		int robotIndex = 0;
 		for (IControl robotControl : robotControls)
 		{
+			if (robotControl == null){
+				continue;
+			}
+				
+			
+			System.out.println("STARTING NEW ROBOT THREAD, index:" + robotIndex);
 			robotThreads[robotIndex] = new RobotThread(robotControl);
 			robotThreads[robotIndex].start();
 
@@ -78,8 +91,8 @@ public class ProcessingThread extends Thread
 			BufferedImage image = imageSource.getImage();
 
 			// Process the image
-			ILocations locations = imageProcessor.examineImage(image, true);
-
+			locations = imageProcessor.examineImage(image, true);
+			
 			calculatePaths(locations);
 		}
 	}
@@ -110,6 +123,12 @@ public class ProcessingThread extends Thread
 		int robotIndex = 0;
 		for (RobotThread robotThread : robotThreads)
 		{
+			if (robotThreads == null){
+				System.out.println("robotThread null");
+				continue;
+			}
+				
+			
 			// Get physical robot location
 			try
 			{
@@ -165,6 +184,10 @@ public class ProcessingThread extends Thread
 		}
 
 		return sourceImage;
+	}
+
+	public synchronized ILocations getLocations() {
+		return locations;
 	}
 
 	public void stopThread()
