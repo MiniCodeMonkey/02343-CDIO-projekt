@@ -3,10 +3,13 @@ package controller;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.List;
+
 import command.Commando;
 import command.exception.MasterRobotNotFound;
 import command.interfaces.IControl;
 import controller.RobotThread.RobotState;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
@@ -23,6 +26,7 @@ public class ProcessingThread extends Thread
 	private IImageSource imageSource;
 	private IImageProcessor imageProcessor;
 	private boolean running;
+	private List<ICake>	cakesInProcess;
 	
 	// bruges af GUI
 	private ILocations locations;
@@ -57,7 +61,7 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		robotsCommando = new Commando(0);
+		robotsCommando = new Commando();
 		IControl[] robotControls = robotsCommando.getControls();
 		
 		// initialize RobotThread[]
@@ -93,7 +97,7 @@ public class ProcessingThread extends Thread
 			// Process the image
 			locations = imageProcessor.examineImage(image, true);
 			
-//			calculatePaths(locations);
+			calculatePaths(locations);
 		}
 	}
 
@@ -103,6 +107,8 @@ public class ProcessingThread extends Thread
 		robotsCount = locations.getRobots().size();
 		cakesCount = locations.getCakes().size();
 
+		
+		
 		// Is no robots available?
 		if (locations.getRobots().size() <= 0)
 		{
@@ -123,6 +129,18 @@ public class ProcessingThread extends Thread
 		int robotIndex = 0;
 		for (RobotThread robotThread : robotThreads)
 		{
+			if (robotThreads == null){
+				System.out.println("robotThread null");
+				continue;
+			}
+			
+					// opret liste over kager i bahandling
+					
+					// fjern kage fra liste
+//					cakesInProcess.add(locations.getCakes().remove(0));
+			
+			
+			
 			// Get physical robot location
 			try
 			{
@@ -180,7 +198,7 @@ public class ProcessingThread extends Thread
 		return sourceImage;
 	}
 
-	public ILocations getLocations() {
+	public synchronized ILocations getLocations() {
 		return locations;
 	}
 
