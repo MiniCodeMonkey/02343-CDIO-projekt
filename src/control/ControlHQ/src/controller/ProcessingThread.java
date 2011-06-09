@@ -59,7 +59,7 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		robotsCommando = new Commando();
+		robotsCommando = new Commando(0);
 		IControl[] robotControls = robotsCommando.getControls();
 		
 		// initialize RobotThread[]
@@ -124,6 +124,8 @@ public class ProcessingThread extends Thread
 
 		// Find a path for each robot
 		int robotIndex = 0;
+		
+		
 		for (RobotThread robotThread : robotThreads)
 		{
 			if (robotThreads == null){
