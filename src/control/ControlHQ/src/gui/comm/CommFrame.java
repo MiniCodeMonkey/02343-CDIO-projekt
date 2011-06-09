@@ -46,6 +46,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
 
         setIconifiable(true);
         setTitle("Kommunikation");
+        setNormalBounds(new java.awt.Rectangle(450, 290, 234, 133));
 
         connectBtn.setText("Connect");
         connectBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -68,21 +69,20 @@ public class CommFrame extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(connectBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                         .addComponent(disconnectBtn))
                     .addComponent(statusPtyLabel))
-                .addContainerGap(252, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(connectBtn)
                     .addComponent(disconnectBtn))
                 .addGap(18, 18, 18)
-                .addComponent(statusPtyLabel)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addComponent(statusPtyLabel))
         );
 
         pack();
@@ -111,7 +111,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
     	/*
     	 * hvis begge robotter virker?
     	 * 		-> makeProcessingFrame();
-    	 * 		-> makeControlFrame    x 2 (TODO understøttelse af 2 robotter)
+    	 * 		-> makeControlFrame    x 2 (TODO understï¿½ttelse af 2 robotter)
     	 */
     	
     	// initializing control unit
