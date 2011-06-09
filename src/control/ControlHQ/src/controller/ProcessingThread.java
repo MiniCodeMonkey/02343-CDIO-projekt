@@ -130,8 +130,9 @@ public class ProcessingThread extends Thread
 				System.out.println("robotThread null");
 				continue;
 			}
-			
+			 
 			ICake currentCake = locations.getCakes().remove(0);
+			// TODO hvis der alle kager bliver processed
 			
 			robotThread.setTargetLocation(new Location(currentCake.getY(), currentCake.getX()));
 			
@@ -184,7 +185,13 @@ public class ProcessingThread extends Thread
 		for (int i = 0; i < path.getLength(); i++)
 		{
 			Step step = path.getStep(i);
-			Step nextStep = path.getStep(i + 1);
+			Step nextStep;
+			try {
+				nextStep = path.getStep(i + 1);
+			} catch (IndexOutOfBoundsException e) {
+				// ikke flere steps
+				break;
+			}
 
 			g.drawLine(step.getX(), step.getY(), nextStep.getX(), nextStep.getY());
 		}
