@@ -7,10 +7,12 @@ import command.Commando;
 import command.exception.MasterRobotNotFound;
 import command.interfaces.IControl;
 import controller.RobotThread.RobotState;
+import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.TileMap;
@@ -102,6 +104,7 @@ public class ProcessingThread extends Thread
 		// Save number of robots and cakes
 		robotsCount = locations.getRobots().size();
 		cakesCount = locations.getCakes().size();
+		
 
 		// Is no robots available?
 		if (locations.getRobots().size() <= 0)
@@ -127,7 +130,10 @@ public class ProcessingThread extends Thread
 				System.out.println("robotThread null");
 				continue;
 			}
-				
+			
+			ICake currentCake = locations.getCakes().remove(0);
+			
+			robotThread.setTargetLocation(new Location(currentCake.getY(), currentCake.getX()));
 			
 			// Get physical robot location
 			try
