@@ -27,11 +27,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         jLabel16 = new javax.swing.JLabel();
         Tile_X_Count_label = new javax.swing.JLabel();
         Tile_Y_Count_Label = new javax.swing.JLabel();
-        robot_info = new javax.swing.JPanel();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        Master_Lbl = new javax.swing.JLabel();
-        Slave_Lbl = new javax.swing.JLabel();
         Berta_info = new javax.swing.JTabbedPane();
         Berta_Overview_panel = new javax.swing.JPanel();
         Berta_Battery_panel = new javax.swing.JPanel();
@@ -40,8 +35,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Berta_State_label = new javax.swing.JLabel();
         Berta_Speed_panel = new javax.swing.JPanel();
         Berta_Speed_Lbl = new javax.swing.JLabel();
-        Berta_Type_panel = new javax.swing.JPanel();
-        Berta_Type_Lbl = new javax.swing.JLabel();
         Berta_CakeID_panel = new javax.swing.JPanel();
         Berta_CakeID_Lbl = new javax.swing.JLabel();
         Berta_Pos_panel2 = new javax.swing.JPanel();
@@ -61,8 +54,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Berta_Pos_panel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         Berta_Pos_lbl = new javax.swing.JLabel();
-        Berta_Type_panel2 = new javax.swing.JPanel();
-        Berta_Type_Lbl2 = new javax.swing.JLabel();
         Berta_Angle_panel = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         Berta_SupAngle_lbl = new javax.swing.JLabel();
@@ -110,6 +101,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Prop_ActualAngle_lbl = new javax.swing.JLabel();
         Prop_TargetLoc_panel = new javax.swing.JPanel();
         Prop_TargetLoc_Lbl = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         Cousre.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Info"));
 
@@ -183,45 +175,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                     .addComponent(Tile_Y_Count_Label)))
         );
 
-        robot_info.setBorder(javax.swing.BorderFactory.createTitledBorder("Robot Info"));
-
-        jLabel26.setText("Master:");
-
-        jLabel27.setText("Slave:");
-
-        Master_Lbl.setText("B.E.R.T.A.");
-
-        Slave_Lbl.setText("P.R.O.P.");
-
-        javax.swing.GroupLayout robot_infoLayout = new javax.swing.GroupLayout(robot_info);
-        robot_info.setLayout(robot_infoLayout);
-        robot_infoLayout.setHorizontalGroup(
-            robot_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(robot_infoLayout.createSequentialGroup()
-                .addGroup(robot_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(robot_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Master_Lbl)
-                    .addComponent(Slave_Lbl))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        robot_infoLayout.setVerticalGroup(
-            robot_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, robot_infoLayout.createSequentialGroup()
-                .addGroup(robot_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(robot_infoLayout.createSequentialGroup()
-                        .addComponent(jLabel26)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel27))
-                    .addGroup(robot_infoLayout.createSequentialGroup()
-                        .addComponent(Master_Lbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Slave_Lbl)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         Berta_info.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "B.E.R.T.A.", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
         Berta_Battery_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Battery"));
@@ -271,7 +224,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Berta_Speed_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Speed"));
 
-        Berta_Speed_Lbl.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        Berta_Speed_Lbl.setFont(new java.awt.Font("Verdana", 1, 11));
         Berta_Speed_Lbl.setText("100 m/s");
 
         javax.swing.GroupLayout Berta_Speed_panelLayout = new javax.swing.GroupLayout(Berta_Speed_panel);
@@ -288,28 +241,9 @@ public class InfoFrame extends javax.swing.JInternalFrame {
             .addComponent(Berta_Speed_Lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        Berta_Type_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Type"));
-
-        Berta_Type_Lbl.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
-        Berta_Type_Lbl.setText("Master");
-
-        javax.swing.GroupLayout Berta_Type_panelLayout = new javax.swing.GroupLayout(Berta_Type_panel);
-        Berta_Type_panel.setLayout(Berta_Type_panelLayout);
-        Berta_Type_panelLayout.setHorizontalGroup(
-            Berta_Type_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Berta_Type_panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Berta_Type_Lbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        Berta_Type_panelLayout.setVerticalGroup(
-            Berta_Type_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Berta_Type_Lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
         Berta_CakeID_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Cake ID"));
 
-        Berta_CakeID_Lbl.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        Berta_CakeID_Lbl.setFont(new java.awt.Font("Verdana", 1, 11));
         Berta_CakeID_Lbl.setText("35");
 
         javax.swing.GroupLayout Berta_CakeID_panelLayout = new javax.swing.GroupLayout(Berta_CakeID_panel);
@@ -328,7 +262,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Berta_Pos_panel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Position"));
 
-        Berta_Pos_Lbl2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        Berta_Pos_Lbl2.setFont(new java.awt.Font("Verdana", 0, 14));
         Berta_Pos_Lbl2.setText("(Y,X)");
 
         javax.swing.GroupLayout Berta_Pos_panel2Layout = new javax.swing.GroupLayout(Berta_Pos_panel2);
@@ -360,9 +294,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                             .addComponent(Berta_Speed_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Berta_CakeID_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(Berta_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Berta_Pos_panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Berta_Type_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(Berta_Pos_panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Berta_Battery_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(11, Short.MAX_VALUE))
@@ -376,9 +308,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Berta_Overview_panelLayout.createSequentialGroup()
                         .addComponent(Berta_State_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(Berta_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Berta_Type_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Berta_Speed_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(Berta_Speed_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(Berta_Overview_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Berta_CakeID_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -437,7 +367,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Berta_Dist_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Distance"));
 
-        Berta_Dist_Lbl.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        Berta_Dist_Lbl.setFont(new java.awt.Font("Verdana", 0, 24));
         Berta_Dist_Lbl.setText("50 m");
 
         javax.swing.GroupLayout Berta_Dist_panelLayout = new javax.swing.GroupLayout(Berta_Dist_panel);
@@ -507,7 +437,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Position"));
 
-        Berta_Pos_lbl.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        Berta_Pos_lbl.setFont(new java.awt.Font("Verdana", 0, 24));
         Berta_Pos_lbl.setText("(Y,X)");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -526,37 +456,16 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        Berta_Type_panel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Robot Type"));
-
-        Berta_Type_Lbl2.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
-        Berta_Type_Lbl2.setText("Master");
-
-        javax.swing.GroupLayout Berta_Type_panel2Layout = new javax.swing.GroupLayout(Berta_Type_panel2);
-        Berta_Type_panel2.setLayout(Berta_Type_panel2Layout);
-        Berta_Type_panel2Layout.setHorizontalGroup(
-            Berta_Type_panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Berta_Type_panel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Berta_Type_Lbl2)
-                .addContainerGap(46, Short.MAX_VALUE))
-        );
-        Berta_Type_panel2Layout.setVerticalGroup(
-            Berta_Type_panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Berta_Type_panel2Layout.createSequentialGroup()
-                .addComponent(Berta_Type_Lbl2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         Berta_Angle_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Angel"));
 
         jLabel25.setText("Supposed:");
 
-        Berta_SupAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Berta_SupAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12));
         Berta_SupAngle_lbl.setText("34");
 
         jLabel39.setText("Actual:");
 
-        Berta_ActualAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Berta_ActualAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12));
         Berta_ActualAngle_lbl.setText("45");
 
         javax.swing.GroupLayout Berta_Angle_panelLayout = new javax.swing.GroupLayout(Berta_Angle_panel);
@@ -595,7 +504,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Berta_TargetLoc_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Target Location"));
 
-        Berta_TargetLoc_Lbl.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        Berta_TargetLoc_Lbl.setFont(new java.awt.Font("Verdana", 0, 24));
         Berta_TargetLoc_Lbl.setText("(Y,X)");
 
         javax.swing.GroupLayout Berta_TargetLoc_panelLayout = new javax.swing.GroupLayout(Berta_TargetLoc_panel);
@@ -620,12 +529,9 @@ public class InfoFrame extends javax.swing.JInternalFrame {
             Berta_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Berta_Pos_panelLayout.createSequentialGroup()
                 .addGroup(Berta_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Berta_Pos_panelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(Berta_Type_panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(Berta_Pos_panelLayout.createSequentialGroup()
-                        .addContainerGap(155, Short.MAX_VALUE)
+                        .addContainerGap(119, Short.MAX_VALUE)
                         .addComponent(Berta_Angle_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(92, 92, 92))
             .addGroup(Berta_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -638,9 +544,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
             Berta_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Berta_Pos_panelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(Berta_Pos_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Berta_Type_panel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Berta_Angle_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(48, Short.MAX_VALUE))
@@ -653,7 +557,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Berta_info.addTab("Position", Berta_Pos_panel);
 
-        Prop_info.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "B.E.R.T.A.", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+        Prop_info.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "P.R.O.P.", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
         Prop_Battery_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Battery"));
 
@@ -679,7 +583,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Prop_State_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("State"));
 
-        Prop_State_label.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        Prop_State_label.setFont(new java.awt.Font("Verdana", 1, 14));
         Prop_State_label.setText("RUNNING LIKE HELL");
         Prop_State_label.setToolTipText("Hvilken state er B.E.R.T.A. i. I.E. Hvad laver hun");
         Prop_State_label.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -702,7 +606,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Prop_Speed_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Speed"));
 
-        Prop_Speed_Lbl.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        Prop_Speed_Lbl.setFont(new java.awt.Font("Verdana", 1, 11));
         Prop_Speed_Lbl.setText("100 m/s");
 
         javax.swing.GroupLayout Prop_Speed_panelLayout = new javax.swing.GroupLayout(Prop_Speed_panel);
@@ -722,7 +626,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Prop_Type_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Type"));
 
         Prop_Type_Lbl.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
-        Prop_Type_Lbl.setText("Master");
+        Prop_Type_Lbl.setText("Slave");
 
         javax.swing.GroupLayout Prop_Type_panelLayout = new javax.swing.GroupLayout(Prop_Type_panel);
         Prop_Type_panel.setLayout(Prop_Type_panelLayout);
@@ -740,7 +644,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Prop_CakeID_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Cake ID"));
 
-        Prop_CakeID_Lbl.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        Prop_CakeID_Lbl.setFont(new java.awt.Font("Verdana", 1, 11));
         Prop_CakeID_Lbl.setText("35");
 
         javax.swing.GroupLayout Prop_CakeID_panelLayout = new javax.swing.GroupLayout(Prop_CakeID_panel);
@@ -759,7 +663,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Prop_Pos_panel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Position"));
 
-        Prop_Pos_Lbl2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        Prop_Pos_Lbl2.setFont(new java.awt.Font("Verdana", 0, 14));
         Prop_Pos_Lbl2.setText("(Y,X)");
 
         javax.swing.GroupLayout Prop_Pos_panel2Layout = new javax.swing.GroupLayout(Prop_Pos_panel2);
@@ -938,7 +842,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Position"));
 
-        Prop_Pos_lbl.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        Prop_Pos_lbl.setFont(new java.awt.Font("Verdana", 0, 24));
         Prop_Pos_lbl.setText("(Y,X)");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -959,7 +863,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Prop_Type_panel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Robot Type"));
 
-        Prop_Type_Lbl2.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        Prop_Type_Lbl2.setFont(new java.awt.Font("Verdana", 0, 24));
         Prop_Type_Lbl2.setText("Master");
 
         javax.swing.GroupLayout Prop_Type_panel2Layout = new javax.swing.GroupLayout(Prop_Type_panel2);
@@ -982,12 +886,12 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         jLabel28.setText("Supposed:");
 
-        Prop_SupAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Prop_SupAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12));
         Prop_SupAngle_lbl.setText("34");
 
         jLabel40.setText("Actual:");
 
-        Prop_ActualAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Prop_ActualAngle_lbl.setFont(new java.awt.Font("Tahoma", 1, 12));
         Prop_ActualAngle_lbl.setText("45");
 
         javax.swing.GroupLayout Prop_Angle_panelLayout = new javax.swing.GroupLayout(Prop_Angle_panel);
@@ -1026,7 +930,7 @@ public class InfoFrame extends javax.swing.JInternalFrame {
 
         Prop_TargetLoc_panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Target Location"));
 
-        Prop_TargetLoc_Lbl.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        Prop_TargetLoc_Lbl.setFont(new java.awt.Font("Verdana", 0, 24));
         Prop_TargetLoc_Lbl.setText("(Y,X)");
 
         javax.swing.GroupLayout Prop_TargetLoc_panelLayout = new javax.swing.GroupLayout(Prop_TargetLoc_panel);
@@ -1090,15 +994,12 @@ public class InfoFrame extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Berta_info, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
                     .addComponent(Cousre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(robot_info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Berta_info, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Prop_info, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                    .addComponent(jSeparator1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Prop_info, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1106,12 +1007,12 @@ public class InfoFrame extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(Cousre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(robot_info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Berta_info, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Prop_info, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(92, 92, 92))
         );
 
         pack();
@@ -1140,17 +1041,12 @@ public class InfoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Berta_TacoCount_panel;
     private javax.swing.JLabel Berta_TargetLoc_Lbl;
     private javax.swing.JPanel Berta_TargetLoc_panel;
-    private javax.swing.JLabel Berta_Type_Lbl;
-    private javax.swing.JLabel Berta_Type_Lbl2;
-    private javax.swing.JPanel Berta_Type_panel;
-    private javax.swing.JPanel Berta_Type_panel2;
     private javax.swing.JLabel Berta_WheelDia_Lbl;
     private javax.swing.JPanel Berta_WheelDia_panel;
     private javax.swing.JTabbedPane Berta_info;
     private javax.swing.JLabel Berta_lWheel_Lbl;
     private javax.swing.JLabel Berta_rWheel_Lbl;
     private javax.swing.JPanel Cousre;
-    private javax.swing.JLabel Master_Lbl;
     private javax.swing.JLabel Prop_ActualAngle_lbl;
     private javax.swing.JPanel Prop_Angle_panel;
     private javax.swing.JProgressBar Prop_BatteryLevelBar;
@@ -1183,7 +1079,6 @@ public class InfoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane Prop_info;
     private javax.swing.JLabel Prop_lWheel_Lbl;
     private javax.swing.JLabel Prop_rWheel_Lbl;
-    private javax.swing.JLabel Slave_Lbl;
     private javax.swing.JLabel Tile_X_Count_label;
     private javax.swing.JLabel Tile_Y_Count_Label;
     private javax.swing.JLabel cake_Count_Lbl;
@@ -1197,19 +1092,17 @@ public class InfoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JLabel obstacleCount_Lbl;
-    private javax.swing.JPanel robot_info;
     // End of variables declaration//GEN-END:variables
 
     //Course Info updates
@@ -1227,33 +1120,17 @@ public class InfoFrame extends javax.swing.JInternalFrame {
         Tile_Y_Count_Label.setText(y+"");
     }
     
-    //Robot info updates
-    private void updateBertaType(String b){
-        if(b.equals("MASTER")){
-            Master_Lbl.setText("B.E.R.T.A.");
-        }
-        if(b.equals("SLAVE")){
-            Slave_Lbl.setText("B.E.R.T.A.");
-        }
-        Berta_Type_Lbl2.setText(b);
-        Berta_Type_Lbl.setText(b);
-        }
-    private void updatePropType(String p){
-        if(p.equals("MASTER")){
-            Master_Lbl.setText("P.R.O.P.");
-        }
-        if(p.equals("SLAVE")){
-            Slave_Lbl.setText("P.R.O.P.");
-        }
-        Prop_Type_Lbl.setText(p);
-        Prop_Type_Lbl2.setText(p);
-    }
-    
     //B.E.R.T.A. Panel
     //Overview
     private void updateBertaState(){
-    Berta_State_label.setText(MainController.getInstance().getRobotState()[0]+"");
+        String text = MainController.getInstance().getBertaState().toString();
+    if(!text.equals("")){
+        Berta_Speed_Lbl.setText(text);
+    }else{
+        Berta_Speed_Lbl.setText("N/A");
     }
+    }
+    
     private void updateBertaSpeed(){
         //TODO: Lav speed update metode. Nok noget med wheeldiameter og tacocount
     }

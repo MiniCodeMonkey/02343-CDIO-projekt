@@ -3,8 +3,6 @@ package controller;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.List;
-
 import command.Commando;
 import command.exception.MasterRobotNotFound;
 import command.interfaces.IControl;
@@ -14,6 +12,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.TileMap;
@@ -26,7 +25,6 @@ public class ProcessingThread extends Thread
 	private IImageSource imageSource;
 	private IImageProcessor imageProcessor;
 	private boolean running;
-	private List<ICake>	cakesInProcess;
 	
 	// bruges af GUI
 	private ILocations locations;
@@ -106,9 +104,8 @@ public class ProcessingThread extends Thread
 		// Save number of robots and cakes
 		robotsCount = locations.getRobots().size();
 		cakesCount = locations.getCakes().size();
+		
 
-		
-		
 		// Is no robots available?
 		if (locations.getRobots().size() <= 0)
 		{
@@ -134,12 +131,9 @@ public class ProcessingThread extends Thread
 				continue;
 			}
 			
-					// opret liste over kager i bahandling
-					
-					// fjern kage fra liste
-//					cakesInProcess.add(locations.getCakes().remove(0));
+			ICake currentCake = locations.getCakes().remove(0);
 			
-			
+			robotThread.setTargetLocation(new Location(currentCake.getY(), currentCake.getX()));
 			
 			// Get physical robot location
 			try
