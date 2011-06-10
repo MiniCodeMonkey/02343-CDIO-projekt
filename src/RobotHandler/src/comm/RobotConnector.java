@@ -13,7 +13,6 @@ import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTConnector;
 import lejos.pc.comm.NXTInfo;
 
-import command.BertaCommando;
 import command.exception.NoRobotFoundException;
 import command.impl.Control;
 import command.interfaces.IControl;
@@ -34,14 +33,23 @@ public class RobotConnector {
 	 * @param args
 	 * @throws NoRobotFoundException 
 	 * @throws NXTCommException 
+	 * @throws IOException 
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args, String macAddress) throws NoRobotFoundException, NXTCommException {
-		//Sanitycheck of MAC-address
+	public static void main(String[] args) throws NoRobotFoundException, NXTCommException, IOException, InterruptedException {
+		String macAddress = "";
+		if(args.length<1){
+			macAddress="Noget rod";
+		}
+		else{
+			macAddress = args[0];
+		}
+		//Sanitycheck of MAC-address TODO: Lav en exception istedet
 		if(!(macAddress.equals(BertaAdr)||macAddress.equals(PropAdr))){
-			System.out.println("Ukendt MAC-Adresse. Terminerer");
-			System.out.println("Kendte MAC-Adresser er: ");
-			System.out.println(BertaName+": "+BertaAdr);
-			System.out.println(PropName+": "+PropAdr);
+			System.out.println("UKENDT MAC-ADRESSE! \nTerminerer");
+			System.out.println("	Kendte MAC-Adresser er: ");
+			System.out.println("		"+BertaName+": "+BertaAdr);
+			System.out.println("		"+PropName+": "+PropAdr);
 			return;
 		}
 		macAdr = macAddress;
@@ -66,7 +74,7 @@ public class RobotConnector {
 		}
 
 		System.out.println(" OK");
-		System.out.println("Found " + info.length + " robots");
+		System.out.println("Found " + info.length + " robot(s)");
 
 		if (info[0].deviceAddress.equals(BertaAdr) || info[0].deviceAddress.equals(PropAdr)){
 			robotNXTInfo = info[0];
@@ -82,9 +90,21 @@ public class RobotConnector {
 
 		System.out.println();
 		System.out.println("Connected to "+getRobotName(macAddress));
-		System.out.println("Success? " + nxtComm.open(robotNXTInfo, lejos.pc.comm.NXTComm.LCP));
+//		System.out.println("Success? " + nxtComm.open(robotNXTInfo, lejos.pc.comm.NXTComm.LCP));
 
 		nxtCommand.setNXTComm(nxtComm);
+		
+		
+		System.out.println("isconnected?: "+nxtCommand.isOpen());
+		IControl robotControl = new Control(nxtCommand);
+		robotControl.move(true);
+		Thread.sleep(1000);
+		robotControl.stop();
+		System.out.println("isconnected?: "+nxtCommand.isOpen());
+		
+		if(0==disconnect())System.out.println("Disconnected successfully");
+		else System.out.println("Disconnection failed");
+	
 	}
 
 	/**
@@ -94,7 +114,7 @@ public class RobotConnector {
 	 * 
 	 * @return {@link IControl} - Et interface med primitive kommandoer til Robot
 	 */
-	public IControl getControl() {
+	public static IControl getControl() {
 		IControl c = new Control(nxtCommand);
 		return c;
 	}
@@ -103,7 +123,7 @@ public class RobotConnector {
 	 * 
 	 * @return int - 0 hvis alt er vel; 1 hvis ikke (like you care anyway!! )
 	 */
-	public int disconnect() {
+	public static int disconnect() {
 		int result = -1;
 		System.out.println();
 		System.out.println("Closing BT-connection to "+getRobotName(macAdr));
