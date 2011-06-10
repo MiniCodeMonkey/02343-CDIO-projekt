@@ -59,7 +59,7 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		robotsCommando = new Commando();
+		robotsCommando = new Commando(0);
 		IControl[] robotControls = robotsCommando.getControls();
 		
 		// initialize RobotThread[]
@@ -70,6 +70,7 @@ public class ProcessingThread extends Thread
 		for (IControl robotControl : robotControls)
 		{
 			if (robotControl == null){
+				System.out.println("RobotControl was NULL");
 				continue;
 			}
 				
@@ -102,14 +103,14 @@ public class ProcessingThread extends Thread
 	private void calculatePaths(ILocations locations) throws ControllerException
 	{
 		// Save number of robots and cakes
-		robotsCount = locations.getRobots().size();
+		robotsCount = locations.getRobots().size();	// TODO FIX
 		cakesCount = locations.getCakes().size();
 		
 
 		// Is no robots available?
-		if (locations.getRobots().size() <= 0)
+		if (!locations.getRobots().get(0).isActive() && !locations.getRobots().get(1).isActive())
 		{
-			return;
+			throw new ControllerException("Could not visually find any robots");
 		}
 
 		// Is no cakes available?
@@ -126,12 +127,12 @@ public class ProcessingThread extends Thread
 		int robotIndex = 0;
 		for (RobotThread robotThread : robotThreads)
 		{
-			if (robotThreads == null){
-				System.out.println("robotThread null");
+			
+			if (robotThread == null){
 				continue;
 			}
 			 
-			ICake currentCake = locations.getCakes().remove(0);
+			ICake currentCake = locations.getCakes().get(0);
 			// TODO hvis der alle kager bliver processed
 			
 			robotThread.setTargetLocation(new Location(currentCake.getY(), currentCake.getX()));
@@ -167,6 +168,13 @@ public class ProcessingThread extends Thread
 				// Draw the path onto the tile image
 				locations.setTileImage(drawPath(locations.getTileImage(), robotThread.getPath()));
 			}
+			
+			
+			
+			// starting robot cycle
+			if (robotThread.getRobotState() == RobotState.IDLE)
+				robotThread.setRobotState(RobotState.HEADING_FOR_CAKE);
+			
 
 			robotIndex++;
 		}
@@ -208,6 +216,18 @@ public class ProcessingThread extends Thread
 		running = false;
 
 		// FIXME: Not fully implemented
+		
+		// TODO stop robot threads;
+		for (RobotThread robot : robotThreads) {
+			if (robot != null){
+				robot.setRobotState(RobotState.IDLE);
+				robot.setRunning(false);
+			}
+			
+		}
+		
+		// disconnecting all robots
+		robotsCommando.disconnect();
 
 		imageSource.close();
 	}

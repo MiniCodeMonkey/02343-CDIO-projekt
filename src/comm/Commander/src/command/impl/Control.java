@@ -74,7 +74,6 @@ public class Control implements IControl{
 
 	@Override
 	public void stop() throws IOException {
-		System.out.println("STOPPING ROBOT");
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.sun.xml.internal.bind.v2.runtime.FilterTransducer;
 
@@ -79,8 +80,7 @@ public class ImageProcessor2 implements IImageProcessor {
 	}
 	
 	/**
-	 * Opretter et todimensionalt integer-tile map ud fra et billede 
-	 * @param image Det billede, der skal fortolkes
+	 * Opretter et todimensionalt integer-tile map ud fra det gemte billede 
 	 * @return Todimensionalt int-array med integer-repræsentationer af de identificerede objekter
 	 */
 	public void generateTileMap() {
@@ -136,14 +136,17 @@ public class ImageProcessor2 implements IImageProcessor {
 			java.util.Arrays.fill(foundmap[i], BACKGROUND);
 		}
 		
+		// Iterér over alle punkter
 		for (int y = 0; y < tilemap.length; y++) {
 			for (int x = 0; x < tilemap[0].length; x++) {
-				if (foundmap[y][x] == 0) {
+				// Behandl kun punkter, som ikke allerede er behandlet, og som er forhindring
+				if (foundmap[y][x] == 0 && tilemap[y][x] == OBSTACLE) {
 					foundmap[y][x] = 1;
 					ArrayList<int[]> coordinates = new ArrayList<int[]>();
+					// Benyt collectRecursion til at samle sammenhængende punkter i coordinates listen
 					collectRecursion(new int[]{y,x}, OBSTACLE, foundmap, coordinates);
+					// Nulstil alle fundne punkter, hvis ikke der er nok sammenhængende (filtrér støj ud)
 					if (coordinates.size() < MIN_OBJECT_SIZE) {
-//						System.out.println("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
 						for (int[] coordinate : coordinates) {
 							tilemap[coordinate[0]][coordinate[1]] = BACKGROUND;
 						}
@@ -176,6 +179,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		cakes = new ArrayList<ICake>();
 		robots = new ArrayList<IRobot>();
 		
+		// Initialisér positions-arrays til robotter. (-1,-1) betyder, at robotten ikke kan findes
 		int[] robot1Npos = new int[] {-1,-1};
 		int[] robot1Spos = new int[] {-1,-1};
 		int[] robot2Npos = new int[] {-1,-1};
@@ -215,41 +219,31 @@ public class ImageProcessor2 implements IImageProcessor {
 							// Opret kage-objekt og føj til liste
 							Cake cake = new Cake(pos[0], pos[1]);
 							cakes.add(cake);
-//							System.out.println(cake);
 						} catch (InsufficientObjectException e) {
-//							System.out.println(e.getMessage());
 						}
 					} else if (tilemap[y][x] == ROBOT1N) {
 						try {
 							// Behandl objekt
 							robot1Npos = collect(y, x, ROBOT1N, foundmap);
-//							System.out.println("Robot front at (y,x): (" + robotNpos[0] + "," + robotNpos[1] + ")");
 						} catch (InsufficientObjectException e) {
-//							System.out.println(e.getMessage());
 						}
 					} else if (tilemap[y][x] == ROBOT1S) {
 						try {
 							// Behandl objekt
 							robot1Spos = collect(y, x, ROBOT1S, foundmap);
-//							System.out.println("Robot rear at (y,x): (" + robotSpos[0] + "," + robotSpos[1] + ")");
 						} catch (InsufficientObjectException e) {
-//							System.out.println(e.getMessage());
 						}
 					} else if (tilemap[y][x] == ROBOT2N) {
 						try {
 							// Behandl objekt
 							robot2Npos = collect(y, x, ROBOT2N, foundmap);
-//							System.out.println("Robot front at (y,x): (" + robotNpos[0] + "," + robotNpos[1] + ")");
 						} catch (InsufficientObjectException e) {
-//							System.out.println(e.getMessage());
 						}
 					} else if (tilemap[y][x] == ROBOT2S) {
 						try {
 							// Behandl objekt
 							robot2Spos = collect(y, x, ROBOT2S, foundmap);
-//							System.out.println("Robot rear at (y,x): (" + robotSpos[0] + "," + robotSpos[1] + ")");
 						} catch (InsufficientObjectException e) {
-//							System.out.println(e.getMessage());
 						}
 					}
 				}
@@ -278,79 +272,93 @@ public class ImageProcessor2 implements IImageProcessor {
 		}
 	}
 	
+	/**
+	 * Samler sammenhængende punkter af en bestemt type, og returnerer center-positionen
+	 * @param y Start-koordinat y
+	 * @param x Start-koordinat x
+	 * @param type Type af objekt, som skal samles
+	 * @param foundmap Map til registrering af behandlede punktre
+	 * @return int-array med {y,x} koordinater for det fundne objekt
+	 * @throws InsufficientObjectException hvis ikke der er fundet nok sammenhængende punkter til at registrere et objekt 
+	 */
 	private int[] collect(int y, int x, int type, int[][] foundmap) throws InsufficientObjectException {
 		foundmap[y][x] = 1;
 		ArrayList<int[]> coordinates = new ArrayList<int[]>();
+		// Benyt collectRecursion til at samle sammenhængdende punkter i coordinates listen
 		collectRecursion(new int[]{y,x}, type, foundmap, coordinates);
 		if (coordinates.size() < MIN_OBJECT_SIZE) {
 //			System.out.println("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
 			throw new InsufficientObjectException("Not enough points for object of type " + type + ". Found " + coordinates.size() + " points.");
-		} else if (type == OBSTACLE) {
-//			System.out.println("Found " + coordinates.size() + "points.");
 		}
 		
 		int oy = 0;
 		int ox = 0;
+		// Summér y- og x-koordinater fra listen
 		for (int[] pos : coordinates) {
 			oy += pos[0];
 			ox += pos[1];
 		}
+		// Find gennemsnit y og x
 		oy = oy/coordinates.size();
 		ox = ox/coordinates.size();
 		
+		// Returnér position
 		return new int[]{oy,ox};
 	}
 	
+	/**
+	 * Samler sammenhængende punkter af specificeret type 
+	 * @param pos Udgangspunkt som {y,x} int-array
+	 * @param type Typen af punkter der skal samles
+	 * @param foundmap Map over behandlede punkter
+	 * @param coordinates Liste over fundne koordinater
+	 */
 	private void collectRecursion(int[] pos, int type, int[][] foundmap, ArrayList<int[]> coordinates) {
-		// Tjek punktet til højre
-		if (pos[1]+1 < tilemap[pos[0]].length && foundmap[pos[0]][pos[1]+1] == 0 && tilemap[pos[0]][pos[1]+1] == type) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]][pos[1]+1] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0],pos[1]+1};
-			// Tilføj koordinater til listen
-			coordinates.add(newpos);
-			// Kør metoden rekursivt
-			collectRecursion(newpos, type, foundmap, coordinates);
+		if (tilemap[pos[0]][pos[1]] != type) {
+			// Udgangspunkt er ikke af den ønskede type
+			return;
 		}
 		
-		// Tjek punktet under
-		if (pos[0]+1 < tilemap.length && foundmap[pos[0]+1][pos[1]] == 0 && tilemap[pos[0]+1][pos[1]] == type) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]+1][pos[1]] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0]+1,pos[1]};
-			// Tilføj koordinater til listen
-			coordinates.add(newpos);
-			// Kør metoden rekursivt
-			collectRecursion(newpos, type, foundmap, coordinates);
-		}
-		
-		// Tjek punktet til venstre
-		if (pos[1]-1 >= 0 && foundmap[pos[0]][pos[1]-1] == 0 && tilemap[pos[0]][pos[1]-1] == type) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]][pos[1]-1] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0],pos[1]-1};
-			// Tilføj koordinater til listen
-			coordinates.add(newpos);
-			// Kør metoden rekursivt
-			collectRecursion(newpos, type, foundmap, coordinates);
-		}
-		
-		// Tjek punktet over
-		if (pos[0]-1 >= 0 && foundmap[pos[0]-1][pos[1]] == 0 && tilemap[pos[0]-1][pos[1]] == type) {
-			// Markér punktet som besøgt
-			foundmap[pos[0]-1][pos[1]] = 1;
-			// Beregn næste position, der skal undersøges
-			int[] newpos = new int[] {pos[0]-1,pos[1]};
-			// Tilføj koordinater til listen
-			coordinates.add(newpos);
-			// Kør metoden rekursivt
-			collectRecursion(newpos, type, foundmap, coordinates);
+		// Benyt en kø-struktur til BFS og tilføj udgangspunktet
+		LinkedList<int[]> queue = new LinkedList<int[]>();
+		queue.add(pos);
+		while(!queue.isEmpty()) {
+			// Hent første element i køen og føj punktet til listen
+			int[] p = queue.remove();
+			coordinates.add(p);
+			
+			// Tjek punktet over
+			if (p[0]+1 < tilemap.length			&& foundmap[p[0]+1][p[1]] == 0 && tilemap[p[0]+1][p[1]] == type) {
+				queue.add(new int[] {p[0]+1, p[1]});
+				foundmap[p[0]+1][p[1]] = 1;
+			}
+			
+			// Tjek punktet under
+			if (p[0]-1 >= 0						&& foundmap[p[0]-1][p[1]] == 0 && tilemap[p[0]-1][p[1]] == type) {
+				queue.add(new int[] {p[0]-1, p[1]});
+				foundmap[p[0]-1][p[1]] = 1;
+			}
+			
+			// Tjek punktet til højre for
+			if (p[1]+1 < tilemap[p[0]].length	&& foundmap[p[0]][p[1]+1] == 0 && tilemap[p[0]][p[1]+1] == type) {
+				queue.add(new int[] {p[0], p[1]+1});
+				foundmap[p[0]][p[1]+1] = 1;
+			}
+			
+			// Tjek punktet til venstre for
+			if (p[1]-1 >= 0						&& foundmap[p[0]][p[1]-1] == 0 && tilemap[p[0]][p[1]-1] == type) {
+				queue.add(new int[] {p[0], p[1]-1});
+				foundmap[p[0]][p[1]-1] = 1;
+			}
 		}
 	}
 	
+	/**
+	 * Beregner vinkel mellem to punkter
+	 * @param to {y,x} int-array for slut-punkt
+	 * @param from {y,x} int-array for start-punkt
+	 * @return vinkel i radianer
+	 */
 	private double calculateAngle(int[] to, int[] from) {
 		double dy = to[0]-from[0];
 		double dx = to[1]-from[1];
@@ -569,7 +577,6 @@ public class ImageProcessor2 implements IImageProcessor {
 	 */
 	public void createTileImage() {
 		tileImage = new BufferedImage(tilemap[0].length, tilemap.length, BufferedImage.TYPE_INT_ARGB);
-//		System.out.println("Dimensions: " + tileImage.getHeight() + "x" + tileImage.getWidth());
 		// Iterér over alle vandrette linjer
 		for(int i = 0; i < tilemap.length; i++) {
 			// Iterér over alle punkter
@@ -609,10 +616,9 @@ public class ImageProcessor2 implements IImageProcessor {
 //			System.out.println(); // Til udskrift af tilemap i console
 		}
 		
-		Iterator<ICake> cakeItr = cakes.iterator();
-		while(cakeItr.hasNext()) {
-			ICake cake = cakeItr.next();
-//			System.out.println("Object at (" + cake.getY() + "," + cake.getX() + ").");
+		// Markér kager
+		for (ICake cake : cakes) {
+//			System.out.println("Cake at (" + cake.getY() + "," + cake.getX() + ").");
 			tileImage.setRGB(cake.getX(), cake.getY(), 0xFF00FFFF);
 			tileImage.setRGB(cake.getX()+1, cake.getY(), 0xFF00FFFF);
 			tileImage.setRGB(cake.getX()-1, cake.getY(), 0xFF00FFFF);
@@ -620,6 +626,7 @@ public class ImageProcessor2 implements IImageProcessor {
 			tileImage.setRGB(cake.getX(), cake.getY()-1, 0xFF00FFFF);
 		}
 		
+		// Markér robotter
 		for (IRobot robot : robots) {
 //			System.out.println("Robot at (" + robot.getY() + "," + robot.getX() + ") angle: " + robot.getAngle() + "rad = " + robot.getAngle()*180/Math.PI + " deg");
 			if (robot.getX() >= 0 && robot.getX() < tileImage.getWidth() && robot.getY() >= 0 && robot.getY() < tileImage.getHeight()) {

@@ -61,9 +61,11 @@ public class Commando {
 		} catch (NXTCommException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			bertaCom = null;
 		} catch (NoRobotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			bertaCom = null;
 		} finally {
 			if (!isBertaConnected())
 				throw new MasterRobotNotFound(
@@ -76,8 +78,10 @@ public class Commando {
 			propCom = new PropCommando();
 		} catch (NXTCommException e) {
 			JOptionPane.showMessageDialog(null, "Prop not found! (NXTCommExc)");
+			propCom = null;
 		} catch (NoRobotFoundException e) {
 			JOptionPane.showMessageDialog(null, "Prop not found!");
+			propCom = null;
 		}
 	}
 	
@@ -108,7 +112,7 @@ public class Commando {
 	public int disconnect(){
 		int result = 0;
 		result = bertaCom.disconnect();
-		result += propCom.disconnect();
+//		result += propCom.disconnect();
 		return result;
 	}
 	
