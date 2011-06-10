@@ -75,9 +75,8 @@ public class BasicControlGui extends javax.swing.JFrame {
         speedSlider = new javax.swing.JSlider();
         turnspeedSlider = new javax.swing.JSlider();
         clawspeedSlider = new javax.swing.JSlider();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         aboutBtn = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("B.E.R.T.A | Basic Controls");
@@ -340,21 +339,6 @@ public class BasicControlGui extends javax.swing.JFrame {
                         .addComponent(jLabel3)))
             );
 
-            jScrollPane1.setBorder(null);
-            jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-            jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-            jTextArea1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-            jTextArea1.setColumns(20);
-            jTextArea1.setEditable(false);
-            jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 11));
-            jTextArea1.setLineWrap(true);
-            jTextArea1.setRows(5);
-            jTextArea1.setText("Pil-taster kan bruges til styring\nCTRL og SPACE til klo");
-            jTextArea1.setWrapStyleWord(true);
-            jTextArea1.setBorder(null);
-            jScrollPane1.setViewportView(jTextArea1);
-
             aboutBtn.setContentAreaFilled(false);
             aboutBtn.setFocusPainted(false);
             aboutBtn.setFocusable(false);
@@ -364,31 +348,37 @@ public class BasicControlGui extends javax.swing.JFrame {
                 }
             });
 
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
             layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(28, 28, 28)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(speedPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(sensorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(statusLabel)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
-                                .addComponent(connectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(statusLabel)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                                        .addComponent(connectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
-                            .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(28, 28, 28))
+                            .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(62, 62, 62))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(speedPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(sensorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addContainerGap())
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,12 +386,13 @@ public class BasicControlGui extends javax.swing.JFrame {
                     .addGap(34, 34, 34)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(connectBtn)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(connectBtn)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(statusLabel)
                                 .addComponent(statusPtyLabel)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -438,6 +429,13 @@ public class BasicControlGui extends javax.swing.JFrame {
 		} else {
 			
 			con = new Commando(0);
+			
+			controller = con.getControls()[0];
+			connected = true;
+			
+			statusPtyLabel.setText("Forbundet til B.E.R.T.A.");
+			statusPtyLabel.setForeground(Color.green);
+			enableControls(true);
 			
 //			int result = -1;
 //			setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -520,7 +518,7 @@ public class BasicControlGui extends javax.swing.JFrame {
 	private void keyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_keyPressed
 		int key = evt.getKeyCode();
 
-		System.out.println("KEY PRESSED: " + key);
+//		System.out.println("KEY PRESSED: " + key);
 		switch (key) {
 		case KeyEvent.VK_UP:
 			moveForward();
@@ -583,12 +581,7 @@ public class BasicControlGui extends javax.swing.JFrame {
 		//		"Luk forbindelse?", "Exit?", JOptionPane.OK_CANCEL_OPTION))
 		//	return;
 
-		try {
-			con.disconnect();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Fejl",
-					JOptionPane.ERROR_MESSAGE);
-		}
+		con.disconnect();
 		System.exit(0);
 	}// GEN-LAST:event_formWindowClosing
 
@@ -602,12 +595,11 @@ public class BasicControlGui extends javax.swing.JFrame {
     private javax.swing.JButton connectBtn;
     private javax.swing.JButton fwrBtn;
     private javax.swing.JCheckBox isReversedChkBox;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton leftBtn;
     private javax.swing.JPanel movePanel;
     private javax.swing.JButton rightBtn;

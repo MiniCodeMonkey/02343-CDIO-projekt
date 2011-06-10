@@ -63,7 +63,9 @@ public class MainController
 	public void stop()
 	{
 		if (processingThread != null)
-			processingThread.stopThread();
+			processingThread.stopRobotThreads();
+		
+		// TODO stop proccesingThread
 	}
 	/**
 	 * get'er til RobotStates
