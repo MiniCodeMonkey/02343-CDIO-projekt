@@ -129,6 +129,8 @@ public class ProcessingThread extends Thread
 
 		// Find a path for each robot
 		int robotIndex = 0;
+		
+		
 		for (RobotThread robotThread : robotThreads)
 		{
 			

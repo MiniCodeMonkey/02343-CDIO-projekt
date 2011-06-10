@@ -2,14 +2,13 @@ package command;
 
 import javax.swing.JOptionPane;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
-
 import lejos.pc.comm.NXTCommException;
 import bluetooth.constants.Constants;
 
 import command.exception.MasterRobotNotFound;
 import command.exception.NoRobotFoundException;
 import command.interfaces.IControl;
+
 
 /** 
  * @author Morten Hulvej
@@ -21,6 +20,7 @@ public class Commando {
 	
 	BertaCommando bertaCom = null;
 	PropCommando propCom = null;
+	
 	
 	/**Opretter forbindelse til B.E.R.T.A. og P.R.O.P. -  i denne rækkefølge
 	 * <br> 
