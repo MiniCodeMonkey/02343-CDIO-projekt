@@ -3,6 +3,8 @@ package controller;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import command.Commando;
 import command.exception.MasterRobotNotFound;
 import command.interfaces.IControl;
@@ -73,7 +75,6 @@ public class ProcessingThread extends Thread
 				System.out.println("RobotControl was NULL");
 				continue;
 			}
-				
 			
 			System.out.println("STARTING NEW ROBOT THREAD, index:" + robotIndex);
 			robotThreads[robotIndex] = new RobotThread(robotControl);
@@ -87,6 +88,7 @@ public class ProcessingThread extends Thread
 
 	private void runLoop() throws ControllerException
 	{
+
 		// Main processing loop
 		while (running)
 		{
@@ -97,6 +99,8 @@ public class ProcessingThread extends Thread
 			locations = imageProcessor.examineImage(image, true);
 			
 			calculatePaths(locations);
+				
+			
 		}
 	}
 
