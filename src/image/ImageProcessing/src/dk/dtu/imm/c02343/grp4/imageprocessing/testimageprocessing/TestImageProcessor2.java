@@ -34,15 +34,15 @@ public class TestImageProcessor2 implements ActionListener {
 	 */
 	public void run() {
 		// Opret WebCam, initialisér, hent billede til RenderedImage, og luk WebCam igen.
-		imageSource = new WebCam();
+//		imageSource = new WebCam();
 //		imageSource = new ImageFile();
 		imageProcessor = new ImageProcessor2();
-		try {
-			imageSource.init();
-		} catch (Exception e) {
+//		try {
+//			imageSource.init();
+//		} catch (Exception e) {
 			imageSource = new ImageFile();
 			imageSource.init();
-		}
+//		}
 		BufferedImage sourceImg = imageSource.getImage();
 		imageSource.close();
 		
@@ -104,7 +104,7 @@ public class TestImageProcessor2 implements ActionListener {
 			// Initialisér ImageSource
 			imageSource.init();
 		} else if (ae.getActionCommand().equals("update")) {
-			int count = 10;
+			int count = 1;
 			while(count > 0) {
 				// Hent billede fra ImageSource og vis dette i panel
 				BufferedImage sourceImg = imageSource.getImage();

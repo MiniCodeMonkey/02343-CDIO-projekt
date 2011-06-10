@@ -5,6 +5,7 @@ import java.io.IOException;
 import lejos.nxt.Sound;
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
+import lejos.nxt.remote.OutputState;
 import command.interfaces.IControl;
 
 /**
@@ -34,15 +35,17 @@ public class Control implements IControl{
 			return;
 		
 		if(reverse){
-			speed = -speed;
+			commander.setOutputState(0, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			commander.setOutputState(2, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 			setInBackwardMotion(true);
 		}else{
+			commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 			setInForwardMotion(true);
 		}
 			
 		
-		commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		
 		
 //		String print;
 //		if (reverse)	print="Backwards";
@@ -74,6 +77,7 @@ public class Control implements IControl{
 
 	@Override
 	public void stop() throws IOException {
+		// TODO support spaming
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
@@ -229,6 +233,7 @@ public class Control implements IControl{
 		
 	}
 
+	@Deprecated
 	@Override
 	public void reverse(int speed, int duration) {
 		try {

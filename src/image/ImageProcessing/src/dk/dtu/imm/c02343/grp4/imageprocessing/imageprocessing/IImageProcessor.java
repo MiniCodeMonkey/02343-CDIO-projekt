@@ -73,7 +73,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot1 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 30, 20, 50, 255);
+	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 30, 30, 50, 255);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
@@ -107,8 +107,18 @@ public interface IImageProcessor {
 	
 	public void setSourceImage(BufferedImage sourceImage);
 	
+	/**
+	 * Sæt grænseværdier fra Thresholds objekt
+	 * @param type Typen af objekt, som grænseværdierne skal sættes for
+	 * @param thresholds Grænseværdier, som skal sættes
+	 */
 	public void setThresholds(int type, Thresholds thresholds);
 	
+	/**
+	 * Hent grænseværdier for given objekttype
+	 * @param type Objekttypen, som grænseværdierne skal hentes for
+	 * @return Thresholds objekt med grænseværdier
+	 */
 	public Thresholds getThresholds(int type);
 	
 	public void setObstacleBufferZone(int bufferZone);
