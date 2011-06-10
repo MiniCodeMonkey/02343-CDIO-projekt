@@ -16,7 +16,7 @@ public class Start {
 		BasicControlGui gui;
 		
 		try {
-			gui = new BasicControlGui(BTConnector.getInstance());
+			gui = new BasicControlGui();
 			gui.setVisible(true);
 			
 			while(true){
