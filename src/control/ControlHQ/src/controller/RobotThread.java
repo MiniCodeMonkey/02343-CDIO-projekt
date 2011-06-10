@@ -30,9 +30,9 @@ public class RobotThread extends Thread
 	
 	private Path path = null;
 	private boolean pathWasUpdated = false;
-	private int currentStep = 0;
+//	private int currentStep = 0;
 	
-	private boolean navigateHasRun = false;
+	
 	
 	private List<IRobot> allRobotLocations = null;
 	
@@ -65,10 +65,13 @@ public class RobotThread extends Thread
 						navigate();
 					}
 					else{
-						robotControl.stop();
-						robotControl.stopClaw();
+						
+						// TODO FIX bluetooth stackOverflow
+//						robotControl.stop();
+//						robotControl.stopClaw();
 					}
 				}
+				robotControl.stop();
 			}
 			catch (Exception e){
 				// TODO
@@ -109,9 +112,6 @@ public class RobotThread extends Thread
 	 */
 	private void navigate() throws IOException, InterruptedException
 	{
-		if (navigateHasRun)
-			return;
-		navigateHasRun = true;
 		
 		if (pathWasUpdated)
 		{
@@ -124,26 +124,31 @@ public class RobotThread extends Thread
 				
 				Step step;
 				double targetAngle;
+				int currentStep = 0;
+				
+				
 				
 //				do
 //				{
 //					step = path.getStep(currentStep);
 //					currentStep++;
-//					
-//					
-//					
-//					
+
 //				}
 //				while (currentStep < path.getLength() && step.getX() == robotLocation.getX() && step.getY() == robotLocation.getY());
 				
 				
 				step = path.getStep(currentStep);
 				
-				while(currentStep < path.getLength() && step.getX() == robotLocation.getX() && step.getY() == robotLocation.getY()){
+				if (step.getX() == robotLocation.getX() && step.getY() == robotLocation.getY()){
 					
 					currentStep++;
-					step = path.getStep(currentStep);
-					
+					try {
+						step = path.getStep(currentStep);
+					} catch (IndexOutOfBoundsException e) {
+						
+						System.err.println(e.getMessage());
+						return;
+					}
 					
 					
 				}		
@@ -158,15 +163,15 @@ public class RobotThread extends Thread
 				targetAngle = calculateTargetAngle(dy, dx);
 				
 				
-				System.out.println("dy: "+ dy + "| dx: "+dx);
-				
-				System.out.println("robot Y: "+robotLocation.getY());
-				System.out.println("robot X: "+robotLocation.getX());
-				
-
-				
-				System.out.println(step.getY());
-				System.out.println(step.getX());
+//				System.out.println("dy: "+ dy + "| dx: "+dx);
+//				
+//				System.out.println("robot Y: "+robotLocation.getY());
+//				System.out.println("robot X: "+robotLocation.getX());
+//				
+//
+//				
+//				System.out.println(step.getY());
+//				System.out.println(step.getX());
 				
 				// Birds-eye-view distance from robot to target (cake, delivery location, etc.)
 				double distanceToTarget = calculateDistance(

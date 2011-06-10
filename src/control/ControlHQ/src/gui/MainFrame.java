@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import controller.MainController;
+import gui.debug.DebugFrame;
 
 /**
  *
@@ -124,15 +125,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 1312, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 987, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(dashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         pack();
@@ -226,6 +223,11 @@ public class MainFrame extends javax.swing.JFrame {
 		miniFrame.setVisible(true);
 		dashboard.add(miniFrame);
 	}
+    public void makeDeugFrame(){
+        DebugFrame debugFrame = new DebugFrame();
+        debugFrame.setVisible(true);
+        dashboard.add(debugFrame);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;

@@ -73,22 +73,22 @@ public interface IControl {
 	/**
 	 * Åbner kloen.. <br>
 	 * 
-	 * @param clawMotor
+	 * @param speed
 	 *            - hastighed hvormed kloen åbnes (0-50)
 	 * @throws IOException
 	 *             hvis forbindelsen blev tabt
 	 */
-	void openClaw(int clawMotor) throws IOException;
+	void openClaw(int speed) throws IOException;
 	void openClaw() throws IOException;
 	/**
 	 * Lukker kloen.. <br>
 	 * 
-	 * @param clawMotor
+	 * @param speed
 	 *            - hastighed hvormed kloen lukkes (0-50)
 	 * @throws IOException
 	 *             hvis forbindelsen blev tabt
 	 */
-	void closeClaw(int clawMotor) throws IOException;
+	void closeClaw(int speed) throws IOException;
 	void closeClaw() throws IOException;
 	/**
 	 * Stopper kloen!<br>

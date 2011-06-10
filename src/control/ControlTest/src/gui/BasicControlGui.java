@@ -14,8 +14,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import lejos.nxt.Motor;
 import lejos.pc.comm.NXTCommException;
-import bluetooth.interfaces.IBTConnector;
-
+import command.Commando;
 import command.impl.Control;
 import command.interfaces.IClawControl;
 import command.interfaces.IControl;
@@ -31,15 +30,15 @@ public class BasicControlGui extends javax.swing.JFrame {
 	private static final long serialVersionUID = -693154801145671834L;
 	IControl controller;
 	IClawControl claw;
-	IBTConnector con;
+	Commando con;
 	boolean connected;
 
 	/** Creates new form BasicControlGui */
-	public BasicControlGui(IBTConnector c) throws UnsupportedLookAndFeelException,
+	public BasicControlGui() throws UnsupportedLookAndFeelException,
 			ClassNotFoundException, IllegalAccessException,
 			InstantiationException {
-		con = c;
-                connected = false;
+		
+        connected = false;
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		initComponents();
 
@@ -433,53 +432,53 @@ public class BasicControlGui extends javax.swing.JFrame {
 		if (connected) {
 			try {
 				con.disconnect();
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
-						JOptionPane.ERROR_MESSAGE);
 			} finally {
 				reset();
 			}
 		} else {
-			int result = -1;
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));
-			try {
-				result = con.searchAndConnect(false);
-				controller = new Control(con.getNxtCommand());
-			} catch (NXTCommException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
-						JOptionPane.ERROR_MESSAGE);
-			} finally {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-
-
-
-			switch (result) {
-			case IBTConnector.BERTA_FOUND:
-				statusPtyLabel.setText("Forbundet til B.E.R.T.A.");
-				statusPtyLabel.setForeground(Color.green);
-				enableControls(true);
-				connected = true;
-                                try {
-                                    batteryLevelBar.setValue(controller.getBatteryLevel());
-                                } catch (IOException e) {
-                                    JOptionPane.showMessageDialog(this, "Kunne ikke læse batteri-niveau", "Fejl",
-                                                    JOptionPane.ERROR_MESSAGE);
-                                }
-				break;
-			case IBTConnector.NO_NXT_FOUND:
-				statusPtyLabel.setText("Ingen NXT-enheder fundet");
-				statusPtyLabel.setForeground(Color.red);
-				reset();
-				break;
-			case IBTConnector.NO_BERTA_FOUND:
-				statusPtyLabel.setText("Enheder fundet, men ingen B.E.R.T.A.");
-				statusPtyLabel.setForeground(Color.yellow);
-				break;
-			default:
-				reset();
-				break;
-			}
+			
+			con = new Commando(0);
+			
+//			int result = -1;
+//			setCursor(new Cursor(Cursor.WAIT_CURSOR));
+//			try {
+//				result = con.searchAndConnect(false);
+//				controller = new Control(con.getNxtCommand());
+//			} catch (NXTCommException e) {
+//				JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+//						JOptionPane.ERROR_MESSAGE);
+//			} finally {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+//			}
+//
+//
+//
+//			switch (result) {
+//			case IBTConnector.BERTA_FOUND:
+//				statusPtyLabel.setText("Forbundet til B.E.R.T.A.");
+//				statusPtyLabel.setForeground(Color.green);
+//				enableControls(true);
+//				connected = true;
+//                                try {
+//                                    batteryLevelBar.setValue(controller.getBatteryLevel());
+//                                } catch (IOException e) {
+//                                    JOptionPane.showMessageDialog(this, "Kunne ikke læse batteri-niveau", "Fejl",
+//                                                    JOptionPane.ERROR_MESSAGE);
+//                                }
+//				break;
+//			case IBTConnector.NO_NXT_FOUND:
+//				statusPtyLabel.setText("Ingen NXT-enheder fundet");
+//				statusPtyLabel.setForeground(Color.red);
+//				reset();
+//				break;
+//			case IBTConnector.NO_BERTA_FOUND:
+//				statusPtyLabel.setText("Enheder fundet, men ingen B.E.R.T.A.");
+//				statusPtyLabel.setForeground(Color.yellow);
+//				break;
+//			default:
+//				reset();
+//				break;
+//			}
 		}
 
 	}// GEN-LAST:event_connectBtnActionPerformed

@@ -73,7 +73,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot1 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 30, 20, 50, 255);
+	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 30, 30, 50, 255);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
