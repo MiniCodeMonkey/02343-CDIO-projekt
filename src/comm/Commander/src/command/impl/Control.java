@@ -33,14 +33,18 @@ public class Control implements IControl{
 	public void move(int speed, boolean reverse) throws IOException {
 		if (isInForwardMotion() && !reverse)
 			return;
+		if (isInBackwardMotion() && reverse)
+			return;
 		
 		if(reverse){
-			commander.setOutputState(0, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-			commander.setOutputState(2, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-			setInBackwardMotion(true);
-		}else{
+			System.out.println("Moving backwards");
 			commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 			commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			setInBackwardMotion(true);
+		}else{
+			System.out.println("Moving forwards");
+			commander.setOutputState(0, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			commander.setOutputState(2, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 			setInForwardMotion(true);
 		}
 			
@@ -57,22 +61,30 @@ public class Control implements IControl{
 
 	@Override
 	public void left(int turnSpeed) throws IOException {
-		if (isInForwardMotion())
+		if (isInLeftMotion())
 			return;
-		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		setInBackwardMotion(false);
+		setInForwardMotion(false);
+		System.out.println("moving left");
+		
+		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 //		System.out.println("TURNING: left");
 		setInLeftMotion(true);
 	}
 
 	@Override
 	public void right(int turnSpeed) throws IOException {
-		if (isInForwardMotion())
+		if (isInRightMotion())
 			return;
-		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		setInBackwardMotion(false);
+		setInForwardMotion(false);
+		System.out.println("moving right");
+		
+		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 //		System.out.println("TURNING: right");
-		setInForwardMotion(true);
+		setInRightMotion(true);
 	}
 
 	@Override
@@ -87,6 +99,8 @@ public class Control implements IControl{
 //		Sound.playTone(500, 10);
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
+		setInLeftMotion(false);
+		setInRightMotion(false);
 	}
 
 	
@@ -115,7 +129,6 @@ public class Control implements IControl{
 	 */
 	public void setInForwardMotion(boolean inForwardMoving) {
 		this.inForwardMotion = inForwardMoving;
-		inBackwardMotion = !inForwardMoving;
 	}
 
 
@@ -126,7 +139,6 @@ public class Control implements IControl{
 
 	public void setInBackwardMotion(boolean inBackwardMotion) {
 		this.inBackwardMotion = inBackwardMotion;
-		inForwardMotion = !inBackwardMotion;
 	}
 
 
@@ -137,7 +149,6 @@ public class Control implements IControl{
 
 	public void setInLeftMotion(boolean inLeftMotion) {
 		this.inLeftMotion = inLeftMotion;
-		this.inRightMotion = !inLeftMotion;
 	}
 
 
@@ -148,7 +159,6 @@ public class Control implements IControl{
 
 	public void setInRightMotion(boolean inRightMotion) {
 		this.inRightMotion = inRightMotion;
-		this.inLeftMotion = !inRightMotion;
 	}
 
 

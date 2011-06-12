@@ -70,6 +70,7 @@ public class RobotThread extends Thread
 //						robotControl.stop();
 //						robotControl.stopClaw();
 					}
+					Thread.sleep(50);
 				}
 				robotControl.stop();
 			}
@@ -155,11 +156,13 @@ public class RobotThread extends Thread
 				
 				
 				
-				
+				System.out.println();
 				
 //				 Calculate target angle
 				double dy = step.getY() - robotLocation.getY();
 				double dx = step.getX() - robotLocation.getX();
+				
+				// radianer!
 				targetAngle = calculateTargetAngle(dy, dx);
 				
 				
@@ -180,7 +183,14 @@ public class RobotThread extends Thread
 				);
 				
 				// Difference between robot angle and target angle
+				// radianer!!
 				double targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
+				
+				System.out.println("Robot angle: "+Math.toDegrees(robotLocation.getAngle()));
+				System.out.println("Target angle: "+Math.toDegrees(targetAngle));
+				System.out.println("DistanceToTarget: "+distanceToTarget);
+				System.out.println("TargetAngleDiff: "+Math.toDegrees(targetAngleDifference));
+				System.out.println("Targetlocation: "+targetLocation.GetX()+","+targetLocation.GetY());
 				
 //				System.out.println(this.robotState);
 				
@@ -189,9 +199,11 @@ public class RobotThread extends Thread
 				{
 					case HEADING_FOR_CAKE:
 					{
+						System.out.println("HEADING_FOR_CAKE");
 						// If close enough to the cake
 						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToCake())
 						{
+							System.out.println("CLOSE ENOUGH TO CAKE");
 							this.robotState = RobotState.POSITIONING;
 						}
 						break;
@@ -199,11 +211,14 @@ public class RobotThread extends Thread
 					
 					case POSITIONING:
 					{
+						System.out.println("POSITIONING");
 						// Is the rotation close enough?
-						if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationClose()))
+						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
 							// Now picking up cake
 							this.robotState = RobotState.PICKING_UP;
+							System.out.println("PICKING_UP");
+							
 							
 							// Open claw: 3s
 							robotControl.openClaw();
@@ -250,6 +265,7 @@ public class RobotThread extends Thread
 						}
 						else
 						{
+							System.out.println("POSITIONING -> rotate");
 							// Rotate slowly to cake
 							if (robotLocation.getAngle() < targetAngle)
 							{
@@ -348,12 +364,20 @@ public class RobotThread extends Thread
 					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 					{
 						// We are very very close to the correct angle, so drive forward
-						if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationClose()))
+						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
-							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
+							System.out.println("very very close");
+							robotControl.move(Thresholds.getInstance().getMediumSpeed(), false);
+							
+							// debug
+							Thread.sleep(800);
+							
+							
+							
 						}
-						else if (targetAngleDifference <= Math.toRadians(Thresholds.getInstance().getRotationFairlyClose())) // Do minor corrections
+						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do minor corrections
 						{
+							System.out.println("not very close");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle)
 							{
@@ -366,8 +390,9 @@ public class RobotThread extends Thread
 						}
 						else // Do major corrections
 						{
+							System.out.println("not very AT ALL close");
 							// Rotate
-							if (robotLocation.getAngle() < targetAngle)
+							if (robotLocation.getAngle() < targetAngle )
 							{
 								robotControl.right(Thresholds.getInstance().getSlowSpeed());
 							}

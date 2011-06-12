@@ -3,8 +3,6 @@ package start;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import bluetooth.impl.BTConnector;
-
 import gui.BasicControlGui;
 
 

@@ -28,7 +28,7 @@ public class BertaCommando {
 	 * <br>
 	 * @throws NXTCommException
 	 * @throws NoRobotFoundException 
-	 */
+	 */	
 	BertaCommando() throws NXTCommException, NoRobotFoundException {
 		NXTInfo bertaNXTInfo = null;
 
@@ -110,5 +110,9 @@ public class BertaCommando {
 	public boolean isConnected() {
 		return nxtCommand.isOpen();
 	}
-
+	
+	public static void main(String args[])
+	{
+		
+	}
 }

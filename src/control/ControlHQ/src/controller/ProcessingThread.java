@@ -129,6 +129,8 @@ public class ProcessingThread extends Thread
 
 		// Find a path for each robot
 		int robotIndex = 0;
+		
+		
 		for (RobotThread robotThread : robotThreads)
 		{
 			
@@ -215,25 +217,29 @@ public class ProcessingThread extends Thread
 		return locations;
 	}
 
-	public void stopThread()
+	public void stopRobotThreads()
 	{
-		running = false;
+		
 
 		// FIXME: Not fully implemented
 		
 		// TODO stop robot threads;
 		for (RobotThread robot : robotThreads) {
 			if (robot != null){
+				System.out.println("STOPPING: "+robot.getName());
 				robot.setRobotState(RobotState.IDLE);
 				robot.setRunning(false);
 			}
 			
 		}
 		
+		
 		// disconnecting all robots
-		robotsCommando.disconnect();
-
+//		robotsCommando.disconnect();
+//
 		imageSource.close();
+//		
+//		running = false;
 	}
 
 	public int getRobotsCount()
