@@ -61,16 +61,14 @@ public class RobotThread extends Thread
 					
 				while (running){
 					if (robotState != RobotState.IDLE){
-//						System.out.println(Thread.currentThread().getName() + ": navigating");
 						navigate();
 					}
 					else{
 						
-						// TODO FIX bluetooth stackOverflow
-//						robotControl.stop();
-//						robotControl.stopClaw();
+						robotControl.stop();
+						robotControl.stopClaw();
 					}
-					Thread.sleep(50);
+//					Thread.sleep(50);
 				}
 				robotControl.stop();
 			}
@@ -120,14 +118,10 @@ public class RobotThread extends Thread
 			
 			if (path != null && path.getLength() > 0)
 			{
-				// Next step which the robot should be heading for
-//				if (!(nextStep >= path.getLength()))
 				
 				Step step;
 				double targetAngle;
 				int currentStep = 0;
-				
-				
 				
 //				do
 //				{
@@ -150,7 +144,6 @@ public class RobotThread extends Thread
 						System.err.println(e.getMessage());
 						return;
 					}
-					
 					
 				}		
 				
@@ -441,31 +434,20 @@ public class RobotThread extends Thread
 			} else if (dx < 0) {
 				targetAngle = -Math.PI/2;
 			} 
-//			else {
-//				targetAngle = 0;
-//			}
+			else {
+				targetAngle = 0;
+			}
 		} else if (dx == 0) {
 			// Grænsetilfælde: Robot vender op eller ned
 			if (dy > 0) {
 				targetAngle = Math.PI;
 			}
-//			else {
-//				targetAngle = 0;
-//			}
+			else {
+				targetAngle = 0;
+			}
 		} else {
 			// Generelt
 			targetAngle = -Math.atan(dx/dy);
-			
-			
-			
-//			System.out.println(targetAngle);
-//			try {
-//				Thread.currentThread().sleep(5000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
 			
 			if (dx > 0 && dy > 0) {
 				// 3. kvadrant

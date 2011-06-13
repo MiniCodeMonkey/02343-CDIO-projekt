@@ -19,6 +19,7 @@ public class Control implements IControl{
 	private boolean inBackwardMotion = false;
 	private boolean inLeftMotion = false;
 	private boolean inRightMotion = false;
+	private boolean stopped = true;
 	
 	
 	private boolean clawMoving;
@@ -93,18 +94,19 @@ public class Control implements IControl{
 
 	@Override
 	public void stop() throws IOException {
-		// TODO support spaming
+		if (isStopped())
+			return;
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
-//		System.out.println("STOPPING");
-		//lejos.nxt.Sound.playSoundFile("tires.rso");
-		//lejos.nxt.Sound.playSoundFile("Hooray.rso");
-//		Sound.playTone(500, 10);
+		System.out.println("stopping");
+
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInLeftMotion(false);
 		setInRightMotion(false);
+		
+		setStopped(true);
 	}
 
 	
@@ -163,6 +165,16 @@ public class Control implements IControl{
 
 	public void setInRightMotion(boolean inRightMotion) {
 		this.inRightMotion = inRightMotion;
+	}
+
+
+	public void setStopped(boolean stopped) {
+		this.stopped = stopped;
+	}
+
+
+	public boolean isStopped() {
+		return stopped;
 	}
 
 

@@ -101,7 +101,6 @@ public class ProcessingThread extends Thread
 			try {
 				calculatePaths(locations);
 			} catch (ControllerException e) {
-				// TODO Auto-generated catch block
 				System.err.println(e.getMessage());
 			}
 				
@@ -132,6 +131,7 @@ public class ProcessingThread extends Thread
 		int robotIndex = 0;
 		
 		
+		
 		for (RobotThread robotThread : robotThreads)
 		{
 			
@@ -158,6 +158,7 @@ public class ProcessingThread extends Thread
 				
 			}
 			else {
+				// TODO FIX tager den nærmeste kage + flere robotter
 				ICake currentCake = locations.getCakes().get(0);
 				target = new Location(currentCake.getY(), currentCake.getX());
 			}
@@ -201,7 +202,6 @@ public class ProcessingThread extends Thread
 			// starting robot cycle
 			if (robotThread.getRobotState() == RobotState.IDLE)
 				robotThread.setRobotState(RobotState.HEADING_FOR_CAKE);
-//			else if(robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY)
 				
 			
 			
