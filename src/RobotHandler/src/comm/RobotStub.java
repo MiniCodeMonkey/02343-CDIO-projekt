@@ -5,6 +5,7 @@ package comm;
  */
 
 import java.io.IOException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -30,6 +31,9 @@ public class RobotStub implements IRemoteRobot{
 	private static NXTCommand nxtCommand;
 	private static String macAdr = "";
 	private static NXTCommand NXTCommand;
+	Registry registry;
+	static String serverAddress = "127.0.0.1";
+    static int serverPort = 3232;
 	
 	/**
 	 * Generisk connector til begge robotter. Tager MAC-adressen som parameter
@@ -51,53 +55,15 @@ public class RobotStub implements IRemoteRobot{
 		{
 			macAdr = args[0];
 		}
+		//RobotStub robotStub = new RobotStub();
 		
-		//Sanitycheck of MAC-address
-		if( !((macAdr.equals(BertaAdr) || (macAdr.equals(PropAdr)))))
-		{
-			throw new NoArgumentException(macAdr);
-		}
-
-		//Kopieret fra BertaCommando og tilpasset generisks til at kunne forbinde på mac-adresse
-		NXTInfo robotNXTInfo = null;
-
-		NXTCommand = new NXTCommand();
-		NXTConnector conn = new NXTConnector();
-
-		//Start search
 		
-		NXTInfo[] info = conn.search(null, macAdr, NXTCommFactory.BLUETOOTH);
-		
-		if(info.length == 0)
-		{
-			throw new NoRobotFoundException(info[0].name);
-		}
-		
-		if( info[0].deviceAddress.equals(PropAdr) ){
-			robotNXTInfo = info[0];
-		}
-		
-		if(robotNXTInfo == null){
-			System.err.println("No robot found!");
-			throw new NoRobotFoundException(getRobotName(macAdr));
-		}
-		
-		// Start Connect
-		NXTComm nxtComm = null;
-		nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH);
-		System.out.println("Connection success: " + nxtComm.open(robotNXTInfo, lejos.pc.comm.NXTComm.LCP));
-		nxtCommand.setNXTComm(nxtComm);
-		
-		}
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-
+	public RobotStub() throws NoRobotFoundException, NoArgumentException, NXTCommException{
+		//setUpRobot();
+		SetupRMI();
+	}
 	/**
 	 * Giver en instans af klassen {@link Control} der implementere {@link IControl}
 	 * 
@@ -145,22 +111,61 @@ public class RobotStub implements IRemoteRobot{
 		else if (macAddress.equals(PropAdr))return PropName;
 		return "";
 	}
-	public void setUpRMI() {
-		if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+	
+	public void setUpRobot() throws NoRobotFoundException, NoArgumentException, NXTCommException {
+		//Sanitycheck of MAC-address
+		if( !((macAdr.equals(BertaAdr) || (macAdr.equals(PropAdr)))))
+		{
+			throw new NoArgumentException(macAdr);
+		}
+
+		//Kopieret fra BertaCommando og tilpasset generisks til at kunne forbinde på mac-adresse
+		NXTInfo robotNXTInfo = null;
+
+		NXTCommand = new NXTCommand();
+		NXTConnector conn = new NXTConnector();
+
+		//Start search
 		
+		NXTInfo[] info = conn.search(null, macAdr, NXTCommFactory.BLUETOOTH);
+		
+		if(info.length == 0)
+		{
+			throw new NoRobotFoundException(info[0].name);
+		}
+		
+		if( info[0].deviceAddress.equals(PropAdr) ){
+			robotNXTInfo = info[0];
+		}
+		
+		if(robotNXTInfo == null){
+			System.err.println("No robot found!");
+			throw new NoRobotFoundException(getRobotName(macAdr));
+		}
+		
+		// Start Connect
+		NXTComm nxtComm = null;
+		nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH);
+		System.out.println("Connection success: " + nxtComm.open(robotNXTInfo, lejos.pc.comm.NXTComm.LCP));
+		nxtCommand.setNXTComm(nxtComm);
+		
+		}
+		
+	public void SetupRMI() {
 		try {
-			Registry registry = LocateRegistry.getRegistry();
+			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
+			registry.bind("RobotConnector", this);
 		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AlreadyBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void executeCommand(IControl control) {
-		// TODO Auto-generated method stub
+	
+	public void recieveString(String x) {
+		System.out.println(x);
 		
 	}
 }
