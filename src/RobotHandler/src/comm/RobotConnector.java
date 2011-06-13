@@ -38,7 +38,7 @@ public class RobotConnector {
 	 * @throws NoArgumentException 
 	 */
 	
-	public static void main(String[] args) throws NoRobotFoundException, NXTCommException, IOException, InterruptedException {
+	public static void main(String[] args) throws NoRobotFoundException, NXTCommException, IOException, InterruptedException, NoArgumentException {
 		if(args.length<1)
 		{
 			macAdr = "No MAC-address recieved";
