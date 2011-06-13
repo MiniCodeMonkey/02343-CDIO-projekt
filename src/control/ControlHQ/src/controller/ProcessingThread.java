@@ -86,7 +86,7 @@ public class ProcessingThread extends Thread
 		running = true;
 	}
 
-	private void runLoop() throws ControllerException
+	private void runLoop()
 	{
 
 		// Main processing loop
@@ -98,7 +98,12 @@ public class ProcessingThread extends Thread
 			// Process the image
 			locations = imageProcessor.examineImage(image, true);
 			
-			calculatePaths(locations);
+			try {
+				calculatePaths(locations);
+			} catch (ControllerException e) {
+				// TODO Auto-generated catch block
+				System.err.println(e.getMessage());
+			}
 				
 			
 		}
@@ -116,13 +121,9 @@ public class ProcessingThread extends Thread
 		{
 			throw new ControllerException("Could not visually find any robots");
 		}
-
-		// Is no cakes available?
-		if (locations.getCakes().size() <= 0)
-		{
-			return;
-		}
-
+		
+		
+		
 		// Create a new tile map from the locations object
 		TileMap tileMap = new TileMap();
 		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
@@ -134,20 +135,42 @@ public class ProcessingThread extends Thread
 		for (RobotThread robotThread : robotThreads)
 		{
 			
+			Location target = null;
+			
 			if (robotThread == null){
 				continue;
 			}
-			 
-			ICake currentCake = locations.getCakes().get(0);
-			// TODO hvis der alle kager bliver processed
 			
-			robotThread.setTargetLocation(new Location(currentCake.getY(), currentCake.getX()));
+			if (cakesCount <= 0 && robotThread.getRobotState() != RobotState.HEADING_FOR_DELIVERY &&
+					robotThread.getRobotState() != RobotState.DELIVERING){
+				continue;
+			}
+			
+			if (robotThread.getRobotState() == RobotState.PICKING_UP || robotThread.getRobotState() == RobotState.DELIVERING)
+				continue;
+			
+			
+			
+			
+			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY)
+			{
+				target = robotThread.getTargetLocation();
+				
+			}
+			else {
+				ICake currentCake = locations.getCakes().get(0);
+				target = new Location(currentCake.getY(), currentCake.getX());
+			}
+			
+			
+			robotThread.setTargetLocation(target);
 			
 			// Get physical robot location
 			try
 			{
 				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
 				robotThread.setAllRobotLocations(locations.getRobots());
+				
 			}
 			catch (IndexOutOfBoundsException e)
 			{
@@ -157,8 +180,6 @@ public class ProcessingThread extends Thread
 			// Find path for robot
 			PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
 
-			// Note: We used to resize path here
-			// TODO: Generate path with less steps directly in pathfinder class instead
 			Path newPath = pathFinder.findPath(robotThread.getRobotLocation(), robotThread.getTargetLocation());
 
 			if (newPath == null)
@@ -180,6 +201,11 @@ public class ProcessingThread extends Thread
 			// starting robot cycle
 			if (robotThread.getRobotState() == RobotState.IDLE)
 				robotThread.setRobotState(RobotState.HEADING_FOR_CAKE);
+//			else if(robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY)
+				
+			
+			
+			
 			
 
 			robotIndex++;

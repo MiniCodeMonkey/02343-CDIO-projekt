@@ -101,9 +101,9 @@ public class RobotThread extends Thread
 		}
 		
 		// Initialize claw
-//		robotControl.closeClaw();
-//		Thread.sleep(2000);
-//		robotControl.stopClaw();
+		robotControl.closeClaw();
+		Thread.sleep(500);
+		robotControl.stopClaw();
 	}
 	
 	/**
@@ -166,7 +166,7 @@ public class RobotThread extends Thread
 				targetAngle = calculateTargetAngle(dy, dx);
 				
 				
-//				System.out.println("dy: "+ dy + "| dx: "+dx);
+				System.out.println("dy: "+ dy + "| dx: "+dx);
 //				
 //				System.out.println("robot Y: "+robotLocation.getY());
 //				System.out.println("robot X: "+robotLocation.getX());
@@ -184,7 +184,7 @@ public class RobotThread extends Thread
 				
 				// Difference between robot angle and target angle
 				// radianer!!
-				double targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
+				double targetAngleDifference = Math.abs(Math.abs(robotLocation.getAngle()) - Math.abs(targetAngle));
 				
 				System.out.println("Robot angle: "+Math.toDegrees(robotLocation.getAngle()));
 				System.out.println("Target angle: "+Math.toDegrees(targetAngle));
@@ -221,12 +221,13 @@ public class RobotThread extends Thread
 							
 							
 							// Open claw: 3s
+							robotControl.move(20, false);
 							robotControl.openClaw();
 							Thread.sleep(1000);
 							robotControl.stopClaw();
 							
 							// Move forward: 1s
-							robotControl.move(100, false);
+							robotControl.move(20, false);
 							Thread.sleep(1000);
 							robotControl.stop();
 							
@@ -255,6 +256,7 @@ public class RobotThread extends Thread
 								
 								if (currentDistance < bestDistance)
 								{
+									System.out.println("new BEST distance "+currentDistance);
 									bestDistance = currentDistance;
 									targetLocation = deliveryLocation;
 								}
@@ -267,7 +269,7 @@ public class RobotThread extends Thread
 						{
 							System.out.println("POSITIONING -> rotate");
 							// Rotate slowly to cake
-							if (robotLocation.getAngle() < targetAngle)
+							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
 								robotControl.right(Thresholds.getInstance().getSlowSpeed());
 							}
@@ -286,43 +288,38 @@ public class RobotThread extends Thread
 						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToDelivery())
 						{
 							this.robotState = RobotState.DELIVERING;
+							
+							// Move forward
+							robotControl.move(30, false);
+							Thread.sleep(2000);
+							robotControl.stop();
+							
+							// Open claw
+							robotControl.openClaw();
+							Thread.sleep(1000);
+							robotControl.stopClaw();
+							
+							// Move forwards
+							robotControl.move(50, false);
+							Thread.sleep(1000);
+							System.out.println("Cake delivered");
+							robotControl.stop();
+							
+							// Move backwards
+							robotControl.move(50, true);
+							Thread.sleep(2000);
+							robotControl.stop();
+							
+							// Close claw
+							robotControl.closeClaw();
+							Thread.sleep(1000);
+							robotControl.stopClaw();
+							
+							// robot becomes idle (job done)
+							this.robotState = RobotState.IDLE;
 						}
 						break;
 					}
-					case DELIVERING:
-						
-						// TODO test
-						
-						// Move forward
-						robotControl.move(50, false);
-						Thread.sleep(2000);
-						robotControl.stop();
-						
-						// Open claw
-						robotControl.openClaw();
-						Thread.sleep(1000);
-						robotControl.stopClaw();
-						
-						// Move forwards
-						robotControl.move(50, false);
-						Thread.sleep(1500);
-						System.out.println("Cake delivered");
-						robotControl.stop();
-						
-						// Move backwards
-						robotControl.move(50, true);
-						Thread.sleep(4000);
-						robotControl.stop();
-						
-						// Close claw
-						robotControl.closeClaw();
-						Thread.sleep(1000);
-						robotControl.stopClaw();
-						
-						// robot becomes idle (job done)
-						this.robotState = RobotState.IDLE;
-						
-						break;
 				}
 				
 				// Reset yield status
@@ -379,7 +376,7 @@ public class RobotThread extends Thread
 						{
 							System.out.println("not very close");
 							// Rotate
-							if (robotLocation.getAngle() < targetAngle)
+							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
 								robotControl.right(Thresholds.getInstance().getSlowSpeed());
 							}
@@ -392,13 +389,13 @@ public class RobotThread extends Thread
 						{
 							System.out.println("not very AT ALL close");
 							// Rotate
-							if (robotLocation.getAngle() < targetAngle )
+							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
-								robotControl.right(Thresholds.getInstance().getSlowSpeed());
+								robotControl.right(Thresholds.getInstance().getMediumSpeed());
 							}
 							else
 							{
-								robotControl.left(Thresholds.getInstance().getSlowSpeed());
+								robotControl.left(Thresholds.getInstance().getMediumSpeed());
 							}
 						}
 					}

@@ -816,6 +816,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         pauseTBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pause.png"))); // NOI18N
         pauseTBtn.setText("Pause Webcam");
         pauseTBtn.setToolTipText("Pause Webcam");
+        pauseTBtn.setEnabled(false);
         pauseTBtn.setFocusable(false);
         pauseTBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         imageToolbar.add(pauseTBtn);
@@ -999,7 +1000,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 					
 					try {
 //						Thread.sleep((long) (time_slice*1000));
-						Thread.sleep((long) (500));
+						Thread.sleep((long) (200));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

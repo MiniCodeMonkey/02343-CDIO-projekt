@@ -35,6 +35,8 @@ public class Control implements IControl{
 			return;
 		if (isInBackwardMotion() && reverse)
 			return;
+		setInRightMotion(false);
+		setInLeftMotion(false);
 		
 		if(reverse){
 			System.out.println("Moving backwards");

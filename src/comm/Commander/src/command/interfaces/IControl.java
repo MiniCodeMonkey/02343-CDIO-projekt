@@ -13,7 +13,7 @@ import command.BertaCommando;
 public interface IControl {
 	
 	int CLAW_LIMIT = 175;
-	int DEFAULT_CLAW_SPEED = 15;
+	int DEFAULT_CLAW_SPEED = 20;
 	
 	int DEFAULT_MOVE_SPEED = 20;
 	int DEFAULT_TURN_SPEED = 15;	

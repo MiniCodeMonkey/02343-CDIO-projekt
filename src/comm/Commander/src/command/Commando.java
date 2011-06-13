@@ -114,8 +114,10 @@ public class Commando {
 	}
 	public int disconnect(){
 		int result = 0;
-		result = bertaCom.disconnect();
-//		result += propCom.disconnect();
+		if (bertaCom != null)
+			result = bertaCom.disconnect();
+		if (propCom != null)
+			result += propCom.disconnect();
 		return result;
 	}
 	

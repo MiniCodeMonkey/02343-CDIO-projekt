@@ -53,7 +53,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard størrelse på forhindrings-sikkerhedszone
 	 */
-	public static final int OBSTACLE_BUFFER = 30;
+	public static final int OBSTACLE_BUFFER = 20;
 	
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
