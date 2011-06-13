@@ -1,19 +1,28 @@
 package comm;
 
 import java.io.IOException;
-import java.rmi.AccessException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class RobotConnector {
+import command.interfaces.IControl;
 
+public class RobotConnector  implements IRemoteRobot{
+	
+	Registry registry;
+	
 	public RobotConnector()
 	{
+		// create the registry and bind the name and object.
+		try {
+			registry = LocateRegistry.createRegistry(3232);
+			registry.rebind("RobotConnector", this);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+	
 		
 		
 		
@@ -42,5 +51,11 @@ public class RobotConnector {
 		new RobotConnector().startRobotProcess("");
 		
 		while(true);
+	}
+
+	@Override
+	public void executeCommand(IControl control) {
+		// TODO Auto-generated method stub
+		
 	}
 }

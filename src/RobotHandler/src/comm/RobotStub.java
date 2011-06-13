@@ -22,7 +22,7 @@ import command.interfaces.IControl;
 import exceptions.NoArgumentException;
 
 
-public class RobotStub {
+public class RobotStub implements IRemoteRobot{
 	private static String BertaAdr = "001653091CAE";
 	private static String PropAdr = "0016530918D4";
 	private static String BertaName = "B.E.R.T.A.";
@@ -52,7 +52,7 @@ public class RobotStub {
 			macAdr = args[0];
 		}
 		
-		//Sanitycheck of MAC-address TODO: Lav en exception istedet
+		//Sanitycheck of MAC-address
 		if( !((macAdr.equals(BertaAdr) || (macAdr.equals(PropAdr)))))
 		{
 			throw new NoArgumentException(macAdr);
@@ -89,6 +89,14 @@ public class RobotStub {
 		nxtCommand.setNXTComm(nxtComm);
 		
 		}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * Giver en instans af klassen {@link Control} der implementere {@link IControl}
@@ -148,5 +156,11 @@ public class RobotStub {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void executeCommand(IControl control) {
+		// TODO Auto-generated method stub
+		
 	}
 }
