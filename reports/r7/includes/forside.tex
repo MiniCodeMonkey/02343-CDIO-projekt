@@ -1,0 +1,60 @@
+\usepackage{arrayjobx}
+\usepackage{multido}
+\newcounter{StudentCount}
+\setcounter{StudentCount}{0}
+\newarray\StudentId
+\newarray\StudentLName
+\newarray\StudentFName
+\newarray\StudentNote
+
+\newcommand*{\addstudent}[4]{%
+	\stepcounter{StudentCount}%
+	\StudentId(\value{StudentCount})={#1}%
+	\StudentLName(\value{StudentCount})={#2}%
+	\StudentFName(\value{StudentCount})={#3}%
+	\StudentNote(\value{StudentCount})={#4}%
+}
+
+\newcommand*{\studentstring}[1]{%
+	\multido{\iStudent=1+1}{\value{StudentCount}}{
+		\StudentId(\iStudent)
+		\ifnum #1 > 1
+			: \StudentLName(\iStudent), \StudentFName(\iStudent)
+		\fi
+		\ifnum \iStudent = \value{StudentCount}
+		\else
+			\ifnum #1 = 2
+				\\
+			\else
+				-
+			\fi
+		\fi
+	}
+}
+
+% Tomme variable
+\def\group{}
+\def\signature{}
+\def\studentend{}
+\def\course{}
+\def\titlea{}
+\def\titleb{}
+\def\delivery{}
+\def\teacher{}
+\def\institutelogo{}
+\def\bl{}
+\def\bra{}
+\def\brb{}
+\def\brc{}
+\def\headleft{}
+\def\headcenter{}
+\def\headright{}
+\def\footleft{}
+\def\footcenter{}
+\def\footright{}
+\def\headaleft{}
+\def\headacenter{}
+\def\headaright{}
+\def\footaleft{}
+\def\footacenter{}
+\def\footaright{}
