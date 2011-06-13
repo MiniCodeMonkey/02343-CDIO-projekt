@@ -6,6 +6,6 @@ import command.interfaces.IControl;
 
 public interface IRemoteRobot extends Remote {
 	
-	void executeCommand(IControl control);
+	void recieveString(String x);
 
 }
