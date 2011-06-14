@@ -70,7 +70,7 @@ public class RmiClient {
 						System.out.println("Forsøger at forbinde ... Forsøg nr. " + (i+1));
 						control[1] = (IControl)(registry.lookup("remote_1"));
 						successful = true;
-						continue;
+						break;
 					} catch (NotBoundException e) {
 						try {
 							Thread.sleep(1000);

@@ -4,9 +4,8 @@ public class Constants {
 
 	//TODO..	
 	
-	public static String NXT_NAME = "B.E.R.T.A.";
-	public static String NXT_NAME2 = "P.R.O.P.";
-	public static String NXT_ADR = "001653091CAE";
-	public static String NXT_ADR2 = "0016530918D4";
-	
+	public static String BertaName = "B.E.R.T.A.";
+	public static String PropName = "P.R.O.P.";
+	public static String BertaAdr = "001653091CAE";
+	public static String PropAdr = "0016530918D4";
 }

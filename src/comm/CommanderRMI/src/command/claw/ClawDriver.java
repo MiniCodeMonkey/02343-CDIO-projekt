@@ -2,7 +2,6 @@ package command.claw;
 
 import java.io.IOException;
 
-import lejos.nxt.Motor;
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.RemoteMotor;
 import lejos.robotics.TachoMotor;

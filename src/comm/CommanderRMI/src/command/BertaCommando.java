@@ -38,12 +38,12 @@ public class BertaCommando {
 		// SEARCH /////////////////////////////////////////
 
 		System.out.print("Searching for NXTs...");
-		NXTInfo[] info = conn.search(null, Constants.NXT_ADR, NXTCommFactory.BLUETOOTH);
+		NXTInfo[] info = conn.search(null, Constants.BertaAdr, NXTCommFactory.BLUETOOTH);
 		
 		
 		if (info.length == 0) {
 			System.out.println("...no NXT(s) found!");
-			throw new NoRobotFoundException(Constants.NXT_NAME);
+			throw new NoRobotFoundException(Constants.BertaName);
 		}
 
 		System.out.println(" OK");
@@ -54,14 +54,14 @@ public class BertaCommando {
 			System.out.println("   " + d + ". " + nxtInfo.name + " "
 					+ nxtInfo.deviceAddress);
 			d++;
-			if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR)) {
+			if (nxtInfo.deviceAddress.equals(Constants.BertaAdr)) {
 				bertaNXTInfo = nxtInfo;
 				System.out.println("B.E.R.T.A. found");
 			}
 		}
 		if (bertaNXTInfo == null){
 			System.err.println("B.E.R.T.A. not found!");
-			throw new NoRobotFoundException(Constants.NXT_NAME);
+			throw new NoRobotFoundException(Constants.BertaName);
 		}
 
 		// CONNECT ////////////////////////////////////////

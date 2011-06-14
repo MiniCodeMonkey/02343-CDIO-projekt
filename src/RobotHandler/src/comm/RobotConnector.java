@@ -1,6 +1,8 @@
 package comm;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -20,25 +22,16 @@ public class RobotConnector  implements IRemoteRobot{
 	String prop = "00";
     String text = "Tis eller dø søde mormor";
 	
-	public void RobotClientSomething()
-	{
-		if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+	public static void main(String[] args) throws NoRobotFoundException, NoArgumentException, NXTCommException, InterruptedException {
 		
-		// create the registry and bind the name and object.
+		RobotConnector robo = new RobotConnector();
 		try {
-			registry = LocateRegistry.createRegistry(3232);
-			
-			remoteRobot = (IRemoteRobot)(registry.lookup("RobotConnector"));
-			remoteRobot.recieveString(text);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("IP: "+(InetAddress.getLocalHost()).toString());
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+		robo.RobotClientSomething();
+		Thread.sleep(20000);
 		
 	}
 	
@@ -58,15 +51,30 @@ public class RobotConnector  implements IRemoteRobot{
 		
 	
 	
-	public static void main(String[] args) throws NoRobotFoundException, NoArgumentException, NXTCommException {
+	
+	
+public void RobotClientSomething()
+	{
+		if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
 		
-		RobotConnector robo = new RobotConnector();
+		// create the registry and bind the name and object.
+		try {
+			System.out.println("Creating Registry");
+			registry = LocateRegistry.createRegistry(3232);
+			System.out.println("Registry Created");
+			//remoteRobot = (IRemoteRobot)(registry.lookup("RobotConnector"));
+			//remoteRobot.recieveString(text);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //catch (NotBoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
-		robo.RobotClientSomething();
-		
-		RobotStub robostub = new RobotStub();
 	}
-
 	@Override
 	public void recieveString(String x) {
 		

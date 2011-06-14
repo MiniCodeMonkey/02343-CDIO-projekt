@@ -1,31 +1,25 @@
-package command.impl;
+package communication.impl;
 
 import java.io.IOException;
-import java.io.Serializable;
-
-import command.interfaces.IControl;
 
 import lejos.nxt.Sound;
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
 import lejos.nxt.remote.OutputState;
+import communication.interfaces.IControl;
 
 /**
  * @author Morten Hulvej
  *
  */
-public class Control implements IControl, Serializable{
+public class Control implements IControl{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6101771069854621278L;
 	private NXTCommand commander;
 	private boolean inForwardMotion = false;
 	private boolean inBackwardMotion = false;
 	private boolean inLeftMotion = false;
 	private boolean inRightMotion = false;
-	private boolean stopped = true;
+	
 	
 	private boolean clawMoving;
 	
@@ -41,9 +35,6 @@ public class Control implements IControl, Serializable{
 			return;
 		if (isInBackwardMotion() && reverse)
 			return;
-		setInRightMotion(false);
-		setInLeftMotion(false);
-		setStopped(false);
 		
 		if(reverse){
 			System.out.println("Moving backwards");
@@ -75,7 +66,6 @@ public class Control implements IControl, Serializable{
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInRightMotion(false);
-		setStopped(false);
 		System.out.println("moving left");
 		
 		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
@@ -91,7 +81,6 @@ public class Control implements IControl, Serializable{
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInLeftMotion(false);
-		setStopped(false);
 		System.out.println("moving right");
 		
 		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
@@ -102,19 +91,18 @@ public class Control implements IControl, Serializable{
 
 	@Override
 	public void stop() throws IOException {
-		if (isStopped())
-			return;
+		// TODO support spaming
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
-		System.out.println("stopping");
-
+//		System.out.println("STOPPING");
+		//lejos.nxt.Sound.playSoundFile("tires.rso");
+		//lejos.nxt.Sound.playSoundFile("Hooray.rso");
+//		Sound.playTone(500, 10);
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInLeftMotion(false);
 		setInRightMotion(false);
-		
-		setStopped(true);
 	}
 
 	
@@ -173,16 +161,6 @@ public class Control implements IControl, Serializable{
 
 	public void setInRightMotion(boolean inRightMotion) {
 		this.inRightMotion = inRightMotion;
-	}
-
-
-	public void setStopped(boolean stopped) {
-		this.stopped = stopped;
-	}
-
-
-	public boolean isStopped() {
-		return stopped;
 	}
 
 

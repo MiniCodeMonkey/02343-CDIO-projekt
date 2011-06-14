@@ -72,7 +72,7 @@ public class Commando {
 		} finally {
 			if (!isBertaConnected())
 				throw new MasterRobotNotFound(
-						"Cannot run without master-robot: "+Constants.NXT_NAME+" not found!");
+						"Cannot run without master-robot: "+Constants.BertaName+" not found!");
 		}
 	}
 
