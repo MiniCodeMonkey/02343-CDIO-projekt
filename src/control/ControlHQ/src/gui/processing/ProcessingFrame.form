@@ -27,11 +27,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="imageToolbar" alignment="0" pref="720" max="32767" attributes="0"/>
-          <Group type="102" attributes="0">
-              <Component id="imageProcessPanel" max="32767" attributes="0"/>
-              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-          </Group>
+          <Component id="imageToolbar" alignment="0" pref="715" max="32767" attributes="0"/>
+          <Component id="imageProcessPanel" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -39,8 +36,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="imageToolbar" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="imageProcessPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="imageProcessPanel" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -53,30 +49,41 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="imagePanel" pref="374" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="settingsPanel" min="-2" pref="310" max="-2" attributes="0"/>
+                  <Component id="imagePanel" min="-2" pref="347" max="-2" attributes="0"/>
+                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <Component id="robot1SettingsPanel" min="-2" pref="340" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" max="-2" attributes="0">
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="settingsPanel" min="-2" pref="444" max="-2" attributes="1"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                          <Component id="imagePanel" pref="433" max="32767" attributes="1"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="102" attributes="1">
+                          <EmptySpace min="11" pref="11" max="11" attributes="0"/>
+                          <Component id="imagePanel" max="32767" attributes="1"/>
                       </Group>
+                      <Component id="robot1SettingsPanel" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="30" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JTabbedPane" name="settingsPanel">
+        <Container class="javax.swing.JPanel" name="imagePanel">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+            <Property name="columns" type="int" value="1"/>
+            <Property name="rows" type="int" value="2"/>
+            <Property name="verticalGap" type="int" value="5"/>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JTabbedPane" name="robot1SettingsPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -111,7 +118,7 @@
                               <Component id="maxRGBpanel" alignment="0" max="32767" attributes="1"/>
                               <Component id="minRGBpanel" alignment="0" max="32767" attributes="1"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="35" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -630,7 +637,7 @@
                               <Component id="minRGBpanel2" alignment="0" max="32767" attributes="1"/>
                               <Component id="maxRGBpanel2" alignment="0" max="32767" attributes="1"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="13" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -890,7 +897,7 @@
                               <Component id="minRGBpanel3" alignment="0" max="32767" attributes="1"/>
                               <Component id="maxRGBpanel3" alignment="0" max="32767" attributes="1"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="13" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1178,7 +1185,7 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="29" max="32767" attributes="0"/>
+                              <EmptySpace pref="59" max="32767" attributes="0"/>
                               <Component id="bufzoneSlider" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           </Group>
@@ -1216,17 +1223,6 @@
             </Container>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="imagePanel">
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-            <Property name="columns" type="int" value="1"/>
-            <Property name="rows" type="int" value="2"/>
-            <Property name="verticalGap" type="int" value="5"/>
-          </Layout>
-        </Container>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JToolBar" name="imageToolbar">
@@ -1241,7 +1237,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icons/webcam_icon.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Start Webcam"/>
+            <Property name="text" type="java.lang.String" value="Vis webcam feed"/>
             <Property name="toolTipText" type="java.lang.String" value="Start Webcam"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="4"/>
@@ -1257,6 +1253,7 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Pause Webcam"/>
             <Property name="toolTipText" type="java.lang.String" value="Pause Webcam"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="4"/>
           </Properties>

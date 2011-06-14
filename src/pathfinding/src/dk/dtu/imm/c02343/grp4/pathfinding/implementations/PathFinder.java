@@ -34,6 +34,11 @@ public class PathFinder {
 	private AStarHeuristic heuristic;
 	
 	/**
+	 * This is the minimum distance each step has to be from eachother in any direction
+	 */
+	private final double minStepDistance = 30.0;
+	
+	/**
 	 * Create a path finder with the default heuristic - closest to target.
 	 * 
 	 * @param map The map to be searched
@@ -72,6 +77,8 @@ public class PathFinder {
 	 */
 	public Path findPath(IRobot robot, Location targetLocation)
 	{
+		long start = System.currentTimeMillis();
+		
 		int sy = robot.getY();
 		int sx = robot.getX();
 		
@@ -174,18 +181,30 @@ public class PathFinder {
 		if (nodes[ty][tx].parent == null) {
 			return null;
 		}
-		
+        
 		// At this point we've definitely found a path so we can use the parent
 		// references of the nodes to find a way from the target location back
 		// to the start recording the nodes on the way.
-
+		
+		// Using the minStepDistance field the path is reduced to a minimum of
+		// steps, before being returned.
 		Path path = new Path();
 		Node target = nodes[ty][tx];
-		while (target != nodes[sy][sx]) {
-			path.prependStep(target.y, target.x);
+		Node last = null;
+		while (target != nodes[sy][sx])
+		{
+			if (last == null || Math.sqrt(Math.pow(target.x - last.x, 2) + Math.pow(target.y - last.y, 2)) > minStepDistance )
+			{
+				path.prependStep(target.y, target.x);
+				last = target;
+			}
+			
 			target = target.parent;
 		}
 		path.prependStep(sy,sx);
+		
+		long elapsed = System.currentTimeMillis() - start;
+		//System.out.println("Pathfinding done in " + elapsed + " ms");
 		
 		// thats it, we have our path 
 

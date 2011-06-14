@@ -20,6 +20,7 @@ public class Control extends java.rmi.server.UnicastRemoteObject implements ICon
 	private boolean inBackwardMotion = false;
 	private boolean inLeftMotion = false;
 	private boolean inRightMotion = false;
+	private boolean stopped = true;
 	
 	
 	private boolean clawMoving;
@@ -36,6 +37,9 @@ public class Control extends java.rmi.server.UnicastRemoteObject implements ICon
 			return;
 		if (isInBackwardMotion() && reverse)
 			return;
+		setInRightMotion(false);
+		setInLeftMotion(false);
+		setStopped(false);
 		
 		if(reverse){
 			System.out.println("Moving backwards");
@@ -67,6 +71,7 @@ public class Control extends java.rmi.server.UnicastRemoteObject implements ICon
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInRightMotion(false);
+		setStopped(false);
 		System.out.println("moving left");
 		
 		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
@@ -82,6 +87,7 @@ public class Control extends java.rmi.server.UnicastRemoteObject implements ICon
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInLeftMotion(false);
+		setStopped(false);
 		System.out.println("moving right");
 		
 		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
@@ -92,18 +98,19 @@ public class Control extends java.rmi.server.UnicastRemoteObject implements ICon
 
 	@Override
 	public void stop() throws IOException {
-		// TODO support spaming
+		if (isStopped())
+			return;
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
-//		System.out.println("STOPPING");
-		//lejos.nxt.Sound.playSoundFile("tires.rso");
-		//lejos.nxt.Sound.playSoundFile("Hooray.rso");
-//		Sound.playTone(500, 10);
+		System.out.println("stopping");
+
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInLeftMotion(false);
 		setInRightMotion(false);
+		
+		setStopped(true);
 	}
 
 	
@@ -162,6 +169,16 @@ public class Control extends java.rmi.server.UnicastRemoteObject implements ICon
 
 	public void setInRightMotion(boolean inRightMotion) {
 		this.inRightMotion = inRightMotion;
+	}
+
+
+	public void setStopped(boolean stopped) {
+		this.stopped = stopped;
+	}
+
+
+	public boolean isStopped() {
+		return stopped;
 	}
 
 

@@ -62,6 +62,7 @@ public class BasicControlGui extends javax.swing.JFrame {
         clawOpenBtn = new javax.swing.JButton();
         stopBtn = new javax.swing.JButton();
         isReversedChkBox = new javax.swing.JCheckBox();
+        debugBtn = new javax.swing.JButton();
         connectBtn = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -76,7 +77,7 @@ public class BasicControlGui extends javax.swing.JFrame {
         turnspeedSlider = new javax.swing.JSlider();
         clawspeedSlider = new javax.swing.JSlider();
         aboutBtn = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        robotChoiceComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("B.E.R.T.A | Basic Controls");
@@ -186,6 +187,13 @@ public class BasicControlGui extends javax.swing.JFrame {
             isReversedChkBox.setFocusPainted(false);
             isReversedChkBox.setFocusable(false);
 
+            debugBtn.setText("jButton1");
+            debugBtn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    debugBtnActionPerformed(evt);
+                }
+            });
+
             javax.swing.GroupLayout movePanelLayout = new javax.swing.GroupLayout(movePanel);
             movePanel.setLayout(movePanelLayout);
             movePanelLayout.setHorizontalGroup(
@@ -201,7 +209,10 @@ public class BasicControlGui extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(BckwBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                                .addComponent(fwrBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                                .addComponent(fwrBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                                .addGroup(movePanelLayout.createSequentialGroup()
+                                    .addComponent(debugBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)))
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(movePanelLayout.createSequentialGroup()
                                     .addGap(9, 9, 9)
@@ -225,7 +236,9 @@ public class BasicControlGui extends javax.swing.JFrame {
                         .addGroup(movePanelLayout.createSequentialGroup()
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(clawOpenBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(clawCloseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                                .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(clawCloseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                                    .addComponent(debugBtn)))
                             .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(movePanelLayout.createSequentialGroup()
                                     .addGap(46, 46, 46)
@@ -348,7 +361,7 @@ public class BasicControlGui extends javax.swing.JFrame {
                 }
             });
 
-            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+            robotChoiceComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BERTA", "PROP" }));
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
@@ -367,7 +380,7 @@ public class BasicControlGui extends javax.swing.JFrame {
                                             .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
                                         .addComponent(connectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(robotChoiceComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -388,7 +401,7 @@ public class BasicControlGui extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(connectBtn)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(robotChoiceComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(statusLabel)
@@ -419,6 +432,27 @@ public class BasicControlGui extends javax.swing.JFrame {
 			JOptionPane.WARNING_MESSAGE,new ImageIcon(icon));
         }//GEN-LAST:event_aboutBtnActionPerformed
 
+        private void debugBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debugBtnActionPerformed
+            try {
+				moveForward();
+				Thread.sleep(2000);
+				moveLeft();
+				Thread.sleep(800);
+				moveForward();
+				Thread.sleep(2000);
+				moveRight();
+				Thread.sleep(1000);
+				moveBackward();
+				Thread.sleep(1000);
+			allStop();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+            
+        }//GEN-LAST:event_debugBtnActionPerformed
+
 	private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_connectBtnActionPerformed
 		if (connected) {
 			try {
@@ -428,12 +462,14 @@ public class BasicControlGui extends javax.swing.JFrame {
 			}
 		} else {
 			
-			con = new Commando(0);
 			
-			controller = con.getControls()[0];
+			
+			con = new Commando(robotChoiceComboBox.getSelectedIndex());
+			
+			controller = con.getControls()[robotChoiceComboBox.getSelectedIndex()];
 			connected = true;
 			
-			statusPtyLabel.setText("Forbundet til B.E.R.T.A.");
+			statusPtyLabel.setText("Forbundet til robot ");
 			statusPtyLabel.setForeground(Color.green);
 			enableControls(true);
 			
@@ -580,8 +616,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 		//if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog(this,
 		//		"Luk forbindelse?", "Exit?", JOptionPane.OK_CANCEL_OPTION))
 		//	return;
-
-		con.disconnect();
+		if (con != null)
+			con.disconnect();
 		System.exit(0);
 	}// GEN-LAST:event_formWindowClosing
 
@@ -593,9 +629,9 @@ public class BasicControlGui extends javax.swing.JFrame {
     private javax.swing.JButton clawOpenBtn;
     private javax.swing.JSlider clawspeedSlider;
     private javax.swing.JButton connectBtn;
+    private javax.swing.JButton debugBtn;
     private javax.swing.JButton fwrBtn;
     private javax.swing.JCheckBox isReversedChkBox;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -603,6 +639,7 @@ public class BasicControlGui extends javax.swing.JFrame {
     private javax.swing.JButton leftBtn;
     private javax.swing.JPanel movePanel;
     private javax.swing.JButton rightBtn;
+    private javax.swing.JComboBox robotChoiceComboBox;
     private javax.swing.JPanel sensorPanel;
     private javax.swing.JPanel speedPanel;
     private javax.swing.JSlider speedSlider;

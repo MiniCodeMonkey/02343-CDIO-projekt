@@ -9,7 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +24,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.TileMap;
@@ -224,19 +227,11 @@ public class TestInterfacing implements ActionListener {
 		IRobot robot = locations.getRobots().get(0);
 		ICake cake = locations.getCakes().get(0);
 		
-		// ** HOT FIX **
-		// (Drop it like it's hot)
-		int x = robot.getY();
-		int y = robot.getX();
-		robot.setPos(y, x);
+		PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
+		Location cakeLocation = new Location(cake.getY(), cake.getX());
 		
-		x = cake.getY();
-		y = cake.getX();
-		cake.setPos(y, x);
-		// ** HOT FIX **
+		Path path = pathFinder.findPath(robot, cakeLocation);
 		
-		PathFinder pathFinder = new PathFinder(tileMap, 1500, true);
-		Path path = pathFinder.findPath(robot, robot.getY(), robot.getX(), cake.getY(), cake.getX());
 		System.out.println("Finding path between " + robot.getX() +"," + robot.getY() + " and " + cake.getX() + "," + cake.getY() + ".");
 		
 		//Random r = new Random();

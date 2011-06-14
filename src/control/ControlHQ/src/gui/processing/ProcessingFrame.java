@@ -82,7 +82,8 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         imageProcessPanel = new javax.swing.JPanel();
-        settingsPanel = new javax.swing.JTabbedPane();
+        imagePanel = new javax.swing.JPanel();
+        robot1SettingsPanel = new javax.swing.JTabbedPane();
         robotFrontThresholdPanel = new javax.swing.JPanel();
         minRGBpanel = new javax.swing.JPanel();
         minRedSlider = new javax.swing.JSlider();
@@ -146,7 +147,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         miscPanel = new javax.swing.JPanel();
         bufferzonePanel = new javax.swing.JPanel();
         bufzoneSlider = new javax.swing.JSlider();
-        imagePanel = new javax.swing.JPanel();
         imageToolbar = new javax.swing.JToolBar();
         webcamBtn = new javax.swing.JButton();
         pauseTBtn = new javax.swing.JToggleButton();
@@ -162,7 +162,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         setTitle("Processing");
         setNormalBounds(new java.awt.Rectangle(490, 10, 650, 528));
 
-        settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Threshold Settings"));
+        imagePanel.setLayout(new java.awt.GridLayout(2, 1, 0, 5));
+
+        robot1SettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Threshold Settings"));
 
         minRGBpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
 
@@ -293,7 +295,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addGroup(robotFrontThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(maxRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(minRGBpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         robotFrontThresholdPanelLayout.setVerticalGroup(
             robotFrontThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,7 +307,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(116, Short.MAX_VALUE))
         );
 
-        settingsPanel.addTab("Front", robotFrontThresholdPanel);
+        robot1SettingsPanel.addTab("Front", robotFrontThresholdPanel);
 
         minRGBpanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
 
@@ -445,7 +447,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(116, Short.MAX_VALUE))
         );
 
-        settingsPanel.addTab("Back", robotBackThresholdPanel);
+        robot1SettingsPanel.addTab("Back", robotBackThresholdPanel);
 
         minRGBpanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
 
@@ -574,7 +576,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addGroup(cakesThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(minRGBpanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(maxRGBpanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         cakesThresholdPanelLayout.setVerticalGroup(
             cakesThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -586,7 +588,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(116, Short.MAX_VALUE))
         );
 
-        settingsPanel.addTab("Cakes", cakesThresholdPanel);
+        robot1SettingsPanel.addTab("Cakes", cakesThresholdPanel);
 
         minRGBpanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
 
@@ -715,7 +717,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addGroup(obstacleThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(minRGBpanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(maxRGBpanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         obstacleThresholdPanelLayout.setVerticalGroup(
             obstacleThresholdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -727,7 +729,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(116, Short.MAX_VALUE))
         );
 
-        settingsPanel.addTab("Obstacles", obstacleThresholdPanel);
+        robot1SettingsPanel.addTab("Obstacles", obstacleThresholdPanel);
 
         bufferzonePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Bufferzone"));
 
@@ -742,7 +744,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         bufferzonePanelLayout.setHorizontalGroup(
             bufferzonePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bufferzonePanelLayout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
                 .addComponent(bufzoneSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
@@ -773,9 +775,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(286, Short.MAX_VALUE))
         );
 
-        settingsPanel.addTab("Misc", miscPanel);
-
-        imagePanel.setLayout(new java.awt.GridLayout(2, 1, 0, 5));
+        robot1SettingsPanel.addTab("Misc", miscPanel);
 
         javax.swing.GroupLayout imageProcessPanelLayout = new javax.swing.GroupLayout(imageProcessPanel);
         imageProcessPanel.setLayout(imageProcessPanelLayout);
@@ -783,26 +783,26 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
             imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageProcessPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(robot1SettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         imageProcessPanelLayout.setVerticalGroup(
             imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imageProcessPanelLayout.createSequentialGroup()
-                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(imageProcessPanelLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(robot1SettingsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         imageToolbar.setRollover(true);
 
         webcamBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/webcam_icon.png"))); // NOI18N
-        webcamBtn.setText("Start Webcam");
+        webcamBtn.setText("Vis webcam feed");
         webcamBtn.setToolTipText("Start Webcam");
         webcamBtn.setFocusable(false);
         webcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -816,6 +816,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         pauseTBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pause.png"))); // NOI18N
         pauseTBtn.setText("Pause Webcam");
         pauseTBtn.setToolTipText("Pause Webcam");
+        pauseTBtn.setEnabled(false);
         pauseTBtn.setFocusable(false);
         pauseTBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         imageToolbar.add(pauseTBtn);
@@ -873,18 +874,15 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
+            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
+            .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(imageToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -999,7 +997,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 					
 					try {
 //						Thread.sleep((long) (time_slice*1000));
-						Thread.sleep((long) (500));
+						Thread.sleep((long) (200));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -1109,9 +1107,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     private javax.swing.JButton nextTestImgBtn;
     javax.swing.JPanel obstacleThresholdPanel;
     private javax.swing.JToggleButton pauseTBtn;
+    javax.swing.JTabbedPane robot1SettingsPanel;
     javax.swing.JPanel robotBackThresholdPanel;
     javax.swing.JPanel robotFrontThresholdPanel;
-    javax.swing.JTabbedPane settingsPanel;
     private javax.swing.JButton stopWebcamBtn;
     private javax.swing.JButton testimageBtn;
     private javax.swing.JSpinner updateIntervalSpinner;
