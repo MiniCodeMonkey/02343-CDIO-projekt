@@ -1,4 +1,4 @@
-package comm;
+package test;
 
 /**
  * @author Terkel Brix og Jeppe Kronborg
@@ -25,7 +25,7 @@ import command.interfaces.IControl;
 import exceptions.NoArgumentException;
 
 
-public class RobotStub implements IRemoteRobot, Serializable{
+public class RobotConnTest {
 	/**
 	 * 
 	 */
@@ -34,7 +34,6 @@ public class RobotStub implements IRemoteRobot, Serializable{
 	private static String PropAdr = "0016530918D4";
 	private static String BertaName = "B.E.R.T.A.";
 	private static String PropName = "P.R.O.P.";
-	private static NXTCommand nxtCommand;
 	private static String macAdr = "";
 	private static NXTCommand NXTCommand;
 	Registry registry;
@@ -54,25 +53,32 @@ public class RobotStub implements IRemoteRobot, Serializable{
 	
 	public static void main(String[] args) throws NoRobotFoundException, NXTCommException, IOException, InterruptedException, NoArgumentException {
 		
-//		if(args.length<1)
-//		{
-//			macAdr = "No MAC-address recieved";
-//		}
-//		else
-//		{
-//			macAdr = args[0];
-//		}
+		if(args.length<1)
+		{
+			macAdr = "No MAC-address recieved";
+		}
+		else
+		{
+			macAdr = args[0];
+		}
 		//Får ip'en
-		serverAddress = "10.16.40.218";
+		//serverAddress = "10.16.40.218";
 		//serverAddress = (InetAddress.getLocalHost()).toString();
-		RobotStub robotStub = new RobotStub();
+		RobotConnTest robotStub = new RobotConnTest();
+		
+		
+		
 		
 		
 	}
 	
-	public RobotStub() throws RemoteException{
+	public RobotConnTest() throws NoRobotFoundException, NoArgumentException, NXTCommException, IOException, InterruptedException{
 		//setUpRobot();
-		SetupRMI();	
+		IControl control = new Control(setUpRobot());
+		control.move(false);
+		Thread.sleep(2000);
+		control.stop();
+		control.disconnect();
 	}
 	
 	/**
@@ -81,8 +87,9 @@ public class RobotStub implements IRemoteRobot, Serializable{
 	 * <br><br>Bemærk at alle metoder returnerer med det samme!!
 	 * 
 	 * @return {@link IControl} - Et interface med primitive kommandoer til Robot
+	 * @throws RemoteException 
 	 */
-	public static IControl getControl() {
+	public static IControl getControl() throws RemoteException {
 		IControl c = new Control(NXTCommand);
 		return c;
 	}
@@ -123,7 +130,7 @@ public class RobotStub implements IRemoteRobot, Serializable{
 		return "";
 	}
 	
-	public void setUpRobot() throws NoRobotFoundException, NoArgumentException, NXTCommException {
+	public NXTCommand setUpRobot() throws NoRobotFoundException, NoArgumentException, NXTCommException {
 		//Sanitycheck of MAC-address
 		if( !((macAdr.equals(BertaAdr) || (macAdr.equals(PropAdr)))))
 		{
@@ -158,34 +165,9 @@ public class RobotStub implements IRemoteRobot, Serializable{
 		NXTComm nxtComm = null;
 		nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH);
 		System.out.println("Connection success: " + nxtComm.open(robotNXTInfo, lejos.pc.comm.NXTComm.LCP));
-		nxtCommand.setNXTComm(nxtComm);
-		
+		NXTCommand.setNXTComm(nxtComm);
+		return NXTCommand;
 		}
-		
-	public void SetupRMI() {
-		try {
-			System.out.println("Getting registry");
-			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
-			System.out.println("Got Registry!");
-			System.out.println("Binding");
-			registry.bind("RobotConnector", (IRemoteRobot)this);
-			System.out.println("Binding done");
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (AlreadyBoundException e) {
-			// TODO Auto-generated catch block
-			try {
-				registry.rebind("RobotConnector", this);
-			} catch (AccessException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-	}
 	
 	public void recieveString(String x) throws RemoteException {
 		System.out.println(x);

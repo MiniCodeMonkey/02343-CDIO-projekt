@@ -1,6 +1,7 @@
 package command.impl;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 import lejos.nxt.Sound;
 import lejos.nxt.remote.NXTCommand;
@@ -12,8 +13,8 @@ import command.interfaces.IControl;
  * @author Morten Hulvej
  *
  */
-public class Control implements IControl{
-	
+public class Control extends java.rmi.server.UnicastRemoteObject implements IControl {
+	private static final long serialVersionUID = 6057902065482684209L;
 	private NXTCommand commander;
 	private boolean inForwardMotion = false;
 	private boolean inBackwardMotion = false;
@@ -24,7 +25,7 @@ public class Control implements IControl{
 	private boolean clawMoving;
 	
 
-	public Control(NXTCommand commander) {
+	public Control(NXTCommand commander) throws RemoteException {
 		this.commander = commander;
 	}
 	
