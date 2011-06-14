@@ -38,12 +38,12 @@ public class PropSensorCommando {
 		// SEARCH /////////////////////////////////////////
 		
 		System.out.print("Searching for NXTs...");
-		NXTInfo[] info = conn.search(null, Constants.NXT_ADR2, NXTCommFactory.BLUETOOTH);
+		NXTInfo[] info = conn.search(null, Constants.PropName, NXTCommFactory.BLUETOOTH);
 		
 		
 		if (info.length == 0) {
 			System.out.println("...no NXT(s) found!");
-			throw new NoRobotFoundException(Constants.NXT_NAME2);
+			throw new NoRobotFoundException(Constants.PropName);
 		}
 
 		System.out.println(" OK");
@@ -54,7 +54,7 @@ public class PropSensorCommando {
 			System.out.println("   " + d + ". " + nxtInfo.name + " "
 					+ nxtInfo.deviceAddress);
 			d++;
-			if (nxtInfo.deviceAddress.equals(Constants.NXT_ADR2)) {
+			if (nxtInfo.deviceAddress.equals(Constants.PropName)) {
 				propNXTInfo = nxtInfo;
 				System.out.println("P.R.O.P. found");
 			}
@@ -63,7 +63,7 @@ public class PropSensorCommando {
 
 		if (propNXTInfo == null){
 			System.err.println("P.R.O.P. not found!");
-			throw new NoRobotFoundException(Constants.NXT_NAME2);
+			throw new NoRobotFoundException(Constants.PropName);
 		}
 		
 		// CONNECT ////////////////////////////////////////

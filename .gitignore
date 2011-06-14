@@ -11,6 +11,7 @@
 /src/pathfinding/bin
 /src/comm/Commander/bin
 /src/comm/Commnication/bin
+/src/comm/CommanderRMI/bin
 /src/shared/DTO/bin
 /src/pathfinding/bin
 /src/control/ControlTest/build
