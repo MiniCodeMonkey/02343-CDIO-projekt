@@ -11,6 +11,8 @@
 
 package gui.manualControl;
 
+import gui.FramePlaceHolder;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -19,7 +21,6 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import control.FramePlaceHolder;
 import controller.RobotThread.RobotType;
 
 /** GUI fra Manual-test..
@@ -82,6 +83,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
         enManControlBtn = new javax.swing.JToggleButton();
 
         setIconifiable(true);
+        setNormalBounds(new java.awt.Rectangle(0, 100, 438, 666));
 
         movePanel.setFocusable(false);
 
@@ -385,7 +387,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(enManControlBtn)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -464,7 +466,7 @@ public class ControlFrame extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BckwBtn;
     private javax.swing.JButton aboutBtn;
-    public javax.swing.JProgressBar batteryLevelBar;
+    private javax.swing.JProgressBar batteryLevelBar;
     private javax.swing.JButton clawCloseBtn;
     private javax.swing.JButton clawOpenBtn;
     private javax.swing.JSlider clawspeedSlider;

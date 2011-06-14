@@ -28,7 +28,7 @@ public class PropCommando {
 	 * @throws NXTCommException
 	 * @throws NoRobotFoundException
 	 */
-	public PropCommando() throws NXTCommException, NoRobotFoundException {
+	PropCommando() throws NXTCommException, NoRobotFoundException {
 		NXTInfo propNXTInfo = null;
 
 		nxtCommand = new NXTCommand();
@@ -107,6 +107,10 @@ public class PropCommando {
 		}
 		return result;
 		
+	}
+	
+	public boolean isConnected() {
+		return nxtCommand.isOpen();
 	}
 
 }

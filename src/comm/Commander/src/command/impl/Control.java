@@ -5,6 +5,7 @@ import java.io.IOException;
 import lejos.nxt.Sound;
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
+import lejos.nxt.remote.OutputState;
 import command.interfaces.IControl;
 
 /**
@@ -14,65 +15,98 @@ import command.interfaces.IControl;
 public class Control implements IControl{
 	
 	private NXTCommand commander;
-	private boolean inMotion;
+	private boolean inForwardMotion = false;
+	private boolean inBackwardMotion = false;
+	private boolean inLeftMotion = false;
+	private boolean inRightMotion = false;
+	private boolean stopped = true;
+	
+	
 	private boolean clawMoving;
 	
 
 	public Control(NXTCommand commander) {
 		this.commander = commander;
-		setMoving(false);
 	}
 	
 
 	@Override
 	public void move(int speed, boolean reverse) throws IOException {
-		if (isMoving())
+		if (isInForwardMotion() && !reverse)
 			return;
-		if(!reverse)
-			speed *= -1;
+		if (isInBackwardMotion() && reverse)
+			return;
+		setInRightMotion(false);
+		setInLeftMotion(false);
 		
-		commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		if(reverse){
+			System.out.println("Moving backwards");
+			commander.setOutputState(0, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			commander.setOutputState(2, (byte) speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			setInBackwardMotion(true);
+		}else{
+			System.out.println("Moving forwards");
+			commander.setOutputState(0, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			commander.setOutputState(2, (byte) -speed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+			setInForwardMotion(true);
+		}
+			
+		
+		
 		
 //		String print;
 //		if (reverse)	print="Backwards";
 //		else	print="Forwards";
 //		System.out.println("MOVING: "+print);
 		
-		setMoving(true);
 	}
 
 
 	@Override
 	public void left(int turnSpeed) throws IOException {
-		if (isMoving())
+		if (isInLeftMotion())
 			return;
-		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		setInBackwardMotion(false);
+		setInForwardMotion(false);
+		setInRightMotion(false);
+		System.out.println("moving left");
+		
+		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 //		System.out.println("TURNING: left");
-		setMoving(true);
+		setInLeftMotion(true);
 	}
 
 	@Override
 	public void right(int turnSpeed) throws IOException {
-		if (isMoving())
+		if (isInRightMotion())
 			return;
-		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
-		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		setInBackwardMotion(false);
+		setInForwardMotion(false);
+		setInLeftMotion(false);
+		System.out.println("moving right");
+		
+		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
+		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 //		System.out.println("TURNING: right");
-		setMoving(true);
+		setInRightMotion(true);
 	}
 
 	@Override
 	public void stop() throws IOException {
+		if (isStopped())
+			return;
 		commander.setOutputState(0, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(1, (byte) 0, 0, 0, 0, 0, 0);
 		commander.setOutputState(2, (byte) 0, 0, 0, 0, 0, 0);
-//		System.out.println("STOPPING");
-		//lejos.nxt.Sound.playSoundFile("tires.rso");
-		//lejos.nxt.Sound.playSoundFile("Hooray.rso");
-		Sound.playTone(500, 10);
-		setMoving(false);
+		System.out.println("stopping");
+
+		setInBackwardMotion(false);
+		setInForwardMotion(false);
+		setInLeftMotion(false);
+		setInRightMotion(false);
+		
+		setStopped(true);
 	}
 
 	
@@ -86,21 +120,61 @@ public class Control implements IControl{
 
 
 	/**
-	 * @param isMoving the isMoving to set
-	 */
-	public void setMoving(boolean isMoving) {
-		this.inMotion = isMoving;
-	}
-
-
-	/**
 	 * 
 	 * @return {@code true} hvis robotten er i bevægelse (ikke har fået en {@code stop()} kommando endnu)
 	 * <br>
 	 * {@code false} hvis robotten står stille
 	 */
-	public boolean isMoving() {
-		return inMotion;
+	public boolean isInForwardMotion() {
+		return inForwardMotion;
+	}
+
+
+	/**
+	 * @param inForwardMoving the isMoving to set
+	 */
+	public void setInForwardMotion(boolean inForwardMoving) {
+		this.inForwardMotion = inForwardMoving;
+	}
+
+
+	public boolean isInBackwardMotion() {
+		return inBackwardMotion;
+	}
+
+
+	public void setInBackwardMotion(boolean inBackwardMotion) {
+		this.inBackwardMotion = inBackwardMotion;
+	}
+
+
+	public boolean isInLeftMotion() {
+		return inLeftMotion;
+	}
+
+
+	public void setInLeftMotion(boolean inLeftMotion) {
+		this.inLeftMotion = inLeftMotion;
+	}
+
+
+	public boolean isInRightMotion() {
+		return inRightMotion;
+	}
+
+
+	public void setInRightMotion(boolean inRightMotion) {
+		this.inRightMotion = inRightMotion;
+	}
+
+
+	public void setStopped(boolean stopped) {
+		this.stopped = stopped;
+	}
+
+
+	public boolean isStopped() {
+		return stopped;
 	}
 
 
@@ -125,7 +199,7 @@ public class Control implements IControl{
 	public void openClaw(int clawMotor) throws IOException {
 //		if (isClawMoving())
 //			return;
-//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
 		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
@@ -134,7 +208,7 @@ public class Control implements IControl{
 	public void closeClaw(int clawMotor) throws IOException {
 //		if (isClawMoving())
 //			return;
-//		commander.setOutputState(1, (byte)-clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
+//		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, CLAW_LIMIT);
 		commander.setOutputState(1, (byte)clawMotor, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		clawMoving = true;
 	}
@@ -185,6 +259,7 @@ public class Control implements IControl{
 		
 	}
 
+	@Deprecated
 	@Override
 	public void reverse(int speed, int duration) {
 		try {

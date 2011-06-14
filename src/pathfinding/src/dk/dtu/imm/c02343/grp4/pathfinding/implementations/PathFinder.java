@@ -91,7 +91,6 @@ public class PathFinder {
 		}
 		
 		// initial state for A*. The closed group is empty. Only the starting
-
 		// tile is in the open list and it'e're already there
 		nodes[sy][sx].cost = 0;
 		nodes[sy][sx].depth = 0;
@@ -105,7 +104,6 @@ public class PathFinder {
 		int maxDepth = 0;
 		while ((maxDepth < maxSearchDistance) && (open.size() != 0)) {
 			// pull out the first node in our open list, this is determined to 
-
 			// be the most likely to be the next step based on our heuristic
 
 			Node current = getFirstInOpen();
@@ -117,7 +115,6 @@ public class PathFinder {
 			addToClosed(current);
 			
 			// search through all the neighbours of the current node evaluating
-
 			// them as next steps
 
 			for (int x=-1;x<2;x++) {
@@ -129,9 +126,7 @@ public class PathFinder {
 					}
 					
 					// if we're not allowing diaganol movement then only 
-
 					// one of x or y can be set
-
 					if (!allowDiagMovement) {
 						if ((x != 0) && (y != 0)) {
 							continue;
@@ -139,15 +134,12 @@ public class PathFinder {
 					}
 					
 					// determine the location of the neighbour and evaluate it
-
 					int xp = x + current.x;
 					int yp = y + current.y;
 					
 					if (isValidLocation(robot,sy,sx,yp,xp)) {
 						// the cost to get to this node is cost the current plus the movement
-
 						// cost to reach this node. Note that the heursitic value is only used
-
 						// in the sorted open list
 
 						float nextStepCost = current.cost + getMovementCost(robot, current.y, current.x, yp, xp);
@@ -155,10 +147,8 @@ public class PathFinder {
 						map.pathFinderVisited(yp, xp);
 						
 						// if the new cost we've determined for this node is lower than 
-
 						// it has been previously makes sure the node hasn'e've
 						// determined that there might have been a better path to get to
-
 						// this node so it needs to be re-evaluated
 
 						if (nextStepCost < neighbour.cost) {
@@ -171,9 +161,7 @@ public class PathFinder {
 						}
 						
 						// if the node hasn't already been processed and discarded then
-
 						// reset it's cost to our current cost and add it as a next possible
-
 						// step (i.e. to the open list)
 
 						if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
@@ -193,9 +181,9 @@ public class PathFinder {
 		if (nodes[ty][tx].parent == null) {
 			return null;
 		}
-		
-		// At this point we've definitely found a path so we can uses the parent
-		// references of the nodes to find out way from the target location back
+        
+		// At this point we've definitely found a path so we can use the parent
+		// references of the nodes to find a way from the target location back
 		// to the start recording the nodes on the way.
 		
 		// Using the minStepDistance field the path is reduced to a minimum of

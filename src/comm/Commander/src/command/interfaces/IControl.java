@@ -13,9 +13,9 @@ import command.BertaCommando;
 public interface IControl {
 	
 	int CLAW_LIMIT = 175;
-	int DEFAULT_CLAW_SPEED = 15;
+	int DEFAULT_CLAW_SPEED = 20;
 	
-	int DEFAULT_MOVE_SPEED = 15;
+	int DEFAULT_MOVE_SPEED = 20;
 	int DEFAULT_TURN_SPEED = 15;	
 	
 	/**
@@ -73,22 +73,22 @@ public interface IControl {
 	/**
 	 * Åbner kloen.. <br>
 	 * 
-	 * @param clawMotor
+	 * @param speed
 	 *            - hastighed hvormed kloen åbnes (0-50)
 	 * @throws IOException
 	 *             hvis forbindelsen blev tabt
 	 */
-	void openClaw(int clawMotor) throws IOException;
+	void openClaw(int speed) throws IOException;
 	void openClaw() throws IOException;
 	/**
 	 * Lukker kloen.. <br>
 	 * 
-	 * @param clawMotor
+	 * @param speed
 	 *            - hastighed hvormed kloen lukkes (0-50)
 	 * @throws IOException
 	 *             hvis forbindelsen blev tabt
 	 */
-	void closeClaw(int clawMotor) throws IOException;
+	void closeClaw(int speed) throws IOException;
 	void closeClaw() throws IOException;
 	/**
 	 * Stopper kloen!<br>

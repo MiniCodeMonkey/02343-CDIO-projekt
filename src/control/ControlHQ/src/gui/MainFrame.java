@@ -7,12 +7,18 @@
 package gui;
 
 import gui.comm.CommFrame;
+import gui.info.MiniInfoFrame;
 import gui.manualControl.ControlFrame;
+import gui.path.PathToleranceFrame;
 import gui.processing.ProcessingFrame;
-import control.FramePlaceHolder;
+import gui.speed.SpeedFrame;
+
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import controller.MainController;
+import gui.debug.DebugFrame;
 
 /**
  *
@@ -20,11 +26,14 @@ import javax.swing.JOptionPane;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    /** Creates new form MainFrame */
+    
+	/** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
         
+       
         makeCommFrame();
+        makeMiniInfoFrame();
         
         FramePlaceHolder.setMainFrame(this);
     }
@@ -43,12 +52,20 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        settingsMenu = new javax.swing.JMenu();
+        speedMenuItem = new javax.swing.JMenuItem();
+        toleranceMenuItem = new javax.swing.JMenuItem();
+        updateMenuItem = new javax.swing.JMenuItem();
         aboutMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setLocationByPlatform(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         dashboard.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -62,8 +79,33 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainMenuBar.add(fileMenu);
 
-        jMenu2.setText("Edit");
-        mainMenuBar.add(jMenu2);
+        settingsMenu.setText("Instillinger");
+
+        speedMenuItem.setText("Hastigheder");
+        speedMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                speedMenuItemActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(speedMenuItem);
+
+        toleranceMenuItem.setText("Tolerancer");
+        toleranceMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toleranceMenuItemActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(toleranceMenuItem);
+
+        updateMenuItem.setText("Update info");
+        updateMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateMenuItemActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(updateMenuItem);
+
+        mainMenuBar.add(settingsMenu);
 
         aboutMenu.setText("?");
 
@@ -83,11 +125,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 932, Short.MAX_VALUE)
+            .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 987, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+            .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         pack();
@@ -99,9 +141,26 @@ public class MainFrame extends javax.swing.JFrame {
                 "Orn'lig syg about box til basis kontrol-HQ-2theMaX!\n"
                 + "Brugt til test af orn'lig syg B.E.R.T.A!"
                 + "\n"
-                + "Forår 2011 (c) Gruppe 4 - CDIO Projekt - Morten Hulvej", "Orn'lig syg",
+                + "Forï¿½r 2011 (c) Gruppe 4 - CDIO Projekt - Morten Hulvej", "Orn'lig syg",
 			JOptionPane.WARNING_MESSAGE,new ImageIcon(icon));
     }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    private void speedMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_speedMenuItemActionPerformed
+        makeSpeedSettingsFrame();
+    }//GEN-LAST:event_speedMenuItemActionPerformed
+
+    private void toleranceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toleranceMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toleranceMenuItemActionPerformed
+
+    private void updateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMenuItemActionPerformed
+        FramePlaceHolder.getMinInfoFrame().UpdateBothRobots();
+    }//GEN-LAST:event_updateMenuItemActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        MainController.getInstance().stop();
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
 
 
     /**
@@ -130,8 +189,13 @@ public class MainFrame extends javax.swing.JFrame {
     	processFrame.setVisible(true);
     	dashboard.add(processFrame);
 	}
-    public void makePathfindingFrame() {
+    public void makeToleranceSettingsFrame() {
 		// TODO
+    	
+    	PathToleranceFrame pathframe = new PathToleranceFrame();
+    	
+    	pathframe.setVisible(true);
+    	dashboard.add(pathframe);
 	}
     public void makeCommFrame() {
 		// TODO
@@ -146,6 +210,24 @@ public class MainFrame extends javax.swing.JFrame {
     public javax.swing.JDesktopPane getDashboard(){
     	return dashboard;
     }
+    public void makeSpeedSettingsFrame() {
+		// TODO
+    	
+    	SpeedFrame speedFrame = new SpeedFrame();
+    	speedFrame.setVisible(true);
+    	dashboard.add(speedFrame);
+    	
+	}
+    public void makeMiniInfoFrame() {
+		MiniInfoFrame miniFrame = new MiniInfoFrame();
+		miniFrame.setVisible(true);
+		dashboard.add(miniFrame);
+	}
+    public void makeDeugFrame(){
+        DebugFrame debugFrame = new DebugFrame();
+        debugFrame.setVisible(true);
+        dashboard.add(debugFrame);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aboutMenu;
@@ -154,8 +236,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem importMenuItem;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JMenu settingsMenu;
+    private javax.swing.JMenuItem speedMenuItem;
+    private javax.swing.JMenuItem toleranceMenuItem;
+    private javax.swing.JMenuItem updateMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
