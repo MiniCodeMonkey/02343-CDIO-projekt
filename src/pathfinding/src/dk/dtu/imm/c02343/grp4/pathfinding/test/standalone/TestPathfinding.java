@@ -25,6 +25,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.TileMap;
@@ -249,8 +250,10 @@ public class TestPathfinding implements ActionListener {
 		cake.setPos(y, x);
 		// ** HOT FIX **
 		
-		PathFinder pathFinder = new PathFinder(tileMap, 1500, true);
-		Path path = pathFinder.findPath(robot, robot.getY(), robot.getX(), cake.getY(), cake.getX());
+		PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
+		Location cakeLocation = new Location(cake.getY(), cake.getX());
+		
+		Path path = pathFinder.findPath(robot, cakeLocation);
 		System.out.println("Finding path between " + robot.getX() +"," + robot.getY() + " and " + cake.getX() + "," + cake.getY() + ".");
 		
 		//Random r = new Random();
