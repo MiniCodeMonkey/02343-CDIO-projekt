@@ -93,10 +93,14 @@ public class ProcessingThread extends Thread
 		while (running)
 		{
 			// Get image from camera
+//			long gettingImage = System.currentTimeMillis();
 			BufferedImage image = imageSource.getImage();
-
+//			System.out.println("Got image in " + (System.currentTimeMillis()-gettingImage) + " ms");
+			
 			// Process the image
+//			gettingImage = System.currentTimeMillis();
 			locations = imageProcessor.examineImage(image, true);
+//			System.out.println("Processed image in " + (System.currentTimeMillis()-gettingImage) + " ms");
 			
 			try {
 				calculatePaths(locations);
