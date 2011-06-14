@@ -585,29 +585,23 @@ public class BasicControlGui extends javax.swing.JFrame {
 		System.out.println("KEY RELEASED: " + key);
 
              // skal indtil videre stoppe alt, uanset hvilken knap man slipper
-                allStop();
-//		switch (key) {
-//		case KeyEvent.VK_UP:
-//			allStop();
-//			break;
-//		case KeyEvent.VK_DOWN:
-//			allStop();
-//			break;
-//		case KeyEvent.VK_LEFT:
-//			allStop();
-//			break;
-//		case KeyEvent.VK_RIGHT:
-//			allStop();
-//			break;
-//                case KeyEvent.VK_SPACE:
-//			closeClaw();
-//			break;
-//                case KeyEvent.VK_CONTROL:
-//			openClaw();
-//			break;
-//		default:
-//			break;
-//		}
+                
+		switch (key) {
+		case KeyEvent.VK_UP:
+		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_RIGHT:
+			allStop();
+			break;
+        case KeyEvent.VK_SPACE:
+			stopClaw();
+			break;
+        case KeyEvent.VK_CONTROL:
+			stopClaw();
+			break;
+		default:
+			break;
+		}
 
 	}// GEN-LAST:event_keyReleased
         // GEN-FIRST:event_formWindowClosing
@@ -725,6 +719,15 @@ public class BasicControlGui extends javax.swing.JFrame {
 		try {
 			controller.closeClaw(clawspeedSlider.getValue());
 //			claw.closeClaw(clawspeedSlider.getValue());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
+					JOptionPane.ERROR_MESSAGE);
+			reset();
+		}
+	}
+	public void stopClaw(){
+		try {
+			controller.stopClaw();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Fejl",
 					JOptionPane.ERROR_MESSAGE);

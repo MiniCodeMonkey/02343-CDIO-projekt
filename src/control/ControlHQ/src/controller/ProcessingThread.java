@@ -103,7 +103,9 @@ public class ProcessingThread extends Thread
 //			System.out.println("Processed image in " + (System.currentTimeMillis()-gettingImage) + " ms");
 			
 			try {
+//				long gettingImage = System.currentTimeMillis();
 				calculatePaths(locations);
+//				System.out.println("calculate paths in " + (System.currentTimeMillis()-gettingImage) + " ms");
 			} catch (ControllerException e) {
 				System.err.println(e.getMessage());
 			}
@@ -265,11 +267,12 @@ public class ProcessingThread extends Thread
 		
 		
 		// disconnecting all robots
-//		robotsCommando.disconnect();
+		robotsCommando.disconnect();
 //
+		running = false;
 		imageSource.close();
 //		
-//		running = false;
+
 	}
 
 	public int getRobotsCount()

@@ -302,6 +302,7 @@ public class Control implements IControl{
 
 	@Override
 	public void disconnect() throws IOException {
+		stop();
 		commander.close();
 	}
 
