@@ -34,14 +34,14 @@ public class TestImageProcessor2 implements ActionListener {
 	 */
 	public void run() {
 		// Opret WebCam, initialisér, hent billede til RenderedImage, og luk WebCam igen.
-//		imageSource = new WebCam();
+		imageSource = new WebCam();
 //		imageSource = new ImageFile();
 		imageProcessor = new ImageProcessor2();
 //		try {
-//			imageSource.init();
-//		} catch (Exception e) {
-			imageSource = new ImageFile();
 			imageSource.init();
+//		} catch (Exception e) {
+//			imageSource = new ImageFile();
+//			imageSource.init();
 //		}
 		BufferedImage sourceImg = imageSource.getImage();
 		imageSource.close();
