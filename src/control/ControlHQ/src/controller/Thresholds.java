@@ -15,8 +15,8 @@ public class Thresholds
     }
     
 	private int slowSpeed = 5;
-	private int mediumSpeed = 20;
-	private int highSpeed = 50;
+	private int mediumSpeed = 5;
+	private int highSpeed = 30;
 
 	private int closeEnoughToCake = 30;
 	private int closeEnoughToDelivery = 30;

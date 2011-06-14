@@ -204,7 +204,7 @@ public class PathFinder {
 		path.prependStep(sy,sx);
 		
 		long elapsed = System.currentTimeMillis() - start;
-		System.out.println("Pathfinding done in " + elapsed + " ms");
+		//System.out.println("Pathfinding done in " + elapsed + " ms");
 		
 		// thats it, we have our path 
 

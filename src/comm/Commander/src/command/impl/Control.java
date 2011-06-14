@@ -38,6 +38,7 @@ public class Control implements IControl{
 			return;
 		setInRightMotion(false);
 		setInLeftMotion(false);
+		setStopped(false);
 		
 		if(reverse){
 			System.out.println("Moving backwards");
@@ -69,6 +70,7 @@ public class Control implements IControl{
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInRightMotion(false);
+		setStopped(false);
 		System.out.println("moving left");
 		
 		commander.setOutputState(0, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
@@ -84,6 +86,7 @@ public class Control implements IControl{
 		setInBackwardMotion(false);
 		setInForwardMotion(false);
 		setInLeftMotion(false);
+		setStopped(false);
 		System.out.println("moving right");
 		
 		commander.setOutputState(0, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
