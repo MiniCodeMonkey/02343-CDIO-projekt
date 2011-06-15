@@ -22,6 +22,7 @@ public class RmiClient {
 	private int registryPort = 1337;
 	private Registry registry;
 	private Process processes[];
+	public final String BASE_PATH = "..\\..\\comm\\CommanderRMI\\";
 	
 	/**
 	 * Opretter forbindelse til begge robotter
@@ -59,90 +60,61 @@ public class RmiClient {
 		} catch (RemoteException e) {
 			System.err.println("Fejl ved oprettelse af RMI registry");
 			e.printStackTrace();
-//			System.exit(1);
 		}
 		/*
 		 * Tester på bertaEnabled og opretter forbindelsen i sin egen process
 		 * */
 		if (bertaEnabled) {
-			try {
-				System.out.println("Starting process");
-				/*
-				 * Opretter processen. 
-				 * Bemærk at bluecove.jar og pccomm.jar er med som parametre
-				 * */				
-				processes[0] = Runtime.getRuntime().exec("java -cp ..\\..\\comm\\CommanderRMI\\bin;..\\..\\comm\\CommanderRMI\\bluecove.jar;..\\..\\comm\\CommanderRMI\\pccomm.jar command.rmi.RmiServer 0");
-				boolean successful = false;
-				/*
-				 * Forsøger at hente remote object fra registeret MAX_TRIES=100 gange og sover 1 sek mellem hvert forsøg
-				 * */
-				for (int i = 0; i < MAX_TRIES; i++) {
-					try {
-						System.out.println("Forsøger at forbinde ... Forsøg nr. " + (i+1));
-						control[0] = (IControl)(registry.lookup("remote_0"));
-						successful = true;
-						break;
-					} catch (NotBoundException e) {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e1) {
-						}
-					}
-				}
-				if (!successful) {
-					throw new NotBoundException();
-				}
-			} catch (AccessException e) {
-				System.err.println("Fejl ved tilgang til BERTA");
-				e.printStackTrace();
-			} catch (RemoteException e) {
-				System.err.println("Fejl ved forbindelse til BERTA");
-				e.printStackTrace();
-			} catch (NotBoundException e) {
-				System.err.println("BERTA kunne ikke findes i RMI registret");
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.err.println("Kunne ikke starte BERTA-styringsprogram");
-				e.printStackTrace();
-			}
+			initServer(0);
 		}
 		/*
 		 * Det samme som ovenfor
 		 * */
 		if (propEnabled) {
-			try {
-				System.out.println("Starting process");
-				processes[1] = Runtime.getRuntime().exec("java -cp ..\\..\\comm\\CommanderRMI\\bin;..\\..\\comm\\CommanderRMI\\bluecove.jar;..\\..\\comm\\CommanderRMI\\pccomm.jar command.rmi.RmiServer 1");
-				boolean successful = false;
-				for (int i = 0; i < MAX_TRIES; i++) {
+			initServer(1);
+		}
+	}
+	
+	private void initServer(int robot) {
+		try {
+			System.out.println("Starting process for robot " + robot);
+			/*
+			 * Opretter processen. 
+			 * Bemærk at bluecove.jar og pccomm.jar er med som parametre
+			 * */				
+			processes[robot] = Runtime.getRuntime().exec("java -cp " + BASE_PATH + "bin;"+BASE_PATH+"bluecove.jar;"+BASE_PATH+"pccomm.jar command.rmi.RmiServer " + robot);
+			boolean successful = false;
+			/*
+			 * Forsøger at hente remote object fra registeret MAX_TRIES=100 gange og sover 1 sek mellem hvert forsøg
+			 * */
+			for (int i = 0; i < MAX_TRIES; i++) {
+				try {
+					System.out.println("Forsøger at forbinde til server "+robot+" ... Forsøg nr. " + (i+1));
+					control[robot] = (IControl)(registry.lookup("remote_"+robot));
+					successful = true;
+					break;
+				} catch (NotBoundException e) {
 					try {
-						System.out.println("Forsøger at forbinde ... Forsøg nr. " + (i+1));
-						control[1] = (IControl)(registry.lookup("remote_1"));
-						successful = true;
-						break;
-					} catch (NotBoundException e) {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e1) {
-						}
+						Thread.sleep(500);
+					} catch (InterruptedException e1) {
 					}
 				}
-				if (!successful) {
-					throw new NotBoundException();
-				}
-			} catch (AccessException e) {
-				System.err.println("Fejl ved tilgang til PROP");
-				e.printStackTrace();
-			} catch (RemoteException e) {
-				System.err.println("Fejl ved forbindelse til PROP");
-				e.printStackTrace();
-			} catch (NotBoundException e) {
-				System.err.println("PROP kunne ikke findes i RMI registret");
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.err.println("Kunne ikke starte PROP-styringsprogram");
-				e.printStackTrace();
 			}
+			if (!successful) {
+				throw new NotBoundException();
+			}
+		} catch (AccessException e) {
+			System.err.println("Fejl ved tilgang til robot " + robot);
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			System.err.println("Fejl ved forbindelse til robot " + robot);
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			System.err.println("Robot " + robot + " kunne ikke findes i RMI registret");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Kunne ikke starte robot " + robot + " styringsprogram");
+			e.printStackTrace();
 		}
 	}
 	
@@ -155,58 +127,37 @@ public class RmiClient {
 		 * Slukker for B.E.R.T.A.
 		 * */
 		if (bertaEnabled) {
-			//Stopper motorer
-			try {
-				control[0].stop();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			//Stopper kloen
-			try {
-				control[0].stopClaw();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			/*
-			 * unbinder remoteobject fra registeret
-			 * */
-			try {
-				registry.unbind("remote_0");
-			} catch (AccessException e) {
-				e.printStackTrace();
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			} catch (NotBoundException e) {
-				e.printStackTrace();
-			}
-			//dræber processen
-			processes[0].destroy();
+			shutdownServer(0);
 		}
 		/*
 		 * Slukker for P.R.O.P. (samme som for B.E.R.T.A.) 
 		 * */
 		if (propEnabled) {
-			try {
-				control[1].stop();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				control[1].stopClaw();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				registry.unbind("remote_1");
-			} catch (AccessException e) {
-				e.printStackTrace();
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			} catch (NotBoundException e) {
-				e.printStackTrace();
-			}
-			processes[1].destroy();
+			shutdownServer(1);
 		}
+	}
+	
+	private void shutdownServer(int robot) {
+		try {
+			control[robot].stop();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			control[robot].stopClaw();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			registry.unbind("remote_"+robot);
+		} catch (AccessException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			e.printStackTrace();
+		}
+		processes[robot].destroy();
 	}
 	
 	/**
