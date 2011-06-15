@@ -1,7 +1,10 @@
 package command.rmi;
 
 import java.awt.Desktop;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.rmi.AccessException;
@@ -76,6 +79,12 @@ public class RmiServer {
 				}
 			} catch (NumberFormatException e) {
 			}
+		}
+		try {
+			System.setOut(new PrintStream(new FileOutputStream("RmiServer_"+robot+"_out.log")));
+			System.setErr(new PrintStream(new FileOutputStream("RmiServer_"+robot+"_err.log")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 		RmiServer s = new RmiServer(robot);
 		s.init();

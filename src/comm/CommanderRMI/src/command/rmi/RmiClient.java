@@ -173,24 +173,31 @@ public class RmiClient {
 		try {
 			System.out.println("Battery level 0: " + control[0].getBatteryLevel());
 			System.out.println("Battery level 1: " + control[1].getBatteryLevel());
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 20; i++) {
 				control[0].move(100,false);
 				control[1].stop();
+				control[0].closeClaw();
+				control[1].openClaw();
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(800);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				control[0].stop();
 				control[1].move(100,false);
+				control[0].openClaw();
+				control[1].closeClaw();
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(800);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 			control[0].stop();
-			control[0].stop();
+			control[1].stop();
+			control[0].stopClaw();
+			control[1].stopClaw();
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
