@@ -17,5 +17,4 @@
 /src/control/ControlTest/build
 /src/control/ControlHQ/build
 
-/src/comm/CommanderRMI/bin
 /src/comm/RMItest/bin
