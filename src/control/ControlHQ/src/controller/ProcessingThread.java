@@ -5,11 +5,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import command.Commando;
-import command.exception.MasterRobotNotFound;
-import command.interfaces.IControl;
-import command.rmi.RmiClient;
-
 import controller.RobotThread.RobotState;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
@@ -24,7 +19,7 @@ import dk.dtu.imm.c02343.grp4.pathfinding.implementations.PathFinder;
 
 public class ProcessingThread extends Thread
 {
-//	private Commando robotsCommando;
+	// private Commando robotsCommando;
 	private RmiClient robotsCommando;
 	private RobotThread[] robotThreads;
 	private IImageSource imageSource;
@@ -66,7 +61,6 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-//		robotsCommando = new Commando(0);
 		
 		robotsCommando = new RmiClient();
 		robotsCommando.init();
@@ -104,21 +98,14 @@ public class ProcessingThread extends Thread
 		while (running)
 		{
 			// Get image from camera
-			// long gettingImage = System.currentTimeMillis();
 			BufferedImage image = imageSource.getImage();
-			// System.out.println("Got image in " +
-			// (System.currentTimeMillis()-gettingImage) + " ms");
 			
 			// Process the image
-			// gettingImage = System.currentTimeMillis();
 			locations = imageProcessor.examineImage(image, true);
-			// System.out.println("Processed image in " +
-			// (System.currentTimeMillis()-gettingImage) + " ms");
 			
 			try
 			{
-//				long gettingImage = System.currentTimeMillis();
-				calculatePaths(locations);
+				calculatePaths(locations); // Calculate new paths
 			}
 			catch (ControllerException e)
 			{
@@ -128,10 +115,23 @@ public class ProcessingThread extends Thread
 		}
 	}
 	
+	/**
+	 * Calculates new paths for all robots
+	 * 
+	 * @param locations The locations object derived from a processed image
+	 * @throws ControllerException
+	 */
 	private void calculatePaths(ILocations locations) throws ControllerException
 	{
 		// Save number of robots and cakes
-		robotsCount = locations.getRobots().size(); // TODO FIX
+		int c = 0;
+		if (locations.getRobots().get(0).isActive())
+			c++;
+		
+		if (locations.getRobots().get(1).isActive())
+			c++;
+		
+		robotsCount = c;
 		cakesCount = locations.getCakes().size();
 		
 		// Is no robots available?
@@ -147,25 +147,13 @@ public class ProcessingThread extends Thread
 		// Find a path for each robot
 		int robotIndex = 0;
 		
+		// Loop through all active robots
 		for (RobotThread robotThread : robotThreads)
 		{
-			
-			Location target = null;
-			
 			if (robotThread == null)
-			{
 				continue;
-			}
 			
-			// skal muligvis rettes hvis banen ændrer sig under HEADING_FOR_DELIVERY (heigh +/- 1)
-			if ( (cakesCount <= 0 && robotThread.getRobotState() != RobotState.HEADING_FOR_DELIVERY)
-					|| robotThread.getRobotState() == RobotState.PICKING_UP
-					|| robotThread.getRobotState() == RobotState.DELIVERING)
-			{
-				continue;
-			}
-			
-			// Get physical robot location
+			// Tell the thread the new robot locations
 			try
 			{
 				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
@@ -177,15 +165,9 @@ public class ProcessingThread extends Thread
 				throw new ControllerException("Could not visually find robot " + robotThread.toString());
 			}
 			
-			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE)
+			// If idling, possibly pick a cake to pick up
+			if (robotThread.getRobotState() == RobotState.IDLE && cakesCount > 0)
 			{
-				target = robotThread.getTargetLocation();
-				
-			}
-			else
-			{
-				// Decide what cake to collect
-				
 				// Build a list of cakes not in use by other robots
 				ArrayList<Location> possibleCakes = new ArrayList<Location>();
 				
@@ -194,20 +176,20 @@ public class ProcessingThread extends Thread
 				{
 					boolean in_use = false;
 					for (RobotThread rThread : robotThreads)
-					{	
+					{
 						if (rThread == null)
 							continue;
 						
 						if (rThread.getTargetLocation() != null && rThread.getTargetLocation().GetX() > 0)
 						{
-							// If the robot has the target location as the current cake
+							// If the robot has the target location as the
+							// current cake
 							if (rThread.getTargetLocation().GetX() == cake.getX() && rThread.getTargetLocation().GetY() == cake.getY())
 							{
 								in_use = true;
 								break;
 							}
 						}
-						
 						
 					}
 					
@@ -219,63 +201,75 @@ public class ProcessingThread extends Thread
 					}
 				}
 				
-				// Find closest cake
-				double closestDistance = Double.MAX_VALUE;
-				Location determinedCakeLocation = null;
-				
-				// Loop through all cake locations to find the best location
-				for (Location cakeLocation : possibleCakes)
-				{	
+				// Possible cakes can still be <= 0 if the existing cake is
+				// already have been selected by another robot
+				if (possibleCakes.size() > 0)
+				{
+					// Find closest cake
+					double closestDistance = Double.MAX_VALUE;
+					Location determinedCakeLocation = null;
 					
-					double dist = Math.sqrt(
-							Math.pow(robotThread.getRobotLocation().getX() - cakeLocation.GetX(), 2) +
-							Math.pow(robotThread.getRobotLocation().getY() - cakeLocation.GetY(), 2)
-					);
-					
-					// Is this cake closer than the last found closest cake?
-					if (dist < closestDistance)
+					// Loop through all cake locations to find the best location
+					for (Location cakeLocation : possibleCakes)
 					{
-						closestDistance = dist;
-						determinedCakeLocation = cakeLocation;
+						
+						double dist = Math.sqrt(Math.pow(robotThread.getRobotLocation().getX() - cakeLocation.GetX(), 2) + Math.pow(robotThread.getRobotLocation().getY() - cakeLocation.GetY(), 2));
+						
+						// Is this cake closer than the last found closest cake?
+						if (dist < closestDistance)
+						{
+							closestDistance = dist;
+							determinedCakeLocation = cakeLocation;
+						}
 					}
+					
+					// Set the target to the determined cake's location
+					robotThread.setTargetLocation(determinedCakeLocation);
+					
+					// Set the state of the robot
+					robotThread.setRobotState(RobotState.HEADING_FOR_CAKE);
+				}
+			}
+			
+			// We only calculate a path if the robot is heading for delivery or
+			// heading for a cake
+			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE)
+			{
+				Location target = robotThread.getTargetLocation();
+				
+				// Find path for robot
+				PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
+				
+				Path newPath = null;
+				
+				if (robotThread.getRobotLocation().isActive())
+					newPath = pathFinder.findPath(robotThread.getRobotLocation(), robotThread.getTargetLocation());
+				
+				if (newPath == null)
+				{
+					throw new ControllerException("Could not find path for robot " + robotThread.toString());
+				}
+				else
+				{
+					// Update path for robot thread
+					robotThread.setPath(newPath);
+					robotThread.setMapSize(locations.getTileImage().getHeight(), locations.getTileImage().getWidth());
+					
+					// Draw the path onto the tile image
+					locations.setTileImage(drawPath(locations.getTileImage(), robotThread.getPath()));
 				}
 				
-				// Set the target to the determined cake's location
-				robotThread.setTargetLocation(determinedCakeLocation);
+				robotIndex++;
 			}
-			
-				
-			
-			// Find path for robot
-			PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
-			
-			Path newPath = null;
-			
-			if (robotThread.getRobotLocation().isActive())
-				newPath = pathFinder.findPath(robotThread.getRobotLocation(), robotThread.getTargetLocation());
-			
-			if (newPath == null)
-			{
-				throw new ControllerException("Could not find path for robot " + robotThread.toString());
-			}
-			else
-			{
-				// Update path for robot thread
-				robotThread.setPath(newPath);
-				robotThread.setMapSize(locations.getTileImage().getHeight(), locations.getTileImage().getWidth());
-				
-				// Draw the path onto the tile image
-				locations.setTileImage(drawPath(locations.getTileImage(), robotThread.getPath()));
-			}
-			
-			// starting robot cycle
-			if (robotThread.getRobotState() == RobotState.IDLE)
-				robotThread.setRobotState(RobotState.HEADING_FOR_CAKE);
-			
-			robotIndex++;
 		}
 	}
 	
+	/**
+	 * Draws the specified path onto a sourceImage
+	 * @param sourceImage
+	 * @param path
+	 * @return
+	 */
 	private BufferedImage drawPath(BufferedImage sourceImage, Path path)
 	{
 		if (path == null)
@@ -313,7 +307,8 @@ public class ProcessingThread extends Thread
 	
 	public void stopRobotThreads()
 	{
-		if (robotThreads == null){
+		if (robotThreads == null)
+		{
 			for (RobotThread robot : robotThreads)
 			{
 				if (robot != null)
@@ -321,15 +316,14 @@ public class ProcessingThread extends Thread
 					System.out.println("STOPPING: " + robot.getName());
 					robot.setRunning(false);
 				}
-
+				
 			}
 		}
-		
 		
 		// disconnecting all robots
 		robotsCommando.shutdown();
 		//
-//
+		//
 		running = false;
 		imageSource.close();
 	}
@@ -427,25 +421,33 @@ public class ProcessingThread extends Thread
 	
 	public boolean isBertaConnected()
 	{
-//		return robotsCommando.isBertaConnected();
+		// return robotsCommando.isBertaConnected();
 		return false;
 	}
 	
 	public boolean isPropConnected()
 	{
-//		return robotsCommando.isPropConnected();
+		// return robotsCommando.isPropConnected();
 		return false;
 	}
-	public boolean isBertaPaused(){
+	
+	public boolean isBertaPaused()
+	{
 		return robotThreads[Commando.BERTA].isPaused();
 	}
-	public boolean isPropPaused(){
+	
+	public boolean isPropPaused()
+	{
 		return robotThreads[Commando.PROP].isPaused();
 	}
-	public void setPauseBerta(boolean paused){
+	
+	public void setPauseBerta(boolean paused)
+	{
 		robotThreads[Commando.BERTA].setPaused(paused);
 	}
-	public void setPauseProp(boolean paused){
+	
+	public void setPauseProp(boolean paused)
+	{
 		robotThreads[Commando.PROP].setPaused(paused);
 	}
 }
