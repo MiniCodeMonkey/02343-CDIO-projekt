@@ -23,7 +23,7 @@ public class Thresholds
 	
 	private double rotationClose = Math.toRadians(8);
 	private double rotationFairlyClose = Math.toRadians(25);
-	private int yieldDistance = 20;
+	private int yieldDistance = 65;
 	
 	/**
 	 * Returns the slow speed set

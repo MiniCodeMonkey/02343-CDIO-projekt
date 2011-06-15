@@ -85,8 +85,9 @@ public class PathFinder {
 		int ty = targetLocation.GetY();
 		int tx = targetLocation.GetX();
 		
-		// easy first check, if the destination is blocked, we can't get there
-		if (map.blocked(robot, ty, tx)) {
+		// easy first check, if the destination is blocked or the
+		// robot is outside the camera view
+		if (map.blocked(robot, ty, tx) || !robot.isActive()) {
 			return null;
 		}
 		

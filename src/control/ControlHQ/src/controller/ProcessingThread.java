@@ -177,7 +177,7 @@ public class ProcessingThread extends Thread
 				throw new ControllerException("Could not visually find robot " + robotThread.toString());
 			}
 			
-			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY)
+			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE)
 			{
 				target = robotThread.getTargetLocation();
 				
@@ -241,18 +241,17 @@ public class ProcessingThread extends Thread
 				}
 				
 				// Set the target to the determined cake's location
-				target = determinedCakeLocation;
+				robotThread.setTargetLocation(determinedCakeLocation);
 			}
 			
-			if (target != null && robotThread.getRobotState() == RobotState.IDLE)
-				robotThread.setTargetLocation(target);
+				
 			
 			// Find path for robot
 			PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
 			
 			Path newPath = null;
 			
-			if (robotThread.isAlive())
+			if (robotThread.getRobotLocation().isActive())
 				newPath = pathFinder.findPath(robotThread.getRobotLocation(), robotThread.getTargetLocation());
 			
 			if (newPath == null)

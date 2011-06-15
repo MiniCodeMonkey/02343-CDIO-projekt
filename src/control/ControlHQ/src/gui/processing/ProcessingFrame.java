@@ -997,7 +997,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 					
 					try {
 //						Thread.sleep((long) (time_slice*1000));
-						Thread.sleep((long) (200));
+						Thread.sleep((long) (100));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

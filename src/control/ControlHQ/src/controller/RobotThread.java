@@ -355,9 +355,13 @@ public class RobotThread extends Thread
 							{
 								double distance = calculateDistance(robotLocation.getX(), robotLocation.getY(),
 										otherRobotLocation.getX(), otherRobotLocation.getY());
+								
+								System.out.println("Should yield? " + robotLocation.getX() + "," + robotLocation.getY() + " - " + otherRobotLocation.getX() + "," + robotLocation.getY() + " distance: " + distance);
 
 								if (distance < Thresholds.getInstance().getYieldDistance())
 								{
+									System.out.println("Slave is yelding for master, distance: " + distance);
+									
 									robotControl.stop();
 
 									if (this.robotState == RobotState.HEADING_FOR_CAKE)
