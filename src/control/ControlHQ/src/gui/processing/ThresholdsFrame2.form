@@ -28,7 +28,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="thresholdsLayeredPane" alignment="0" pref="466" max="32767" attributes="0"/>
+          <Component id="thresholdsLayeredPane" alignment="0" pref="470" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -2131,10 +2131,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="minRGBpanel8" alignment="0" max="32767" attributes="1"/>
                               <Component id="maxRGBpanel8" alignment="0" max="32767" attributes="1"/>
+                              <Component id="minRGBpanel8" alignment="0" max="32767" attributes="1"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2142,9 +2144,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="minRGBpanel8" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="maxRGBpanel8" min="-2" pref="120" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="minRGBpanel8" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <Component id="maxRGBpanel8" min="-2" pref="120" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -2179,7 +2186,7 @@
                                   <Component id="minGVal8" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="minBVal8" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="50" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2280,7 +2287,7 @@
                                   <Component id="maxGVal8" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="maxBVal8" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="50" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2353,6 +2360,12 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JLabel" name="jLabel2">
+                  <Properties>
+                    <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" value="Obstacles"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>

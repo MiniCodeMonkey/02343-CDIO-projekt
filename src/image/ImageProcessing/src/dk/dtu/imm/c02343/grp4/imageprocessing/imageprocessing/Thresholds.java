@@ -119,7 +119,7 @@ public class Thresholds {
 	 * @return Maksimumgrænse for rød
 	 */
 	public int getMaxR() {
-		return min[0];
+		return max[0];
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class Thresholds {
 	 * @return Maksimumgrænse for grøn
 	 */
 	public int getMaxG() {
-		return min[0];
+		return max[1];
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class Thresholds {
 	 * @return Maksimumgrænse for blå
 	 */
 	public int getMaxB() {
-		return min[0];
+		return max[2];
 	}
 	
 	/**

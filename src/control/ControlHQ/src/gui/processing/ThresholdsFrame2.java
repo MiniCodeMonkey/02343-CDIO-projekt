@@ -15,10 +15,10 @@ package gui.processing;
  *
  * @author Morten Hulvej
  */
-public class ThresholdsFrame extends javax.swing.JInternalFrame {
+public class ThresholdsFrame2 extends javax.swing.JInternalFrame {
 
     /** Creates new form ThresholdsFrame */
-    public ThresholdsFrame() {
+    public ThresholdsFrame2() {
         initComponents();
     }
 
@@ -178,6 +178,7 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
         maxRVal8 = new javax.swing.JLabel();
         maxGVal8 = new javax.swing.JLabel();
         maxBVal8 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         commonRadioButton = new javax.swing.JRadioButton();
 
         minRGBpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Min RGB"));
@@ -1196,12 +1197,12 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
 
         buttonGroup1.add(robot1RadioButton);
         robot1RadioButton.setText("B.E.R.T.A.");
-        robot1RadioButton.setBounds(60, 10, 93, 23);
+        robot1RadioButton.setBounds(60, 10, 93, -1);
         thresholdsLayeredPane.add(robot1RadioButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         buttonGroup1.add(robot2RadioButton);
         robot2RadioButton.setText("P.R.O.P.");
-        robot2RadioButton.setBounds(200, 10, 93, 23);
+        robot2RadioButton.setBounds(200, 10, 93, -1);
         thresholdsLayeredPane.add(robot2RadioButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         commonPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Common"));
@@ -1255,7 +1256,7 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
                     .addComponent(minRVal8)
                     .addComponent(minGVal8)
                     .addComponent(minBVal8))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         minRGBpanel8Layout.setVerticalGroup(
             minRGBpanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1305,7 +1306,7 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
                     .addComponent(maxRVal8)
                     .addComponent(maxGVal8)
                     .addComponent(maxBVal8))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         maxRGBpanel8Layout.setVerticalGroup(
             maxRGBpanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1323,6 +1324,9 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
                 .addGap(22, 22, 22))
         );
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel2.setText("Obstacles");
+
         javax.swing.GroupLayout obstacleThresholdPanel2Layout = new javax.swing.GroupLayout(obstacleThresholdPanel2);
         obstacleThresholdPanel2.setLayout(obstacleThresholdPanel2Layout);
         obstacleThresholdPanel2Layout.setHorizontalGroup(
@@ -1330,17 +1334,22 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
             .addGroup(obstacleThresholdPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(obstacleThresholdPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(minRGBpanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(maxRGBpanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(maxRGBpanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(minRGBpanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         obstacleThresholdPanel2Layout.setVerticalGroup(
             obstacleThresholdPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(obstacleThresholdPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(minRGBpanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(maxRGBpanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(obstacleThresholdPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(obstacleThresholdPanel2Layout.createSequentialGroup()
+                        .addComponent(minRGBpanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(maxRGBpanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1355,7 +1364,7 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
 
         buttonGroup1.add(commonRadioButton);
         commonRadioButton.setText("Common settings");
-        commonRadioButton.setBounds(113, 40, 120, 23);
+        commonRadioButton.setBounds(113, 40, 120, -1);
         thresholdsLayeredPane.add(commonRadioButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1366,7 +1375,7 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(thresholdsLayeredPane, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
+            .addComponent(thresholdsLayeredPane, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
         );
 
         pack();
@@ -1381,6 +1390,7 @@ public class ThresholdsFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel commonPanel;
     private javax.swing.JRadioButton commonRadioButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel maxBVal;
     private javax.swing.JLabel maxBVal1;
     private javax.swing.JLabel maxBVal2;

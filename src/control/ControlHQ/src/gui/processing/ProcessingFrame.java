@@ -33,7 +33,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 
     private void initListeners() {
 		
-    	stateChangeListener = new ImageChangeListener();
+    	stateChangeListener = new RobotColorChangeListener();
 		// TODO init. sliders p� en smartere m�de..
 
 		// min-sliders
@@ -1033,7 +1033,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     private ImagePanel srcImgPanel;
     private ImagePanel tileImgPanel;
     
-    private ImageChangeListener stateChangeListener;
+    private RobotColorChangeListener stateChangeListener;
     
     boolean webcamRunning = true;
     boolean webcamFeedPaused = false;

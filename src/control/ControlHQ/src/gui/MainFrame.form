@@ -21,11 +21,19 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="settingsMenu">
+        <Menu class="javax.swing.JMenu" name="pathFinderMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Instillinger"/>
+            <Property name="text" type="java.lang.String" value="Pathfinding"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="toleranceMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Vinkler &amp; afstand"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toleranceMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="speedMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Hastigheder"/>
@@ -34,14 +42,28 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="speedMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="toleranceMenuItem">
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="imageProcessMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ImageProcessing"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="thresholdsMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tolerancer"/>
+                <Property name="text" type="java.lang.String" value="Thresholds"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toleranceMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="thresholdsMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="settingsMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Misc"/>
+          </Properties>
+          <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="updateMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Update info"/>
@@ -69,9 +91,6 @@
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="aboutMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="?"/>
-          </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="showRmiLog">
               <Properties>

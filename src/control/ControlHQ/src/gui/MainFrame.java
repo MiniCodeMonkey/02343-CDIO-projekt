@@ -10,6 +10,7 @@ import gui.comm.CommFrame;
 import gui.info.MiniInfoFrame;
 import gui.manualControl.ControlFrame;
 import gui.path.PathToleranceFrame;
+import gui.processing.ImageThresholdsFrame;
 import gui.processing.ProcessingFrame;
 import gui.speed.SpeedFrame;
 
@@ -34,7 +35,6 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
-       
         makeCommFrame();
         makeMiniInfoFrame();
         
@@ -55,9 +55,12 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
-        settingsMenu = new javax.swing.JMenu();
-        speedMenuItem = new javax.swing.JMenuItem();
+        pathFinderMenu = new javax.swing.JMenu();
         toleranceMenuItem = new javax.swing.JMenuItem();
+        speedMenuItem = new javax.swing.JMenuItem();
+        imageProcessMenu = new javax.swing.JMenu();
+        thresholdsMenuItem = new javax.swing.JMenuItem();
+        settingsMenu = new javax.swing.JMenu();
         updateMenuItem = new javax.swing.JMenuItem();
         pauseBertaCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         pausePropCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
@@ -85,7 +88,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainMenuBar.add(fileMenu);
 
-        settingsMenu.setText("Instillinger");
+        pathFinderMenu.setText("Pathfinding");
+
+        toleranceMenuItem.setText("Vinkler & afstand");
+        toleranceMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toleranceMenuItemActionPerformed(evt);
+            }
+        });
+        pathFinderMenu.add(toleranceMenuItem);
 
         speedMenuItem.setText("Hastigheder");
         speedMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -93,15 +104,23 @@ public class MainFrame extends javax.swing.JFrame {
                 speedMenuItemActionPerformed(evt);
             }
         });
-        settingsMenu.add(speedMenuItem);
+        pathFinderMenu.add(speedMenuItem);
 
-        toleranceMenuItem.setText("Tolerancer");
-        toleranceMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        mainMenuBar.add(pathFinderMenu);
+
+        imageProcessMenu.setText("ImageProcessing");
+
+        thresholdsMenuItem.setText("Thresholds");
+        thresholdsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toleranceMenuItemActionPerformed(evt);
+                thresholdsMenuItemActionPerformed(evt);
             }
         });
-        settingsMenu.add(toleranceMenuItem);
+        imageProcessMenu.add(thresholdsMenuItem);
+
+        mainMenuBar.add(imageProcessMenu);
+
+        settingsMenu.setText("Misc");
 
         updateMenuItem.setText("Update info");
         updateMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -128,8 +147,6 @@ public class MainFrame extends javax.swing.JFrame {
         settingsMenu.add(pausePropCheckBoxMenuItem);
 
         mainMenuBar.add(settingsMenu);
-
-        aboutMenu.setText("?");
 
         showRmiLog.setText("Show RMI Log");
         aboutMenu.add(showRmiLog);
@@ -175,7 +192,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_speedMenuItemActionPerformed
 
     private void toleranceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toleranceMenuItemActionPerformed
-        // TODO add your handling code here:
+        System.gc();
     }//GEN-LAST:event_toleranceMenuItemActionPerformed
 
     private void updateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMenuItemActionPerformed
@@ -204,6 +221,12 @@ public class MainFrame extends javax.swing.JFrame {
 			else	MainController.getInstance().setPauseProp(false);
 		}
     }//GEN-LAST:event_pausePropCheckBoxMenuItemStateChanged
+
+    private void thresholdsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thresholdsMenuItemActionPerformed
+        ImageThresholdsFrame f = new ImageThresholdsFrame();
+        f.setVisible(true);
+        dashboard.add(f);
+    }//GEN-LAST:event_thresholdsMenuItemActionPerformed
 
 
     /**
@@ -278,13 +301,16 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JDesktopPane dashboard;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu imageProcessMenu;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JMenu pathFinderMenu;
     private javax.swing.JCheckBoxMenuItem pauseBertaCheckBoxMenuItem;
     private javax.swing.JCheckBoxMenuItem pausePropCheckBoxMenuItem;
     private javax.swing.JMenu settingsMenu;
     private javax.swing.JMenuItem showRmiLog;
     private javax.swing.JMenuItem speedMenuItem;
+    private javax.swing.JMenuItem thresholdsMenuItem;
     private javax.swing.JMenuItem toleranceMenuItem;
     private javax.swing.JMenuItem updateMenuItem;
     // End of variables declaration//GEN-END:variables

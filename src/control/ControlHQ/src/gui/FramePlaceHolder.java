@@ -5,6 +5,7 @@ import gui.debug.DebugFrame;
 import gui.info.MiniInfoFrame;
 import gui.manualControl.ControlFrame;
 import gui.path.PathToleranceFrame;
+import gui.processing.ImageThresholdsFrame;
 import gui.processing.ProcessingFrame;
 import gui.speed.SpeedFrame;
 
@@ -18,6 +19,7 @@ public class FramePlaceHolder {
 	private static SpeedFrame speedf = null;
 	private static MiniInfoFrame minInfof = null;
 	private static DebugFrame debugf = null;
+	private static ImageThresholdsFrame imgThresholdf = null;
 
 	public static synchronized void setMainFrame(MainFrame frame) {
 		mf = frame;
@@ -66,6 +68,14 @@ public class FramePlaceHolder {
 	}
 	public static DebugFrame getDebugf() {
 		return debugf;
+	}
+	public static void setImgThresholdFrame(ImageThresholdsFrame imgThresholdf)
+	{
+		FramePlaceHolder.imgThresholdf = imgThresholdf;
+	}
+	public static ImageThresholdsFrame getImgThresholdFrame()
+	{
+		return imgThresholdf;
 	}
 	
 	
