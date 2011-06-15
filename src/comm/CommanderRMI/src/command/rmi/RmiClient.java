@@ -1,5 +1,6 @@
 package command.rmi;
 
+import java.io.File;
 import java.io.IOException;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -58,7 +59,7 @@ public class RmiClient {
 		} catch (RemoteException e) {
 			System.err.println("Fejl ved oprettelse af RMI registry");
 			e.printStackTrace();
-			System.exit(1);
+//			System.exit(1);
 		}
 		/*
 		 * Tester på bertaEnabled og opretter forbindelsen i sin egen process
@@ -69,8 +70,8 @@ public class RmiClient {
 				/*
 				 * Opretter processen. 
 				 * Bemærk at bluecove.jar og pccomm.jar er med som parametre
-				 * */
-				processes[0] = Runtime.getRuntime().exec("java -cp bin;bluecove.jar;pccomm.jar command.rmi.RmiServer 0");
+				 * */				
+				processes[0] = Runtime.getRuntime().exec("java -cp ..\\..\\comm\\CommanderRMI\\bin;..\\..\\comm\\CommanderRMI\\bluecove.jar;..\\..\\comm\\CommanderRMI\\pccomm.jar command.rmi.RmiServer 0");
 				boolean successful = false;
 				/*
 				 * Forsøger at hente remote object fra registeret MAX_TRIES=100 gange og sover 1 sek mellem hvert forsøg
@@ -111,7 +112,7 @@ public class RmiClient {
 		if (propEnabled) {
 			try {
 				System.out.println("Starting process");
-				processes[1] = Runtime.getRuntime().exec("java -cp bin;bluecove.jar;pccomm.jar command.rmi.RmiServer 1");
+				processes[1] = Runtime.getRuntime().exec("java -cp ..\\..\\comm\\CommanderRMI\\bin;..\\..\\comm\\CommanderRMI\\bluecove.jar;..\\..\\comm\\CommanderRMI\\pccomm.jar command.rmi.RmiServer 1");
 				boolean successful = false;
 				for (int i = 0; i < MAX_TRIES; i++) {
 					try {

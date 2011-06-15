@@ -1,6 +1,5 @@
 package command.steering;
 
-import bluetooth.impl.BTConnector;
 import lejos.nxt.Motor;
 import lejos.nxt.remote.RemoteMotor;
 import lejos.robotics.TachoMotor;

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import command.Commando;
 import command.exception.MasterRobotNotFound;
 import command.interfaces.IControl;
+import command.rmi.RmiClient;
 
 import controller.RobotThread.RobotState;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
@@ -23,7 +24,8 @@ import dk.dtu.imm.c02343.grp4.pathfinding.implementations.PathFinder;
 
 public class ProcessingThread extends Thread
 {
-	private Commando robotsCommando;
+//	private Commando robotsCommando;
+	private RmiClient robotsCommando;
 	private RobotThread[] robotThreads;
 	private IImageSource imageSource;
 	private IImageProcessor imageProcessor;
@@ -64,8 +66,12 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		robotsCommando = new Commando(0);
-		IControl[] robotControls = robotsCommando.getControls();
+//		robotsCommando = new Commando(0);
+		
+		robotsCommando = new RmiClient();
+		robotsCommando.init();
+		
+		IControl[] robotControls = robotsCommando.getControl();
 		
 		// initialize RobotThread[]
 		robotThreads = new RobotThread[2];
@@ -83,6 +89,7 @@ public class ProcessingThread extends Thread
 			System.out.println("STARTING NEW ROBOT THREAD, index:" + robotIndex);
 			robotThreads[robotIndex] = new RobotThread(robotControl);
 			robotThreads[robotIndex].start();
+			System.out.println("\tname: " + robotThreads[robotIndex].getName());
 			
 			robotIndex++;
 		}
@@ -150,7 +157,10 @@ public class ProcessingThread extends Thread
 				continue;
 			}
 			
-			if (cakesCount <= 0 && robotThread.getRobotState() != RobotState.HEADING_FOR_DELIVERY && robotThread.getRobotState() != RobotState.DELIVERING)
+			// skal muligvis rettes hvis banen ændrer sig under HEADING_FOR_DELIVERY (heigh +/- 1)
+			if ( (cakesCount <= 0 && robotThread.getRobotState() != RobotState.HEADING_FOR_DELIVERY)
+					|| robotThread.getRobotState() == RobotState.PICKING_UP
+					|| robotThread.getRobotState() == RobotState.DELIVERING)
 			{
 				continue;
 			}
@@ -166,9 +176,6 @@ public class ProcessingThread extends Thread
 			{
 				throw new ControllerException("Could not visually find robot " + robotThread.toString());
 			}
-			
-			if (robotThread.getRobotState() == RobotState.PICKING_UP || robotThread.getRobotState() == RobotState.DELIVERING)
-				continue;
 			
 			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY)
 			{
@@ -219,8 +226,6 @@ public class ProcessingThread extends Thread
 				// Loop through all cake locations to find the best location
 				for (Location cakeLocation : possibleCakes)
 				{	
-//					if (robotThread.getRobotLocation() == null)
-//						continue;
 					
 					double dist = Math.sqrt(
 							Math.pow(robotThread.getRobotLocation().getX() - cakeLocation.GetX(), 2) +
@@ -239,15 +244,16 @@ public class ProcessingThread extends Thread
 				target = determinedCakeLocation;
 			}
 			
-			if (target != null)
+			if (target != null && robotThread.getRobotState() == RobotState.IDLE)
 				robotThread.setTargetLocation(target);
-			
-			System.out.println("Robot "+robotThread.getName()+ "Location target " + target);
 			
 			// Find path for robot
 			PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
 			
-			Path newPath = pathFinder.findPath(robotThread.getRobotLocation(), robotThread.getTargetLocation());
+			Path newPath = null;
+			
+			if (robotThread.isAlive())
+				newPath = pathFinder.findPath(robotThread.getRobotLocation(), robotThread.getTargetLocation());
 			
 			if (newPath == null)
 			{
@@ -308,23 +314,21 @@ public class ProcessingThread extends Thread
 	
 	public void stopRobotThreads()
 	{
-		
-		// FIXME: Not fully implemented
-		
-		// TODO stop robot threads;
-		for (RobotThread robot : robotThreads)
-		{
-			if (robot != null)
+		if (robotThreads == null){
+			for (RobotThread robot : robotThreads)
 			{
-				System.out.println("STOPPING: " + robot.getName());
-				robot.setRunning(false);
+				if (robot != null)
+				{
+					System.out.println("STOPPING: " + robot.getName());
+					robot.setRunning(false);
+				}
+
 			}
-			
 		}
 		
+		
 		// disconnecting all robots
-		// robotsCommando.disconnect();
-		robotsCommando.disconnect();
+		robotsCommando.shutdown();
 		//
 //
 		running = false;
@@ -424,12 +428,14 @@ public class ProcessingThread extends Thread
 	
 	public boolean isBertaConnected()
 	{
-		return robotsCommando.isBertaConnected();
+//		return robotsCommando.isBertaConnected();
+		return false;
 	}
 	
 	public boolean isPropConnected()
 	{
-		return robotsCommando.isPropConnected();
+//		return robotsCommando.isPropConnected();
+		return false;
 	}
 	public boolean isBertaPaused(){
 		return robotThreads[Commando.BERTA].isPaused();

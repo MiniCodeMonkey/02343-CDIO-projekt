@@ -16,7 +16,7 @@ import command.interfaces.IControl;
 public class Commando {
 
 	public static final int BERTA = 0;
-	public static final int PROP = 0;
+	public static final int PROP = 1;
 	
 	BertaCommando bertaCom = null;
 	PropCommando propCom = null;

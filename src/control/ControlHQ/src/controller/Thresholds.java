@@ -15,15 +15,15 @@ public class Thresholds
     }
     
 	private int slowSpeed = 5;
-	private int mediumSpeed = 5;
+	private int mediumSpeed = 10;
 	private int highSpeed = 30;
 
-	private int closeEnoughToCake = 33;
-	private int closeEnoughToDelivery = 30;
+	private int closeEnoughToCake = 30;
+	private int closeEnoughToDelivery = 20;
 	
 	private double rotationClose = Math.toRadians(8);
 	private double rotationFairlyClose = Math.toRadians(25);
-	private int yieldDistance;
+	private int yieldDistance = 20;
 	
 	/**
 	 * Returns the slow speed set

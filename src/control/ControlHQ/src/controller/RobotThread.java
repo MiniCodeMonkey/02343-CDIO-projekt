@@ -351,7 +351,7 @@ public class RobotThread extends Thread
 						// Is any robots nearby?
 						for (IRobot otherRobotLocation : allRobotLocations)
 						{
-							if (!otherRobotLocation.equals(robotLocation) && otherRobotLocation.getX() >= 0)
+							if (!otherRobotLocation.equals(robotLocation) && otherRobotLocation.isActive())
 							{
 								double distance = calculateDistance(robotLocation.getX(), robotLocation.getY(),
 										otherRobotLocation.getX(), otherRobotLocation.getY());

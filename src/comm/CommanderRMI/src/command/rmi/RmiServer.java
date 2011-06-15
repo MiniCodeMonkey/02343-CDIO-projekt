@@ -40,6 +40,9 @@ public class RmiServer {
 	public void init() {
 		this.bindName = "remote_" + robot;
 		IControl control;
+		
+		System.out.println("RMI server: "+bindName);
+		
 		try {
 			//Får controls til at styre en robot
 			commando = new Commando(robot);
@@ -50,10 +53,15 @@ public class RmiServer {
 //				e.printStackTrace();
 //			}
 			
+			System.out.print("RMI server: "+bindName + " | binding..");
+			
 			//Finder registry'et der ligger på klienten og binder sig til det
 			stub = (IControl) UnicastRemoteObject.exportObject(control, 0);
 			registry = LocateRegistry.getRegistry(registryHost, registryPort);
 			registry.rebind(bindName, stub);
+			
+			System.out.println("OK");
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
