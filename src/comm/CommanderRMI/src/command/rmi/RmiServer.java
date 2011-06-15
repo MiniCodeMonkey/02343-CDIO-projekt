@@ -33,11 +33,11 @@ public class RmiServer {
 		try {
 			commando = new Commando(robot);
 			control = commando.getControls()[robot];
-			try {
-				control.closeClaw();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				control.closeClaw();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 			stub = (IControl) UnicastRemoteObject.exportObject(control, 0);
 			registry = LocateRegistry.getRegistry(registryHost, registryPort);
 			registry.rebind(bindName, stub);

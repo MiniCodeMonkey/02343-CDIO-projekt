@@ -44,8 +44,25 @@ public class RmiClient {
 		}
 		if (bertaEnabled) {
 			try {
+				System.out.println("Starting process");
 				processes[0] = Runtime.getRuntime().exec("java -cp bin;bluecove.jar;pccomm.jar command.rmi.RmiServer 0");
-				control[0] = (IControl)(registry.lookup("remote_0"));
+				boolean successful = false;
+				for (int i = 0; i < MAX_TRIES; i++) {
+					try {
+						System.out.println("Forsøger at forbinde ... Forsøg nr. " + (i+1));
+						control[0] = (IControl)(registry.lookup("remote_0"));
+						successful = true;
+						break;
+					} catch (NotBoundException e) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+						}
+					}
+				}
+				if (!successful) {
+					throw new NotBoundException();
+				}
 			} catch (AccessException e) {
 				System.err.println("Fejl ved tilgang til BERTA");
 				e.printStackTrace();
@@ -100,6 +117,16 @@ public class RmiClient {
 	public void shutdown() {
 		if (bertaEnabled) {
 			try {
+				control[0].stop();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				control[0].stopClaw();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
 				registry.unbind("remote_0");
 			} catch (AccessException e) {
 				e.printStackTrace();
@@ -111,6 +138,16 @@ public class RmiClient {
 			processes[0].destroy();
 		}
 		if (propEnabled) {
+			try {
+				control[1].stop();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				control[1].stopClaw();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			try {
 				registry.unbind("remote_1");
 			} catch (AccessException e) {
@@ -129,26 +166,31 @@ public class RmiClient {
 	}
 
 	public static void main(String[] args) {
-		RmiClient c = new RmiClient(1);
+		RmiClient c = new RmiClient();
 		c.init();
 		IControl[] control = c.getControl();
 		
 		try {
-			System.out.println("Battery level: " + control[1].getBatteryLevel());
+			System.out.println("Battery level 0: " + control[0].getBatteryLevel());
+			System.out.println("Battery level 1: " + control[1].getBatteryLevel());
 			for (int i = 0; i < 5; i++) {
-				control[1].move(100,false);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				control[0].move(100,false);
 				control[1].stop();
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				control[0].stop();
+				control[1].move(100,false);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+			control[0].stop();
+			control[0].stop();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
