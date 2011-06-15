@@ -1,12 +1,8 @@
 package command.rmi;
 
-import java.awt.Desktop;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -63,13 +59,7 @@ public class RmiServer {
 	}
 
 	public static void main(String[] args) {
-//		try {
-//			Desktop.getDesktop().browse(new URI("www.dtu.dk"));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (URISyntaxException e) {
-//			e.printStackTrace();
-//		}
+
 		int robot = 0;
 		if (args.length >= 1) {
 			try {
