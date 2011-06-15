@@ -6,9 +6,14 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Arrays;
 
 import command.interfaces.IControl;
 
+/**
+ * @author Per Clausen, Terkel Brix & Jeppe Kronborg
+ *
+ */
 public class RmiClient {
 	private static final int MAX_TRIES = 100;
 	private boolean bertaEnabled, propEnabled;
@@ -17,11 +22,18 @@ public class RmiClient {
 	private Registry registry;
 	private Process processes[];
 	
+	/**
+	 * Opretter forbindelse til begge robotter
+	 */
 	public RmiClient() {
 		bertaEnabled = true;
 		propEnabled = true;
 	}
 	
+	/**
+	 * Opretter forbindelse til én robot
+	 * @param robot 0 for B.E.R.T.A. og 1 for P.R.O.P.
+	 */
 	public RmiClient(int robot) {
 		bertaEnabled = false;
 		propEnabled = false;
@@ -32,9 +44,15 @@ public class RmiClient {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void init() {
 		control = new IControl[2];
 		processes = new Process[2];
+		/*
+		 * Laver et RMI Registre
+		 **/
 		try {
 			registry = LocateRegistry.createRegistry(registryPort);
 		} catch (RemoteException e) {
@@ -42,11 +60,21 @@ public class RmiClient {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		/*
+		 * Tester på bertaEnabled og opretter forbindelsen i sin egen process
+		 * */
 		if (bertaEnabled) {
 			try {
 				System.out.println("Starting process");
+				/*
+				 * Opretter processen. 
+				 * Bemærk at bluecove.jar og pccomm.jar er med som parametre
+				 * */
 				processes[0] = Runtime.getRuntime().exec("java -cp bin;bluecove.jar;pccomm.jar command.rmi.RmiServer 0");
 				boolean successful = false;
+				/*
+				 * Forsøger at hente remote object fra registeret MAX_TRIES=100 gange og sover 1 sek mellem hvert forsøg
+				 * */
 				for (int i = 0; i < MAX_TRIES; i++) {
 					try {
 						System.out.println("Forsøger at forbinde ... Forsøg nr. " + (i+1));
@@ -77,6 +105,9 @@ public class RmiClient {
 				e.printStackTrace();
 			}
 		}
+		/*
+		 * Det samme som ovenfor
+		 * */
 		if (propEnabled) {
 			try {
 				System.out.println("Starting process");
@@ -114,18 +145,30 @@ public class RmiClient {
 		}
 	}
 	
+	/**
+	 * Metode til at lukke forbindelsen til begge robotter.
+	 * Stopper alle motorer, og dræber processerne.
+	 */
 	public void shutdown() {
+		/*
+		 * Slukker for B.E.R.T.A.
+		 * */
 		if (bertaEnabled) {
+			//Stopper motorer
 			try {
 				control[0].stop();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			//Stopper kloen
 			try {
 				control[0].stopClaw();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			/*
+			 * unbinder remoteobject fra registeret
+			 * */
 			try {
 				registry.unbind("remote_0");
 			} catch (AccessException e) {
@@ -135,8 +178,12 @@ public class RmiClient {
 			} catch (NotBoundException e) {
 				e.printStackTrace();
 			}
+			//dræber processen
 			processes[0].destroy();
 		}
+		/*
+		 * Slukker for P.R.O.P. (samme som for B.E.R.T.A.) 
+		 * */
 		if (propEnabled) {
 			try {
 				control[1].stop();
@@ -161,10 +208,20 @@ public class RmiClient {
 		}
 	}
 	
+	/**
+	 * Giver {@link IControl} til robotter
+	 * [0] er B.E.R.T.A
+	 * [1] er P.R.O.P.
+	 * @return {@link Arrays} af {@link IControl} til robot(ter)
+	 */
 	public IControl[] getControl() {
 		return control;
 	}
 
+	/**
+	 * Opretter forbindelse til begge robotter, og laller lidt rundt med motorene, hvorefter den lukker ned.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		RmiClient c = new RmiClient();
 		c.init();
