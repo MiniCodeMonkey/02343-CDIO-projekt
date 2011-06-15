@@ -13,7 +13,7 @@ import command.interfaces.IControl;
  * @author Morten Hulvej
  *
  */
-public class Control extends java.rmi.server.UnicastRemoteObject implements IControl {
+public class Control implements IControl {
 	private static final long serialVersionUID = 6057902065482684209L;
 	private NXTCommand commander;
 	private boolean inForwardMotion = false;
@@ -26,7 +26,7 @@ public class Control extends java.rmi.server.UnicastRemoteObject implements ICon
 	private boolean clawMoving;
 	
 
-	public Control(NXTCommand commander) throws RemoteException {
+	public Control(NXTCommand commander) {
 		this.commander = commander;
 	}
 	

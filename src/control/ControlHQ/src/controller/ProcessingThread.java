@@ -155,6 +155,18 @@ public class ProcessingThread extends Thread
 				continue;
 			}
 			
+			// Get physical robot location
+			try
+			{
+				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
+				robotThread.setAllRobotLocations(locations.getRobots());
+				
+			}
+			catch (IndexOutOfBoundsException e)
+			{
+				throw new ControllerException("Could not visually find robot " + robotThread.toString());
+			}
+			
 			if (robotThread.getRobotState() == RobotState.PICKING_UP || robotThread.getRobotState() == RobotState.DELIVERING)
 				continue;
 			
@@ -176,15 +188,20 @@ public class ProcessingThread extends Thread
 					boolean in_use = false;
 					for (RobotThread rThread : robotThreads)
 					{	
-						if (rThread.getTargetLocation() == null || rThread.getTargetLocation().GetX() < 0)
+						if (rThread == null)
 							continue;
 						
-						// If the robot has the target location as the current cake
-						if (rThread.getTargetLocation().GetX() == cake.getX() && rThread.getTargetLocation().GetY() == cake.getY())
+						if (rThread.getTargetLocation() != null && rThread.getTargetLocation().GetX() > 0)
 						{
-							in_use = true;
-							break;
+							// If the robot has the target location as the current cake
+							if (rThread.getTargetLocation().GetX() == cake.getX() && rThread.getTargetLocation().GetY() == cake.getY())
+							{
+								in_use = true;
+								break;
+							}
 						}
+						
+						
 					}
 					
 					// No robot is using the cake
@@ -201,7 +218,10 @@ public class ProcessingThread extends Thread
 				
 				// Loop through all cake locations to find the best location
 				for (Location cakeLocation : possibleCakes)
-				{
+				{	
+//					if (robotThread.getRobotLocation() == null)
+//						continue;
+					
 					double dist = Math.sqrt(
 							Math.pow(robotThread.getRobotLocation().getX() - cakeLocation.GetX(), 2) +
 							Math.pow(robotThread.getRobotLocation().getY() - cakeLocation.GetY(), 2)
@@ -219,19 +239,10 @@ public class ProcessingThread extends Thread
 				target = determinedCakeLocation;
 			}
 			
-			robotThread.setTargetLocation(target);
+			if (target != null)
+				robotThread.setTargetLocation(target);
 			
-			// Get physical robot location
-			try
-			{
-				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
-				robotThread.setAllRobotLocations(locations.getRobots());
-				
-			}
-			catch (IndexOutOfBoundsException e)
-			{
-				throw new ControllerException("Could not visually find robot " + robotThread.toString());
-			}
+			System.out.println("Robot "+robotThread.getName()+ "Location target " + target);
 			
 			// Find path for robot
 			PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
