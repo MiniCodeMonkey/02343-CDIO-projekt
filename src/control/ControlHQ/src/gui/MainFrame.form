@@ -50,6 +50,22 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="pauseBertaCheckBoxMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Pause B.E.R.T.A."/>
+              </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="pauseBertaCheckBoxMenuItemStateChanged"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="pausePropCheckBoxMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Pause P.R.O.P."/>
+              </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="pausePropCheckBoxMenuItemStateChanged"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="aboutMenu">
@@ -57,6 +73,11 @@
             <Property name="text" type="java.lang.String" value="?"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="showRmiLog">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Show RMI Log"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="About"/>

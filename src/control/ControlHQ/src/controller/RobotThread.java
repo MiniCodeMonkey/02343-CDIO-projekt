@@ -30,6 +30,7 @@ public class RobotThread extends Thread
 	private RobotType robotType;
 
 	private boolean running = true;
+	private boolean paused = false;
 
 	private IRobot robotLocation = null;
 	private Location targetLocation = null;
@@ -67,19 +68,26 @@ public class RobotThread extends Thread
 
 			while (running)
 			{
+				if(paused)// pauses the robot cycle
+				{
+					robotControl.stop();
+					robotControl.stopClaw();
+					while(paused){
+						Thread.sleep(1000);
+					}
+				}
+				
 				if (robotState != RobotState.IDLE)
 				{
 //					long gettingImage = System.currentTimeMillis();
 					navigate();
-					Thread.sleep(100);
+					Thread.sleep(100);	// do not delete this !!!
 //					System.out.println("navigated in " + (System.currentTimeMillis()-gettingImage) + " ms");
 				} else
 				{
-
 //					robotControl.stop();
 //					robotControl.stopClaw();
 				}
-				// Thread.sleep(50);
 			}
 			robotControl.stop();
 		} catch (Exception e)
@@ -525,5 +533,15 @@ public class RobotThread extends Thread
 	public void setRunning(boolean running)
 	{
 		this.running = running;
+	}
+
+	public boolean isPaused()
+	{
+		return paused;
+	}
+
+	public void setPaused(boolean paused)
+	{
+		this.paused = paused;
 	}
 }

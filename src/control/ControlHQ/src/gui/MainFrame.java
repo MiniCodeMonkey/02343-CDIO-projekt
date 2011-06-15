@@ -15,7 +15,10 @@ import gui.speed.SpeedFrame;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
+
+import com.sun.media.rtsp.protocol.PauseMessage;
 
 import controller.MainController;
 import gui.debug.DebugFrame;
@@ -56,7 +59,10 @@ public class MainFrame extends javax.swing.JFrame {
         speedMenuItem = new javax.swing.JMenuItem();
         toleranceMenuItem = new javax.swing.JMenuItem();
         updateMenuItem = new javax.swing.JMenuItem();
+        pauseBertaCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        pausePropCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         aboutMenu = new javax.swing.JMenu();
+        showRmiLog = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -105,9 +111,28 @@ public class MainFrame extends javax.swing.JFrame {
         });
         settingsMenu.add(updateMenuItem);
 
+        pauseBertaCheckBoxMenuItem.setText("Pause B.E.R.T.A.");
+        pauseBertaCheckBoxMenuItem.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pauseBertaCheckBoxMenuItemStateChanged(evt);
+            }
+        });
+        settingsMenu.add(pauseBertaCheckBoxMenuItem);
+
+        pausePropCheckBoxMenuItem.setText("Pause P.R.O.P.");
+        pausePropCheckBoxMenuItem.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pausePropCheckBoxMenuItemStateChanged(evt);
+            }
+        });
+        settingsMenu.add(pausePropCheckBoxMenuItem);
+
         mainMenuBar.add(settingsMenu);
 
         aboutMenu.setText("?");
+
+        showRmiLog.setText("Show RMI Log");
+        aboutMenu.add(showRmiLog);
 
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -161,6 +186,24 @@ public class MainFrame extends javax.swing.JFrame {
         MainController.getInstance().stop();
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
+
+    private void pauseBertaCheckBoxMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pauseBertaCheckBoxMenuItemStateChanged
+        if (evt.getSource() instanceof JCheckBoxMenuItem)
+		{
+        	JCheckBoxMenuItem checkBox = (JCheckBoxMenuItem) evt.getSource();
+			if (checkBox.isSelected())	MainController.getInstance().setPauseBerta(true);
+			else	MainController.getInstance().setPauseBerta(false);
+		}
+    }//GEN-LAST:event_pauseBertaCheckBoxMenuItemStateChanged
+
+    private void pausePropCheckBoxMenuItemStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pausePropCheckBoxMenuItemStateChanged
+        if (evt.getSource() instanceof JCheckBoxMenuItem)
+		{
+        	JCheckBoxMenuItem checkBox = (JCheckBoxMenuItem) evt.getSource();
+			if (checkBox.isSelected())	MainController.getInstance().setPauseProp(true);
+			else	MainController.getInstance().setPauseProp(false);
+		}
+    }//GEN-LAST:event_pausePropCheckBoxMenuItemStateChanged
 
 
     /**
@@ -237,7 +280,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JMenuBar mainMenuBar;
+    private javax.swing.JCheckBoxMenuItem pauseBertaCheckBoxMenuItem;
+    private javax.swing.JCheckBoxMenuItem pausePropCheckBoxMenuItem;
     private javax.swing.JMenu settingsMenu;
+    private javax.swing.JMenuItem showRmiLog;
     private javax.swing.JMenuItem speedMenuItem;
     private javax.swing.JMenuItem toleranceMenuItem;
     private javax.swing.JMenuItem updateMenuItem;

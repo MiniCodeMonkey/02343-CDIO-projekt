@@ -1,5 +1,7 @@
 package controller;
 
+import command.Commando;
+
 import controller.RobotThread.RobotState;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
@@ -119,5 +121,17 @@ public class MainController
 	}
 	public boolean isPropConnected(){
 		return processingThread.isPropConnected();
+	}
+	public boolean isBertaPaused(){
+		return processingThread.isBertaPaused();
+	}
+	public boolean isPropPaused(){
+		return processingThread.isPropPaused();
+	}
+	public void setPauseBerta(boolean paused){
+		processingThread.setPauseBerta(paused);
+	}
+	public void setPauseProp(boolean paused){
+		processingThread.setPauseProp(paused);
 	}
 }

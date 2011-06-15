@@ -259,7 +259,6 @@ public class ProcessingThread extends Thread
 		for (RobotThread robot : robotThreads) {
 			if (robot != null){
 				System.out.println("STOPPING: "+robot.getName());
-				robot.setRobotState(RobotState.IDLE);
 				robot.setRunning(false);
 			}
 			
@@ -349,5 +348,17 @@ public class ProcessingThread extends Thread
 	}
 	public boolean isPropConnected(){
 		return robotsCommando.isPropConnected();
+	}
+	public boolean isBertaPaused(){
+		return robotThreads[Commando.BERTA].isPaused();
+	}
+	public boolean isPropPaused(){
+		return robotThreads[Commando.PROP].isPaused();
+	}
+	public void setPauseBerta(boolean paused){
+		robotThreads[Commando.BERTA].setPaused(paused);
+	}
+	public void setPauseProp(boolean paused){
+		robotThreads[Commando.PROP].setPaused(paused);
 	}
 }
