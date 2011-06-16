@@ -136,6 +136,13 @@ public class ImageProcessor2 implements IImageProcessor {
 			java.util.Arrays.fill(foundmap[i], BACKGROUND);
 		}
 		
+		// Initialisér obstacle-map
+		obstaclemap = new int[tilemap.length][];
+		for (int i = 0; i < obstaclemap.length; i++) {
+			obstaclemap[i] = new int[tilemap[0].length];
+			java.util.Arrays.fill(obstaclemap[i], 0);
+		}
+		
 		// Iterér over alle punkter
 		for (int y = 0; y < tilemap.length; y++) {
 			for (int x = 0; x < tilemap[0].length; x++) {
@@ -149,6 +156,11 @@ public class ImageProcessor2 implements IImageProcessor {
 					if (coordinates.size() < MIN_OBJECT_SIZE) {
 						for (int[] coordinate : coordinates) {
 							tilemap[coordinate[0]][coordinate[1]] = BACKGROUND;
+							obstaclemap[coordinate[0]][coordinate[1]] = 0;
+						}
+					} else {
+						for (int[] coordinate : coordinates) {
+							obstaclemap[coordinate[0]][coordinate[1]] = obstacleBuffer;
 						}
 					}
 				}
@@ -168,12 +180,12 @@ public class ImageProcessor2 implements IImageProcessor {
 			java.util.Arrays.fill(foundmap[i], BACKGROUND);
 		}
 		
-		// Initialisér obstacle-map
+/*		// Initialisér obstacle-map
 		obstaclemap = new int[tilemap.length][];
 		for (int i = 0; i < obstaclemap.length; i++) {
 			obstaclemap[i] = new int[tilemap[0].length];
 			java.util.Arrays.fill(obstaclemap[i], 0);
-		}
+		}*/
 		
 		// Initialisér kage- og robotlister
 		cakes = new ArrayList<ICake>();
@@ -582,6 +594,14 @@ public class ImageProcessor2 implements IImageProcessor {
 			// Iterér over alle punkter
 			for(int j = 0; j < tilemap[i].length; j++) {
 				int rgb;
+				rgb = 0xFF000000;
+				
+				// Hvis pixel er bufferzonegrænse (værdi 1 i obstaclemap), sæt farve
+				if (obstaclemap[i][j] > 0) {
+					int value = (int) (0xFF*((double)obstaclemap[i][j]/(double)obstacleBuffer));
+					rgb = 0xFF000000 + (value << 16) + (value << 8)/* + value*/;
+				}
+				
 				// Sæt RGB-værdi til output-billede ud fra tilemap værdi. To første hex-værdier er alpha-værdi: RGB = 0xAARRGGBB.
 				switch (tilemap[i][j]) {
 					case CAKE:
@@ -602,12 +622,6 @@ public class ImageProcessor2 implements IImageProcessor {
 					case ROBOT2S:
 						rgb = 0xFFFFFF00;
 						break;
-					default:
-						rgb = 0xFF000000;
-				}
-				// Hvis pixel er bufferzonegrænse (værdi 1 i obstaclemap), sæt farve
-				if (obstaclemap[i][j] == 1) {
-					rgb = 0xFFFFFF00;
 				}
 				// Sæt pixel-værdi
 				tileImage.setRGB(j, i, rgb);

@@ -37,14 +37,15 @@ public class TestImageProcessor2 implements ActionListener {
 		imageSource = new WebCam();
 //		imageSource = new ImageFile();
 		imageProcessor = new ImageProcessor2();
-//		try {
+		try {
 			imageSource.init();
-//		} catch (Exception e) {
-//			imageSource = new ImageFile();
-//			imageSource.init();
-//		}
+		} catch (Exception e) {
+			imageSource = new ImageFile();
+			imageSource.init();
+		}
 		BufferedImage sourceImg = imageSource.getImage();
 		imageSource.close();
+//		imageProcessor.setObstacleBufferZone(5);
 		
 		// Opret tile-image vha. hjælpemetode
 		ILocations locations = imageProcessor.examineImage(sourceImg, true);
