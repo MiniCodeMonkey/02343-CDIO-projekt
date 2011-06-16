@@ -1,5 +1,6 @@
 package controller;
 
+
 import command.Commando;
 
 import controller.RobotThread.RobotState;
@@ -7,6 +8,7 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 
 public class MainController
 {
@@ -39,7 +41,10 @@ public class MainController
 		processingThread.start();
 	}
 	
-	public ILocations getImages() {
+	/**Returns an object, containing info regarding robots, cakes and image-processing
+	 * @return ILocation - a {@link ILocation} object
+	 */
+	public ILocations getInformation() {
 		return processingThread.getLocations();
 	}
 	
@@ -70,15 +75,7 @@ public class MainController
 			processingThread.stopAllThreads();
 		
 		processingThread = null;
-		// TODO stop proccesingThread
 	}
-	/**
-	 * get'er til RobotStates
-	 * @return enum typen {@link RobotState}
-	 */
-//	public RobotThread.RobotState[] getRobotState(){
-//		return processingThread.getRobotStates();
-//	}
 	/**
 	 * Get'er til Bertas {@link RobotState}. 
 	 * @return {@link RobotState}
@@ -92,32 +89,6 @@ public class MainController
 	 */
 	public RobotState getPropState(){
 		return processingThread.getPropState();
-	}
-	/**get'er til Bertas Position
-	 * @return int[] på formen yx
-	 */
-	public int[] getBertaPos(){
-		return processingThread.getBertaPos();
-	}
-	/**get'er til Props Position
-	 * @return int[] på formen yx
-	 */
-	public int[] getPropPos(){
-		return processingThread.getPropPos();
-	}
-	/**
-	 * Get'er til Bertas Vinkel
-	 * @return vink´len som en double, i radianer
-	 */
-	public double getBertaAngle(){
-		return processingThread.getBertaAngle();
-	}
-	/**
-	 * Get'er til Props Vinkel
-	 * @return vink´len som en double, i radianer
-	 */
-	public double getPropAngle(){
-		return processingThread.getPropAngle();
 	}
 	public boolean isBertaConnected(){
 		return processingThread.isBertaConnected();
@@ -143,5 +114,22 @@ public class MainController
 	public boolean isProcessorRunning()
 	{
 		return (processingThread == null)? false : true;
+	}
+
+	public Location getBertaTargetLocation()
+	{
+		return processingThread.getBertaTargetLocation();
+	}
+	public Location getPropTargetLocation()
+	{
+		return processingThread.getPropTargetLocation();
+	}
+	public double getBertaTargetAngle()
+	{
+		return processingThread.getBertaTargetAngle();
+	}
+	public double getPropTargetAngle()
+	{
+		return processingThread.getPropTargetAngle();
 	}
 }

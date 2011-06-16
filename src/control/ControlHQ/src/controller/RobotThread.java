@@ -66,6 +66,11 @@ public class RobotThread extends Thread
 	private Location targetLocation = null;
 	
 	/**
+	 * The angle to target (supposed-to-be angle)
+	 */
+	private double targetAngle = 0;
+	
+	/**
 	 * The map's current size
 	 */
 	private Rectangle mapSize = new Rectangle();
@@ -264,32 +269,31 @@ public class RobotThread extends Thread
 							// Now picking up cake
 							this.robotState = RobotState.PICKING_UP;
 							
-							// Open claw: 3s
-							
+							// Open claw
 							robotControl.openClaw();
 							Thread.sleep(1000);
 							robotControl.stopClaw();
 							
-							// Move forward: 1s
+							// Move forward
 							robotControl.move(20, false);
-							Thread.sleep(2000);
+							Thread.sleep(1800);
 							robotControl.stop();
 							
-							// Close claw: 3s
+							// Close claw
 							robotControl.closeClaw();
 							Thread.sleep(1000);
 							robotControl.stopClaw();
 							robotControl.stop();
 							
-							// Move backwards: 1s
+							// Move backwards
 							robotControl.move(20, true);
 							Thread.sleep(2000);
 							robotControl.stop();
 							
+							
 							int dropDistance = 20;
 							
-							
-							// Decide delivery location
+							// Decide delivery location | FIXME: if obstacles is in the way
 							Location deliveryLocations[] = {
 									
 									// right side
@@ -550,7 +554,7 @@ public class RobotThread extends Thread
 		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	}
 	
-	public RobotState getRobotState()
+	public synchronized RobotState getRobotState()
 	{
 		return robotState;
 	}
@@ -560,27 +564,32 @@ public class RobotThread extends Thread
 		this.robotState = robotState;
 	}
 	
-	public void setRobotLocation(IRobot robotLocation)
+	public synchronized void setRobotLocation(IRobot robotLocation)
 	{
 		this.robotLocation = robotLocation;
 	}
 	
-	public IRobot getRobotLocation()
+	public synchronized IRobot getRobotLocation()
 	{
 		return robotLocation;
 	}
 	
-	public Location getTargetLocation()
+	public synchronized Location getTargetLocation()
 	{
 		return targetLocation;
 	}
 	
-	public void setTargetLocation(Location targetLocation)
+	public synchronized void setTargetLocation(Location targetLocation)
 	{
 		this.targetLocation = targetLocation;
 	}
 	
-	public void setPath(Path newPath)
+	public synchronized double getTargetAngle()
+	{
+		return targetAngle;
+	}
+
+	public synchronized void setPath(Path newPath)
 	{
 		this.path = newPath;
 		this.pathWasUpdated = true;
@@ -596,7 +605,7 @@ public class RobotThread extends Thread
 		this.robotType = robotType;
 	}
 	
-	public Path getPath()
+	public synchronized Path getPath()
 	{
 		return this.path;
 	}

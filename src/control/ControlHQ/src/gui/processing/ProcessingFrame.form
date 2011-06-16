@@ -1178,7 +1178,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="imageToolbar" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="imageProcessPanel" pref="573" max="32767" attributes="0"/>
+              <Component id="imageProcessPanel" pref="581" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -1237,7 +1237,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icons/webcam_icon.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Vis webcam feed"/>
+            <Property name="text" type="java.lang.String" value="Start webcam &amp; info feed"/>
             <Property name="toolTipText" type="java.lang.String" value="Start Webcam"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="4"/>
@@ -1257,18 +1257,6 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="4"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="stopWebcamBtn">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Stop Webcam"/>
-            <Property name="toolTipText" type="java.lang.String" value="Stop Webcam"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="4"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopWebcamBtnActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="updateIntvlabel">
           <Properties>
@@ -1296,33 +1284,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator1">
-        </Component>
-        <Component class="javax.swing.JButton" name="testimageBtn">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icons/imagefile_icon.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Start Test-Billeder"/>
-            <Property name="toolTipText" type="java.lang.String" value="Image source (test images)"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="4"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="testimageBtnActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="nextTestImgBtn">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Skift test-billede"/>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="focusable" type="boolean" value="false"/>
-            <Property name="horizontalTextPosition" type="int" value="0"/>
-            <Property name="verticalTextPosition" type="int" value="3"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextTestImgBtnActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -24,16 +24,34 @@ import dk.dtu.imm.c02343.grp4.pathfinding.implementations.PathFinder;
 
 public class ProcessingThread extends Thread
 {
+	
 	// private Commando robotsCommando;
+	
+	/**
+	 * linker to the control of the robots thru RMI
+	 */
 	private RmiClient robotsCommando;
 	private RobotThread[] robotThreads;
 	private IImageSource imageSource;
 	private IImageProcessor imageProcessor;
+	/**
+	 * tells if processing is running
+	 * <br>Used to loop to process, and to stop it
+	 */
 	private boolean running;
-	
+	/**
+	 * Used to decide which robot(s) to connect
+	 */
 	private int connetToRobots = -1;
+	/**
+	 * Set to true to output processing time in console
+	 */
+	private final boolean showProcessingTime = false;
 	
 	// bruges af GUI
+	/**
+	 * indeholder liste af kager og robotter
+	 */
 	private ILocations locations;
 	
 	private int robotsCount = 0;
@@ -77,10 +95,9 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		
-		// HACK FIXME
-		connetToRobots = 1;
 
+		
+		// decide which robot(s) to connect
         switch (connetToRobots)
 		{
 		case 1:	// berta
@@ -96,6 +113,7 @@ public class ProcessingThread extends Thread
 			System.err.println("Can only initialize robots 0-2");
 			break;
 		}
+        
 		robotsCommando.init();
 		
 		IControl[] robotControls = robotsCommando.getControl();
@@ -109,14 +127,11 @@ public class ProcessingThread extends Thread
 		{
 			if (robotControl == null)
 			{
-				System.out.println("RobotControl was NULL");
 				continue;
 			}
 			
-			System.out.println("STARTING NEW ROBOT THREAD, index:" + robotIndex);
 			robotThreads[robotIndex] = new RobotThread(robotControl);
 			robotThreads[robotIndex].start();
-			System.out.println("\tname: " + robotThreads[robotIndex].getName());
 			
 			robotIndex++;
 		}
@@ -134,11 +149,13 @@ public class ProcessingThread extends Thread
 			long time = System.currentTimeMillis();
 			BufferedImage image = imageSource.getImage();
 			System.out.println("Image fetched in "+(System.currentTimeMillis()-time)+" ms");
-			// Process the image
 			
+			// Process the image
 			time = System.currentTimeMillis();
 			locations = imageProcessor.examineImage(image, true);
 			System.out.println("Exsamine image in "+(System.currentTimeMillis()-time)+" ms");
+			
+			// calculate path
 			try
 			{
 				time = System.currentTimeMillis();
@@ -182,7 +199,7 @@ public class ProcessingThread extends Thread
 		TileMap tileMap = new TileMap();
 		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
 		
-		// Sets robot-is-yielding flag in imageprocessor. Robot 2 works as an obstacle..
+		// Sets robot-is-yielding flag in imageprocessor, if robot 2 is in a YIELD state. (Robot 2 then works as an obstacle)
 		if (robotThreads[1] != null && (robotThreads[1].getRobotState() == RobotState.YIELD_CAKE || robotThreads[1].getRobotState() == RobotState.YIELD_DELIVERY))
 		{
 			imageProcessor.setRobotYield(true);
@@ -283,7 +300,8 @@ public class ProcessingThread extends Thread
 			// heading for a cake or is currently positioning
 			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE || robotThread.getRobotState() == RobotState.POSITIONING)
 			{
-				Location target = robotThread.getTargetLocation();
+				// FIXME WTF is this for?!
+//				Location target = robotThread.getTargetLocation();
 				
 				// Find path for robot
 				PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
@@ -349,6 +367,9 @@ public class ProcessingThread extends Thread
 		return sourceImage;
 	}
 	
+	/**Returns an object, containing info regarding robots, cakes and image-processing
+	 * @return {@link ILocations}
+	 */
 	public synchronized ILocations getLocations()
 	{
 		return locations;
@@ -390,28 +411,6 @@ public class ProcessingThread extends Thread
 	{
 		return cakesCount;
 	}
-	
-	// /**
-	// * Get'er til {@link RobotState}.
-	// * @return array af {@link RobotState} hvor {@link RobotType} MASTER er
-	// det f�rste element
-	// */
-	// public RobotState[] getRobotStates(){
-	// RobotState[] states = null;
-	// if(robotThreads[0].getRobotType().equals(RobotThread.RobotType.MASTER)){
-	// states[0]=robotThreads[0].getRobotState();
-	// }
-	// else{
-	// states[1]=robotThreads[0].getRobotState();
-	// }
-	// if(robotThreads[1].getRobotType().equals(RobotThread.RobotType.SLAVE)){
-	// states[1]=robotThreads[1].getRobotState();
-	// }
-	// else{
-	// states[0]=robotThreads[1].getRobotState();
-	// }
-	// return states;
-	// }
 	/**
 	 * Get'er til Bertas {@link RobotState}.
 	 * 
@@ -421,7 +420,6 @@ public class ProcessingThread extends Thread
 	{
 		return robotThreads[0].getRobotState();
 	}
-	
 	/**
 	 * Get'er til Props {@link RobotState}.
 	 * 
@@ -430,46 +428,6 @@ public class ProcessingThread extends Thread
 	public RobotState getPropState()
 	{
 		return robotThreads[1].getRobotState();
-	}
-	
-	/**
-	 * get'er til Bertas Position
-	 * 
-	 * @return int[] p� formen yx
-	 */
-	public int[] getBertaPos()
-	{
-		return robotThreads[0].getRobotLocation().getPos();
-	}
-	
-	/**
-	 * get'er til Props Position
-	 * 
-	 * @return int[] p� formen yx
-	 */
-	public int[] getPropPos()
-	{
-		return robotThreads[1].getRobotLocation().getPos();
-	}
-	
-	/**
-	 * Get'er til Bertas Vinkel
-	 * 
-	 * @return vink�len som en double, i radianer
-	 */
-	public double getBertaAngle()
-	{
-		return robotThreads[0].getRobotLocation().getAngle();
-	}
-	
-	/**
-	 * Get'er til Bertas Vinkel
-	 * 
-	 * @return vink�len som en double, i radianer
-	 */
-	public double getPropAngle()
-	{
-		return robotThreads[1].getRobotLocation().getAngle();
 	}
 	
 	public boolean isBertaConnected()
@@ -500,6 +458,22 @@ public class ProcessingThread extends Thread
 	public void setPauseProp(boolean paused)
 	{
 		robotThreads[Commando.PROP].setPaused(paused);
+	}
+	public Location getBertaTargetLocation()
+	{
+		return robotThreads[0].getTargetLocation();
+	}
+	public Location getPropTargetLocation()
+	{
+		return robotThreads[1].getTargetLocation();
+	}
+	public double getBertaTargetAngle()
+	{
+		return robotThreads[0].getTargetAngle();
+	}
+	public double getPropTargetAngle()
+	{
+		return robotThreads[1].getTargetAngle();
 	}
 
 	public IImageProcessor getImageProcessor()

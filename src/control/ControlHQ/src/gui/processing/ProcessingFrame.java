@@ -3,18 +3,14 @@ package gui.processing;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import javax.swing.SwingWorker;
+
+
 import controller.MainController;
 
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
-import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
-import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
-import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
-import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.ImageFile;
-import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
-import exceptions.ErrorMessage;
-import exceptions.WebcamException;
 import gui.FramePlaceHolder;
 
 /**
@@ -27,10 +23,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     /** Creates new form ImageFrame */
     public ProcessingFrame() {
         initComponents();
-        //initListeners();
         FramePlaceHolder.setProcessingFrame(this);
     }
-
+    @Deprecated
     private void initListeners() {
 		
     	stateChangeListener = new RobotColorChangeListener();
@@ -151,12 +146,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imageToolbar = new javax.swing.JToolBar();
         webcamBtn = new javax.swing.JButton();
         pauseTBtn = new javax.swing.JToggleButton();
-        stopWebcamBtn = new javax.swing.JButton();
         updateIntvlabel = new javax.swing.JLabel();
         updateIntervalSpinner = new javax.swing.JSpinner();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        testimageBtn = new javax.swing.JButton();
-        nextTestImgBtn = new javax.swing.JButton();
 
         robot1SettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Threshold Settings"));
 
@@ -795,7 +787,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imageToolbar.setRollover(true);
 
         webcamBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/webcam_icon.png"))); // NOI18N
-        webcamBtn.setText("Vis webcam feed");
+        webcamBtn.setText("Start webcam & info feed");
         webcamBtn.setToolTipText("Start Webcam");
         webcamBtn.setFocusable(false);
         webcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -814,18 +806,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         pauseTBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         imageToolbar.add(pauseTBtn);
 
-        stopWebcamBtn.setText("Stop Webcam");
-        stopWebcamBtn.setToolTipText("Stop Webcam");
-        stopWebcamBtn.setEnabled(false);
-        stopWebcamBtn.setFocusable(false);
-        stopWebcamBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        stopWebcamBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopWebcamBtnActionPerformed(evt);
-            }
-        });
-        imageToolbar.add(stopWebcamBtn);
-
         updateIntvlabel.setLabelFor(updateIntervalSpinner);
         updateIntvlabel.setText("Update interval:");
         updateIntvlabel.setEnabled(false);
@@ -837,31 +817,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         updateIntervalSpinner.setPreferredSize(new java.awt.Dimension(50, 20));
         imageToolbar.add(updateIntervalSpinner);
         imageToolbar.add(jSeparator1);
-
-        testimageBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/imagefile_icon.png"))); // NOI18N
-        testimageBtn.setText("Start Test-Billeder");
-        testimageBtn.setToolTipText("Image source (test images)");
-        testimageBtn.setEnabled(false);
-        testimageBtn.setFocusable(false);
-        testimageBtn.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        testimageBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                testimageBtnActionPerformed(evt);
-            }
-        });
-        imageToolbar.add(testimageBtn);
-
-        nextTestImgBtn.setText("Skift test-billede");
-        nextTestImgBtn.setEnabled(false);
-        nextTestImgBtn.setFocusable(false);
-        nextTestImgBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        nextTestImgBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        nextTestImgBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextTestImgBtnActionPerformed(evt);
-            }
-        });
-        imageToolbar.add(nextTestImgBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -875,86 +830,27 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(imageToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    @Deprecated
-    private void testimageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testimageBtnActionPerformed
-
-    	setFeed(new ImageFile());
-    	
-//    	stateChangeListener.setImageProcessor(new ImageProcessor2());
-    	
-    }//GEN-LAST:event_testimageBtnActionPerformed
 
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed
     	
-    	//setFeed(new WebCam());
-    	//stateChangeListener.setImageProcessor(new ImageProcessor2());
-
-        updateLoop();
+    	new UpdateTask().execute();
+    	webcamBtn.setEnabled(false);
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
-    @Deprecated
-    private void nextTestImgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextTestImgBtnActionPerformed
-        updateImagePanel();
-    }//GEN-LAST:event_nextTestImgBtnActionPerformed
-
-    private void stopWebcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopWebcamBtnActionPerformed
-        if (webcamRunning){
-        	webcamRunning = false;
-        }
-
-    }//GEN-LAST:event_stopWebcamBtnActionPerformed
-    @Deprecated
-    public void setFeed(IImageSource src){
-    	
-
-        try {
-
-		} catch (Exception e) {
-			new ErrorMessage("Webcam ikke tilg�ngeligt");
-		}
-        
-		// LABELS
-		if (src instanceof ImageFile) {	// file src
-			nextTestImgBtn.setEnabled(true);
-			
-			updateIntervalSpinner.setEnabled(false);
-			updateIntvlabel.setEnabled(false);
-			pauseTBtn.setEnabled(false);
-			stopWebcamBtn.setEnabled(false);
-			webcamRunning = false;
-		} else{	// webcam src
-			nextTestImgBtn.setEnabled(false);
-			
-			updateIntervalSpinner.setEnabled(true);
-			updateIntvlabel.setEnabled(true);
-			pauseTBtn.setEnabled(true);
-			stopWebcamBtn.setEnabled(true);
-			webcamRunning = true;
-		}
-		
-		// start webcam thread
-        if (webcamRunning){
-        	runWebcamloop();
-        	return;
-        }
-        
-        updateImagePanel();
-
-    }
     
-    public synchronized void updateImagePanel() {
+    public void updateImagePanel() {
     	
     	imagePanel.removeAll();
         processedImagePanel.removeAll();
-    	
-    	ILocations locations = MainController.getInstance().getImages();
+        
+    	ILocations locations = MainController.getInstance().getInformation();
     	
     	// kilde billede
     	BufferedImage sourceImg = locations.getSourceImage();
@@ -979,55 +875,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         processedImagePanel.validate();
         
 	}
-    
-    public void updateLoop() {
-    	System.out.println("updateloop started");
-		new Thread("ImagePanel Thread"){
-			@Override
-			public void run() {
-				
-				while(webcamRunning){
-					
-					FramePlaceHolder.getMinInfoFrame().updateBothRobots();
-
-                    
-					updateImagePanel();
-					
-					try {
-//						Thread.sleep((long) (time_slice*1000));
-						Thread.sleep((long) (50));
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-				}
-			}
-		}.start();
-	}
-    
-    @Deprecated
-    public void runWebcamloop() {
-		
-    	new Thread("webcam-loop"){
-    		@Override
-    		public void run() {
-				
-    			while (webcamRunning) {
-					while (webcamFeedPaused);
-					
-					updateImagePanel();
-					
-					try {
-						Thread.sleep((long) (time_slice*1000));
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-    		}
-    	}.start();
-    	
-	}
-    
+        
     private ImagePanel srcImgPanel;
     private ImagePanel tileImgPanel;
     
@@ -1102,19 +950,51 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     javax.swing.JSlider minRedSlider2;
     javax.swing.JSlider minRedSlider3;
     javax.swing.JPanel miscPanel;
-    private javax.swing.JButton nextTestImgBtn;
     javax.swing.JPanel obstacleThresholdPanel;
     private javax.swing.JToggleButton pauseTBtn;
     private javax.swing.JPanel processedImagePanel;
     javax.swing.JTabbedPane robot1SettingsPanel;
     javax.swing.JPanel robotBackThresholdPanel;
     javax.swing.JPanel robotFrontThresholdPanel;
-    private javax.swing.JButton stopWebcamBtn;
-    private javax.swing.JButton testimageBtn;
     private javax.swing.JSpinner updateIntervalSpinner;
     private javax.swing.JLabel updateIntvlabel;
     private javax.swing.JButton webcamBtn;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
+    
+    // Swing worker classes (for background work)
+    
+    class UpdateTask extends SwingWorker<Void, Void>{
+
+		@Override
+		protected Void doInBackground() throws Exception
+		{
+			try
+			{
+				while(true){
+					Thread.sleep(100);
+					updateImagePanel();
+				}
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+    	
+    }
+    class UpdateInfoTask extends SwingWorker<Void, Void>{
+
+		@Override
+		protected Void doInBackground() throws Exception
+		{
+			while(true){
+				FramePlaceHolder.getMinInfoFrame().updateAllInfo();
+			}
+		}
+    	
+    }
+    
 }

@@ -8,6 +8,10 @@
   <Properties>
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" value="Kommunikation"/>
+    <Property name="doubleBuffered" type="boolean" value="true"/>
+    <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+      <Image iconType="3" name="/icons/bluetooth_black-32.png"/>
+    </Property>
     <Property name="normalBounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
       <Rectangle value="[450, 290, 234, 133]"/>
     </Property>
@@ -30,21 +34,26 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="connectBtn" linkSize="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="disconnectBtn" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="progressBar" alignment="0" pref="327" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="connectBtn" linkSize="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="disconnectBtn" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jSeparator1" min="-2" pref="13" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="BertaRadioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="PropRadioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="BothRadioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jSeparator1" min="-2" pref="13" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="BertaRadioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="PropRadioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="BothRadioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -67,7 +76,9 @@
                   </Group>
                   <Component id="jSeparator1" alignment="0" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="progressBar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -75,7 +86,21 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="connectBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Connect"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/Bluetooth_128.png"/>
+        </Property>
+        <Property name="contentAreaFilled" type="boolean" value="false"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Hand Cursor"/>
+        </Property>
+        <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/Bluetooth_128_bw.png"/>
+        </Property>
+        <Property name="focusPainted" type="boolean" value="false"/>
+        <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/Bluetooth_128_over.png"/>
+        </Property>
+        <Property name="verticalAlignment" type="int" value="1"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="connectBtnActionPerformed"/>
@@ -107,6 +132,7 @@
           <ComponentRef name="robotRadioBtnGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" value="P.R.O.P."/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PropRadioBtnActionPerformed"/>
@@ -124,6 +150,11 @@
     <Component class="javax.swing.JSeparator" name="jSeparator1">
       <Properties>
         <Property name="orientation" type="int" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JProgressBar" name="progressBar">
+      <Properties>
+        <Property name="indeterminate" type="boolean" value="true"/>
       </Properties>
     </Component>
   </SubComponents>

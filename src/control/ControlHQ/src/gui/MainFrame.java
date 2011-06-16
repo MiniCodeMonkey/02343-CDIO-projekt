@@ -18,6 +18,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import controller.MainController;
 import gui.debug.DebugFrame;
@@ -38,6 +40,22 @@ public class MainFrame extends javax.swing.JFrame {
     
 	/** Creates new form MainFrame */
     public MainFrame() {
+    	try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e)
+		{
+			e.printStackTrace();
+		}
         initComponents();
         
         makeCommFrame();
@@ -83,6 +101,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         dashboard.setBackground(new java.awt.Color(204, 204, 204));
+        dashboard.setDoubleBuffered(true);
 
         fileMenuOld.setText("File");
 
@@ -210,7 +229,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_toleranceMenuItemActionPerformed
 
     private void updateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMenuItemActionPerformed
-        FramePlaceHolder.getMinInfoFrame().updateBothRobots();
+        FramePlaceHolder.getMinInfoFrame().updateAllInfo();
     }//GEN-LAST:event_updateMenuItemActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
