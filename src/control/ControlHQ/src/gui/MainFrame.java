@@ -19,8 +19,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
 
-import com.sun.media.rtsp.protocol.PauseMessage;
-
 import controller.MainController;
 import gui.debug.DebugFrame;
 

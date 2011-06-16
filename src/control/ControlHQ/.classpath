@@ -8,6 +8,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/DTO"/>
 	<classpathentry kind="lib" path="bluecove.jar"/>
 	<classpathentry kind="lib" path="pccomm.jar"/>
+	<classpathentry kind="lib" path="beansbinding-1.2.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/CommanderRMI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
