@@ -26,15 +26,16 @@ public class MainController
 	
 	/**
 	 * Initialize the webcam and processor
+	 * @param robot 
 	 */
-	public void initialize()
+	public void initialize(int robot)
 	{
 		// Initialize webcam
 		IImageSource imageSource = new WebCam();
 		imageSource.init();
 		
 		// Start processing thread
-		processingThread = new ProcessingThread(imageSource);
+		processingThread = new ProcessingThread(imageSource,robot);
 		processingThread.start();
 	}
 	

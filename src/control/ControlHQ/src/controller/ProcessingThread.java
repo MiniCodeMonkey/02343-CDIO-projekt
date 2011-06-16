@@ -31,15 +31,22 @@ public class ProcessingThread extends Thread
 	private IImageProcessor imageProcessor;
 	private boolean running;
 	
+	private int connetToRobots = -1;
+	
 	// bruges af GUI
 	private ILocations locations;
 	
 	private int robotsCount = 0;
 	private int cakesCount = 0;
 	
-	public ProcessingThread(IImageSource imageSource)
+	/**
+	 * @param imageSource - the image source to use
+	 * @param robots - which robot(s) to start; 1 berta, 2 prop, 0 both
+	 */
+	public ProcessingThread(IImageSource imageSource, int robots)
 	{
 		this.imageSource = imageSource;
+		this.connetToRobots = robots;
 	}
 	
 	public void run()
@@ -62,13 +69,31 @@ public class ProcessingThread extends Thread
 		}
 	}
 	
+	/**
+	 * @throws ControllerException
+	 * @throws MasterRobotNotFound
+	 */
 	private void initialize() throws ControllerException, MasterRobotNotFound
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
 
 
-                // TODO add switchcase: how many robots
+        switch (connetToRobots)
+		{
+		case 1:	// berta
+			robotsCommando = new RmiClient(0);
+			break;
+		case 2:	// prop
+			robotsCommando = new RmiClient(1);
+			break;
+		case 0:	// both robots
+			robotsCommando = new RmiClient();
+			break;
+		default:
+			System.err.println("Can only initialize robots 0-2");
+			break;
+		}
 		robotsCommando = new RmiClient();
 		robotsCommando.init();
 		
@@ -437,14 +462,12 @@ public class ProcessingThread extends Thread
 	
 	public boolean isBertaConnected()
 	{
-		// return robotsCommando.isBertaConnected();
-		return false;
+		 return (robotsCommando.getControl()[0] == null)? false : true;
 	}
 	
 	public boolean isPropConnected()
 	{
-		// return robotsCommando.isPropConnected();
-		return false;
+		 return (robotsCommando.getControl()[1] == null)? false : true;
 	}
 	
 	public boolean isBertaPaused()

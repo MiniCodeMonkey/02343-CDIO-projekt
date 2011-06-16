@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -434,18 +435,36 @@ public class BasicControlGui extends javax.swing.JFrame {
 
         private void debugBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debugBtnActionPerformed
             try {
-				moveForward();
-				Thread.sleep(2000);
-				moveLeft();
-				Thread.sleep(800);
-				moveForward();
-				Thread.sleep(2000);
-				moveRight();
+            	controller.move(50, false);
+				
+				// Open claw
+				controller.openClaw();
 				Thread.sleep(1000);
-				moveBackward();
+				controller.stopClaw();
+				
+				// Move forwards
+				Thread.sleep(2000);
+				// System.out.println("Cake delivered");
+				controller.stop();
+				Thread.sleep(200);
+				
+				// Move backwards
+				controller.move(50, true);
+				Thread.sleep(2000);
+				
+				// Close claw
+				controller.closeClaw();
 				Thread.sleep(1000);
+				controller.stopClaw();
+				controller.stop();
 			allStop();
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

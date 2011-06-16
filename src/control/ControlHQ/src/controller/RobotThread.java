@@ -279,18 +279,42 @@ public class RobotThread extends Thread
 							robotControl.closeClaw();
 							Thread.sleep(1000);
 							robotControl.stopClaw();
+							robotControl.stop();
 							
 							// Move backwards: 1s
-							robotControl.move(50, true);
-							Thread.sleep(1000);
+							robotControl.move(20, true);
+							Thread.sleep(2000);
 							robotControl.stop();
+							
+							int dropDistance = 20;
+							
 							
 							// Decide delivery location
 							Location deliveryLocations[] = {
-									new Location((int) mapSize.getHeight() - 2, (int) mapSize.getWidth() / 2),
-									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - 2),
-									new Location(2, (int) mapSize.getWidth() / 2),
-									new Location((int) mapSize.getHeight() / 2, 2)
+									
+									// right side
+									new Location((int) mapSize.getHeight() / 2 - 30, (int) mapSize.getWidth() - dropDistance),
+									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - dropDistance),
+									new Location((int) mapSize.getHeight() / 2 + 30, (int) mapSize.getWidth() - dropDistance),
+									
+									// left side
+									new Location((int) mapSize.getHeight() / 2 - 30, dropDistance),
+									new Location((int) mapSize.getHeight() / 2, dropDistance),
+									new Location((int) mapSize.getHeight() / 2 + 30, dropDistance),
+									
+									// lower long side
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 60),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 30),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 30),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 60),
+									
+									// upper long side
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 60),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 30),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 30),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 60)
 							};
 							
 							double bestDistance = Double.MAX_VALUE;
@@ -332,9 +356,32 @@ public class RobotThread extends Thread
 							this.robotState = RobotState.DELIVERING;
 							
 							// Move forward
-							robotControl.move(30, false);
-							Thread.sleep(2000);
-							robotControl.stop();
+//							robotControl.move(30, false);
+//							
+//							// Open claw
+//							robotControl.openClaw();
+//							Thread.sleep(1000);
+//							robotControl.stopClaw();
+//							
+//							// Move forwards
+//							Thread.sleep(2000);
+//							// System.out.println("Cake delivered");
+//							robotControl.stop();
+//							Thread.sleep(200);
+//							
+//							// Move backwards
+//							robotControl.move(50, true);
+//							Thread.sleep(2000);
+//							robotControl.stop();
+//							
+//							// Close claw
+//							robotControl.closeClaw();
+//							Thread.sleep(1000);
+//							robotControl.stopClaw();
+							
+							// NY afleverings procedure
+							
+							robotControl.move(50, false);
 							
 							// Open claw
 							robotControl.openClaw();
@@ -342,20 +389,21 @@ public class RobotThread extends Thread
 							robotControl.stopClaw();
 							
 							// Move forwards
-							robotControl.move(50, false);
-							Thread.sleep(1000);
+							Thread.sleep(2000);
 							// System.out.println("Cake delivered");
 							robotControl.stop();
+							Thread.sleep(200);
 							
 							// Move backwards
 							robotControl.move(50, true);
-							Thread.sleep(2400);
-							robotControl.stop();
+							Thread.sleep(2000);
 							
 							// Close claw
 							robotControl.closeClaw();
 							Thread.sleep(1000);
 							robotControl.stopClaw();
+							robotControl.stop();
+							
 							
 							// robot becomes idle (job done)
 							this.robotState = RobotState.IDLE;

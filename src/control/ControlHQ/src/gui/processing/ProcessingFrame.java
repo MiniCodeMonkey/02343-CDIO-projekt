@@ -779,7 +779,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imageProcessPanel.setLayout(new java.awt.GridBagLayout());
 
         imagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Image"));
-        imagePanel.setLayout(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -787,7 +786,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imageProcessPanel.add(imagePanel, gridBagConstraints);
 
         processedImagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Processed Image"));
-        processedImagePanel.setLayout(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -869,15 +867,15 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
-            .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
+            .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
+            .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(imageToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -977,6 +975,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         
         imagePanel.repaint();
         imagePanel.validate();
+        processedImagePanel.repaint();
+        processedImagePanel.validate();
+        
 	}
     
     public void updateLoop() {
@@ -986,14 +987,15 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 			public void run() {
 				
 				while(webcamRunning){
+					
+					FramePlaceHolder.getMinInfoFrame().updateBothRobots();
 
-                    while(webcamFeedPaused);
                     
 					updateImagePanel();
 					
 					try {
 //						Thread.sleep((long) (time_slice*1000));
-						Thread.sleep((long) (100));
+						Thread.sleep((long) (50));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

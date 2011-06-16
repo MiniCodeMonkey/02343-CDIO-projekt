@@ -1169,8 +1169,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="imageToolbar" alignment="0" pref="715" max="32767" attributes="0"/>
-          <Component id="imageProcessPanel" alignment="0" pref="715" max="32767" attributes="0"/>
+          <Component id="imageToolbar" alignment="0" pref="638" max="32767" attributes="0"/>
+          <Component id="imageProcessPanel" alignment="0" pref="638" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -1178,7 +1178,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="imageToolbar" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="imageProcessPanel" pref="478" max="32767" attributes="0"/>
+              <Component id="imageProcessPanel" pref="573" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -1205,9 +1205,7 @@
             </Constraint>
           </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-            <Property name="useNullLayout" type="boolean" value="true"/>
-          </Layout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
         </Container>
         <Container class="javax.swing.JPanel" name="processedImagePanel">
           <Properties>
@@ -1223,9 +1221,7 @@
             </Constraint>
           </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-            <Property name="useNullLayout" type="boolean" value="true"/>
-          </Layout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
         </Container>
       </SubComponents>
     </Container>

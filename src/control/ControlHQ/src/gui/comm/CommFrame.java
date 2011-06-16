@@ -62,7 +62,6 @@ public class CommFrame extends javax.swing.JInternalFrame {
         });
 
         robotRadioBtnGroup.add(BertaRadioBtn);
-        BertaRadioBtn.setSelected(true);
         BertaRadioBtn.setText("B.E.R.T.A.");
         BertaRadioBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +78,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
         });
 
         robotRadioBtnGroup.add(BothRadioBtn);
+        BothRadioBtn.setSelected(true);
         BothRadioBtn.setText("Begge Robotter");
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -120,7 +120,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(disconnectBtn))
                     .addComponent(jSeparator1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -135,7 +135,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
            if(BertaRadioBtn.isSelected()){
                     PropRadioBtn.setEnabled(false);
                      BothRadioBtn.setEnabled(false);
-                     connect(0);
+                     connect(2);
                  }
            if(PropRadioBtn.isSelected()){
                 BertaRadioBtn.setEnabled(false);
@@ -145,7 +145,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
            if(BothRadioBtn.isSelected()){
                BertaRadioBtn.setEnabled(false);
                PropRadioBtn.setEnabled(false);
-               connect();
+               connect(0);
            }
         //connect();
     }//GEN-LAST:event_connectBtnActionPerformed
@@ -183,12 +183,12 @@ public class CommFrame extends javax.swing.JInternalFrame {
     /**
      * connects or disconnects (if connected) to/from B.E.R.T.A.
      */
-    public void connect() {
-    	
+    public void connect(int robot) {
+
     	// initializing control unit
-    	MainController.getInstance().initialize();
-    	
+    	MainController.getInstance().initialize(robot);
+
     	FramePlaceHolder.getMainFrame().makeProcessingFrame();
-			
-	}    
+
+    } 
 }

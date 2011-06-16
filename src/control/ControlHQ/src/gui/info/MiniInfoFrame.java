@@ -46,6 +46,8 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        bertaTargetLabel = new javax.swing.JLabel();
         propInfoPanel = new javax.swing.JPanel();
         PropNameLabel = new javax.swing.JLabel();
         PropStartStopLabel = new javax.swing.JLabel();
@@ -55,10 +57,13 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        propTargetLabel = new javax.swing.JLabel();
 
         setIconifiable(true);
+        setResizable(true);
         setTitle("Robot Information");
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        getContentPane().setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         bertaInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("B.E.R.T.A."));
         bertaInfoPanel.setLayout(new java.awt.GridBagLayout());
@@ -73,42 +78,67 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(10, 50, 10, 50);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         bertaInfoPanel.add(bertaStateLabel, gridBagConstraints);
 
         bertaPosLabel.setText("N/A");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         bertaInfoPanel.add(bertaPosLabel, gridBagConstraints);
 
         bertaAngleLabel.setText("N/A");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         bertaInfoPanel.add(bertaAngleLabel, gridBagConstraints);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/state.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         bertaInfoPanel.add(jLabel1, gridBagConstraints);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gps.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         bertaInfoPanel.add(jLabel2, gridBagConstraints);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/angle.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         bertaInfoPanel.add(jLabel3, gridBagConstraints);
 
-        getContentPane().add(bertaInfoPanel, new java.awt.GridBagConstraints());
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/target.gif"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        bertaInfoPanel.add(jLabel7, gridBagConstraints);
+
+        bertaTargetLabel.setText("N/A");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        bertaInfoPanel.add(bertaTargetLabel, gridBagConstraints);
+
+        getContentPane().add(bertaInfoPanel);
 
         propInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("P.R.O.P."));
         propInfoPanel.setLayout(new java.awt.GridBagLayout());
@@ -126,45 +156,67 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 50, 10, 50);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         propInfoPanel.add(PropStateLabel, gridBagConstraints);
 
         PropPosLabel.setText("N/A");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         propInfoPanel.add(PropPosLabel, gridBagConstraints);
 
         PropAngleLabel.setText("N/A");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         propInfoPanel.add(PropAngleLabel, gridBagConstraints);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/state.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         propInfoPanel.add(jLabel4, gridBagConstraints);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gps.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         propInfoPanel.add(jLabel5, gridBagConstraints);
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/angle.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
         propInfoPanel.add(jLabel6, gridBagConstraints);
 
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/target.gif"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        propInfoPanel.add(jLabel8, gridBagConstraints);
+
+        propTargetLabel.setText("N/A");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        getContentPane().add(propInfoPanel, gridBagConstraints);
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        propInfoPanel.add(propTargetLabel, gridBagConstraints);
+
+        getContentPane().add(propInfoPanel);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -182,13 +234,17 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel bertaInfoPanel;
     private javax.swing.JLabel bertaPosLabel;
     private javax.swing.JLabel bertaStateLabel;
+    private javax.swing.JLabel bertaTargetLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel propInfoPanel;
+    private javax.swing.JLabel propTargetLabel;
     // End of variables declaration//GEN-END:variables
 
     //Berta Info Update
@@ -220,13 +276,17 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         }
     }
     private void updateBertaAngle(){
-       double radAngle = MainController.getInstance().getBertaAngle();
-       if(radAngle == 0.0){
-           bertaAngleLabel.setText("N/A");
-       }else{
-        bertaAngleLabel.setText(radAngle*180/Math.PI+"°");
-       }
-   }
+    	double radAngle = MainController.getInstance().getBertaAngle();
+    	bertaAngleLabel.setText((int)Math.toDegrees(radAngle)+"�");
+    }
+    private void updateBertaTargetLocation()
+    {
+
+    }
+    private void updateBertaTargetAngle()
+    {
+
+    }
 
 //Prop Info Update
     private void updatePropOnOff(){
@@ -255,13 +315,22 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
         }
     }
     private void updatePropAngle(){
-       double radAngle = MainController.getInstance().getPropAngle();
-       if(radAngle == 0.0){
-           PropAngleLabel.setText("N/A");
-       }else{
-        PropAngleLabel.setText(radAngle*180/Math.PI+"°");
-       }
-       }
+    	double radAngle = MainController.getInstance().getPropAngle();
+    	if(radAngle == 0.0){
+    		PropAngleLabel.setText("N/A");
+    	}else{
+    		PropAngleLabel.setText((int)Math.toDegrees(radAngle)+"�");
+    	}
+    }
+    private void updatePropTargetLocation()
+	{
+		
+	}
+    private void updatePropTargetAngle()
+	{
+		
+	}
+    
 
 public void updateBertaInfo(){
     updateBertaAngle();
@@ -276,8 +345,10 @@ public void updatePropInfo(){
     updatePropState();
 }
 public void updateBothRobots(){
-    updateBertaInfo();
-    updatePropInfo();
+    if (MainController.getInstance().isBertaConnected())
+    	updateBertaInfo();
+    if (MainController.getInstance().isPropConnected())
+    	updatePropInfo();
 }
 
 
