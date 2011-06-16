@@ -58,7 +58,17 @@ public class TileMap
 		
 		try
 		{
-			blocked = (obstacleMap[ty][tx] > 25);
+			// If the robot is the MASTER robot
+			if (obstacleMap[robot.getY()][robot.getX()] != -1)
+			{
+				// Blocked if an obstacle or the SLAVE robot is in the way
+				blocked = (obstacleMap[ty][tx] >= 20 || obstacleMap[ty][tx] == -1);
+			}
+			else
+			{
+				// Blocked if an obstacle is in the way
+				blocked = (obstacleMap[ty][tx] >= 20);
+			}
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
@@ -73,7 +83,7 @@ public class TileMap
 		{
 			for (int x = 0; x < obstacleMap[0].length; x++)
 			{
-				System.out.print(obstacleMap[y][x]);
+				System.out.print(String.format( "%02d",obstacleMap[y][x])+" ");
 			}
 			System.out.println();
 		}

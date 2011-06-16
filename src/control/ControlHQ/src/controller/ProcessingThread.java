@@ -77,7 +77,9 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-
+		
+		// HACK FIXME
+		connetToRobots = 1;
 
         switch (connetToRobots)
 		{
@@ -94,7 +96,6 @@ public class ProcessingThread extends Thread
 			System.err.println("Can only initialize robots 0-2");
 			break;
 		}
-		robotsCommando = new RmiClient();
 		robotsCommando.init();
 		
 		IControl[] robotControls = robotsCommando.getControl();
@@ -180,6 +181,16 @@ public class ProcessingThread extends Thread
 		// Create a new tile map from the locations object
 		TileMap tileMap = new TileMap();
 		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
+		
+		// Sets robot-is-yielding flag in imageprocessor. Robot 2 works as an obstacle..
+		if (robotThreads[1] != null && (robotThreads[1].getRobotState() == RobotState.YIELD_CAKE || robotThreads[1].getRobotState() == RobotState.YIELD_DELIVERY))
+		{
+			imageProcessor.setRobotYield(true);
+		}
+		else
+		{
+			imageProcessor.setRobotYield(false);
+		}
 		
 		// Find a path for each robot
 		int robotIndex = 0;
@@ -298,6 +309,7 @@ public class ProcessingThread extends Thread
 				
 				robotIndex++;
 			}
+			
 		}
 	}
 	

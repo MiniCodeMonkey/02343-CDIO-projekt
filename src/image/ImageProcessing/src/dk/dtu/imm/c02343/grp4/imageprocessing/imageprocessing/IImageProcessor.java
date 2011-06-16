@@ -52,6 +52,7 @@ public interface IImageProcessor {
 	
 	/**
 	 * Standard størrelse på forhindrings-sikkerhedszone
+	 * HUSK: Ændres dette skal der også tages forbehold for dette i tilemappen
 	 */
 	public static final int OBSTACLE_BUFFER = 20;
 	
@@ -120,6 +121,13 @@ public interface IImageProcessor {
 	 * @return Thresholds objekt med grænseværdier
 	 */
 	public Thresholds getThresholds(int type);
+	
+	/**
+	 * Angiver, om robot 2 skal fungere som forhindring (yielder)
+	 */
+	public void setRobotYield(boolean robotYield);
+	
+	public boolean isRobotYield();
 	
 	public void setObstacleBufferZone(int bufferZone);
 	

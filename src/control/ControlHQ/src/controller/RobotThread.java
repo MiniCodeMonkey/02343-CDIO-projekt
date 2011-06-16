@@ -265,14 +265,14 @@ public class RobotThread extends Thread
 							this.robotState = RobotState.PICKING_UP;
 							
 							// Open claw: 3s
-							robotControl.move(20, false);
+							
 							robotControl.openClaw();
 							Thread.sleep(1000);
 							robotControl.stopClaw();
 							
 							// Move forward: 1s
 							robotControl.move(20, false);
-							Thread.sleep(1000);
+							Thread.sleep(2000);
 							robotControl.stop();
 							
 							// Close claw: 3s
@@ -435,6 +435,8 @@ public class RobotThread extends Thread
 								if (distance < Thresholds.getInstance().getYieldDistance())
 								{									
 									robotControl.stop();
+									
+									// TODO hvad hvis Prop er i PICK_UP || DELIVERY
 									
 									if (this.robotState == RobotState.HEADING_FOR_CAKE)
 										this.robotState = RobotState.YIELD_CAKE;
