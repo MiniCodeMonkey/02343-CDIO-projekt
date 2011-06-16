@@ -138,7 +138,8 @@ public class RobotThread extends Thread
 						navigate();
 					}
 					
-					Thread.sleep(100); // do not delete this !!!
+					// Free some CPU
+					Thread.sleep(20);
 				}
 			}
 			robotControl.stop();
