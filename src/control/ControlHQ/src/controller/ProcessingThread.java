@@ -232,8 +232,8 @@ public class ProcessingThread extends Thread
 			}
 			
 			// We only calculate a path if the robot is heading for delivery or
-			// heading for a cake
-			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE)
+			// heading for a cake or is currently positioning
+			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE || robotThread.getRobotState() == RobotState.POSITIONING)
 			{
 				Location target = robotThread.getTargetLocation();
 				
