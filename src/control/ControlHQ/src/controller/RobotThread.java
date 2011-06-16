@@ -14,35 +14,91 @@ import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
 
 public class RobotThread extends Thread
 {
-	
+	/**
+	 * The different states to robot can be in
+	 */
 	public enum RobotState
 	{
 		IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY
 	};
 	
+	/**
+	 * Robot type can be master or slave
+	 */
 	public enum RobotType
 	{
 		MASTER, SLAVE
 	};
 	
+	/**
+	 * Control object used to send commands to the physical robot
+	 */
 	private IControl robotControl;
+	
+	/**
+	 * The current robot state
+	 */
 	private RobotState robotState = RobotState.IDLE;
+	
+	/**
+	 * The robot's type (Master or Slave)
+	 */
 	private RobotType robotType;
 	
+	/**
+	 * Should the main thread loop be running?
+	 */
 	private boolean running = true;
+	
+	/**
+	 * Should the robot's navigation be paused?
+	 */
 	private boolean paused = false;
 	
+	/**
+	 * The IRobot object for the threads's robot, containing location information and more
+	 */
 	private IRobot robotLocation = null;
+	
+	/**
+	 * The target location is for a cake or delivery location
+	 */
 	private Location targetLocation = null;
+	
+	/**
+	 * The map's current size
+	 */
 	private Rectangle mapSize = new Rectangle();
 	
+	/**
+	 * The current path for the robot
+	 */
 	private Path path = null;
+	
+	/**
+	 * Is set to true each time the path is updated from the image processor and pathfinder
+	 */
 	private boolean pathWasUpdated = false;
 	
+	/**
+	 * A list of all robot locations, including the current robot's location
+	 */
 	private List<IRobot> allRobotLocations = null;
 	
+	/**
+	 * Static attribute defining if a master has been initialized before
+	 */
 	private static boolean masterIsDefined = false;
 	
+	/**
+	 * Set to true to output processing time in console
+	 */
+	private final boolean showProcessingTime = false;
+	
+	/**
+	 * Constructs a new robot thread for a new robot
+	 * @param robotControl The control object to physically control the robot
+	 */
 	public RobotThread(IControl robotControl)
 	{
 		this.robotControl = robotControl;
@@ -56,47 +112,40 @@ public class RobotThread extends Thread
 	public void run()
 	{
 		try
-		{
-			
-			// setting master/slave configs + claw init
+		{	
+			// Initialize the robot's inital values and motor config
 			initialize();
 			
-			if (robotType == RobotType.MASTER)
-				Thread.currentThread().setName("RobotThread BERTA");
-			else
-				Thread.currentThread().setName("RobotThread PROP");
-			
+			// Main robot thread loop
 			while (running)
 			{
-				if (paused)// pauses the robot cycle
+				if (paused || robotState == RobotState.IDLE) // Is the robot cycle paused or is the robot idling?
 				{
 					robotControl.stop();
 					robotControl.stopClaw();
-					while (paused)
-					{
-						Thread.sleep(1000);
-					}
-				}
-				
-				if (robotState != RobotState.IDLE)
-				{
-					// long gettingImage = System.currentTimeMillis();
-					navigate();
-					Thread.sleep(100); // do not delete this !!!
-					// System.out.println("navigated in " +
-					// (System.currentTimeMillis()-gettingImage) + " ms");
+					Thread.sleep(1000);
 				}
 				else
 				{
-					// robotControl.stop();
-					// robotControl.stopClaw();
+					if (showProcessingTime)
+					{
+						long beforeNavigate = System.currentTimeMillis();
+						navigate();
+						System.out.println("navigated in " + (System.currentTimeMillis() - beforeNavigate) + " ms");
+					}
+					else
+					{
+						navigate();
+					}
+					
+					Thread.sleep(100); // do not delete this !!!
 				}
 			}
 			robotControl.stop();
 		}
 		catch (Exception e)
 		{
-			// TODO
+			// TODO: Show error in GUI
 			e.printStackTrace();
 		}
 		
@@ -126,6 +175,12 @@ public class RobotThread extends Thread
 		robotControl.closeClaw();
 		Thread.sleep(400);
 		robotControl.stopClaw();
+		
+		// Give a name for the thread
+		if (robotType == RobotType.MASTER)
+			Thread.currentThread().setName("RobotThread BERTA");
+		else
+			Thread.currentThread().setName("RobotThread PROP");
 	}
 	
 	/**
@@ -136,22 +191,18 @@ public class RobotThread extends Thread
 	 */
 	private void navigate() throws IOException, InterruptedException
 	{
-		
-		if (pathWasUpdated)
+		if (pathWasUpdated) // Did we receive an update path from the processing thread?
 		{
 			pathWasUpdated = false;
 			
+			// Is the path valid?
 			if (path != null && path.getLength() > 0)
 			{
-				Step step;
-				double targetAngle;
+				// Find the next step in the path
 				int currentStep = 0;
-				
-				step = path.getStep(currentStep);
-				
+				Step step = path.getStep(currentStep);
 				if (step.getX() == robotLocation.getX() && step.getY() == robotLocation.getY())
 				{
-					
 					currentStep++;
 					try
 					{
@@ -163,66 +214,35 @@ public class RobotThread extends Thread
 						System.err.println(e.getMessage());
 						return;
 					}
-					
 				}
-				
-				// System.out.println();
 				
 				// Calculate target angle
 				double dy = step.getY() - robotLocation.getY();
 				double dx = step.getX() - robotLocation.getX();
+				double targetAngle = calculateTargetAngle(dy, dx);
 				
-				// radianer!
-				targetAngle = calculateTargetAngle(dy, dx);
-				
-				// System.out.println("dy: " + dy + "| dx: " + dx);
-				
-				// Birds-eye-view distance from robot to target (cake, delivery
-				// location, etc.)
+				// Birds-eye-view distance from robot to target (cake, delivery, location, etc.)
 				double distanceToTarget = calculateDistance(robotLocation.getX(), robotLocation.getY(), targetLocation.GetX(), targetLocation.GetY());
-				
-				// Difference between robot angle and target angle
-				// radianer!!
-				
-				// if (robotLocation.getAngle() < 0 && targetAngle < 0)
-				// targetAngleDifference =
-				// Math.abs(Math.abs(robotLocation.getAngle()) -
-				// Math.abs(targetAngle));
-				// else if (robotLocation.getAngle() <= 0 && targetAngle >= 0)
-				// targetAngleDifference = Math.abs(targetAngle -
-				// Math.abs(robotLocation.getAngle()));
-				// else if (targetAngle < 0)
-				// targetAngleDifference = Math.abs(robotLocation.getAngle() -
-				// Math.abs(targetAngle));
 				
 				double targetAngleDifference = 0;
 				if (targetAngle < 0 && robotLocation.getAngle() < 0 || targetAngle >= 0 && robotLocation.getAngle() >= 0)
+				{
 					targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
+				}
 				else if (robotLocation.getAngle() >= 0)
 				{
 					targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
 				}
 				else
+				{
 					targetAngleDifference = Math.abs(robotLocation.getAngle() + targetAngle);
-				
-				// System.out.println("Robot angle: " +
-				// Math.toDegrees(robotLocation.getAngle()));
-				// System.out.println("Target angle: " +
-				// Math.toDegrees(targetAngle));
-				System.out.println("DistanceToTarget: " + distanceToTarget);
-				// System.out.println("TargetAngleDiff: " +
-				// Math.toDegrees(targetAngleDifference));
-				// System.out.println("Targetlocation: " + targetLocation.GetX()
-				// + "," + targetLocation.GetY());
-				
-				System.out.println(this.robotState);
+				}
 				
 				// Perform actions according to the robot state
 				switch (this.robotState)
 				{
 					case HEADING_FOR_CAKE:
 					{
-						// System.out.println("HEADING_FOR_CAKE");
 						// If close enough to the cake
 						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToCake())
 						{
@@ -236,14 +256,12 @@ public class RobotThread extends Thread
 						
 					case POSITIONING:
 					{
-						// System.out.println("POSITIONING");
 						// Is the rotation close enough?
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
 							robotControl.stop();
 							// Now picking up cake
 							this.robotState = RobotState.PICKING_UP;
-							// System.out.println("PICKING_UP");
 							
 							// Open claw: 3s
 							robotControl.move(20, false);
@@ -267,9 +285,12 @@ public class RobotThread extends Thread
 							robotControl.stop();
 							
 							// Decide delivery location
-							Location deliveryLocations[] = { new Location((int) mapSize.getHeight() - 2, (int) mapSize.getWidth() / 2),
-									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - 2), new Location(2, (int) mapSize.getWidth() / 2),
-									new Location((int) mapSize.getHeight() / 2, 2) };
+							Location deliveryLocations[] = {
+									new Location((int) mapSize.getHeight() - 2, (int) mapSize.getWidth() / 2),
+									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - 2),
+									new Location(2, (int) mapSize.getWidth() / 2),
+									new Location((int) mapSize.getHeight() / 2, 2)
+							};
 							
 							double bestDistance = Double.MAX_VALUE;
 							for (Location deliveryLocation : deliveryLocations)
@@ -278,8 +299,6 @@ public class RobotThread extends Thread
 								
 								if (currentDistance < bestDistance)
 								{
-									// System.out.println("new BEST distance " +
-									// currentDistance);
 									bestDistance = currentDistance;
 									targetLocation = deliveryLocation;
 								}
@@ -290,7 +309,6 @@ public class RobotThread extends Thread
 						}
 						else
 						{
-							// System.out.println("POSITIONING -> rotate");
 							// Rotate slowly to cake
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
@@ -365,13 +383,8 @@ public class RobotThread extends Thread
 							{
 								double distance = calculateDistance(robotLocation.getX(), robotLocation.getY(), otherRobotLocation.getX(), otherRobotLocation.getY());
 								
-								System.out.println("Should yield? " + robotLocation.getX() + "," + robotLocation.getY() + " - " + otherRobotLocation.getX() + "," + robotLocation.getY()
-										+ " distance: " + distance);
-								
 								if (distance < Thresholds.getInstance().getYieldDistance())
-								{
-									System.out.println("Slave is yelding for master, distance: " + distance);
-									
+								{									
 									robotControl.stop();
 									
 									if (this.robotState == RobotState.HEADING_FOR_CAKE)
@@ -388,22 +401,14 @@ public class RobotThread extends Thread
 					
 					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 					{
-						// We are very very close to the correct angle, so drive
-						// forward
+						// We are very very close to the correct angle, so drive forward
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
-							// System.out.println("very very close");
 							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
 							
-							// debug
-							// Thread.sleep(800);
-							
 						}
-						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do
-																												// minor
-																												// corrections
+						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do minor corrections
 						{
-							// System.out.println("not very close");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
@@ -414,10 +419,8 @@ public class RobotThread extends Thread
 								robotControl.left(Thresholds.getInstance().getSlowSpeed());
 							}
 						}
-						else
-						// Do major corrections
+						else // Do major corrections
 						{
-							// System.out.println("not very AT ALL close");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
@@ -434,6 +437,12 @@ public class RobotThread extends Thread
 		}
 	}
 	
+	/**
+	 * Calculates the target angle from dy and dx
+	 * @param dy
+	 * @param dx
+	 * @return
+	 */
 	private double calculateTargetAngle(double dy, double dx)
 	{
 		double targetAngle = 0.0;
