@@ -63,6 +63,17 @@ public class ImageProcessor2 implements IImageProcessor {
 	// Liste af robotter
 	private ArrayList<IRobot> robots;
 	
+	// Angiver, om robot 2 skal fungere som forhindring (yielder)
+	private boolean robotYield = false;
+	
+	public boolean isRobotYield() {
+		return robotYield;
+	}
+
+	public void setRobotYield(boolean robotYield) {
+		this.robotYield = robotYield;
+	}
+
 	/**
 	 * Konstruktør. Initialiserer standard-værdier.
 	 */
@@ -249,12 +260,30 @@ public class ImageProcessor2 implements IImageProcessor {
 						try {
 							// Behandl objekt
 							robot2Npos = collect(y, x, ROBOT2N, foundmap);
+							if (robotYield) {
+								for (int dy = -obstacleBuffer; dy < obstacleBuffer; dy++) {
+									for (int dx = -obstacleBuffer; dx < obstacleBuffer; dx++) {
+										if (y+dy >= 0 && y+dy < obstaclemap.length && x+dx >= 0 && x+dx < obstaclemap[0].length) {
+											obstaclemap[y+dy][x+dy] = -1;
+										}
+									}
+								}
+							}
 						} catch (InsufficientObjectException e) {
 						}
 					} else if (tilemap[y][x] == ROBOT2S) {
 						try {
 							// Behandl objekt
 							robot2Spos = collect(y, x, ROBOT2S, foundmap);
+							if (robotYield) {
+								for (int dy = -obstacleBuffer; dy < obstacleBuffer; dy++) {
+									for (int dx = -obstacleBuffer; dx < obstacleBuffer; dx++) {
+										if (y+dy >= 0 && y+dy < obstaclemap.length && x+dx >= 0 && x+dx < obstaclemap[0].length) {
+											obstaclemap[y+dy][x+dy] = -1;
+										}
+									}
+								}
+							}
 						} catch (InsufficientObjectException e) {
 						}
 					}
