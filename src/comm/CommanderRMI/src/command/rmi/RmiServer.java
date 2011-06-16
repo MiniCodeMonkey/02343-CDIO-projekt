@@ -10,6 +10,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import javax.swing.JOptionPane;
+
 import command.Commando;
 import command.interfaces.IControl;
 
@@ -105,6 +107,7 @@ public class RmiServer {
 			System.setOut(new PrintStream(new FileOutputStream("RmiServer_"+robot+"_out.log")));
 			System.setErr(new PrintStream(new FileOutputStream("RmiServer_"+robot+"_err.log")));
 		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "RMI-server error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		

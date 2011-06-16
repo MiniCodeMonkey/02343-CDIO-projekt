@@ -70,7 +70,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 		
 		bufzoneSlider.addChangeListener(stateChangeListener);
 		
-		pauseTBtn.addItemListener(stateChangeListener);
 		
 		updateIntervalSpinner.addChangeListener(stateChangeListener);
 		
@@ -894,7 +893,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 
     	setFeed(new ImageFile());
     	
-    	stateChangeListener.setImageProcessor(new ImageProcessor2());
+//    	stateChangeListener.setImageProcessor(new ImageProcessor2());
     	
     }//GEN-LAST:event_testimageBtnActionPerformed
 

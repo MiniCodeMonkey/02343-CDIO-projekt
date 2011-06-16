@@ -67,7 +67,7 @@ public class ProcessingThread extends Thread
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
 		
-		robotsCommando = new RmiClient();
+		robotsCommando = new RmiClient(0);
 		robotsCommando.init();
 		
 		IControl[] robotControls = robotsCommando.getControl();
