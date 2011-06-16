@@ -21,14 +21,15 @@
 %\tableofcontents%
 %
 %
-%\section*{Indholdsfortegnelse}
-%\startcontents[chapters]
-%\printcontents[chapters]{}{0}{\setcounter{tocdepth}{2}}
+\changepage{0cm}{0cm}{0cm}{0cm}{}{0cm}{0cm}{}{}
+\section*{Indholdsfortegnelse}
+\startcontents[chapters]
+\printcontents[chapters]{}{0}{\setcounter{tocdepth}{2}}
 %\listoffigures%
-%\clearpage
-%\startlist[figures]{lof}
-%\section*{Figurer}
-%\printlist[figures]{lof}{}{}
+\clearpage
+\startlist[figures]{lof}
+\section*{Figurer}
+\printlist[figures]{lof}{}{}
 %\vspace{1cm}%
 %\listoftables%
 %\startlist[tables]{lot}
@@ -39,13 +40,13 @@
 %\lstlistoflistings% hvis der er inkluderet kildekode.
 \clearpage
 % Sørg for at indhold starter på ny forside
-%\addtocounter{tpages}{\arabic{page}}
-%\ifodd\value{tpages}
-%	\begin{minipage}[b]{0.495\textwidth}
-%	\end{minipage}
-%	\newpage
-%\else
-%\fi
+\addtocounter{tpages}{\arabic{page}}
+\ifodd\value{tpages}
+	\begin{minipage}[b]{0.495\textwidth}
+	\end{minipage}
+	\newpage
+\else
+\fi
 \fancyhead[LO,RE]{\headinner}
 \fancyhead[LE,RO]{\headouter}
 \fancyhead[C]{\headcenter}
@@ -75,13 +76,13 @@
 % START APPENDIX
 \clearpage
 % Sørg for at appendix starter på ny forside
-%\addtocounter{tpages}{\arabic{page}}
-%\ifodd\value{tpages}
-%	\begin{minipage}[b]{0.495\textwidth}
-%	\end{minipage}
-%	\newpage
-%\else
-%\fi
-%\typeout{---------- appendiks starter -------------}%
-%\input{content/appendix}
+\addtocounter{tpages}{\arabic{page}}
+\ifodd\value{tpages}
+	\begin{minipage}[b]{0.495\textwidth}
+	\end{minipage}
+	\newpage
+\else
+\fi
+\typeout{---------- appendiks starter -------------}%
+\input{content/appendix}
 % SLUT APPENDIX
