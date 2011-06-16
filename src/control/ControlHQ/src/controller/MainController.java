@@ -4,6 +4,7 @@ import command.Commando;
 
 import controller.RobotThread.RobotState;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.IImageSource;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 
@@ -133,5 +134,8 @@ public class MainController
 	}
 	public void setPauseProp(boolean paused){
 		processingThread.setPauseProp(paused);
+	}
+	public IImageProcessor getImageProcessor(){
+		return processingThread.getImageProcessor();
 	}
 }

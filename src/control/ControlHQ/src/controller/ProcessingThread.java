@@ -5,6 +5,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import command.Commando;
+import command.exception.MasterRobotNotFound;
+import command.interfaces.IControl;
+import command.rmi.RmiClient;
+
 import controller.RobotThread.RobotState;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
@@ -449,5 +454,10 @@ public class ProcessingThread extends Thread
 	public void setPauseProp(boolean paused)
 	{
 		robotThreads[Commando.PROP].setPaused(paused);
+	}
+
+	public IImageProcessor getImageProcessor()
+	{
+		return imageProcessor;
 	}
 }
