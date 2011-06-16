@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="mainMenuBar">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="fileMenu">
+        <Menu class="javax.swing.JMenu" name="fileMenuOld">
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
@@ -15,9 +15,14 @@
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportMenuItem">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Export config.."/>
+                <Property name="text" type="java.lang.String" value="Exit.."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitMenuItemActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -44,7 +49,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="imageProcessMenu">
+        <Menu class="javax.swing.JMenu" name="imageProcessMenuOld">
           <Properties>
             <Property name="text" type="java.lang.String" value="ImageProcessing"/>
           </Properties>
@@ -91,6 +96,9 @@
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="aboutMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="?"/>
+          </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="showRmiLog">
               <Properties>

@@ -66,8 +66,9 @@ public class MainController
 	public void stop()
 	{
 		if (processingThread != null)
-			processingThread.stopRobotThreads();
+			processingThread.stopAllThreads();
 		
+		processingThread = null;
 		// TODO stop proccesingThread
 	}
 	/**
@@ -137,5 +138,9 @@ public class MainController
 	}
 	public IImageProcessor getImageProcessor(){
 		return processingThread.getImageProcessor();
+	}
+	public boolean isProcessorRunning()
+	{
+		return (processingThread == null)? false : true;
 	}
 }

@@ -66,8 +66,10 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
-		
-		robotsCommando = new RmiClient(0);
+
+
+                // TODO add switchcase: how many robots
+		robotsCommando = new RmiClient();
 		robotsCommando.init();
 		
 		IControl[] robotControls = robotsCommando.getControl();
@@ -315,10 +317,14 @@ public class ProcessingThread extends Thread
 		return locations;
 	}
 	
-	public void stopRobotThreads()
+	/**
+	 * Stops and disconnect all robots, their threads and stopping the processing-thread
+	 */
+	public void stopAllThreads()
 	{
 		if (robotThreads == null)
 		{
+			// stopping robots
 			for (RobotThread robot : robotThreads)
 			{
 				if (robot != null)
@@ -330,10 +336,10 @@ public class ProcessingThread extends Thread
 			}
 		}
 		
-		// disconnecting all robots
+		// disconnect all robots
 		robotsCommando.shutdown();
 		//
-		//
+		// stopping processing-thread
 		running = false;
 		imageSource.close();
 	}
@@ -351,7 +357,7 @@ public class ProcessingThread extends Thread
 	// /**
 	// * Get'er til {@link RobotState}.
 	// * @return array af {@link RobotState} hvor {@link RobotType} MASTER er
-	// det første element
+	// det fï¿½rste element
 	// */
 	// public RobotState[] getRobotStates(){
 	// RobotState[] states = null;
@@ -392,7 +398,7 @@ public class ProcessingThread extends Thread
 	/**
 	 * get'er til Bertas Position
 	 * 
-	 * @return int[] på formen yx
+	 * @return int[] pï¿½ formen yx
 	 */
 	public int[] getBertaPos()
 	{
@@ -402,7 +408,7 @@ public class ProcessingThread extends Thread
 	/**
 	 * get'er til Props Position
 	 * 
-	 * @return int[] på formen yx
+	 * @return int[] pï¿½ formen yx
 	 */
 	public int[] getPropPos()
 	{
@@ -412,7 +418,7 @@ public class ProcessingThread extends Thread
 	/**
 	 * Get'er til Bertas Vinkel
 	 * 
-	 * @return vink´len som en double, i radianer
+	 * @return vinkï¿½len som en double, i radianer
 	 */
 	public double getBertaAngle()
 	{
@@ -422,7 +428,7 @@ public class ProcessingThread extends Thread
 	/**
 	 * Get'er til Bertas Vinkel
 	 * 
-	 * @return vink´len som en double, i radianer
+	 * @return vinkï¿½len som en double, i radianer
 	 */
 	public double getPropAngle()
 	{

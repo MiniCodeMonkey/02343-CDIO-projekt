@@ -209,13 +209,13 @@ public class RobotThread extends Thread
 				// Math.toDegrees(robotLocation.getAngle()));
 				// System.out.println("Target angle: " +
 				// Math.toDegrees(targetAngle));
-				System.out.println("DistanceToTarget: " + distanceToTarget);
+//				System.out.println("DistanceToTarget: " + distanceToTarget);
 				// System.out.println("TargetAngleDiff: " +
 				// Math.toDegrees(targetAngleDifference));
 				// System.out.println("Targetlocation: " + targetLocation.GetX()
 				// + "," + targetLocation.GetY());
 				
-				System.out.println(this.robotState);
+//				System.out.println(this.robotState);
 				
 				// Perform actions according to the robot state
 				switch (this.robotState)

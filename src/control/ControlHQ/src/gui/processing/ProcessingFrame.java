@@ -27,7 +27,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     /** Creates new form ImageFrame */
     public ProcessingFrame() {
         initComponents();
-        initListeners();
+        //initListeners();
         FramePlaceHolder.setProcessingFrame(this);
     }
 
@@ -78,10 +78,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        imageProcessPanel = new javax.swing.JPanel();
-        imagePanel = new javax.swing.JPanel();
         robot1SettingsPanel = new javax.swing.JTabbedPane();
         robotFrontThresholdPanel = new javax.swing.JPanel();
         minRGBpanel = new javax.swing.JPanel();
@@ -146,6 +145,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         miscPanel = new javax.swing.JPanel();
         bufferzonePanel = new javax.swing.JPanel();
         bufzoneSlider = new javax.swing.JSlider();
+        imageProcessPanel = new javax.swing.JPanel();
+        imagePanel = new javax.swing.JPanel();
+        processedImagePanel = new javax.swing.JPanel();
         imageToolbar = new javax.swing.JToolBar();
         webcamBtn = new javax.swing.JButton();
         pauseTBtn = new javax.swing.JToggleButton();
@@ -155,13 +157,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         testimageBtn = new javax.swing.JButton();
         nextTestImgBtn = new javax.swing.JButton();
-
-        setIconifiable(true);
-        setResizable(true);
-        setTitle("Processing");
-        setNormalBounds(new java.awt.Rectangle(490, 10, 650, 528));
-
-        imagePanel.setLayout(new java.awt.GridLayout(2, 1, 0, 5));
 
         robot1SettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Threshold Settings"));
 
@@ -776,27 +771,28 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 
         robot1SettingsPanel.addTab("Misc", miscPanel);
 
-        javax.swing.GroupLayout imageProcessPanelLayout = new javax.swing.GroupLayout(imageProcessPanel);
-        imageProcessPanel.setLayout(imageProcessPanelLayout);
-        imageProcessPanelLayout.setHorizontalGroup(
-            imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imageProcessPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(robot1SettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        imageProcessPanelLayout.setVerticalGroup(
-            imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imageProcessPanelLayout.createSequentialGroup()
-                .addGroup(imageProcessPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(imageProcessPanelLayout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(robot1SettingsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
-        );
+        setIconifiable(true);
+        setResizable(true);
+        setTitle("Processing");
+        setNormalBounds(new java.awt.Rectangle(490, 10, 650, 528));
+
+        imageProcessPanel.setLayout(new java.awt.GridBagLayout());
+
+        imagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Image"));
+        imagePanel.setLayout(null);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        imageProcessPanel.add(imagePanel, gridBagConstraints);
+
+        processedImagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Processed Image"));
+        processedImagePanel.setLayout(null);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        imageProcessPanel.add(processedImagePanel, gridBagConstraints);
 
         imageToolbar.setRollover(true);
 
@@ -874,14 +870,14 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(imageToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
-            .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(imageToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -958,6 +954,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     public synchronized void updateImagePanel() {
     	
     	imagePanel.removeAll();
+        processedImagePanel.removeAll();
     	
     	ILocations locations = MainController.getInstance().getImages();
     	
@@ -975,7 +972,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         // Opret JFrame samt panel til tile-billede
         tileImgPanel = new ImagePanel(tileImg);
         tileImgPanel.setMinimumSize(new Dimension(tileImg.getWidth(), tileImg.getHeight()));
-        imagePanel.add(tileImgPanel);
+        processedImagePanel.add(tileImgPanel);
 
         
         imagePanel.repaint();
@@ -1106,6 +1103,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     private javax.swing.JButton nextTestImgBtn;
     javax.swing.JPanel obstacleThresholdPanel;
     private javax.swing.JToggleButton pauseTBtn;
+    private javax.swing.JPanel processedImagePanel;
     javax.swing.JTabbedPane robot1SettingsPanel;
     javax.swing.JPanel robotBackThresholdPanel;
     javax.swing.JPanel robotFrontThresholdPanel;

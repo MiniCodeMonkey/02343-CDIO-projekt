@@ -21,6 +21,13 @@ import javax.swing.JOptionPane;
 
 import controller.MainController;
 import gui.debug.DebugFrame;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
+import javax.swing.JFrame;
+import sun.awt.Win32ColorModel24;
+import sun.java2d.ScreenUpdateManager;
 
 /**
  *
@@ -50,13 +57,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         dashboard = new javax.swing.JDesktopPane();
         mainMenuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
+        fileMenuOld = new javax.swing.JMenu();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
+        exitMenuItem = new javax.swing.JMenuItem();
         pathFinderMenu = new javax.swing.JMenu();
         toleranceMenuItem = new javax.swing.JMenuItem();
         speedMenuItem = new javax.swing.JMenuItem();
-        imageProcessMenu = new javax.swing.JMenu();
+        imageProcessMenuOld = new javax.swing.JMenu();
         thresholdsMenuItem = new javax.swing.JMenuItem();
         settingsMenu = new javax.swing.JMenu();
         updateMenuItem = new javax.swing.JMenuItem();
@@ -76,15 +84,21 @@ public class MainFrame extends javax.swing.JFrame {
 
         dashboard.setBackground(new java.awt.Color(204, 204, 204));
 
-        fileMenu.setText("File");
+        fileMenuOld.setText("File");
 
         importMenuItem.setText("Import config..");
-        fileMenu.add(importMenuItem);
+        fileMenuOld.add(importMenuItem);
+        fileMenuOld.add(exportMenuItem);
 
-        exportMenuItem.setText("Export config..");
-        fileMenu.add(exportMenuItem);
+        exitMenuItem.setText("Exit..");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenuOld.add(exitMenuItem);
 
-        mainMenuBar.add(fileMenu);
+        mainMenuBar.add(fileMenuOld);
 
         pathFinderMenu.setText("Pathfinding");
 
@@ -106,7 +120,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainMenuBar.add(pathFinderMenu);
 
-        imageProcessMenu.setText("ImageProcessing");
+        imageProcessMenuOld.setText("ImageProcessing");
 
         thresholdsMenuItem.setText("Thresholds");
         thresholdsMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -114,9 +128,9 @@ public class MainFrame extends javax.swing.JFrame {
                 thresholdsMenuItemActionPerformed(evt);
             }
         });
-        imageProcessMenu.add(thresholdsMenuItem);
+        imageProcessMenuOld.add(thresholdsMenuItem);
 
-        mainMenuBar.add(imageProcessMenu);
+        mainMenuBar.add(imageProcessMenuOld);
 
         settingsMenu.setText("Misc");
 
@@ -145,6 +159,8 @@ public class MainFrame extends javax.swing.JFrame {
         settingsMenu.add(pausePropCheckBoxMenuItem);
 
         mainMenuBar.add(settingsMenu);
+
+        aboutMenu.setText("?");
 
         showRmiLog.setText("Show RMI Log");
         aboutMenu.add(showRmiLog);
@@ -190,11 +206,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_speedMenuItemActionPerformed
 
     private void toleranceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toleranceMenuItemActionPerformed
-        System.gc();
+
     }//GEN-LAST:event_toleranceMenuItemActionPerformed
 
     private void updateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateMenuItemActionPerformed
-        FramePlaceHolder.getMinInfoFrame().UpdateBothRobots();
+        FramePlaceHolder.getMinInfoFrame().updateBothRobots();
     }//GEN-LAST:event_updateMenuItemActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -225,6 +241,11 @@ public class MainFrame extends javax.swing.JFrame {
         f.setVisible(true);
         dashboard.add(f);
     }//GEN-LAST:event_thresholdsMenuItemActionPerformed
+
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        MainController.getInstance().stop();
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
 
 
     /**
@@ -262,8 +283,11 @@ public class MainFrame extends javax.swing.JFrame {
     	dashboard.add(pathframe);
 	}
     public void makeCommFrame() {
-		// TODO
+
+        
     	CommFrame commFrame = new CommFrame();
+        commFrame.setLocation(0, 0);
+        
     	commFrame.setVisible(true);
     	
     	dashboard.add(commFrame);
@@ -285,6 +309,11 @@ public class MainFrame extends javax.swing.JFrame {
     public void makeMiniInfoFrame() {
 		MiniInfoFrame miniFrame = new MiniInfoFrame();
 		miniFrame.setVisible(true);
+
+                miniFrame.setLocation(0, 200);
+
+
+
 		dashboard.add(miniFrame);
 	}
     public void makeDeugFrame(){
@@ -297,9 +326,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu aboutMenu;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JDesktopPane dashboard;
+    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem exportMenuItem;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu imageProcessMenu;
+    private javax.swing.JMenu fileMenuOld;
+    private javax.swing.JMenu imageProcessMenuOld;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JMenu pathFinderMenu;
@@ -312,5 +342,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem toleranceMenuItem;
     private javax.swing.JMenuItem updateMenuItem;
     // End of variables declaration//GEN-END:variables
+
 
 }

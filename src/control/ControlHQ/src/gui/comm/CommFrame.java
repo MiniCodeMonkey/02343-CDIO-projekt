@@ -106,19 +106,11 @@ public class CommFrame extends javax.swing.JInternalFrame {
      * connects or disconnects (if connected) to/from B.E.R.T.A.
      */
     public void connect() {
-		// TODO
-		    	
-    	/*
-    	 * hvis begge robotter virker?
-    	 * 		-> makeProcessingFrame();
-    	 * 		-> makeControlFrame    x 2 (TODO underst�ttelse af 2 robotter)
-    	 */
     	
     	// initializing control unit
     	MainController.getInstance().initialize();
     	
     	FramePlaceHolder.getMainFrame().makeProcessingFrame();
-    	FramePlaceHolder.getMainFrame().makeControlFrame();
 			
 	}
     
