@@ -799,13 +799,13 @@ public class ImageProcessor2 implements IImageProcessor {
 		filterObstacles();
 		processTilemap();
 		ILocations locations = new Locations(tilemap, obstaclemap, cakes, robots);
+		if (outputScale > 1) {
+			scaleMaps(outputScale, locations);
+		}
 		if (debug) {
 			locations.setSourceImage(imageSource);
 			createTileImage();
 			locations.setTileImage(tileImage);
-		}
-		if (outputScale > 1) {
-			scaleMaps(outputScale, locations);
 		}
 		return locations;
 	}
