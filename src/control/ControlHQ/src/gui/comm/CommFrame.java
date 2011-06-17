@@ -11,14 +11,11 @@
 
 package gui.comm;
 
-import java.awt.Cursor;
-import java.awt.Toolkit;
+import gui.FramePlaceHolder;
+
 import java.beans.PropertyVetoException;
 
 import javax.swing.SwingWorker;
-
-import gui.FramePlaceHolder;
-
 
 import controller.MainController;
 
@@ -213,32 +210,54 @@ public class CommFrame extends javax.swing.JInternalFrame {
   
     /**
      * connects or disconnects (if connected) to/from B.E.R.T.A. or both robots
+     * <br>Starts in a new SwingWorker thread
      */
     public void connect() {
 
     	// initializing control unit
     	MainController.getInstance().initialize(kindOfConnect);
-    	
-    	FramePlaceHolder.getMainFrame().makeProcessingFrame();
 
-    } 
+    }
+    
+    /**
+     * checks that the robot(s) is connected before releasing other GUI tools
+     */
+    public void checkForConnection(){
+    	boolean done = false;
+    	
+    	do
+		{
+			if (kindOfConnect == 0)
+			{
+				done = MainController.getInstance().isBertaConnected() && MainController.getInstance().isPropConnected();
+			} else if (kindOfConnect == 2)
+			{
+				done = MainController.getInstance().isBertaConnected();
+			}
+			
+		} while (!done);
+    }
+    
     class ConnectTask extends SwingWorker<Void, Void>{
 
 		@Override
 		protected Void doInBackground() throws Exception
 		{
 			connect();
+			
+			// is the robot(s) connected yet? FIXME not returning if not connected
+			checkForConnection();
 			return null;
 		}
 		@Override
 		protected void done()
 		{
-			
 			disconnectBtn.setEnabled(true);
 			progressBar.setVisible(false);
 			
 			// FIXME invokeLater
 			FramePlaceHolder.getMainFrame().makeProcessingFrame();
+			FramePlaceHolder.getMainFrame().makeMiniInfoFrame();
 
 			// minimize the Comm frame
 			try

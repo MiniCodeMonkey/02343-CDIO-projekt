@@ -24,6 +24,8 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     public ProcessingFrame() {
         initComponents();
         FramePlaceHolder.setProcessingFrame(this);
+        new UpdateTask().execute();
+    	webcamBtn.setEnabled(false);
     }
     @Deprecated
     private void initListeners() {
@@ -838,6 +840,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Deprecated
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed
     	
     	new UpdateTask().execute();
@@ -868,11 +871,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         tileImgPanel.setMinimumSize(new Dimension(tileImg.getWidth(), tileImg.getHeight()));
         processedImagePanel.add(tileImgPanel);
 
-        
-        imagePanel.repaint();
-        imagePanel.validate();
-        processedImagePanel.repaint();
-        processedImagePanel.validate();
+        this.validate();
+//        imagePanel.invalidate();
+//        processedImagePanel.invalidate();
         
 	}
         
@@ -973,6 +974,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 			try
 			{
 				while(true){
+					validate();
 					Thread.sleep(100);
 					updateImagePanel();
 				}
@@ -985,16 +987,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 		}
     	
     }
-    class UpdateInfoTask extends SwingWorker<Void, Void>{
-
-		@Override
-		protected Void doInBackground() throws Exception
-		{
-			while(true){
-				FramePlaceHolder.getMinInfoFrame().updateAllInfo();
-			}
-		}
-    	
-    }
+    
     
 }

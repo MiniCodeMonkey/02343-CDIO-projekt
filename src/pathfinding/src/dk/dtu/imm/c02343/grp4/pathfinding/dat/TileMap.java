@@ -62,12 +62,12 @@ public class TileMap
 			if (obstacleMap[robot.getY()][robot.getX()] != -1)
 			{
 				// Blocked if an obstacle or the SLAVE robot is in the way
-				blocked = (obstacleMap[ty][tx] >= 20 || obstacleMap[ty][tx] == -1);
+				blocked = (obstacleMap[ty][tx] >= 39 || obstacleMap[ty][tx] == -1);
 			}
 			else
 			{
 				// Blocked if an obstacle is in the way
-				blocked = (obstacleMap[ty][tx] >= 20);
+				blocked = (obstacleMap[ty][tx] >= 39);
 			}
 		}
 		catch (ArrayIndexOutOfBoundsException e)
@@ -90,7 +90,7 @@ public class TileMap
 		
 		System.out.println("\n\n\n\n");*/
 		
-		return obstacleMap[ty][tx];
+		return obstacleMap[ty][tx] / 15;
 	}
 
 	public void pathFinderVisited(int y, int x)

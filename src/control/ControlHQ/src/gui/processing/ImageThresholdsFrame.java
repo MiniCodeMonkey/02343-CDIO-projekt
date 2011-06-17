@@ -7,6 +7,9 @@ import java.awt.Component;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
+
 /**
  *
  * @author Morten Hulvej
@@ -1023,6 +1026,60 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     // custom variables
     private RobotColorChangeListener robotChangeListener = new RobotColorChangeListener();
     private CommonObjectColorChangeListener commonChangeListener = new CommonObjectColorChangeListener();
+    
+    /**
+     * Setting spinners in GUI to default values
+     */
+    public void initThresholdValues()
+	{
+    	
+    	// Robots
+    	// robot 1
+    	Thresholds robot1N = IImageProcessor.ROBOT1_N_THRESHOLDS;
+    	Thresholds robot1S = IImageProcessor.ROBOT1_S_THRESHOLDS;
+    	
+    		// front (green)
+	    	r1MinRed.setValue(robot1N.getMinR());
+	    	r1MinGreen.setValue(robot1N.getMinG()); 
+	    	r1MinBlue.setValue(robot1N.getMinB());
+	
+	    	r1MaxRed.setValue(robot1N.getMaxR()); 
+	    	r1MaxGreen.setValue(robot1N.getMaxG()); 
+	    	r1MaxBlue.setValue(robot1N.getMaxB());
+    	
+    		// back (blue)
+	    	r1MinRed1.setValue(robot1S.getMinR());
+	    	r1MinGreen1.setValue(robot1S.getMinG());
+	    	r1MinBlue1.setValue(robot1S.getMinB());
+	    	
+	    	r1MaxRed1.setValue(robot1S.getMaxR());
+	    	r1MaxGreen1.setValue(robot1S.getMaxG()); 
+	    	r1MaxBlue1.setValue(robot1S.getMaxB());
+
+    	// robot 2
+	    Thresholds robot2N = IImageProcessor.ROBOT2_N_THRESHOLDS;
+	    Thresholds robot2S = IImageProcessor.ROBOT2_N_THRESHOLDS;
+	    
+	    	// front (orange)
+	    	r2MinRed.setValue(robot2N.getMinR());
+	    	r2MinGreen.setValue(robot2N.getMinG()); 
+	    	r2MinBlue.setValue(robot2N.getMinB()); 
+	    	
+	    	r2MaxRed.setValue(robot2N.getMaxR());
+	    	r2MaxGreen.setValue(robot2N.getMaxG()); 
+	    	r2MaxBlue.setValue(robot2N.getMaxB());
+	    	
+	    	// back (yellow)
+	    	r2MinRed1.setValue(robot2S.getMinR());
+	    	r2MinGreen1.setValue(robot2S.getMinG());
+	    	r2MinBlue1.setValue(robot2S.getMinB()); 
+	    	
+	    	r2MaxRed1.setValue(robot2S.getMaxR());
+	    	r2MaxGreen1.setValue(robot2S.getMaxG());
+	    	r2MaxBlue1.setValue(robot2S.getMaxB());
+    	
+    	 
+	}
     
     public void initCommonObjectListeners()
 	{

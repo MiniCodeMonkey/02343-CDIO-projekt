@@ -19,7 +19,7 @@ public class RobotThread extends Thread
 	 */
 	public enum RobotState
 	{
-		IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY
+		START, IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY
 	};
 	
 	/**
@@ -38,7 +38,7 @@ public class RobotThread extends Thread
 	/**
 	 * The current robot state
 	 */
-	private RobotState robotState = RobotState.IDLE;
+	private RobotState robotState = RobotState.START;
 	
 	/**
 	 * The robot's type (Master or Slave)
@@ -359,32 +359,7 @@ public class RobotThread extends Thread
 						{
 							this.robotState = RobotState.DELIVERING;
 							
-							// Move forward
-//							robotControl.move(30, false);
-//							
-//							// Open claw
-//							robotControl.openClaw();
-//							Thread.sleep(1000);
-//							robotControl.stopClaw();
-//							
-//							// Move forwards
-//							Thread.sleep(2000);
-//							// System.out.println("Cake delivered");
-//							robotControl.stop();
-//							Thread.sleep(200);
-//							
-//							// Move backwards
-//							robotControl.move(50, true);
-//							Thread.sleep(2000);
-//							robotControl.stop();
-//							
-//							// Close claw
-//							robotControl.closeClaw();
-//							Thread.sleep(1000);
-//							robotControl.stopClaw();
-							
-							// NY afleverings procedure
-							
+							// Move forwards
 							robotControl.move(50, false);
 							
 							// Open claw
@@ -392,15 +367,14 @@ public class RobotThread extends Thread
 							Thread.sleep(1000);
 							robotControl.stopClaw();
 							
-							// Move forwards
+							// Stop after 2s
 							Thread.sleep(2000);
-							// System.out.println("Cake delivered");
 							robotControl.stop();
 							Thread.sleep(200);
 							
 							// Move backwards
 							robotControl.move(50, true);
-							Thread.sleep(2000);
+							Thread.sleep(1200);
 							
 							// Close claw
 							robotControl.closeClaw();
@@ -439,6 +413,8 @@ public class RobotThread extends Thread
 								if (distance < Thresholds.getInstance().getYieldDistance())
 								{									
 									robotControl.stop();
+									
+									System.out.println("Yielding! Distance is " + distance);
 									
 									// TODO hvad hvis Prop er i PICK_UP || DELIVERY
 									
@@ -633,5 +609,10 @@ public class RobotThread extends Thread
 	public void setPaused(boolean paused)
 	{
 		this.paused = paused;
+	}
+	
+	public IControl getRobotControl()
+	{
+		return robotControl;
 	}
 }

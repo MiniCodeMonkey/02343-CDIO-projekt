@@ -18,8 +18,8 @@ public class Thresholds
 	private int mediumSpeed = 10;
 	private int highSpeed = 30;
 
-	private int closeEnoughToCake = 20;
-	private int closeEnoughToDelivery = 20;
+	private int closeEnoughToCake = 30;
+	private int closeEnoughToDelivery = 10;
 	
 	private double rotationClose = Math.toRadians(8);
 	private double rotationFairlyClose = Math.toRadians(25);
