@@ -1,13 +1,8 @@
 package dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
-
-import com.sun.xml.internal.bind.v2.runtime.FilterTransducer;
 
 import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.impl.Locations;
@@ -72,6 +67,17 @@ public class ImageProcessor2 implements IImageProcessor {
 
 	public void setRobotYield(boolean robotYield) {
 		this.robotYield = robotYield;
+	}
+	
+	// Sætter nedskaleringen af output-maps.
+	private int outputScale = 2;
+
+	public int getOutputScale() {
+		return outputScale;
+	}
+
+	public void setOutputScale(int outputScale) {
+		this.outputScale = outputScale;
 	}
 
 	/**
@@ -762,6 +768,25 @@ public class ImageProcessor2 implements IImageProcessor {
 	public void setResolutionY(int resolution) {
 		this.resY = resolution;
 	}
+	
+	public void scaleMaps(int scale) {
+		// matricer til midlertidigt output
+		int[][] newtilemap = new int[tilemap.length/scale][];
+		int[][] newobstaclemap = new int[tilemap.length/scale][];
+		
+		// Sæt værdier i matricerne
+		for(int y = 0; y < newtilemap.length; y++) {
+			newtilemap[y] = new int[tilemap[y].length/scale];
+			newobstaclemap[y] = new int[tilemap[y].length/scale];
+			for(int x = 0; x < newtilemap[y].length; x++) {
+				newtilemap[y][x] = tilemap[y*scale][x*scale];
+				newobstaclemap[y][x] = obstaclemap[y*scale][x*scale];
+			}
+		}
+		
+		tilemap = newtilemap;
+		obstaclemap = newobstaclemap;
+	}
 
 	/**
 	 * Gennemfører fuld analyse af input-billede, og returnerer et Locations objekt
@@ -773,6 +798,9 @@ public class ImageProcessor2 implements IImageProcessor {
 		filterObstacles();
 		processTilemap();
 		ILocations locations = new Locations(tilemap, obstaclemap, cakes, robots);
+		if (outputScale > 1) {
+			scaleMaps(outputScale);
+		}
 		if (debug) {
 			locations.setSourceImage(imageSource);
 			createTileImage();
