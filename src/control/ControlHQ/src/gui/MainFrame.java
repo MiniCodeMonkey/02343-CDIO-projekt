@@ -275,8 +275,8 @@ public class MainFrame extends javax.swing.JFrame {
     	// TODO
 	}
     public void makeControlFrame() {
-		// TODO
-    	
+    	if(FramePlaceHolder.getControlFrame() == null)
+    		return;
     	ControlFrame controlFrame = new ControlFrame();
     	
     	controlFrame.setVisible(true);
@@ -286,8 +286,10 @@ public class MainFrame extends javax.swing.JFrame {
      * Opretter panel med funktioner vedr. al image-processing
      */
     public void makeProcessingFrame() {
-    	ProcessingFrame processFrame = new ProcessingFrame();
+    	if(FramePlaceHolder.getProcessingFrame() == null)
+    		return;
     	
+    	ProcessingFrame processFrame = new ProcessingFrame();
         processFrame.setLocation(dashboard.getSize().width - processFrame.getSize().width, processFrame.getLocation().y);
 
     	processFrame.setVisible(true);
@@ -303,6 +305,8 @@ public class MainFrame extends javax.swing.JFrame {
 	}
     public void makeCommFrame() {
 
+    	if(FramePlaceHolder.getCommFrame() == null)
+    		return;
         
     	CommFrame commFrame = new CommFrame();
         commFrame.setLocation(0, 0);
@@ -326,6 +330,8 @@ public class MainFrame extends javax.swing.JFrame {
     	
 	}
     public void makeMiniInfoFrame() {
+    	if(FramePlaceHolder.getMinInfoFrame() == null)
+    		return;
 		MiniInfoFrame miniFrame = new MiniInfoFrame();
 		miniFrame.setVisible(true);
 

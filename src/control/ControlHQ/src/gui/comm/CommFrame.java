@@ -11,14 +11,11 @@
 
 package gui.comm;
 
-import java.awt.Cursor;
-import java.awt.Toolkit;
+import gui.FramePlaceHolder;
+
 import java.beans.PropertyVetoException;
 
 import javax.swing.SwingWorker;
-
-import gui.FramePlaceHolder;
-
 
 import controller.MainController;
 
@@ -213,13 +210,12 @@ public class CommFrame extends javax.swing.JInternalFrame {
   
     /**
      * connects or disconnects (if connected) to/from B.E.R.T.A. or both robots
+     * <br>Starts in a new SwingWorker thread
      */
     public void connect() {
 
     	// initializing control unit
     	MainController.getInstance().initialize(kindOfConnect);
-    	
-    	FramePlaceHolder.getMainFrame().makeProcessingFrame();
 
     }
     
@@ -261,6 +257,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
 			
 			// FIXME invokeLater
 			FramePlaceHolder.getMainFrame().makeProcessingFrame();
+			FramePlaceHolder.getMainFrame().makeMiniInfoFrame();
 
 			// minimize the Comm frame
 			try
