@@ -4,6 +4,7 @@ public class Location
 {
 	private int x;
 	private int y;
+	private double targetAngle;
 	
 	/**
 	 * Construct a new location
@@ -14,6 +15,13 @@ public class Location
 	{
 		this.y = y;
 		this.x = x;
+	}
+	
+	public Location(int y, int x, double targetAngle)
+	{
+		this.y = y;
+		this.x = x;
+		this.targetAngle = targetAngle;
 	}
 
 	/**
@@ -48,5 +56,13 @@ public class Location
 	public void SetY(int y)
 	{
 		this.y = y;
+	}
+
+	public void setTargetAngle(double targetAngle) {
+		this.targetAngle = targetAngle;
+	}
+
+	public double getTargetAngle() {
+		return targetAngle;
 	}
 }
