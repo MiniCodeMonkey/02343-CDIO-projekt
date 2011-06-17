@@ -19,9 +19,12 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     /** Creates new form NewJInternalFrame */
     public ImageThresholdsFrame() {
         initComponents();
+        FramePlaceHolder.setImgThresholdFrame(this);
+        
         initCommonObjectListeners();
         initRobotColorListeners();
-        FramePlaceHolder.setImgThresholdFrame(this);
+        initThresholdValues();
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -1032,7 +1035,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
      */
     public void initThresholdValues()
 	{
-    	
+    	System.out.println("initThresholdValues");
     	// Robots
     	// robot 1
     	Thresholds robot1N = IImageProcessor.ROBOT1_N_THRESHOLDS;

@@ -44,10 +44,19 @@ public class Control implements IControl, Serializable{
 
 	@Override
 	public void move(int speed, boolean reverse) throws IOException {
+		System.out.println("MOOOOOOOOOOOOOOOOOVEEEEEEEEEEEEEEEEEEEEEEEEEEE!");
 		if (isInForwardMotion() && !reverse)
+		{
+			System.out.println("RETURNING !reverse");
 			return;
+		}
+			
 		if (isInBackwardMotion() && reverse)
+		{
+			System.out.println("RETURNING reverse");
 			return;
+		}
+			
 		setInRightMotion(false);
 		setInLeftMotion(false);
 
@@ -158,6 +167,7 @@ public class Control implements IControl, Serializable{
 		commander.setOutputState(2, (byte)-turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		//		System.out.println("TURNING: left");
 		setInLeftMotion(true);
+		state = STATE_STOPPED;
 	}
 
 	@Override
@@ -171,6 +181,7 @@ public class Control implements IControl, Serializable{
 		commander.setOutputState(2, (byte)turnSpeed, NXTProtocol.MOTORON, NXTProtocol.REGULATION_MODE_IDLE, 0, 0, 0);
 		//		System.out.println("TURNING: right");
 		setInRightMotion(true);
+		state = STATE_STOPPED;
 	}
 
 	@Override

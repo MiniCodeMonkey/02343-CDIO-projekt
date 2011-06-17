@@ -264,23 +264,22 @@ public class RobotThread extends Thread
 							robotControl.stopClaw();
 							
 							// Move forward
-							robotControl.move(20, false);
-							Thread.sleep(1800);
+							robotControl.move(30, false);
+							Thread.sleep(1000);
 							robotControl.stop();
 							
 							// Close claw
 							robotControl.closeClaw();
 							Thread.sleep(1000);
 							robotControl.stopClaw();
-							robotControl.stop();
 							
 							// Move backwards
-							robotControl.move(20, true);
-							Thread.sleep(2000);
-							robotControl.stop();
+//							robotControl.move(30, true);
+//							Thread.sleep(2000);
+//							robotControl.stop();
 							
 							
-							int dropDistance = 5;
+							int dropDistance = 10;
 							
 							// Decide delivery location | FIXME: if obstacles is in the way
 							Location deliveryLocations[] = {
@@ -351,7 +350,7 @@ public class RobotThread extends Thread
 							turnTo(this.targetLocation.getTargetAngle());
 							
 							// Move forwards
-							robotControl.move(50, false);
+							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
 							
 							// Open claw
 							robotControl.openClaw();
@@ -359,13 +358,11 @@ public class RobotThread extends Thread
 							robotControl.stopClaw();
 							
 							// Stop after 2s
-							Thread.sleep(2000);
 							robotControl.stop();
 							Thread.sleep(200);
 							
 							// Move backwards
-							robotControl.move(50, true);
-							Thread.sleep(1200);
+							robotControl.move(Thresholds.getInstance().getHighSpeed(), true);
 							
 							// Close claw
 							robotControl.closeClaw();
@@ -661,12 +658,12 @@ public class RobotThread extends Thread
 			//....turn right, or....
 			if((robotLocation.getAngle() - targetAngle) < 0 )
 			{
-				robotControl.right();
+				robotControl.right(Thresholds.getInstance().getMediumSpeed());
 			}
 			//....turn left
 			else
 			{
-				robotControl.left();
+				robotControl.left(Thresholds.getInstance().getMediumSpeed());
 			}
 		}
 		

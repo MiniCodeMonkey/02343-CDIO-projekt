@@ -419,7 +419,12 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 	private void updateBertaTargetLocation()
 	{
 		Location target = MainController.getInstance().getBertaTargetLocation();
-		bertaTargetLabel.setText("(" + target.GetX() + "," + target.GetY() + ")");
+		if (target == null)
+		{
+			bertaTargetLabel.setText("N/A");
+		}
+		else
+			bertaTargetLabel.setText("(" + target.GetX() + "," + target.GetY() + ")");
 	}
 
 	/**
@@ -473,7 +478,11 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     private void updatePropTargetLocation()
 	{
     	Location target = MainController.getInstance().getPropTargetLocation();
-		propTargetLabel.setText("(" + target.GetX() + "," + target.GetY() + ")");
+    	if( target == null){
+    		propTargetLabel.setText("N/A");
+    	}
+    	else
+    		propTargetLabel.setText("(" + target.GetX() + "," + target.GetY() + ")");
 	}
     private void updatePropTargetAngle()
 	{
@@ -513,11 +522,14 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 					try
 					{
 						Thread.sleep(500);
+						System.out.println("Waiting for info to be available");
 					} catch (InterruptedException e)
 					{
 						e.printStackTrace();
 					}
 				}while(!MainController.getInstance().isProcessorRunning() || MainController.getInstance().getInformation() == null);
+				
+				
 				
 				while (true)
 				{
