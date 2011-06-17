@@ -3,6 +3,7 @@ package gui.processing;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 
@@ -24,8 +25,8 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     public ProcessingFrame() {
         initComponents();
         FramePlaceHolder.setProcessingFrame(this);
-        new UpdateTask().execute();
-    	webcamBtn.setEnabled(false);
+//        new UpdateTask().execute();
+
     }
     @Deprecated
     private void initListeners() {
@@ -850,30 +851,20 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     
     public void updateImagePanel() {
     	
-    	imagePanel.removeAll();
-        processedImagePanel.removeAll();
         
     	ILocations locations = MainController.getInstance().getInformation();
     	
     	// kilde billede
     	BufferedImage sourceImg = locations.getSourceImage();
     	
-    	// behandlet billede
+
     	BufferedImage tileImg = locations.getTileImage();
 		
-    	// Opret JFrame samt panel til input-billede
-        srcImgPanel = new ImagePanel(sourceImg);
-        srcImgPanel.setMinimumSize(new Dimension(sourceImg.getWidth(), sourceImg.getHeight()));
-        imagePanel.add(srcImgPanel);
+        srcImgPanel.setImage(sourceImg);
+        
 
-        // Opret JFrame samt panel til tile-billede
-        tileImgPanel = new ImagePanel(tileImg);
-        tileImgPanel.setMinimumSize(new Dimension(tileImg.getWidth(), tileImg.getHeight()));
-        processedImagePanel.add(tileImgPanel);
+        tileImgPanel.setImage(tileImg);
 
-        this.validate();
-//        imagePanel.invalidate();
-//        processedImagePanel.invalidate();
         
 	}
         
@@ -964,6 +955,50 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     
+    public void updateImages(){
+    	
+
+    	SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					System.out.println("UpdateTask");
+					ILocations locations = MainController.getInstance().getInformation();
+			    	
+			    	// kilde billede
+			    	BufferedImage sourceImg = locations.getSourceImage();
+			    	
+			    	// behandlet billede
+			    	BufferedImage tileImg = locations.getTileImage();
+					
+			    	// Opret JFrame samt panel til input-billede
+			        srcImgPanel = new ImagePanel(sourceImg);
+			        imagePanel.add(srcImgPanel);
+
+			        // Opret JFrame samt panel til tile-billede
+			        tileImgPanel = new ImagePanel(tileImg);
+			        processedImagePanel.add(tileImgPanel);
+					
+					while(true){					
+						Thread.sleep(100);
+						updateImagePanel();
+					}
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}				
+			}
+		});
+    	
+    	
+    	
+    	
+    	
+    }
+    
     // Swing worker classes (for background work)
     
     class UpdateTask extends SwingWorker<Void, Void>{
@@ -973,9 +1008,24 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 		{
 			try
 			{
-				validate();
-				while(true){
-					
+				System.out.println("UpdateTask");
+				ILocations locations = MainController.getInstance().getInformation();
+		    	
+		    	// kilde billede
+		    	BufferedImage sourceImg = locations.getSourceImage();
+		    	
+		    	// behandlet billede
+		    	BufferedImage tileImg = locations.getTileImage();
+				
+		    	// Opret JFrame samt panel til input-billede
+		        srcImgPanel = new ImagePanel(sourceImg);
+		        imagePanel.add(srcImgPanel);
+
+		        // Opret JFrame samt panel til tile-billede
+		        tileImgPanel = new ImagePanel(tileImg);
+		        processedImagePanel.add(tileImgPanel);
+				
+				while(true){					
 					Thread.sleep(100);
 					updateImagePanel();
 				}

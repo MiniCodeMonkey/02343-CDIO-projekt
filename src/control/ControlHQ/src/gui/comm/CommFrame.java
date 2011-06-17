@@ -258,6 +258,9 @@ public class CommFrame extends javax.swing.JInternalFrame {
 			// FIXME invokeLater
 			FramePlaceHolder.getMainFrame().makeProcessingFrame();
 			FramePlaceHolder.getMainFrame().makeMiniInfoFrame();
+			
+			FramePlaceHolder.getMinInfoFrame().updateAllInfo();
+			FramePlaceHolder.getProcessingFrame().updateImages();
 
 			// minimize the Comm frame
 			try

@@ -30,7 +30,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     public MiniInfoFrame() {
         initComponents();
         FramePlaceHolder.setMinInfoFrame(this);
-        new UpdateInfoTask().execute();
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -512,6 +512,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 		
 		updateBertaOnOff();
 		updatePropOnOff();
+		new UpdateInfoTask().execute();
 	}
 	
 	class UpdateInfoTask extends SwingWorker<Void, Void>{
@@ -520,7 +521,6 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 		protected Void doInBackground() throws Exception
 		{
 			while(true){
-				validate();
 				FramePlaceHolder.getMinInfoFrame().updateAllInfo();
 			}
 		}

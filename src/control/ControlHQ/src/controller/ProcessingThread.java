@@ -172,10 +172,10 @@ public class ProcessingThread extends Thread
 			{
 				while(running)
 				{
-					long time = System.currentTimeMillis();
+//					long time = System.currentTimeMillis();
 					if (image != null){
 						locations = imageProcessor.examineImage(image, true);
-						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+//						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
 						locationMapUpdated = true;
 					}
 				}
@@ -190,11 +190,11 @@ public class ProcessingThread extends Thread
 				{
 					try
 					{
-						long time = System.currentTimeMillis();
+//						long time = System.currentTimeMillis();
 						if (locations != null){
 							// Calculate new paths
 						calculatePaths(locations);
-						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
+//						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
 						locationMapUpdated = false;
 						}
 					} 
