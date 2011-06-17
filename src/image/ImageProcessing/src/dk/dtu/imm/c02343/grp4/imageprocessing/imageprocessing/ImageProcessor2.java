@@ -80,6 +80,9 @@ public class ImageProcessor2 implements IImageProcessor {
 	public void setOutputScale(int outputScale) {
 		this.outputScale = outputScale;
 	}
+	
+	// Grænser for selve banen {ymin, xmin, ymax, xmax}
+	private int[] bounds;
 
 	/**
 	 * Konstruktør. Initialiserer standard-værdier.
@@ -93,6 +96,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		robot2SThresholds = ROBOT2_S_THRESHOLDS;
 		sourceImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
 		tileImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
+		bounds = new int[] {0, 0, 240, 320};
 		cakes = new ArrayList<ICake>();
 		robots = new ArrayList<IRobot>();
 	}
@@ -247,8 +251,11 @@ public class ImageProcessor2 implements IImageProcessor {
 							// Behandl objekt
 							int[] pos = collect(y, x, CAKE, foundmap);
 							// Opret kage-objekt og føj til liste
-							Cake cake = new Cake(pos[0]/outputScale, pos[1]/outputScale);
-							cakes.add(cake);
+							int[] cakepos = new int[] {pos[0]/outputScale, pos[1]/outputScale};
+							if (cakepos[0] > bounds[0] && cakepos[0] <= bounds[2] && cakepos[1] > bounds[1] && cakepos[1] <= bounds[3]) {
+								Cake cake = new Cake(pos[0]/outputScale, pos[1]/outputScale);
+								cakes.add(cake);
+							}
 						} catch (InsufficientObjectException e) {
 						}
 					} else if (tilemap[y][x] == ROBOT1N) {
@@ -563,6 +570,8 @@ public class ImageProcessor2 implements IImageProcessor {
 			x--;
 		}
 		
+		this.bounds = bounds;
+		
 		return bounds;
 	}
 	
@@ -795,8 +804,9 @@ public class ImageProcessor2 implements IImageProcessor {
 	public ILocations examineImage(BufferedImage imageSource, boolean debug) {
 		setSourceImage(imageSource);
 		generateTileMap();
-		crop();
+//		crop();
 		filterObstacles();
+		findBounds();
 		processTilemap();
 		ILocations locations = new Locations(tilemap, obstaclemap, cakes, robots);
 		if (outputScale > 1) {
