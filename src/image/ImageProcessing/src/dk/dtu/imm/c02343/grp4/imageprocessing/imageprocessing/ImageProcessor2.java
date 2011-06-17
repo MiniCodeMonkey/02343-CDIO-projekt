@@ -3,6 +3,7 @@ package dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import dk.dtu.imm.c02343.grp4.dto.impl.Cake;
 import dk.dtu.imm.c02343.grp4.dto.impl.Locations;
@@ -246,7 +247,7 @@ public class ImageProcessor2 implements IImageProcessor {
 							// Behandl objekt
 							int[] pos = collect(y, x, CAKE, foundmap);
 							// Opret kage-objekt og føj til liste
-							Cake cake = new Cake(pos[0], pos[1]);
+							Cake cake = new Cake(pos[0]/outputScale, pos[1]/outputScale);
 							cakes.add(cake);
 						} catch (InsufficientObjectException e) {
 						}
@@ -302,7 +303,7 @@ public class ImageProcessor2 implements IImageProcessor {
 			int[] robotPos = new int[] {(robot1Npos[0]+robot1Spos[0])/2, (robot1Npos[1]+robot1Spos[1])/2};
 			double robotAngle = calculateAngle(robot1Npos, robot1Spos);
 //			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
-			robots.add(new Robot(robotPos[0],robotPos[1],robotAngle));
+			robots.add(new Robot(robotPos[0]/outputScale,robotPos[1]/outputScale,robotAngle));
 		} else {
 			// Robot ikke fundet. Opret dummy objekt.
 			robots.add(new Robot(-1,-1,0));
@@ -312,7 +313,7 @@ public class ImageProcessor2 implements IImageProcessor {
 			int[] robotPos = new int[] {(robot2Npos[0]+robot2Spos[0])/2, (robot2Npos[1]+robot2Spos[1])/2};
 			double robotAngle = calculateAngle(robot2Npos, robot2Spos);
 //			System.out.println("Robot pos (y,x,a): (" + robotPos[0] + "," + robotPos[1] + "," + robotAngle + ")");
-			robots.add(new Robot(robotPos[0],robotPos[1],robotAngle));
+			robots.add(new Robot(robotPos[0]/outputScale,robotPos[1]/outputScale,robotAngle));
 		} else {
 			// Robot ikke fundet. Opret dummy objekt.
 			robots.add(new Robot(-1,-1,0));
@@ -769,7 +770,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		this.resY = resolution;
 	}
 	
-	public void scaleMaps(int scale) {
+	public void scaleMaps(int scale, ILocations locations) {
 		// matricer til midlertidigt output
 		int[][] newtilemap = new int[tilemap.length/scale][];
 		int[][] newobstaclemap = new int[tilemap.length/scale][];
@@ -798,13 +799,13 @@ public class ImageProcessor2 implements IImageProcessor {
 		filterObstacles();
 		processTilemap();
 		ILocations locations = new Locations(tilemap, obstaclemap, cakes, robots);
+		if (outputScale > 1) {
+			scaleMaps(outputScale, locations);
+		}
 		if (debug) {
 			locations.setSourceImage(imageSource);
 			createTileImage();
 			locations.setTileImage(tileImage);
-		}
-		if (outputScale > 1) {
-			scaleMaps(outputScale);
 		}
 		return locations;
 	}
