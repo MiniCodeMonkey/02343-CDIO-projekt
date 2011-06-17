@@ -303,7 +303,8 @@ public class ProcessingThread extends Thread
 				boolean foundCake = false;
 				for (ICake cake : locations.getCakes())
 				{
-					if (cake.getX() == targetLocation.GetX() && cake.getY() == targetLocation.GetY())
+					// Check if the targetLocation is within +- 5 pixels of cake location
+					if (Math.abs(cake.getX() - targetLocation.GetX()) < 5 && Math.abs(cake.getY() - targetLocation.GetY()) < 5)
 					{
 						foundCake = true;
 						break;

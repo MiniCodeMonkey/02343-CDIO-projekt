@@ -216,7 +216,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
     public void connect() {
 
     	// initializing control unit
-    	MainController.getInstance().initialize(kindOfConnect);
+    	MainController.getInstance().initialize(kindOfConnect == 2 ? 1 : 0);
 
     }
     

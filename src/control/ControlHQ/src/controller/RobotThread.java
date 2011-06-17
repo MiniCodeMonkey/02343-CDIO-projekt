@@ -231,19 +231,7 @@ public class RobotThread extends Thread
 				// Birds-eye-view distance from robot to target (cake, delivery, location, etc.)
 				double distanceToTarget = calculateDistance(robotLocation.getX(), robotLocation.getY(), targetLocation.GetX(), targetLocation.GetY());
 				
-				double targetAngleDifference = 0;
-				if (targetAngle < 0 && robotLocation.getAngle() < 0 || targetAngle >= 0 && robotLocation.getAngle() >= 0)
-				{
-					targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
-				}
-				else if (robotLocation.getAngle() >= 0)
-				{
-					targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
-				}
-				else
-				{
-					targetAngleDifference = Math.abs(robotLocation.getAngle() + targetAngle);
-				}
+				double targetAngleDifference = calculateAngleDifference(robotLocation.getAngle(), targetAngle);
 				
 				// Perform actions according to the robot state
 				switch (this.robotState)
@@ -477,6 +465,35 @@ public class RobotThread extends Thread
 //			robotControl.stop();
 	}
 	
+	/**
+	 * Calculates the delta angle from the robot's current angle and
+	 * the current target's angle
+	 * @param robotAngle
+	 * @param targetAngle
+	 * @return Delta angle
+	 */
+	private double calculateAngleDifference(double robotAngle, double targetAngle)
+	{
+		double difference;
+//		difference = robotAngle - targetAngle;
+		
+		// Old way to figure out delta angle
+		if (targetAngle < 0 && robotAngle < 0 || targetAngle >= 0 && robotAngle >= 0)
+		{
+			difference = Math.abs(robotAngle - targetAngle);
+		}
+		else if (robotLocation.getAngle() >= 0)
+		{
+			difference = Math.abs(robotAngle - targetAngle);
+		}
+		else
+		{
+			difference = Math.abs(robotAngle + targetAngle);
+		}
+		
+		return difference;
+	}
+
 	/**
 	 * Calculates the target angle from dy and dx
 	 * @param dy
