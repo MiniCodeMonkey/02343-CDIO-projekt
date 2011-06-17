@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import command.BertaCommando;
@@ -197,8 +198,8 @@ public class RobotThread extends Thread
 	 */
 	private void navigate() throws IOException, InterruptedException
 	{
-		if (pathWasUpdated) // Did we receive an update path from the processing thread?
-		{
+//		if (pathWasUpdated) // Did we receive an update path from the processing thread?
+//		{
 			pathWasUpdated = false;
 			
 			// Is the path valid?
@@ -225,24 +226,12 @@ public class RobotThread extends Thread
 				// Calculate target angle
 				double dy = step.getY() - robotLocation.getY();
 				double dx = step.getX() - robotLocation.getX();
-				double targetAngle = calculateTargetAngle(dy, dx);
+				targetAngle = calculateTargetAngle(dy, dx);
 				
 				// Birds-eye-view distance from robot to target (cake, delivery, location, etc.)
 				double distanceToTarget = calculateDistance(robotLocation.getX(), robotLocation.getY(), targetLocation.GetX(), targetLocation.GetY());
 				
-				double targetAngleDifference = 0;
-				if (targetAngle < 0 && robotLocation.getAngle() < 0 || targetAngle >= 0 && robotLocation.getAngle() >= 0)
-				{
-					targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
-				}
-				else if (robotLocation.getAngle() >= 0)
-				{
-					targetAngleDifference = Math.abs(robotLocation.getAngle() - targetAngle);
-				}
-				else
-				{
-					targetAngleDifference = Math.abs(robotLocation.getAngle() + targetAngle);
-				}
+				double targetAngleDifference = calculateAngleDifference(robotLocation.getAngle(), targetAngle);
 				
 				// Perform actions according to the robot state
 				switch (this.robotState)
@@ -291,34 +280,34 @@ public class RobotThread extends Thread
 							robotControl.stop();
 							
 							
-							int dropDistance = 20;
+							int dropDistance = 5;
 							
 							// Decide delivery location | FIXME: if obstacles is in the way
 							Location deliveryLocations[] = {
 									
 									// right side
-									new Location((int) mapSize.getHeight() / 2 - 30, (int) mapSize.getWidth() - dropDistance),
-									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - dropDistance),
-									new Location((int) mapSize.getHeight() / 2 + 30, (int) mapSize.getWidth() - dropDistance),
-									
+									new Location((int) mapSize.getHeight() / 2 - 30, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
+									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
+									new Location((int) mapSize.getHeight() / 2 + 30, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
+																		
 									// left side
-									new Location((int) mapSize.getHeight() / 2 - 30, dropDistance),
-									new Location((int) mapSize.getHeight() / 2, dropDistance),
-									new Location((int) mapSize.getHeight() / 2 + 30, dropDistance),
+									new Location((int) mapSize.getHeight() / 2 - 30, dropDistance, Math.toRadians(-90)),
+									new Location((int) mapSize.getHeight() / 2, dropDistance, Math.toRadians(-90)),
+									new Location((int) mapSize.getHeight() / 2 + 30, dropDistance, Math.toRadians(-90)),
 									
 									// lower long side
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 60),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 30),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 30),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 60),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(180)),
 									
 									// upper long side
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 60),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 30),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 30),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 60)
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(0))
 							};
 							
 							double bestDistance = Double.MAX_VALUE;
@@ -358,6 +347,8 @@ public class RobotThread extends Thread
 						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToDelivery())
 						{
 							this.robotState = RobotState.DELIVERING;
+							
+							turnTo(this.targetLocation.getTargetAngle());
 							
 							// Move forwards
 							robotControl.move(50, false);
@@ -433,17 +424,20 @@ public class RobotThread extends Thread
 					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 					{
 						// We are very very close to the correct angle, so drive forward
+						System.out.println("targetAngleDifference: "+Math.toDegrees(targetAngleDifference));
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
 							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
-							
+							System.out.println("FREMAD");
 						}
 						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do minor corrections
 						{
+							System.out.println("TURNING FAST");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
 								robotControl.right(Thresholds.getInstance().getSlowSpeed());
+								
 							}
 							else
 							{
@@ -452,6 +446,7 @@ public class RobotThread extends Thread
 						}
 						else // Do major corrections
 						{
+							System.out.println("TURNING SLOW");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
@@ -465,9 +460,40 @@ public class RobotThread extends Thread
 					}
 				}
 			}
-		}
+//		}
+//		else
+//			robotControl.stop();
 	}
 	
+	/**
+	 * Calculates the delta angle from the robot's current angle and
+	 * the current target's angle
+	 * @param robotAngle
+	 * @param targetAngle
+	 * @return Delta angle
+	 */
+	private double calculateAngleDifference(double robotAngle, double targetAngle)
+	{
+		double difference;
+//		difference = robotAngle - targetAngle;
+		
+		// Old way to figure out delta angle
+		if (targetAngle < 0 && robotAngle < 0 || targetAngle >= 0 && robotAngle >= 0)
+		{
+			difference = Math.abs(robotAngle - targetAngle);
+		}
+		else if (robotLocation.getAngle() >= 0)
+		{
+			difference = Math.abs(robotAngle - targetAngle);
+		}
+		else
+		{
+			difference = Math.abs(robotAngle + targetAngle);
+		}
+		
+		return difference;
+	}
+
 	/**
 	 * Calculates the target angle from dy and dx
 	 * @param dy
@@ -614,5 +640,36 @@ public class RobotThread extends Thread
 	public IControl getRobotControl()
 	{
 		return robotControl;
+	}
+
+	/**
+	 * Turns the robot to the specified angle
+	 * @param targetAngle The specified angle that the robot should turn to
+	 * @throws RemoteException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void turnTo(double targetAngle) throws RemoteException, IOException, InterruptedException
+	{
+		//While the robot does not have the correct angle...
+		while (!(
+			(robotLocation.getAngle() == targetAngle) ||
+			(((robotLocation.getAngle() - targetAngle) < Thresholds.getInstance().getRotationClose()) && 
+			((robotLocation.getAngle() - targetAngle) > Thresholds.getInstance().getRotationClose()))
+		   ))
+		{
+			//....turn right, or....
+			if((robotLocation.getAngle() - targetAngle) < 0 )
+			{
+				robotControl.right();
+			}
+			//....turn left
+			else
+			{
+				robotControl.left();
+			}
+		}
+		
+		robotControl.stop();
 	}
 }

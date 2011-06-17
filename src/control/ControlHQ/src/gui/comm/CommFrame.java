@@ -15,6 +15,7 @@ import gui.FramePlaceHolder;
 
 import java.beans.PropertyVetoException;
 
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import controller.MainController;
@@ -215,7 +216,7 @@ public class CommFrame extends javax.swing.JInternalFrame {
     public void connect() {
 
     	// initializing control unit
-    	MainController.getInstance().initialize(kindOfConnect);
+    	MainController.getInstance().initialize(kindOfConnect == 2 ? 1 : 0);
 
     }
     
@@ -255,9 +256,18 @@ public class CommFrame extends javax.swing.JInternalFrame {
 			disconnectBtn.setEnabled(true);
 			progressBar.setVisible(false);
 			
-			// FIXME invokeLater
+			
 			FramePlaceHolder.getMainFrame().makeProcessingFrame();
+			FramePlaceHolder.getProcessingFrame().updateImages();
+
+			
+
 			FramePlaceHolder.getMainFrame().makeMiniInfoFrame();
+			FramePlaceHolder.getMinInfoFrame().updateAllInfo();
+
+			
+			
+			
 
 			// minimize the Comm frame
 			try

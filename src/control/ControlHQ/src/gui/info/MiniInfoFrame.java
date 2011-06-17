@@ -30,7 +30,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     public MiniInfoFrame() {
         initComponents();
         FramePlaceHolder.setMinInfoFrame(this);
-        new UpdateInfoTask().execute();
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -428,7 +428,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 	private void updateBertaTargetAngle()
 	{
 		double angle = MainController.getInstance().getBertaTargetAngle();
-		bertaTargelAngleLabel.setText(angle + "" + (char)176);
+		bertaTargelAngleLabel.setText((int) Math.toDegrees(angle) + "" + (char)176);
 	}
 
 	// Prop Info Update
@@ -458,7 +458,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
 	private void updatePropPos()
 	{
-		int[] yx = MainController.getInstance().getInformation().getRobots().get(0).getPos();
+		int[] yx = MainController.getInstance().getInformation().getRobots().get(1).getPos();
 
 		int x = yx[1];
 		int y = yx[0];
@@ -467,7 +467,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
 	private void updatePropAngle()
 	{
-		double radAngle = MainController.getInstance().getInformation().getRobots().get(0).getAngle();
+		double radAngle = MainController.getInstance().getInformation().getRobots().get(1).getAngle();
 		PropAngleLabel.setText((int) Math.toDegrees(radAngle) + "" + (char)176);
 	}
     private void updatePropTargetLocation()
@@ -478,7 +478,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     private void updatePropTargetAngle()
 	{
     	double angle = MainController.getInstance().getPropTargetAngle();
-		propTargetAngleLabel.setText(angle + "" + (char)176);
+		propTargetAngleLabel.setText((int) Math.toDegrees(angle) + "" + (char)176);
 	}
     
 
@@ -505,13 +505,42 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
 	public void updateAllInfo()
 	{
-		if (MainController.getInstance().isBertaConnected())
-			updateBertaInfo();
-		if (MainController.getInstance().isPropConnected())
-			updatePropInfo();
+		new Thread("update Info thread"){
+			@Override
+			public void run()
+			{
+				do{
+					try
+					{
+						Thread.sleep(500);
+					} catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+				}while(!MainController.getInstance().isProcessorRunning() || MainController.getInstance().getInformation() == null);
+				
+				while (true)
+				{
+					if (MainController.getInstance().isBertaConnected())
+						updateBertaInfo();
+					if (MainController.getInstance().isPropConnected())
+						updatePropInfo();
+
+					updateBertaOnOff();
+					updatePropOnOff();
+					try
+					{
+						Thread.sleep(50);
+					} catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+
+				}
+				
+			}
+		}.start();
 		
-		updateBertaOnOff();
-		updatePropOnOff();
 	}
 	
 	class UpdateInfoTask extends SwingWorker<Void, Void>{
@@ -520,7 +549,6 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 		protected Void doInBackground() throws Exception
 		{
 			while(true){
-				invalidate();
 				FramePlaceHolder.getMinInfoFrame().updateAllInfo();
 			}
 		}

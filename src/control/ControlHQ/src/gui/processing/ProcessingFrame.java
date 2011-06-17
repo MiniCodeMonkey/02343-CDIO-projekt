@@ -3,6 +3,7 @@ package gui.processing;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 
@@ -24,8 +25,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     public ProcessingFrame() {
         initComponents();
         FramePlaceHolder.setProcessingFrame(this);
-        new UpdateTask().execute();
-    	webcamBtn.setEnabled(false);
+
     }
     @Deprecated
     private void initListeners() {
@@ -843,37 +843,26 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     @Deprecated
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed
     	
-    	new UpdateTask().execute();
-    	webcamBtn.setEnabled(false);
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
     
     public void updateImagePanel() {
     	
-    	imagePanel.removeAll();
-        processedImagePanel.removeAll();
         
     	ILocations locations = MainController.getInstance().getInformation();
     	
     	// kilde billede
     	BufferedImage sourceImg = locations.getSourceImage();
     	
-    	// behandlet billede
+
     	BufferedImage tileImg = locations.getTileImage();
 		
-    	// Opret JFrame samt panel til input-billede
-        srcImgPanel = new ImagePanel(sourceImg);
-        srcImgPanel.setMinimumSize(new Dimension(sourceImg.getWidth(), sourceImg.getHeight()));
-        imagePanel.add(srcImgPanel);
+        srcImgPanel.setImage(sourceImg);
+        srcImgPanel.repaint();
 
-        // Opret JFrame samt panel til tile-billede
-        tileImgPanel = new ImagePanel(tileImg);
-        tileImgPanel.setMinimumSize(new Dimension(tileImg.getWidth(), tileImg.getHeight()));
-        processedImagePanel.add(tileImgPanel);
+        tileImgPanel.setImage(tileImg);
+        tileImgPanel.repaint();
 
-        this.validate();
-//        imagePanel.invalidate();
-//        processedImagePanel.invalidate();
         
 	}
         
@@ -964,27 +953,55 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     
-    // Swing worker classes (for background work)
-    
-    class UpdateTask extends SwingWorker<Void, Void>{
+    public void updateImages(){
+    	
+    	System.out.println("updataImages");
+				
+    	
+    	new Thread("Update images thread"){
+    		
+    		@Override
+    		public void run()
+    		{
+    			try
+    			{
+    				
+    				do{
+    					Thread.sleep(500);
+    				}while(!MainController.getInstance().isProcessorRunning() || MainController.getInstance().getInformation() == null);
+    				
+    				ILocations locations = MainController.getInstance().getInformation();
+    		    	
+    		    	// kilde billede
+    		    	BufferedImage sourceImg = locations.getSourceImage();
+    		    	
+    		    	// behandlet billede
+    		    	BufferedImage tileImg = locations.getTileImage();
+    				
+    		    	// Opret JFrame samt panel til input-billede
+    		        srcImgPanel = new ImagePanel(sourceImg);
+    		        imagePanel.add(srcImgPanel);
 
-		@Override
-		protected Void doInBackground() throws Exception
-		{
-			try
-			{
-				while(true){
-					validate();
-					Thread.sleep(100);
-					updateImagePanel();
-				}
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-			
-			return null;
-		}
+    		        // Opret JFrame samt panel til tile-billede
+    		        tileImgPanel = new ImagePanel(tileImg);
+    		        processedImagePanel.add(tileImgPanel);
+    				
+    				while(true){					
+    					Thread.sleep(50);
+    					updateImagePanel();
+    				}
+    			} catch (InterruptedException e)
+    			{
+    				e.printStackTrace();
+    			}
+    		}
+    	}.start();
+    	
+    					
+    	
+    	
+    	
+    	
     	
     }
     

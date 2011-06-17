@@ -112,6 +112,8 @@ public class TestImageProcessor2 implements ActionListener {
 				ILocations locations = imageProcessor.examineImage(sourceImg, true);
 					
 				// Opdatér billeder
+				panel1.removeAll();
+				panel2.setSize(sourceImg.getWidth(), sourceImg.getHeight());
 				panel1.setImage((Image) sourceImg);
 				panel1.paint(panel1.getGraphics());
 				panel2.removeAll();
