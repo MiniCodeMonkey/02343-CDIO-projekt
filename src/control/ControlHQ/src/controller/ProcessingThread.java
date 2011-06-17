@@ -159,9 +159,9 @@ public class ProcessingThread extends Thread
 			{
 				while(running)
 				{
-					long time = System.currentTimeMillis();
+//					long time = System.currentTimeMillis();
 					image = imageSource.getImage();
-					System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+//					System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
 				}
 			};
 		}.start();
@@ -173,9 +173,11 @@ public class ProcessingThread extends Thread
 				while(running)
 				{
 					long time = System.currentTimeMillis();
-					locations = imageProcessor.examineImage(image, true);
-					System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
-					locationMapUpdated = true;
+					if (image != null){
+						locations = imageProcessor.examineImage(image, true);
+						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+						locationMapUpdated = true;
+					}
 				}
 			};
 		}.start();
@@ -189,10 +191,12 @@ public class ProcessingThread extends Thread
 					try
 					{
 						long time = System.currentTimeMillis();
-						// Calculate new paths
+						if (locations != null){
+							// Calculate new paths
 						calculatePaths(locations);
 						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
 						locationMapUpdated = false;
+						}
 					} 
 					catch (ControllerException e)
 					{
@@ -201,6 +205,7 @@ public class ProcessingThread extends Thread
 				}
 			};
 		}.start();
+	}
 	/**
 	 * Calculates new paths for all robots
 	 * 

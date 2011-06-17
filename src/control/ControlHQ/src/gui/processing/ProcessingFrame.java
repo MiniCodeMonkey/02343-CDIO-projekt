@@ -871,7 +871,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         tileImgPanel.setMinimumSize(new Dimension(tileImg.getWidth(), tileImg.getHeight()));
         processedImagePanel.add(tileImgPanel);
 
-        this.invalidate();
+        this.validate();
 //        imagePanel.invalidate();
 //        processedImagePanel.invalidate();
         
@@ -974,7 +974,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 			try
 			{
 				while(true){
-					invalidate();
+					validate();
 					Thread.sleep(100);
 					updateImagePanel();
 				}
