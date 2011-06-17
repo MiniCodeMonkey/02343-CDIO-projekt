@@ -61,7 +61,6 @@ public class ProcessingThread extends Thread
 	 */
 	private BufferedImage image;
 	
-	private boolean locationMapUpdated = true;
 	
 	private int robotsCount = 0;
 	private int cakesCount = 0;
@@ -105,7 +104,8 @@ public class ProcessingThread extends Thread
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
 
-		connetToRobots = 1;
+//		connetToRobots = 1;
+		
 		// decide which robot(s) to connect
         switch (connetToRobots)
 		{
@@ -173,10 +173,9 @@ public class ProcessingThread extends Thread
 				while(running)
 				{
 //					long time = System.currentTimeMillis();
-					if (image != null){
-						locations = imageProcessor.examineImage(image, true);
+					if (getImage() != null){
+						locations = imageProcessor.examineImage(getImage(), true);
 //						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
-						locationMapUpdated = true;
 					}
 				}
 			};
@@ -193,9 +192,8 @@ public class ProcessingThread extends Thread
 //						long time = System.currentTimeMillis();
 						if (locations != null){
 							// Calculate new paths
-						calculatePaths(locations);
-//						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
-						locationMapUpdated = false;
+							calculatePaths(getLocations());
+	//						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
 						}
 					} 
 					catch (ControllerException e)
@@ -305,7 +303,8 @@ public class ProcessingThread extends Thread
 				boolean foundCake = false;
 				for (ICake cake : locations.getCakes())
 				{
-					if (cake.getX() == targetLocation.GetX() && cake.getY() == targetLocation.GetY())
+					// Check if the targetLocation is within +- 5 pixels of cake location
+					if (Math.abs(cake.getX() - targetLocation.GetX()) < 5 && Math.abs(cake.getY() - targetLocation.GetY()) < 5)
 					{
 						foundCake = true;
 						break;
@@ -465,6 +464,10 @@ public class ProcessingThread extends Thread
 	public synchronized ILocations getLocations()
 	{
 		return locations;
+	}
+	
+	private synchronized BufferedImage getImage(){
+		return image;
 	}
 	
 	/**
