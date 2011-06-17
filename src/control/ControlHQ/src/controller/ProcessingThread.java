@@ -54,6 +54,13 @@ public class ProcessingThread extends Thread
 	 */
 	private ILocations locations;
 	
+	/**
+	 * contains the newest raw image from webcam
+	 */
+	private BufferedImage image;
+	
+	private boolean locationMapUpdated = true;
+	
 	private int robotsCount = 0;
 	private int cakesCount = 0;
 	
@@ -142,32 +149,84 @@ public class ProcessingThread extends Thread
 	private void runLoop()
 	{
 		
-		// Main processing loop
-		while (running)
+		
+		
+		new Thread("Webcam thread")
 		{
-			// Get image from camera
-			long time = System.currentTimeMillis();
-			BufferedImage image = imageSource.getImage();
-			System.out.println("Image fetched in "+(System.currentTimeMillis()-time)+" ms");
-			
-			// Process the image
-			time = System.currentTimeMillis();
-			locations = imageProcessor.examineImage(image, true);
-			System.out.println("Exsamine image in "+(System.currentTimeMillis()-time)+" ms");
-			
-			// calculate path
-			try
+			public void run()
 			{
+				while(running)
+				{
+					long time = System.currentTimeMillis();
+					image = imageSource.getImage();
+					System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+				}
+			};
+		}.start();
+
+		new Thread("Imageprocessing thread")
+		{
+			public void run()
+			{
+				while(running)
+				{
+					long time = System.currentTimeMillis();
+					locations = imageProcessor.examineImage(image, true);
+					System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+					locationMapUpdated = true;
+				}
+			};
+		}.start();
+
+		new Thread("Pathfinder thread")
+		{
+			public void run()
+			{
+				while(running)
+				{
+					try
+					{
+						long time = System.currentTimeMillis();
+						// Calculate new paths
+						calculatePaths(locations);
+						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
+						locationMapUpdated = false;
+					} 
+					catch (ControllerException e)
+					{
+						e.printStackTrace();
+					} 
+				}
+			};
+		}.start();
+			
+			//Main processing loop
+			/*
+			while (running)
+			{
+				// Get image from camera
+				long time = System.currentTimeMillis();
+				BufferedImage image = imageSource.getImage();
+				System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+
+				// Process the image
 				time = System.currentTimeMillis();
-				calculatePaths(locations); // Calculate new paths
-				System.out.println("Calculate path in "+(System.currentTimeMillis()-time)+" ms");
-			}
-			catch (ControllerException e)
-			{
-				System.err.println(e.getMessage());
-			}
-			
-		}
+				locations = imageProcessor.examineImage(image, true);
+				System.out.println("Exsamine image in " + (System.currentTimeMillis() - time) + " ms");
+
+				// calculate path
+				try
+				{
+					time = System.currentTimeMillis();
+					calculatePaths(locations); // Calculate new paths
+					System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
+				} catch (ControllerException e)
+				{
+					System.err.println(e.getMessage());
+				}
+
+			}*/
+		
 	}
 	
 	/**
