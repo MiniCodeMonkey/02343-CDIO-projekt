@@ -3,6 +3,8 @@ package controller;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import command.Commando;
@@ -36,7 +38,7 @@ public class ProcessingThread extends Thread
 	private IImageProcessor imageProcessor;
 	/**
 	 * tells if processing is running
-	 * <br>Used to loop to process, and to stop it
+	 * Used to loop to process, and to stop it
 	 */
 	private boolean running;
 	/**
@@ -96,7 +98,7 @@ public class ProcessingThread extends Thread
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
 
-		
+		connetToRobots = 1;
 		// decide which robot(s) to connect
         switch (connetToRobots)
 		{
@@ -146,21 +148,17 @@ public class ProcessingThread extends Thread
 		while (running)
 		{
 			// Get image from camera
-			long time = System.currentTimeMillis();
 			BufferedImage image = imageSource.getImage();
-			System.out.println("Image fetched in "+(System.currentTimeMillis()-time)+" ms");
 			
 			// Process the image
-			time = System.currentTimeMillis();
 			locations = imageProcessor.examineImage(image, true);
-			System.out.println("Exsamine image in "+(System.currentTimeMillis()-time)+" ms");
 			
 			// calculate path
 			try
 			{
-				time = System.currentTimeMillis();
+				long time = System.currentTimeMillis();
 				calculatePaths(locations); // Calculate new paths
-				System.out.println("Calculate path in "+(System.currentTimeMillis()-time)+" ms");
+				System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
 			}
 			catch (ControllerException e)
 			{
@@ -188,6 +186,36 @@ public class ProcessingThread extends Thread
 		
 		robotsCount = c;
 		cakesCount = locations.getCakes().size();
+		
+		// Move robots into the field
+		for (int robotIndex = 0; robotIndex <= 1; robotIndex++)
+		{
+			try
+			{
+				// If the robot is connected and in the START state
+				if (robotThreads[robotIndex] != null && robotThreads[robotIndex].getRobotState() == RobotState.START)
+				{
+					// If the robot is visually visible
+					if (locations.getRobots().get(robotIndex).isActive())
+					{
+						robotThreads[robotIndex].getRobotControl().stop();
+						robotThreads[robotIndex].setRobotState(RobotState.IDLE);
+					}
+					else
+					{
+						robotThreads[robotIndex].getRobotControl().move(30, false);
+					}
+				}
+			}
+			catch (RemoteException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		// Is no robots available?
 		if (!locations.getRobots().get(0).isActive() && !locations.getRobots().get(1).isActive())
@@ -228,6 +256,32 @@ public class ProcessingThread extends Thread
 			catch (IndexOutOfBoundsException e)
 			{
 				throw new ControllerException("Could not visually find robot " + robotThread.toString());
+			}
+			
+			// Check if the target cake has moved, if heading for a cake
+			if (robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE)
+			{
+				Location targetLocation = robotThread.getTargetLocation();
+				
+				// Does the target location correspond to an existing cake?
+				boolean foundCake = false;
+				for (ICake cake : locations.getCakes())
+				{
+					if (cake.getX() == targetLocation.GetX() && cake.getY() == targetLocation.GetY())
+					{
+						foundCake = true;
+						break;
+					}
+				}
+				
+				// The target cake is no longer at the location
+				if (!foundCake)
+				{
+					System.out.println("********************");
+					System.out.println("** CAKE HAS MOVED **");
+					System.out.println("********************");
+					robotThread.setRobotState(RobotState.IDLE);
+				}
 			}
 			
 			// If idling, possibly pick a cake to pick up
@@ -276,8 +330,7 @@ public class ProcessingThread extends Thread
 					
 					// Loop through all cake locations to find the best location
 					for (Location cakeLocation : possibleCakes)
-					{
-						
+					{					
 						double dist = Math.sqrt(Math.pow(robotThread.getRobotLocation().getX() - cakeLocation.GetX(), 2) + Math.pow(robotThread.getRobotLocation().getY() - cakeLocation.GetY(), 2));
 						
 						// Is this cake closer than the last found closest cake?
@@ -288,6 +341,7 @@ public class ProcessingThread extends Thread
 						}
 					}
 					
+					System.out.println("Going for cake at: " + determinedCakeLocation.GetX() + "," + determinedCakeLocation.GetY());
 					// Set the target to the determined cake's location
 					robotThread.setTargetLocation(determinedCakeLocation);
 					

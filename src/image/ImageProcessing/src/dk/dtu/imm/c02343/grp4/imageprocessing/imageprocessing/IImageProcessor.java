@@ -52,9 +52,9 @@ public interface IImageProcessor {
 	
 	/**
 	 * Standard størrelse på forhindrings-sikkerhedszone
-	 * HUSK: Ændres dette skal der også tages forbehold for dette i tilemappen
+	 * HUSK: Ændres dette skal der også tages forbehold for dette i tilemappen's blocked metode i pathfinderen
 	 */
-	public static final int OBSTACLE_BUFFER = 20;
+	public static final int OBSTACLE_BUFFER = 40;
 	
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
@@ -64,7 +64,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af kager fra billedkilde
 	 */
-	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(80, 0, 0, 255, 45, 45);
+	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(80, 0, 0, 255, 45, 60);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot1 front fra billedkilde
@@ -79,7 +79,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 60, 0, 220, 90, 40);
+	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 60, 0, 220, 110, 50);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 bag fra billedkilde
