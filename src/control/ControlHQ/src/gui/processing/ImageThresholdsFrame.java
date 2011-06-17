@@ -101,12 +101,12 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         robot2Panel = new javax.swing.JPanel();
         robot2Tabs = new javax.swing.JTabbedPane();
         r2FrontTab = new javax.swing.JPanel();
-        r2MinRed = new javax.swing.JSpinner();
-        r2MinGreen = new javax.swing.JSpinner();
-        r2MinBlue = new javax.swing.JSpinner();
-        r2MaxRed = new javax.swing.JSpinner();
-        r2MaxGreen = new javax.swing.JSpinner();
-        r2MaxBlue = new javax.swing.JSpinner();
+        r1MinRed2 = new javax.swing.JSpinner();
+        r1MinGreen2 = new javax.swing.JSpinner();
+        r1MinBlue2 = new javax.swing.JSpinner();
+        r1MaxRed2 = new javax.swing.JSpinner();
+        r1MaxGreen2 = new javax.swing.JSpinner();
+        r1MaxBlue2 = new javax.swing.JSpinner();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
@@ -116,12 +116,12 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         r2BackTab = new javax.swing.JPanel();
-        r2MinRed1 = new javax.swing.JSpinner();
-        r2MinGreen1 = new javax.swing.JSpinner();
-        r2MinBlue1 = new javax.swing.JSpinner();
-        r2MaxRed1 = new javax.swing.JSpinner();
-        r2MaxGreen1 = new javax.swing.JSpinner();
-        r2MaxBlue1 = new javax.swing.JSpinner();
+        r1MinRed3 = new javax.swing.JSpinner();
+        r1MinGreen3 = new javax.swing.JSpinner();
+        r1MinBlue3 = new javax.swing.JSpinner();
+        r1MaxRed3 = new javax.swing.JSpinner();
+        r1MaxGreen3 = new javax.swing.JSpinner();
+        r1MaxBlue3 = new javax.swing.JSpinner();
         jLabel41 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
@@ -376,7 +376,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         commonPanel.add(jLabel12, gridBagConstraints);
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, bufferSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), jLabel16, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -654,47 +654,47 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 
         r2FrontTab.setLayout(new java.awt.GridBagLayout());
 
-        r2MinRed.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MinRed2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2FrontTab.add(r2MinRed, gridBagConstraints);
+        r2FrontTab.add(r1MinRed2, gridBagConstraints);
 
-        r2MinGreen.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MinGreen2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2FrontTab.add(r2MinGreen, gridBagConstraints);
+        r2FrontTab.add(r1MinGreen2, gridBagConstraints);
 
-        r2MinBlue.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MinBlue2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2FrontTab.add(r2MinBlue, gridBagConstraints);
+        r2FrontTab.add(r1MinBlue2, gridBagConstraints);
 
-        r2MaxRed.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MaxRed2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2FrontTab.add(r2MaxRed, gridBagConstraints);
+        r2FrontTab.add(r1MaxRed2, gridBagConstraints);
 
-        r2MaxGreen.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MaxGreen2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2FrontTab.add(r2MaxGreen, gridBagConstraints);
+        r2FrontTab.add(r1MaxGreen2, gridBagConstraints);
 
-        r2MaxBlue.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MaxBlue2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2FrontTab.add(r2MaxBlue, gridBagConstraints);
+        r2FrontTab.add(r1MaxBlue2, gridBagConstraints);
 
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
         jLabel33.setText("min");
@@ -774,47 +774,47 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 
         r2BackTab.setLayout(new java.awt.GridBagLayout());
 
-        r2MinRed1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MinRed3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2BackTab.add(r2MinRed1, gridBagConstraints);
+        r2BackTab.add(r1MinRed3, gridBagConstraints);
 
-        r2MinGreen1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MinGreen3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2BackTab.add(r2MinGreen1, gridBagConstraints);
+        r2BackTab.add(r1MinGreen3, gridBagConstraints);
 
-        r2MinBlue1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MinBlue3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2BackTab.add(r2MinBlue1, gridBagConstraints);
+        r2BackTab.add(r1MinBlue3, gridBagConstraints);
 
-        r2MaxRed1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MaxRed3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2BackTab.add(r2MaxRed1, gridBagConstraints);
+        r2BackTab.add(r1MaxRed3, gridBagConstraints);
 
-        r2MaxGreen1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MaxGreen3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2BackTab.add(r2MaxGreen1, gridBagConstraints);
+        r2BackTab.add(r1MaxGreen3, gridBagConstraints);
 
-        r2MaxBlue1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
+        r1MaxBlue3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        r2BackTab.add(r2MaxBlue1, gridBagConstraints);
+        r2BackTab.add(r1MaxBlue3, gridBagConstraints);
 
         jLabel41.setForeground(new java.awt.Color(51, 51, 51));
         jLabel41.setText("min");
@@ -922,7 +922,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider bufferSlider;
     private java.awt.Canvas cakeCanvas;
@@ -992,28 +992,28 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel r1FrontTab;
     javax.swing.JSpinner r1MaxBlue;
     javax.swing.JSpinner r1MaxBlue1;
-    javax.swing.JSpinner r2MaxBlue;
-    javax.swing.JSpinner r2MaxBlue1;
+    javax.swing.JSpinner r1MaxBlue2;
+    javax.swing.JSpinner r1MaxBlue3;
     javax.swing.JSpinner r1MaxGreen;
     javax.swing.JSpinner r1MaxGreen1;
-    javax.swing.JSpinner r2MaxGreen;
-    javax.swing.JSpinner r2MaxGreen1;
+    javax.swing.JSpinner r1MaxGreen2;
+    javax.swing.JSpinner r1MaxGreen3;
     javax.swing.JSpinner r1MaxRed;
     javax.swing.JSpinner r1MaxRed1;
-    javax.swing.JSpinner r2MaxRed;
-    javax.swing.JSpinner r2MaxRed1;
+    javax.swing.JSpinner r1MaxRed2;
+    javax.swing.JSpinner r1MaxRed3;
     javax.swing.JSpinner r1MinBlue;
     javax.swing.JSpinner r1MinBlue1;
-    javax.swing.JSpinner r2MinBlue;
-    javax.swing.JSpinner r2MinBlue1;
+    javax.swing.JSpinner r1MinBlue2;
+    javax.swing.JSpinner r1MinBlue3;
     javax.swing.JSpinner r1MinGreen;
     javax.swing.JSpinner r1MinGreen1;
-    javax.swing.JSpinner r2MinGreen;
-    javax.swing.JSpinner r2MinGreen1;
+    javax.swing.JSpinner r1MinGreen2;
+    javax.swing.JSpinner r1MinGreen3;
     javax.swing.JSpinner r1MinRed;
     javax.swing.JSpinner r1MinRed1;
-    javax.swing.JSpinner r2MinRed;
-    javax.swing.JSpinner r2MinRed1;
+    javax.swing.JSpinner r1MinRed2;
+    javax.swing.JSpinner r1MinRed3;
     private javax.swing.JPanel r2BackTab;
     private javax.swing.JPanel r2FrontTab;
     private java.awt.Canvas robot1Canvas;
@@ -1035,7 +1035,30 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
      */
     public void initThresholdValues()
 	{
-    	System.out.println("initThresholdValues");
+            
+        //Common
+        //Cakes
+            Thresholds cakes = IImageProcessor.CAKE_THRESHOLDS;
+            
+            cakeMinRed.setValue(cakes.getMinR());
+            cakeMinGreen.setValue(cakes.getMinG());
+            cakeMinBlue.setValue(cakes.getMinB());
+            
+            cakeMaxRed.setValue(cakes.getMaxR());
+            cakeMaxGreen.setValue(cakes.getMaxG());
+            cakeMaxBlue.setValue(cakes.getMaxB());
+            
+        //Obstacles
+            Thresholds obstacle = IImageProcessor.OBSTACLE_THRESHOLDS;
+            
+            obsMinRed.setValue(obstacle.getMinR());
+            obsMinGreen.setValue(obstacle.getMinG());
+            obsMinBlue.setValue(obstacle.getMinB());
+            
+            obsMaxRed.setValue(obstacle.getMaxR());
+            obsMaxGreen.setValue(obstacle.getMaxG());
+            obsMaxBlue.setValue(obstacle.getMaxB());
+                       	
     	// Robots
     	// robot 1
     	Thresholds robot1N = IImageProcessor.ROBOT1_N_THRESHOLDS;
