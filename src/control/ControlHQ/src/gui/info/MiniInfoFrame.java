@@ -505,14 +505,42 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
 	public void updateAllInfo()
 	{
-		if (MainController.getInstance().isBertaConnected())
-			updateBertaInfo();
-		if (MainController.getInstance().isPropConnected())
-			updatePropInfo();
+		new Thread("update Info thread"){
+			@Override
+			public void run()
+			{
+				do{
+					try
+					{
+						Thread.sleep(500);
+					} catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+				}while(!MainController.getInstance().isProcessorRunning() || MainController.getInstance().getInformation() == null);
+				
+				while (true)
+				{
+					if (MainController.getInstance().isBertaConnected())
+						updateBertaInfo();
+					if (MainController.getInstance().isPropConnected())
+						updatePropInfo();
+
+					updateBertaOnOff();
+					updatePropOnOff();
+					try
+					{
+						Thread.sleep(50);
+					} catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+
+				}
+				
+			}
+		}.start();
 		
-		updateBertaOnOff();
-		updatePropOnOff();
-		new UpdateInfoTask().execute();
 	}
 	
 	class UpdateInfoTask extends SwingWorker<Void, Void>{

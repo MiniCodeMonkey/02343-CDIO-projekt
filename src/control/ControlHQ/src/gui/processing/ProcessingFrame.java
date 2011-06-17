@@ -25,7 +25,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     public ProcessingFrame() {
         initComponents();
         FramePlaceHolder.setProcessingFrame(this);
-//        new UpdateTask().execute();
 
     }
     @Deprecated
@@ -844,8 +843,6 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     @Deprecated
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed
     	
-    	new UpdateTask().execute();
-    	webcamBtn.setEnabled(false);
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
     
@@ -861,9 +858,10 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	BufferedImage tileImg = locations.getTileImage();
 		
         srcImgPanel.setImage(sourceImg);
-        
+        srcImgPanel.repaint();
 
         tileImgPanel.setImage(tileImg);
+        tileImgPanel.repaint();
 
         
 	}
@@ -957,85 +955,53 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     
     public void updateImages(){
     	
-
-    	SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					System.out.println("UpdateTask");
-					ILocations locations = MainController.getInstance().getInformation();
-			    	
-			    	// kilde billede
-			    	BufferedImage sourceImg = locations.getSourceImage();
-			    	
-			    	// behandlet billede
-			    	BufferedImage tileImg = locations.getTileImage();
-					
-			    	// Opret JFrame samt panel til input-billede
-			        srcImgPanel = new ImagePanel(sourceImg);
-			        imagePanel.add(srcImgPanel);
-
-			        // Opret JFrame samt panel til tile-billede
-			        tileImgPanel = new ImagePanel(tileImg);
-			        processedImagePanel.add(tileImgPanel);
-					
-					while(true){					
-						Thread.sleep(100);
-						updateImagePanel();
-					}
-				} catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}				
-			}
-		});
-    	
-    	
-    	
-    	
-    	
-    }
-    
-    // Swing worker classes (for background work)
-    
-    class UpdateTask extends SwingWorker<Void, Void>{
-
-		@Override
-		protected Void doInBackground() throws Exception
-		{
-			try
-			{
-				System.out.println("UpdateTask");
-				ILocations locations = MainController.getInstance().getInformation();
-		    	
-		    	// kilde billede
-		    	BufferedImage sourceImg = locations.getSourceImage();
-		    	
-		    	// behandlet billede
-		    	BufferedImage tileImg = locations.getTileImage();
+    	System.out.println("updataImages");
 				
-		    	// Opret JFrame samt panel til input-billede
-		        srcImgPanel = new ImagePanel(sourceImg);
-		        imagePanel.add(srcImgPanel);
+    	
+    	new Thread("Update images thread"){
+    		
+    		@Override
+    		public void run()
+    		{
+    			try
+    			{
+    				
+    				do{
+    					Thread.sleep(500);
+    				}while(!MainController.getInstance().isProcessorRunning() || MainController.getInstance().getInformation() == null);
+    				
+    				ILocations locations = MainController.getInstance().getInformation();
+    		    	
+    		    	// kilde billede
+    		    	BufferedImage sourceImg = locations.getSourceImage();
+    		    	
+    		    	// behandlet billede
+    		    	BufferedImage tileImg = locations.getTileImage();
+    				
+    		    	// Opret JFrame samt panel til input-billede
+    		        srcImgPanel = new ImagePanel(sourceImg);
+    		        imagePanel.add(srcImgPanel);
 
-		        // Opret JFrame samt panel til tile-billede
-		        tileImgPanel = new ImagePanel(tileImg);
-		        processedImagePanel.add(tileImgPanel);
-				
-				while(true){					
-					Thread.sleep(100);
-					updateImagePanel();
-				}
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-			
-			return null;
-		}
+    		        // Opret JFrame samt panel til tile-billede
+    		        tileImgPanel = new ImagePanel(tileImg);
+    		        processedImagePanel.add(tileImgPanel);
+    				
+    				while(true){					
+    					Thread.sleep(50);
+    					updateImagePanel();
+    				}
+    			} catch (InterruptedException e)
+    			{
+    				e.printStackTrace();
+    			}
+    		}
+    	}.start();
+    	
+    					
+    	
+    	
+    	
+    	
     	
     }
     

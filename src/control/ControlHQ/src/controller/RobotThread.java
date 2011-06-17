@@ -291,7 +291,7 @@ public class RobotThread extends Thread
 							robotControl.stop();
 							
 							
-							int dropDistance = 20;
+							int dropDistance = 5;
 							
 							// Decide delivery location | FIXME: if obstacles is in the way
 							Location deliveryLocations[] = {
@@ -466,6 +466,8 @@ public class RobotThread extends Thread
 				}
 			}
 		}
+		else
+			robotControl.stop();
 	}
 	
 	/**
