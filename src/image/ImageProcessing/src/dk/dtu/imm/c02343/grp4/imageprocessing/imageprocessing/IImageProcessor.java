@@ -140,4 +140,8 @@ public interface IImageProcessor {
 	public int getResolutionX();
 	
 	public int getResolutionY();
+	
+	public void setOutputScale(int scale);
+	
+	public int getOutputScale();
 }
