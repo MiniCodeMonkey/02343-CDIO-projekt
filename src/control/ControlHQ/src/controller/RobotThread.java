@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import command.BertaCommando;
@@ -297,28 +298,28 @@ public class RobotThread extends Thread
 							Location deliveryLocations[] = {
 									
 									// right side
-									new Location((int) mapSize.getHeight() / 2 - 30, (int) mapSize.getWidth() - dropDistance),
-									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - dropDistance),
-									new Location((int) mapSize.getHeight() / 2 + 30, (int) mapSize.getWidth() - dropDistance),
-									
+									new Location((int) mapSize.getHeight() / 2 - 30, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
+									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
+									new Location((int) mapSize.getHeight() / 2 + 30, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
+																		
 									// left side
-									new Location((int) mapSize.getHeight() / 2 - 30, dropDistance),
-									new Location((int) mapSize.getHeight() / 2, dropDistance),
-									new Location((int) mapSize.getHeight() / 2 + 30, dropDistance),
+									new Location((int) mapSize.getHeight() / 2 - 30, dropDistance, Math.toRadians(-90)),
+									new Location((int) mapSize.getHeight() / 2, dropDistance, Math.toRadians(-90)),
+									new Location((int) mapSize.getHeight() / 2 + 30, dropDistance, Math.toRadians(-90)),
 									
 									// lower long side
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 60),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 30),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 30),
-									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 60),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(180)),
+									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(180)),
 									
 									// upper long side
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 60),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 30),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 30),
-									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 60)
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(0)),
+									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(0))
 							};
 							
 							double bestDistance = Double.MAX_VALUE;
@@ -358,6 +359,8 @@ public class RobotThread extends Thread
 						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToDelivery())
 						{
 							this.robotState = RobotState.DELIVERING;
+							
+							turnTo(this.targetLocation.getTargetAngle());
 							
 							// Move forwards
 							robotControl.move(50, false);
@@ -620,5 +623,36 @@ public class RobotThread extends Thread
 	public IControl getRobotControl()
 	{
 		return robotControl;
+	}
+
+	/**
+	 * Turns the robot to the specified angle
+	 * @param targetAngle The specified angle that the robot should turn to
+	 * @throws RemoteException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void turnTo(double targetAngle) throws RemoteException, IOException, InterruptedException
+	{
+		//While the robot does not have the correct angle...
+		while (!(
+			(robotLocation.getAngle() == targetAngle) ||
+			(((robotLocation.getAngle() - targetAngle) < Thresholds.getInstance().getRotationClose()) && 
+			((robotLocation.getAngle() - targetAngle) > Thresholds.getInstance().getRotationClose()))
+		   ))
+		{
+			//....turn right, or....
+			if((robotLocation.getAngle() - targetAngle) < 0 )
+			{
+				robotControl.right();
+			}
+			//....turn left
+			else
+			{
+				robotControl.left();
+			}
+		}
+		
+		robotControl.stop();
 	}
 }
