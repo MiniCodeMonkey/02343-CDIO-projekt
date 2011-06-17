@@ -56,6 +56,13 @@ public class ProcessingThread extends Thread
 	 */
 	private ILocations locations;
 	
+	/**
+	 * contains the newest raw image from webcam
+	 */
+	private BufferedImage image;
+	
+	private boolean locationMapUpdated = true;
+	
 	private int robotsCount = 0;
 	private int cakesCount = 0;
 	
@@ -144,30 +151,56 @@ public class ProcessingThread extends Thread
 	private void runLoop()
 	{
 		
-		// Main processing loop
-		while (running)
+		
+		
+		new Thread("Webcam thread")
 		{
-			// Get image from camera
-			BufferedImage image = imageSource.getImage();
-			
-			// Process the image
-			locations = imageProcessor.examineImage(image, true);
-			
-			// calculate path
-			try
+			public void run()
 			{
-				long time = System.currentTimeMillis();
-				calculatePaths(locations); // Calculate new paths
-				System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
-			}
-			catch (ControllerException e)
+				while(running)
+				{
+					long time = System.currentTimeMillis();
+					image = imageSource.getImage();
+					System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+				}
+			};
+		}.start();
+
+		new Thread("Imageprocessing thread")
+		{
+			public void run()
 			{
-				System.err.println(e.getMessage());
-			}
-			
-		}
-	}
-	
+				while(running)
+				{
+					long time = System.currentTimeMillis();
+					locations = imageProcessor.examineImage(image, true);
+					System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+					locationMapUpdated = true;
+				}
+			};
+		}.start();
+
+		new Thread("Pathfinder thread")
+		{
+			public void run()
+			{
+				while(running)
+				{
+					try
+					{
+						long time = System.currentTimeMillis();
+						// Calculate new paths
+						calculatePaths(locations);
+						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
+						locationMapUpdated = false;
+					} 
+					catch (ControllerException e)
+					{
+						e.printStackTrace();
+					} 
+				}
+			};
+		}.start();
 	/**
 	 * Calculates new paths for all robots
 	 * 

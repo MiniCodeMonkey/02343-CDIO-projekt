@@ -14,6 +14,7 @@ package gui.info;
 import gui.FramePlaceHolder;
 import controller.MainController;
 import javax.swing.ImageIcon;
+import javax.swing.SwingWorker;
 
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 
@@ -29,6 +30,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     public MiniInfoFrame() {
         initComponents();
         FramePlaceHolder.setMinInfoFrame(this);
+        new UpdateInfoTask().execute();
     }
 
     @SuppressWarnings("unchecked")
@@ -511,6 +513,19 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 		updateBertaOnOff();
 		updatePropOnOff();
 	}
+	
+	class UpdateInfoTask extends SwingWorker<Void, Void>{
+
+		@Override
+		protected Void doInBackground() throws Exception
+		{
+			while(true){
+				invalidate();
+				FramePlaceHolder.getMinInfoFrame().updateAllInfo();
+			}
+		}
+    	
+    }
 
 
 }
