@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -13,10 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import lejos.nxt.Motor;
-import lejos.pc.comm.NXTCommException;
 import command.Commando;
-import command.impl.Control;
 import command.interfaces.IClawControl;
 import command.interfaces.IControl;
 
