@@ -973,8 +973,9 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
 		{
 			try
 			{
+				validate();
 				while(true){
-					validate();
+					
 					Thread.sleep(100);
 					updateImagePanel();
 				}

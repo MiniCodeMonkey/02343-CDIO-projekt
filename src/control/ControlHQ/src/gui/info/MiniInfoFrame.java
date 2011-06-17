@@ -520,7 +520,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 		protected Void doInBackground() throws Exception
 		{
 			while(true){
-				invalidate();
+				validate();
 				FramePlaceHolder.getMinInfoFrame().updateAllInfo();
 			}
 		}
