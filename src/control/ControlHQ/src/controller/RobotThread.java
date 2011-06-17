@@ -231,7 +231,9 @@ public class RobotThread extends Thread
 				// Birds-eye-view distance from robot to target (cake, delivery, location, etc.)
 				double distanceToTarget = calculateDistance(robotLocation.getX(), robotLocation.getY(), targetLocation.GetX(), targetLocation.GetY());
 				
+				// FIXME  maybe delete  - used in turnTo() insted
 				double targetAngleDifference = calculateAngleDifference(robotLocation.getAngle(), targetAngle);
+
 				
 				// Perform actions according to the robot state
 				switch (this.robotState)
@@ -251,6 +253,11 @@ public class RobotThread extends Thread
 						
 					case POSITIONING:
 					{
+						
+						turnTo(targetAngle);
+						
+						System.out.println("turnTo POSITIONING");
+						
 						// Is the rotation close enough?
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
@@ -279,7 +286,7 @@ public class RobotThread extends Thread
 //							robotControl.stop();
 							
 							
-							int dropDistance = 10;
+							int dropDistance = 35;
 							
 							// Decide delivery location | FIXME: if obstacles is in the way
 							Location deliveryLocations[] = {
@@ -420,8 +427,10 @@ public class RobotThread extends Thread
 					
 					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 					{
-						// We are very very close to the correct angle, so drive forward
-						System.out.println("targetAngleDifference: "+Math.toDegrees(targetAngleDifference));
+						
+//						turnTo(targetAngle);
+												
+//						 We are very very close to the correct angle, so drive forward
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
 							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
@@ -429,7 +438,6 @@ public class RobotThread extends Thread
 						}
 						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do minor corrections
 						{
-							System.out.println("TURNING FAST");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
@@ -443,7 +451,6 @@ public class RobotThread extends Thread
 						}
 						else // Do major corrections
 						{
-							System.out.println("TURNING SLOW");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
@@ -648,13 +655,13 @@ public class RobotThread extends Thread
 	 */
 	public void turnTo(double targetAngle) throws RemoteException, IOException, InterruptedException
 	{
-		//While the robot does not have the correct angle...
-		while (!(
-			(robotLocation.getAngle() == targetAngle) ||
-			(((robotLocation.getAngle() - targetAngle) < Thresholds.getInstance().getRotationClose()) && 
-			((robotLocation.getAngle() - targetAngle) > Thresholds.getInstance().getRotationClose()))
+//		While the robot does not have the correct angle... ((robotLocation.getAngle() - targetAngle) > Thresholds.getInstance().getRotationClose())
+		while (
+				!((robotLocation.getAngle() == targetAngle) ||
+			(((robotLocation.getAngle() - targetAngle) < Thresholds.getInstance().getRotationClose()))
 		   ))
 		{
+
 			//....turn right, or....
 			if((robotLocation.getAngle() - targetAngle) < 0 )
 			{
@@ -667,6 +674,7 @@ public class RobotThread extends Thread
 			}
 		}
 		
-		robotControl.stop();
+			
+		
 	}
 }

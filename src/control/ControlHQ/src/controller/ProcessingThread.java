@@ -193,7 +193,7 @@ public class ProcessingThread extends Thread
 						if (locations != null){
 							// Calculate new paths
 							calculatePaths(getLocations());
-	//						System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
+//							System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
 						}
 					} 
 					catch (ControllerException e)
