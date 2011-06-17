@@ -104,7 +104,8 @@ public class ProcessingThread extends Thread
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
 
-		connetToRobots = 1;
+//		connetToRobots = 1;
+		
 		// decide which robot(s) to connect
         switch (connetToRobots)
 		{

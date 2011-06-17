@@ -70,7 +70,7 @@ public class ImageProcessor2 implements IImageProcessor {
 	}
 	
 	// Sætter nedskaleringen af output-maps.
-	private int outputScale = 2;
+	private int outputScale = 1;
 
 	public int getOutputScale() {
 		return outputScale;

@@ -428,7 +428,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 	private void updateBertaTargetAngle()
 	{
 		double angle = MainController.getInstance().getBertaTargetAngle();
-		bertaTargelAngleLabel.setText(angle + "" + (char)176);
+		bertaTargelAngleLabel.setText((int) Math.toDegrees(angle) + "" + (char)176);
 	}
 
 	// Prop Info Update
@@ -458,7 +458,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
 	private void updatePropPos()
 	{
-		int[] yx = MainController.getInstance().getInformation().getRobots().get(0).getPos();
+		int[] yx = MainController.getInstance().getInformation().getRobots().get(1).getPos();
 
 		int x = yx[1];
 		int y = yx[0];
@@ -467,7 +467,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
 
 	private void updatePropAngle()
 	{
-		double radAngle = MainController.getInstance().getInformation().getRobots().get(0).getAngle();
+		double radAngle = MainController.getInstance().getInformation().getRobots().get(1).getAngle();
 		PropAngleLabel.setText((int) Math.toDegrees(radAngle) + "" + (char)176);
 	}
     private void updatePropTargetLocation()
@@ -478,7 +478,7 @@ public class MiniInfoFrame extends javax.swing.JInternalFrame {
     private void updatePropTargetAngle()
 	{
     	double angle = MainController.getInstance().getPropTargetAngle();
-		propTargetAngleLabel.setText(angle + "" + (char)176);
+		propTargetAngleLabel.setText((int) Math.toDegrees(angle) + "" + (char)176);
 	}
     
 

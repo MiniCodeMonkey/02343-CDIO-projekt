@@ -197,8 +197,8 @@ public class RobotThread extends Thread
 	 */
 	private void navigate() throws IOException, InterruptedException
 	{
-		if (pathWasUpdated) // Did we receive an update path from the processing thread?
-		{
+//		if (pathWasUpdated) // Did we receive an update path from the processing thread?
+//		{
 			pathWasUpdated = false;
 			
 			// Is the path valid?
@@ -225,7 +225,7 @@ public class RobotThread extends Thread
 				// Calculate target angle
 				double dy = step.getY() - robotLocation.getY();
 				double dx = step.getX() - robotLocation.getX();
-				double targetAngle = calculateTargetAngle(dy, dx);
+				targetAngle = calculateTargetAngle(dy, dx);
 				
 				// Birds-eye-view distance from robot to target (cake, delivery, location, etc.)
 				double distanceToTarget = calculateDistance(robotLocation.getX(), robotLocation.getY(), targetLocation.GetX(), targetLocation.GetY());
@@ -433,17 +433,20 @@ public class RobotThread extends Thread
 					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
 					{
 						// We are very very close to the correct angle, so drive forward
+						System.out.println("targetAngleDifference: "+Math.toDegrees(targetAngleDifference));
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
 							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
-							
+							System.out.println("FREMAD");
 						}
 						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do minor corrections
 						{
+							System.out.println("TURNING FAST");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
 								robotControl.right(Thresholds.getInstance().getSlowSpeed());
+								
 							}
 							else
 							{
@@ -452,6 +455,7 @@ public class RobotThread extends Thread
 						}
 						else // Do major corrections
 						{
+							System.out.println("TURNING SLOW");
 							// Rotate
 							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
 							{
@@ -465,9 +469,9 @@ public class RobotThread extends Thread
 					}
 				}
 			}
-		}
-		else
-			robotControl.stop();
+//		}
+//		else
+//			robotControl.stop();
 	}
 	
 	/**
