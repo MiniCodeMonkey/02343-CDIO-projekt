@@ -841,6 +841,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     private void webcamBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webcamBtnActionPerformed
     	
     	new UpdateTask().execute();
+    	new UpdateInfoTask().execute();
     	webcamBtn.setEnabled(false);
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
