@@ -70,11 +70,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 				 
 				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE, cakeThreshold);
 				
-			}
-			
+			}	
 		}
-		
-
 	}
-
 }
