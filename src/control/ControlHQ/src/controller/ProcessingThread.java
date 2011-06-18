@@ -378,7 +378,7 @@ public class ProcessingThread extends Thread
 					}
 				}
 				
-				System.out.println("*****************\nSize of PossibleCakes: " + possibleCakes.size() + " and the robot is " + robotThread.getName() + "\n*****************");
+				//System.out.println("*****************\nSize of PossibleCakes: " + possibleCakes.size() + " and the robot is " + robotThread.getName() + "\n*****************");
 				
 				// Possible cakes can still be <= 0 if the existing cake is
 				// already have been selected by another robot
@@ -411,7 +411,6 @@ public class ProcessingThread extends Thread
 					if (chosenCake != -1)
 						possibleCakes.remove(chosenCake);
 					
-					System.out.println("Going for cake at: " + determinedCakeLocation.GetX() + "," + determinedCakeLocation.GetY());
 					// Set the target to the determined cake's location
 					robotThread.setTargetLocation(determinedCakeLocation);
 					

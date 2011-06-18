@@ -1,5 +1,6 @@
 package dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
@@ -10,21 +11,22 @@ import javax.swing.*;
  */
 public class ImagePanel extends JPanel {
 	private static final long serialVersionUID = -8300597968476640481L;
-	private Image img;
+	private BufferedImage img;
 	
 	/**
 	 * Constructor, som tager et filnavn som argument. Denne fil benyttes som billede.
 	 * @param img Billedfil, som skal vises
 	 */
+	@Deprecated
     public ImagePanel(String img) {
-        this(new ImageIcon(img).getImage());
+//        this(new ImageIcon(img));
     }
     
     /**
      * Constructor, som tager et Image-objekt som argument. Dette Image benyttes som billede.
      * @param img Billedet, som skal vises
      */
-    public ImagePanel(Image img) {
+    public ImagePanel(BufferedImage img) {
         this.img = img;
         Dimension size = new Dimension(img.getWidth(null),img.getHeight(null));
         setPreferredSize(size);
@@ -45,8 +47,12 @@ public class ImagePanel extends JPanel {
 	 * Metode til at ændre det billede, som skal vises
 	 * @param img Det nye billede, der skal vises
 	 */
-	public void setImage(Image img) {
+	public void setImage(BufferedImage img) {
 		this.img = img;
+	}
+	
+	public BufferedImage getImage() {
+		return img;
 	}
 }
 

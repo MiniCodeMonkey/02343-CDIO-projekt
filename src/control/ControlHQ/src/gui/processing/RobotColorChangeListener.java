@@ -26,70 +26,6 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
 public class RobotColorChangeListener implements ChangeListener {
 
 	
-//	@Deprecated
-//	@Override
-//	public void stateChanged(ChangeEvent evt) {
-//				
-//		if (evt.getSource() instanceof JSlider) {
-//			JSlider slider = (JSlider) evt.getSource();
-//			
-//			if (imageProcessor == null){
-//				JOptionPane.showMessageDialog(frame, "Mangler at initalisere imageProcessor", "Fejl", JOptionPane.ERROR_MESSAGE);
-//				return;
-//			}
-//			
-//			// TODO isValueAdjusting   hvis det kører for tungt!
-//			
-//			if (slider.getParent().getParent()
-//					.equals(frame.robotFrontThresholdPanel)) {
-//				imageProcessor.setThresholds(IImageProcessor.ROBOTN,
-//						new Thresholds(frame.minRedSlider.getValue(),
-//								frame.minGreenSlider.getValue(),
-//								frame.minBlueSlider.getValue(),
-//								frame.maxRedSlider.getValue(),
-//								frame.maxGreenSlider.getValue(),
-//								frame.maxBlueSlider.getValue()));
-//			} else if (slider.getParent().getParent()
-//					.equals(frame.robotBackThresholdPanel)) {
-//				imageProcessor.setThresholds(IImageProcessor.ROBOTS,
-//						new Thresholds(frame.minRedSlider1.getValue(),
-//								frame.minGreenSlider1.getValue(),
-//								frame.minBlueSlider1.getValue(),
-//								frame.maxRedSlider1.getValue(),
-//								frame.maxGreenSlider1.getValue(),
-//								frame.maxBlueSlider1.getValue()));
-//			} else if (slider.getParent().getParent()
-//					.equals(frame.cakesThresholdPanel)) {
-//				imageProcessor.setThresholds(IImageProcessor.CAKE,
-//						new Thresholds(frame.minRedSlider2.getValue(),
-//								frame.minGreenSlider2.getValue(),
-//								frame.minBlueSlider2.getValue(),
-//								frame.maxRedSlider2.getValue(),
-//								frame.maxGreenSlider2.getValue(),
-//								frame.maxBlueSlider2.getValue()));
-//			} else if (slider.getParent().getParent()
-//					.equals(frame.obstacleThresholdPanel)) {
-//				imageProcessor.setThresholds(IImageProcessor.OBSTACLE,
-//						new Thresholds(frame.minRedSlider3.getValue(),
-//								frame.minGreenSlider3.getValue(),
-//								frame.minBlueSlider3.getValue(),
-//								frame.maxRedSlider3.getValue(),
-//								frame.maxGreenSlider3.getValue(),
-//								frame.maxBlueSlider3.getValue()));
-//			} else if (slider.getParent().equals(frame.bufferzonePanel)) {
-//				imageProcessor.setObstacleBufferZone(frame.bufzoneSlider.getValue());
-//			}
-//			
-//			
-//		}else if (evt.getSource() instanceof JSpinner){
-//			JSpinner spinner = (JSpinner) evt.getSource();
-//			frame.time_slice = (Float) spinner.getValue();
-//		}
-//		
-//		
-//		
-//	}
-	
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
@@ -100,7 +36,6 @@ public class RobotColorChangeListener implements ChangeListener {
 		
 		if (parent.equals(frame.getR1FrontTab()))
 		{
-			System.out.println("Robot1 front");
 			
 			Thresholds t = new Thresholds(
 					(Integer)frame.r1MinRed.getValue(), 
@@ -115,7 +50,6 @@ public class RobotColorChangeListener implements ChangeListener {
 		}
 		else if (parent.equals(frame.getR1BackTab()))
 		{
-			System.out.println("Robot1 back");
 			Thresholds t = new Thresholds(
 					(Integer)frame.r1MinRed1.getValue(), 
 					(Integer)frame.r1MinGreen1.getValue(), 
@@ -128,7 +62,6 @@ public class RobotColorChangeListener implements ChangeListener {
 		}
 		else if (parent.equals(frame.getR2FrontTab()))
 		{
-			System.out.println("Robot2 front");
 			Thresholds t = new Thresholds(
 					(Integer)frame.r2MinRed.getValue(), 
 					(Integer)frame.r2MinGreen.getValue(), 
@@ -141,7 +74,6 @@ public class RobotColorChangeListener implements ChangeListener {
 		}
 		else if (parent.equals(frame.getR2BackTab()))
 		{
-			System.out.println("Robot2 back");
 			Thresholds t = new Thresholds(
 					(Integer)frame.r2MinRed1.getValue(), 
 					(Integer)frame.r2MinGreen1.getValue(), 

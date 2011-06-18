@@ -1,13 +1,17 @@
 package gui.processing;
 
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
 
 import controller.MainController;
 
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
 import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
 import gui.FramePlaceHolder;
 
@@ -124,40 +128,46 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_webcamBtnActionPerformed
 
     private void imagePanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePanelMousePressed
-        
-    	BufferedImage image = (BufferedImage)evt.getSource();
-    	int[] rgb = pickColorFromImage(image);
-    	int buff = 15;
     	
-    	if(FramePlaceHolder.getImgThresholdFrame().isCakeColorPickerSelected()){
-    		IImageProcessor.CAKE_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    		FramePlaceHolder.getImgThresholdFrame().setCakeColorLabel(rgb[0], rgb[1], rgb[2]);
-    	}
+    		
+    		System.out.println("FISSE");
+    		
+    		int[] rgb = pickColorFromImage(srcImgPanel.getImage());
+    		int buff = 15;
+    		
+    		Thresholds newThreshold = new Thresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
+
+    		if(FramePlaceHolder.getImgThresholdFrame().isCakeColorPickerSelected()){
+    			MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE,newThreshold);
+    			FramePlaceHolder.getImgThresholdFrame().setCakeColorLabel(rgb[0], rgb[1], rgb[2]);
+    		}
+
+    		if(FramePlaceHolder.getImgThresholdFrame().isObsColorPickerSelected()){
+    			IImageProcessor.OBSTACLE_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
+    			FramePlaceHolder.getImgThresholdFrame().setObsColorLabel(rgb[0], rgb[1], rgb[2]);
+    		}
+    		if(FramePlaceHolder.getImgThresholdFrame().isR1ColorPickerSelected()){
+    			if(FramePlaceHolder.getImgThresholdFrame().isR1FrontTabShowing()){
+    				IImageProcessor.ROBOT1_N_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
+    				FramePlaceHolder.getImgThresholdFrame().setR1FrontColorLabel(rgb[0], rgb[1], rgb[2]);
+    			}
+    			if(FramePlaceHolder.getImgThresholdFrame().isR1BackTabShowing()){
+    				IImageProcessor.ROBOT1_S_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
+    				FramePlaceHolder.getImgThresholdFrame().setR1BackColorLabel(rgb[0], rgb[1], rgb[2]);
+    			}
+    		}
+    		if(FramePlaceHolder.getImgThresholdFrame().isR2ColorPickerSelected()){
+    			if(FramePlaceHolder.getImgThresholdFrame().isR2FrontTabShowing()){
+    				IImageProcessor.ROBOT2_N_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
+    				FramePlaceHolder.getImgThresholdFrame().setR2FrontColorLabel(rgb[0], rgb[1], rgb[2]);
+    			}
+    			if(FramePlaceHolder.getImgThresholdFrame().isR2BackTabShowing()){
+    				IImageProcessor.ROBOT2_S_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
+    				FramePlaceHolder.getImgThresholdFrame().setR2BackColorLabel(rgb[0], rgb[1], rgb[2]);
+    			}
+    		}
+
     	
-    	if(FramePlaceHolder.getImgThresholdFrame().isObsColorPickerSelected()){
-        	IImageProcessor.OBSTACLE_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-        	FramePlaceHolder.getImgThresholdFrame().setObsColorLabel(rgb[0], rgb[1], rgb[2]);
-    	}
-    	if(FramePlaceHolder.getImgThresholdFrame().isR1ColorPickerSelected()){
-    		if(FramePlaceHolder.getImgThresholdFrame().isR1FrontTabShowing()){
-    			IImageProcessor.ROBOT1_N_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    			FramePlaceHolder.getImgThresholdFrame().setR1FrontColorLabel(rgb[0], rgb[1], rgb[2]);
-    		}
-    		if(FramePlaceHolder.getImgThresholdFrame().isR1BackTabShowing()){
-    			IImageProcessor.ROBOT1_S_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    			FramePlaceHolder.getImgThresholdFrame().setR1BackColorLabel(rgb[0], rgb[1], rgb[2]);
-    		}
-    	}
-    	if(FramePlaceHolder.getImgThresholdFrame().isR2ColorPickerSelected()){
-    		if(FramePlaceHolder.getImgThresholdFrame().isR2FrontTabShowing()){
-    			IImageProcessor.ROBOT2_N_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    			FramePlaceHolder.getImgThresholdFrame().setR2FrontColorLabel(rgb[0], rgb[1], rgb[2]);
-    		}
-    		if(FramePlaceHolder.getImgThresholdFrame().isR2BackTabShowing()){
-    			IImageProcessor.ROBOT2_S_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    			FramePlaceHolder.getImgThresholdFrame().setR2BackColorLabel(rgb[0], rgb[1], rgb[2]);
-    		}
-    	}
     
     
     
@@ -257,17 +267,39 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	
     	
     }
-    public int[] pickColorFromImage(BufferedImage image){
+    public int[] pickColorFromImage(BufferedImage image)
+    {
     	int[] rgb = new int[3];
     	int rgbVal;
-    	Point p = imagePanel.getComponent(0).getMousePosition();
+    	
+    	Point p = imagePanel.getMousePosition();
+    	
+    	System.out.println("imagePanel "+imagePanel);
+    	
     	rgbVal = image.getRGB((int)p.getX(), (int)p.getY());
+    	
+    	System.out.println("RGB val "+rgbVal);
+    	
     	// Beregn RGB-komponenter vha. bit-shifting og bitwise AND
     	//fra ImageProcessor2.java (Per)
 		rgb[2] = rgbVal & 0xFF;
 		rgb[1] = (rgbVal >> 8) & 0xFF;
 		rgb[0] = (rgbVal >> 16) & 0xFF;
+		
+//		for (int i = 0; i < rgb.length; i++)
+//		{
+//			if ( 0 > rgb[i])
+//				rgb[i] = 0;
+//			else if  (rgb[i] > 256)
+//				rgb[i] = 255;
+//		}
+		
     	return rgb;
+    	
+    	
+    	
+    	
+    	
     }
 
 }

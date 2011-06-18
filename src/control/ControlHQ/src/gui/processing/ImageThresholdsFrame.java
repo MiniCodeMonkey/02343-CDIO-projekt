@@ -4,6 +4,7 @@ import gui.FramePlaceHolder;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
@@ -1119,6 +1120,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 		int g=cakes.getMaxG()-15;
 		int b=cakes.getMaxB()-15;
 		cakeColorLabel.setBackground(new Color(r, g, b));
+		
     }//GEN-LAST:event_cakeResetBtnActionPerformed
 
     private void r1ResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ResetBtnActionPerformed
@@ -1187,41 +1189,25 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_r2ResetBtnActionPerformed
 
     private void cakeColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cakeColorToggleBtnActionPerformed
-        if(cakeColorToggleBtn.isSelected()){
-        	cakeColorToggleBtn.setSelected(false);
-        }
-    	else{
-    		cakeColorToggleBtn.setSelected(true);
-    	}
+    	
+    	if (cakeColorToggleBtn.isSelected())
+    		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    	else
+    		setCursor(Cursor.getDefaultCursor());
     	
     	
     }//GEN-LAST:event_cakeColorToggleBtnActionPerformed
 
     private void obsColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obsColorToggleBtnActionPerformed
-    	if(obsColorToggleBtn.isSelected()){
-    		obsColorToggleBtn.setSelected(false);
-    	}
-    	else{
-    		obsColorToggleBtn.setSelected(true);
-    	}
+
     }//GEN-LAST:event_obsColorToggleBtnActionPerformed
 
     private void r1ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ColorToggleBtnActionPerformed
-    	if(r1ColorToggleBtn.isSelected()){
-    		r1ColorToggleBtn.setSelected(false);
-    	}
-    	else{
-    		r1ColorToggleBtn.setSelected(true);
-    	}
+
     }//GEN-LAST:event_r1ColorToggleBtnActionPerformed
 
     private void r2ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ColorToggleBtnActionPerformed
-    	if(r2ColorToggleBtn.isSelected()){
-    		r2ColorToggleBtn.setSelected(false);
-    	}
-    	else{
-    		r2ColorToggleBtn.setSelected(true);
-    	}
+
     }//GEN-LAST:event_r2ColorToggleBtnActionPerformed
 
 

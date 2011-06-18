@@ -19,7 +19,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
-		System.out.println("Common object stateListener invoked!");
+
 		
 		
 		if (e.getSource() instanceof JSlider)
