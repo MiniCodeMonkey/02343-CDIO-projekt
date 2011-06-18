@@ -19,9 +19,12 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     /** Creates new form NewJInternalFrame */
     public ImageThresholdsFrame() {
         initComponents();
+        FramePlaceHolder.setImgThresholdFrame(this);
+        
         initCommonObjectListeners();
         initRobotColorListeners();
-        FramePlaceHolder.setImgThresholdFrame(this);
+        initThresholdValues();
+        
     }
 
     @SuppressWarnings("unchecked")
