@@ -1033,6 +1033,30 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     public void initThresholdValues()
 	{
     	
+    	//COMMON
+    	//Cakes
+    	Thresholds cakes = IImageProcessor.CAKE_THRESHOLDS;
+    	
+    	cakeMinRed.setValue(cakes.getMinR());
+    	cakeMinGreen.setValue(cakes.getMinG());
+    	cakeMinBlue.setValue(cakes.getMinB());
+    	
+    	cakeMaxRed.setValue(cakes.getMaxR());
+    	cakeMaxGreen.setValue(cakes.getMaxG());
+    	cakeMaxBlue.setValue(cakes.getMaxB());
+    	
+    	//Obstacles
+    	//TODO: Lav det
+    	Thresholds obs = IImageProcessor.OBSTACLE_THRESHOLDS;
+    	
+    	obsMinRed.setValue(obs.getMinR());
+    	obsMinGreen.setValue(obs.getMinR());
+    	obsMinBlue.setValue(obs.getMinB());
+    	
+    	obsMaxRed.setValue(obs.getMaxR());
+    	obsMaxGreen.setValue(obs.getMaxG());
+    	obsMaxBlue.setValue(obs.getMaxB());
+    	
     	// Robots
     	// robot 1
     	Thresholds robot1N = IImageProcessor.ROBOT1_N_THRESHOLDS;
