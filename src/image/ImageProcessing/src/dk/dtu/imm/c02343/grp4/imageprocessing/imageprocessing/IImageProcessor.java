@@ -64,7 +64,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af kager fra billedkilde
 	 */
-	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(80, 0, 0, 255, 55, 60);
+	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(80, 0, 0, 255, 52, 60);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot1 front fra billedkilde
@@ -74,7 +74,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot1 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 30, 30, 50, 255);
+	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 18, 30, 50, 255);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde

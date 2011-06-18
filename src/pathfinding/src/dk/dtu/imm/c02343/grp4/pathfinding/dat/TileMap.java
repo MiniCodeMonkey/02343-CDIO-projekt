@@ -90,7 +90,7 @@ public class TileMap
 		
 		System.out.println("\n\n\n\n");*/
 		
-		return obstacleMap[ty][tx] / 15;
+		return obstacleMap[ty][tx] / 13;
 	}
 
 	public void pathFinderVisited(int y, int x)

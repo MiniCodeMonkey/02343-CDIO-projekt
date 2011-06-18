@@ -184,8 +184,8 @@ public class RobotThread extends Thread
 	 */
 	private void navigate() throws IOException, InterruptedException
 	{
-//		if (pathWasUpdated) // Did we receive an update path from the processing thread?
-//		{
+		if (pathWasUpdated) // Did we receive an update path from the processing thread?
+		{
 			pathWasUpdated = false;
 			
 			// Is the path valid?
@@ -256,7 +256,7 @@ public class RobotThread extends Thread
 							
 							// Move forward
 							robotControl.move(30, false);
-							Thread.sleep(1000);
+							Thread.sleep(500);
 							robotControl.stop();
 							
 							// Close claw
@@ -451,9 +451,9 @@ public class RobotThread extends Thread
 					}
 				}
 			}
-//		}
-//		else
-//			robotControl.stop();
+		}
+		else
+			robotControl.stop();
 	}
 
 	private void chooseDropPoint()

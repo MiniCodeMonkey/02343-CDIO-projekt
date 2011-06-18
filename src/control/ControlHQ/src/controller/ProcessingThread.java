@@ -279,7 +279,8 @@ public class ProcessingThread extends Thread
 		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
 		
 		// Sets robot-is-yielding flag in imageprocessor, if robot 2 is in a YIELD state. (Robot 2 then works as an obstacle)
-		if (robotThreads[1] != null && (robotThreads[1].getRobotState() == RobotState.YIELD_CAKE || robotThreads[1].getRobotState() == RobotState.YIELD_DELIVERY))
+		if (robotThreads[1] != null && (robotThreads[1].getRobotState() == RobotState.YIELD_CAKE || robotThreads[1].getRobotState() == RobotState.YIELD_DELIVERY
+				|| robotThreads[1].getRobotState() == RobotState.IDLE ))
 		{
 			imageProcessor.setRobotYield(true);
 		}

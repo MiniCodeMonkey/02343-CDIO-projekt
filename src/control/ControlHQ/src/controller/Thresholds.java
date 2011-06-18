@@ -14,16 +14,16 @@ public class Thresholds
         return instance;
     }
     
-	private int slowSpeed = 3;
-	private int mediumSpeed = 10;
-	private int highSpeed = 30;
+	private int slowSpeed = 7;
+	private int mediumSpeed = 12;
+	private int highSpeed = 35;
 
-	private int closeEnoughToCake = 30;
+	private int closeEnoughToCake = 35;
 	private int closeEnoughToDelivery = 10;
 	
-	private double rotationClose = Math.toRadians(15);
+	private double rotationClose = Math.toRadians(14);
 	private double rotationFairlyClose = Math.toRadians(30);
-	private int yieldDistance = 45;
+	private int yieldDistance = 50;
 	
 	/**
 	 * Returns the slow speed set
