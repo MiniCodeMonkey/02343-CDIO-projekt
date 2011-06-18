@@ -69,7 +69,7 @@ public class ImageProcessor2 implements IImageProcessor {
 	public void setRobotYield(boolean robotYield) {
 		this.robotYield = robotYield;
 	}
-//	
+	
 	// Sætter nedskaleringen af output-maps.
 	public static int outputScale = 2;
 
@@ -662,6 +662,13 @@ public class ImageProcessor2 implements IImageProcessor {
 						rgb = 0xFFFFFF00;
 						break;
 				}
+				
+				// Vis grænser for den fundne bane
+				if ((i == stageBounds[0] || i == stageBounds[2]) && (j >= stageBounds[1] && j < stageBounds[3]) ||
+					(j == stageBounds[1] || j == stageBounds[3]) && (i >= stageBounds[0] && i < stageBounds[2])) {
+					rgb = 0xFFFF00FF;
+				}
+				
 				// Sæt pixel-værdi
 				tileImage.setRGB(j, i, rgb);
 //				System.out.print(tilemap[i][j]); // Til udskrift af tilemap i console
