@@ -137,6 +137,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     			MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE, thresH);
     			FramePlaceHolder.getImgThresholdFrame().setCakeColorLabel(
     					thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
+    			FramePlaceHolder.getImgThresholdFrame().setCakeSpinners(thresH);
     			FramePlaceHolder.getImgThresholdFrame().resetCakeColorToggleBtn();
     		}
 
@@ -146,6 +147,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     			MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.OBSTACLE, thresH);
     			FramePlaceHolder.getImgThresholdFrame().setObsColorLabel(
     					thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
+    			FramePlaceHolder.getImgThresholdFrame().setObsSpinners(thresH);
     			FramePlaceHolder.getImgThresholdFrame().resetObsColorToggleBtn();
     		}
     		//Robot 1 (Berta)
@@ -157,6 +159,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
     				FramePlaceHolder.getImgThresholdFrame().setR1FrontColorLabel(
     						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
+    				FramePlaceHolder.getImgThresholdFrame().setR1FrontSpinners(thresH);
     				FramePlaceHolder.getImgThresholdFrame().resetR1ColorToggleBtn();
     			}
     			//BackTab
@@ -166,6 +169,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
     				FramePlaceHolder.getImgThresholdFrame().setR1BackColorLabel(
     						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
+    				FramePlaceHolder.getImgThresholdFrame().setR1BackSpinners(thresH);
     				FramePlaceHolder.getImgThresholdFrame().resetR1ColorToggleBtn();
     			}
     		}
@@ -178,6 +182,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
     				FramePlaceHolder.getImgThresholdFrame().setR2FrontColorLabel(
     						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
+    				FramePlaceHolder.getImgThresholdFrame().setR2FrontSpinners(thresH);
     				FramePlaceHolder.getImgThresholdFrame().resetR2ColorToggleBtn();
     			}
     			//BackTab
@@ -187,6 +192,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
     				FramePlaceHolder.getImgThresholdFrame().setR2BackColorLabel(
     						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
+    				FramePlaceHolder.getImgThresholdFrame().setR2BackSpinners(thresH);
     				FramePlaceHolder.getImgThresholdFrame().resetR2ColorToggleBtn();
     			}
     		}
