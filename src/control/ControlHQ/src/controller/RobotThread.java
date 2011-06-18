@@ -21,7 +21,7 @@ public class RobotThread extends Thread
 	 */
 	public enum RobotState
 	{
-		START, IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY
+		START, IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY, HEADING_FOR_HOME
 	};
 	
 	/**
@@ -294,27 +294,16 @@ public class RobotThread extends Thread
 							Location deliveryLocations[] = {
 									
 									// right side
-//									new Location((int) mapSize.getHeight() / 2 - 30, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
-//									new Location((int) mapSize.getHeight() / 2, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
-//									new Location((int) mapSize.getHeight() / 2 + 30, (int) mapSize.getWidth() - dropDistance, Math.toRadians(90)),
 									new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
 									new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
 									new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
 																		
 									// left side
-//									new Location((int) mapSize.getHeight() / 2 - 30, dropDistance, Math.toRadians(-90)),
-//									new Location((int) mapSize.getHeight() / 2, dropDistance, Math.toRadians(-90)),
-//									new Location((int) mapSize.getHeight() / 2 + 30, dropDistance, Math.toRadians(-90)),
 									new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
 									new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
 									new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
 									
 									// lower long side
-//									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(180)),
-//									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(180)),
-//									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(180)),
-//									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(180)),
-//									new Location((int)mapSize.getHeight() - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(180)),
 									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(180)),
 									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(180)),
 									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(180)),
@@ -322,11 +311,6 @@ public class RobotThread extends Thread
 									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(180)),
 									
 									// upper long side
-//									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(0)),
-//									new Location(dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(0)),
-//									new Location(dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(0)),
-//									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(0)),
-//									new Location(dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(0))
 									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(0)),
 									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(0)),
 									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(0)),

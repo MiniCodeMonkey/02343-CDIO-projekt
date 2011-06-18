@@ -48,7 +48,7 @@ public interface IImageProcessor {
 	/**
 	 * Mindste størrelse på sammenhængende områder i kager og robot-elementer i pixels
 	 */
-	public static final int MIN_OBJECT_SIZE = 20;
+	public static final int MIN_OBJECT_SIZE = 15;
 	
 	/**
 	 * Standard størrelse på forhindrings-sikkerhedszone
