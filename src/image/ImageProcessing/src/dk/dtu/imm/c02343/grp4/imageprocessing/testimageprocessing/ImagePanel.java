@@ -17,9 +17,9 @@ public class ImagePanel extends JPanel {
 	 * Constructor, som tager et filnavn som argument. Denne fil benyttes som billede.
 	 * @param img Billedfil, som skal vises
 	 */
-	@Deprecated
+	
     public ImagePanel(String img) {
-//        this(new ImageIcon(img));
+        this((BufferedImage) new ImageIcon(img).getImage());
     }
     
     /**

@@ -1399,7 +1399,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	cakeMaxGreen.setValue(cakes.getMaxG());
     	cakeMaxBlue.setValue(cakes.getMaxB());
     	
-    	//Obstacles
+    	//Obstacles TODO:
     	Thresholds obs = MainController.getInstance().getImageProcessor().getThresholds(IImageProcessor.OBSTACLE);
     	
     	obsMinRed.setValue(obs.getMinR());
@@ -1787,4 +1787,63 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	{
 		r2BackColorLabel.setBackground(new Color(r, g, b));
 	}
+	public void setObsSpinners(Thresholds obs){
+		obsMinRed.setValue(obs.getMinR());
+    	obsMinGreen.setValue(obs.getMinR());
+    	obsMinBlue.setValue(obs.getMinB());
+
+    	obsMaxRed.setValue(obs.getMaxR());
+    	obsMaxGreen.setValue(obs.getMaxG());
+    	obsMaxBlue.setValue(obs.getMaxB());
+	}
+	public void setCakeSpinners(Thresholds cakes){
+		cakeMinRed.setValue(cakes.getMinR());
+		cakeMinGreen.setValue(cakes.getMinG());
+		cakeMinBlue.setValue(cakes.getMinB());
+
+		cakeMaxRed.setValue(cakes.getMaxR());
+		cakeMaxGreen.setValue(cakes.getMaxG());
+		cakeMaxBlue.setValue(cakes.getMaxB());
+	}
+	
+	public void setR1FrontSpinners(Thresholds robot1N){
+		// front (green)
+    	r1MinRed.setValue(robot1N.getMinR());
+    	r1MinGreen.setValue(robot1N.getMinG()); 
+    	r1MinBlue.setValue(robot1N.getMinB());
+
+    	r1MaxRed.setValue(robot1N.getMaxR()); 
+    	r1MaxGreen.setValue(robot1N.getMaxG()); 
+    	r1MaxBlue.setValue(robot1N.getMaxB());
+	}
+	public void setR1BackSpinners(Thresholds robot1S){
+		r1MinRed1.setValue(robot1S.getMinR());
+    	r1MinGreen1.setValue(robot1S.getMinG());
+    	r1MinBlue1.setValue(robot1S.getMinB());
+    	
+    	r1MaxRed1.setValue(robot1S.getMaxR());
+    	r1MaxGreen1.setValue(robot1S.getMaxG()); 
+    	r1MaxBlue1.setValue(robot1S.getMaxB());
+	}
+	public void setR2FrontSpinners(Thresholds robot2N){
+		// front (orange)
+    	r2MinRed.setValue(robot2N.getMinR());
+    	r2MinGreen.setValue(robot2N.getMinG()); 
+    	r2MinBlue.setValue(robot2N.getMinB()); 
+    	
+    	r2MaxRed.setValue(robot2N.getMaxR());
+    	r2MaxGreen.setValue(robot2N.getMaxG()); 
+    	r2MaxBlue.setValue(robot2N.getMaxB());
+	}
+	public void setR2BackSpinners(Thresholds robot2S){
+		// back (yellow)
+    	r2MinRed1.setValue(robot2S.getMinR());
+    	r2MinGreen1.setValue(robot2S.getMinG());
+    	r2MinBlue1.setValue(robot2S.getMinB()); 
+    	
+    	r2MaxRed1.setValue(robot2S.getMaxR());
+    	r2MaxGreen1.setValue(robot2S.getMaxG());
+    	r2MaxBlue1.setValue(robot2S.getMaxB()); 
+	}
+
 }
