@@ -1,16 +1,13 @@
 package gui.processing;
 
-import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
-
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-
 
 import controller.MainController;
 
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
 import dk.dtu.imm.c02343.grp4.imageprocessing.testimageprocessing.ImagePanel;
 import gui.FramePlaceHolder;
 
@@ -773,6 +770,11 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
         imageProcessPanel.setLayout(new java.awt.GridBagLayout());
 
         imagePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Image"));
+        imagePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                imagePanelMousePressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -832,7 +834,7 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(imageToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE))
+                .addComponent(imageProcessPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -845,6 +847,40 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	
     	
     }//GEN-LAST:event_webcamBtnActionPerformed
+
+    private void imagePanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePanelMousePressed
+        
+    	BufferedImage image = (BufferedImage)evt.getSource();
+    	int[] rgb = pickColorFromImage(image);
+    	int tol = 15;
+    	
+    	if(FramePlaceHolder.getImgThresholdFrame().isCakeColorPickerSelected())
+    		IImageProcessor.CAKE_THRESHOLDS.setThresholds(rgb[0]-tol, rgb[1]-tol, rgb[2]-tol, rgb[0]+tol, rgb[1]+tol,rgb[2]+tol);
+    	
+    	if(FramePlaceHolder.getImgThresholdFrame().isObsColorPickerSelected())
+        	IImageProcessor.OBSTACLE_THRESHOLDS.setThresholds(rgb[0]-tol, rgb[1]-tol, rgb[2]-tol, rgb[0]+tol, rgb[1]+tol,rgb[2]+tol);
+    
+    	if(FramePlaceHolder.getImgThresholdFrame().isR1ColorPickerSelected()){
+    		if(FramePlaceHolder.getImgThresholdFrame().isR1FrontTabShowing()){
+    			IImageProcessor.ROBOT1_N_THRESHOLDS.setThresholds(rgb[0]-tol, rgb[1]-tol, rgb[2]-tol, rgb[0]+tol, rgb[1]+tol,rgb[2]+tol);
+    		}
+    		if(FramePlaceHolder.getImgThresholdFrame().isR1BackTabShowing()){
+    			IImageProcessor.ROBOT1_S_THRESHOLDS.setThresholds(rgb[0]-tol, rgb[1]-tol, rgb[2]-tol, rgb[0]+tol, rgb[1]+tol,rgb[2]+tol);
+    		}
+    	}
+    	if(FramePlaceHolder.getImgThresholdFrame().isR2ColorPickerSelected()){
+    		if(FramePlaceHolder.getImgThresholdFrame().isR2FrontTabShowing()){
+    			IImageProcessor.ROBOT2_N_THRESHOLDS.setThresholds(rgb[0]-tol, rgb[1]-tol, rgb[2]-tol, rgb[0]+tol, rgb[1]+tol,rgb[2]+tol);
+    		}
+    		if(FramePlaceHolder.getImgThresholdFrame().isR2BackTabShowing()){
+    			IImageProcessor.ROBOT2_S_THRESHOLDS.setThresholds(rgb[0]-tol, rgb[1]-tol, rgb[2]-tol, rgb[0]+tol, rgb[1]+tol,rgb[2]+tol);
+    		}
+    	}
+    
+    
+    
+    
+    }//GEN-LAST:event_imagePanelMousePressed
     
     public void updateImagePanel() {
     	
@@ -1004,6 +1040,17 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	
     	
     }
-    
+    public int[] pickColorFromImage(BufferedImage image){
+    	int[] rgb = new int[3];
+    	int rgbVal;
+    	Point p = imagePanel.getComponent(0).getMousePosition();
+    	rgbVal = image.getRGB((int)p.getX(), (int)p.getY());
+    	// Beregn RGB-komponenter vha. bit-shifting og bitwise AND
+    	//fra ImageProcessor2.java (Per)
+		rgb[2] = rgbVal & 0xFF;
+		rgb[1] = (rgbVal >> 8) & 0xFF;
+		rgb[0] = (rgbVal >> 16) & 0xFF;
+    	return rgb;
+    }
     
 }

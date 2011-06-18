@@ -69,6 +69,8 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         jLabel16 = new javax.swing.JLabel();
         obsResetBtn = new javax.swing.JButton();
         cakeResetBtn = new javax.swing.JButton();
+        cakeColorToggleBtn = new javax.swing.JToggleButton();
+        obsColorToggleBtn = new javax.swing.JToggleButton();
         robot1Panel = new javax.swing.JPanel();
         robot1Tabs = new javax.swing.JTabbedPane();
         r1FrontTab = new javax.swing.JPanel();
@@ -105,6 +107,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         jLabel32 = new javax.swing.JLabel();
         robot1Canvas = new java.awt.Canvas();
         r1ResetBtn = new javax.swing.JButton();
+        r1ColorToggleBtn = new javax.swing.JToggleButton();
         robot2Panel = new javax.swing.JPanel();
         r2ResetBtn = new javax.swing.JButton();
         robot2Tabs = new javax.swing.JTabbedPane();
@@ -141,6 +144,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         jLabel48 = new javax.swing.JLabel();
         jLabel52 = new javax.swing.JLabel();
         robot2Canvas = new java.awt.Canvas();
+        r2ColorToggleBtn = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JSeparator();
 
         setClosable(true);
@@ -347,7 +351,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 8, 0, 15);
         commonPanel.add(jLabel15, gridBagConstraints);
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel9.setText("BufferZone");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -403,7 +407,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -421,6 +425,25 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         commonPanel.add(cakeResetBtn, gridBagConstraints);
+
+        cakeColorToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/colour-picker_12x16.png"))); // NOI18N
+        cakeColorToggleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cakeColorToggleBtnActionPerformed(evt);
+            }
+        });
+        commonPanel.add(cakeColorToggleBtn, new java.awt.GridBagConstraints());
+
+        obsColorToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/colour-picker_12x16.png"))); // NOI18N
+        obsColorToggleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                obsColorToggleBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        commonPanel.add(obsColorToggleBtn, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -707,9 +730,20 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         robot1Panel.add(r1ResetBtn, gridBagConstraints);
+
+        r1ColorToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/colour-picker_12x16.png"))); // NOI18N
+        r1ColorToggleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r1ColorToggleBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        robot1Panel.add(r1ColorToggleBtn, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -728,7 +762,6 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         robot2Panel.add(r2ResetBtn, gridBagConstraints);
 
@@ -1001,6 +1034,18 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints.gridy = 1;
         robot2Panel.add(robot2Canvas, gridBagConstraints);
 
+        r2ColorToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/colour-picker_12x16.png"))); // NOI18N
+        r2ColorToggleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r2ColorToggleBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        robot2Panel.add(r2ColorToggleBtn, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -1091,10 +1136,31 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r2MaxBlue1.setValue(robot2S.getMaxB());
     }//GEN-LAST:event_r2ResetBtnActionPerformed
 
+    private void cakeColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cakeColorToggleBtnActionPerformed
+        // TODO add your handling code here:
+    	if(cakeColorToggleBtn.isSelected())cakeColorToggleBtn.setSelected(false);
+    	else cakeColorToggleBtn.setSelected(true);
+    	
+    	
+    }//GEN-LAST:event_cakeColorToggleBtnActionPerformed
+
+    private void obsColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obsColorToggleBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_obsColorToggleBtnActionPerformed
+
+    private void r1ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ColorToggleBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_r1ColorToggleBtnActionPerformed
+
+    private void r2ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ColorToggleBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_r2ColorToggleBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider bufferSlider;
     private java.awt.Canvas cakeCanvas;
+    private javax.swing.JToggleButton cakeColorToggleBtn;
     private javax.swing.JSpinner cakeMaxBlue;
     private javax.swing.JSpinner cakeMaxGreen;
     private javax.swing.JSpinner cakeMaxRed;
@@ -1156,6 +1222,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private java.awt.Canvas obsCanvas;
+    private javax.swing.JToggleButton obsColorToggleBtn;
     private javax.swing.JSpinner obsMaxBlue;
     private javax.swing.JSpinner obsMaxGreen;
     private javax.swing.JSpinner obsMaxRed;
@@ -1164,6 +1231,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner obsMinRed;
     private javax.swing.JButton obsResetBtn;
     private javax.swing.JPanel r1BackTab;
+    private javax.swing.JToggleButton r1ColorToggleBtn;
     private javax.swing.JPanel r1FrontTab;
     javax.swing.JSpinner r1MaxBlue;
     javax.swing.JSpinner r1MaxBlue1;
@@ -1179,6 +1247,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     javax.swing.JSpinner r1MinRed1;
     private javax.swing.JButton r1ResetBtn;
     private javax.swing.JPanel r2BackTab;
+    private javax.swing.JToggleButton r2ColorToggleBtn;
     private javax.swing.JPanel r2FrontTab;
     javax.swing.JSpinner r2MaxBlue;
     javax.swing.JSpinner r2MaxBlue1;
@@ -1206,6 +1275,41 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     // custom variables
     private RobotColorChangeListener robotChangeListener = new RobotColorChangeListener();
     private CommonObjectColorChangeListener commonChangeListener = new CommonObjectColorChangeListener();
+    
+    // custom methods
+    public boolean isCakeColorPickerSelected()
+	{
+		return cakeColorToggleBtn.isSelected();
+	}
+    public boolean isObsColorPickerSelected()
+	{
+		return obsColorToggleBtn.isSelected();
+	}
+    public boolean isR1ColorPickerSelected()
+	{
+		return r1ColorToggleBtn.isSelected();
+	}
+    public boolean isR2ColorPickerSelected()
+	{
+		return r2ColorToggleBtn.isSelected();
+	}
+    
+    public boolean isR1FrontTabShowing()
+	{
+		return r1FrontTab.isShowing();
+	}
+    public boolean isR1BackTabShowing()
+	{
+		return r1BackTab.isShowing();
+	}
+    public boolean isR2FrontTabShowing()
+	{
+		return r2FrontTab.isShowing();
+	}
+    public boolean isR2BackTabShowing()
+	{
+		return r2BackTab.isShowing();
+	}
     
     /**
      * Setting spinners in GUI to default values
