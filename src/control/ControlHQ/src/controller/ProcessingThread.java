@@ -13,6 +13,7 @@ import command.interfaces.IControl;
 import command.rmi.RmiClient;
 
 import controller.RobotThread.RobotState;
+import controller.RobotThread.RobotType;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
@@ -80,7 +81,13 @@ public class ProcessingThread extends Thread
 		Thread.currentThread().setName("Processing Thread");
 		try
 		{
-			initialize();
+			try
+			{
+				initialize();
+			} catch (RemoteException e)
+			{
+				e.printStackTrace();
+			}
 			runLoop();
 		}
 		catch (ControllerException e)
@@ -98,8 +105,9 @@ public class ProcessingThread extends Thread
 	/**
 	 * @throws ControllerException
 	 * @throws MasterRobotNotFound
+	 * @throws RemoteException 
 	 */
-	private void initialize() throws ControllerException, MasterRobotNotFound
+	private void initialize() throws ControllerException, MasterRobotNotFound, RemoteException
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
@@ -140,7 +148,13 @@ public class ProcessingThread extends Thread
 				continue;
 			}
 			
-			robotThreads[robotIndex] = new RobotThread(robotControl);
+			
+			if (robotControl.isBerta())
+				robotThreads[robotIndex] = new RobotThread(robotControl,RobotThread.RobotType.MASTER);
+			else
+				robotThreads[robotIndex] = new RobotThread(robotControl,RobotThread.RobotType.SLAVE);
+			
+			
 			robotThreads[robotIndex].start();
 			
 			robotIndex++;
@@ -277,6 +291,10 @@ public class ProcessingThread extends Thread
 		// Find a path for each robot
 		int robotIndex = 0;
 		
+		// Build a list of cakes not in use by other robots
+		ArrayList<Location> possibleCakes = new ArrayList<Location>();
+		
+		
 		// Loop through all active robots
 		for (RobotThread robotThread : robotThreads)
 		{
@@ -315,9 +333,9 @@ public class ProcessingThread extends Thread
 				// The target cake is no longer at the location
 				if (!foundCake)
 				{
-					System.out.println("********************");
-					System.out.println("** CAKE HAS MOVED **");
-					System.out.println("********************");
+//					System.out.println("********************");
+//					System.out.println("** CAKE HAS MOVED **");
+//					System.out.println("********************");
 					robotThread.setRobotState(RobotState.IDLE);
 				}
 			}
@@ -325,12 +343,12 @@ public class ProcessingThread extends Thread
 			// If idling, possibly pick a cake to pick up
 			if (robotThread.getRobotState() == RobotState.IDLE && cakesCount > 0)
 			{
-				// Build a list of cakes not in use by other robots
-				ArrayList<Location> possibleCakes = new ArrayList<Location>();
 				
 				// Loop through all cakes
 				for (ICake cake : locations.getCakes())
 				{
+					
+					
 					boolean in_use = false;
 					for (RobotThread rThread : robotThreads)
 					{
@@ -341,7 +359,8 @@ public class ProcessingThread extends Thread
 						{
 							// If the robot has the target location as the
 							// current cake
-							if (rThread.getTargetLocation().GetX() == cake.getX() && rThread.getTargetLocation().GetY() == cake.getY())
+//							if (rThread.getTargetLocation().GetX() == cake.getX() && rThread.getTargetLocation().GetY() == cake.getY())
+							if((Math.abs(rThread.getTargetLocation().GetX() - cake.getX()) < 10) && (Math.abs(rThread.getTargetLocation().GetY() - cake.getY()) < 10))
 							{
 								in_use = true;
 								break;
@@ -353,10 +372,13 @@ public class ProcessingThread extends Thread
 					// No robot is using the cake
 					if (!in_use)
 					{
+						Location cakeNotInUse = new Location(cake.getY(), cake.getX());
 						// Add to not-in-use-list
-						possibleCakes.add(new Location(cake.getY(), cake.getX()));
+						possibleCakes.add(cakeNotInUse);
 					}
 				}
+				
+				System.out.println("*****************\nSize of PossibleCakes: " + possibleCakes.size() + " and the robot is " + robotThread.getName() + "\n*****************");
 				
 				// Possible cakes can still be <= 0 if the existing cake is
 				// already have been selected by another robot
@@ -366,18 +388,28 @@ public class ProcessingThread extends Thread
 					double closestDistance = Double.MAX_VALUE;
 					Location determinedCakeLocation = null;
 					
+					int chosenCake = -1;
+					
 					// Loop through all cake locations to find the best location
-					for (Location cakeLocation : possibleCakes)
+					for (int i = 0; i < possibleCakes.size(); i++)
 					{					
+						Location cakeLocation = possibleCakes.get(i);
+						
 						double dist = Math.sqrt(Math.pow(robotThread.getRobotLocation().getX() - cakeLocation.GetX(), 2) + Math.pow(robotThread.getRobotLocation().getY() - cakeLocation.GetY(), 2));
 						
 						// Is this cake closer than the last found closest cake?
 						if (dist < closestDistance)
 						{
+							chosenCake = i;
 							closestDistance = dist;
 							determinedCakeLocation = cakeLocation;
+							
 						}
 					}
+					
+					// if a cake is chosen, remove that cake from cake-not-in-use list
+					if (chosenCake != -1)
+						possibleCakes.remove(chosenCake);
 					
 					System.out.println("Going for cake at: " + determinedCakeLocation.GetX() + "," + determinedCakeLocation.GetY());
 					// Set the target to the determined cake's location
@@ -386,6 +418,12 @@ public class ProcessingThread extends Thread
 					// Set the state of the robot
 					robotThread.setRobotState(RobotState.HEADING_FOR_CAKE);
 				}
+			}
+			
+			
+			if(robotThread.getRobotState() == RobotState.IDLE && possibleCakes.size() <= 0)
+			{
+				robotThread.setRobotState(RobotState.HEADING_FOR_HOME);
 			}
 			
 			// We only calculate a path if the robot is heading for delivery or
@@ -417,9 +455,9 @@ public class ProcessingThread extends Thread
 					locations.setTileImage(drawPath(locations.getTileImage(), robotThread.getPath()));
 				}
 				
-				robotIndex++;
+				
 			}
-			
+			robotIndex++;
 		}
 	}
 	

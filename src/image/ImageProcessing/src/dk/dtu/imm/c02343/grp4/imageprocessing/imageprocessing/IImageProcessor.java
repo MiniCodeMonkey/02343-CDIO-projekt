@@ -79,12 +79,12 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 60, 0, 220, 110, 50);
+	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 60, 0, 240, 110, 50);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(170, 170, 0, 230, 230, 90);
+	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(180, 180, 0, 250, 240, 90);
 	
 	/**
 	 * Standard værdi for X-opløsningen i behandlingen

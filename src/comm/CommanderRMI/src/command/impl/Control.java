@@ -3,6 +3,8 @@ package command.impl;
 import java.io.IOException;
 import java.io.Serializable;
 
+import bluetooth.constants.Constants;
+
 import command.interfaces.IControl;
 
 import lejos.nxt.remote.NXTCommand;
@@ -380,6 +382,22 @@ public class Control implements IControl, Serializable{
 	@Override
 	public void disconnect() throws IOException {
 		commander.close();
+	}
+
+
+	@Override
+	public boolean isBerta(){
+		
+		try {
+			System.out.println(commander.getDeviceInfo().bluetoothAddress);
+			if (commander.getDeviceInfo().bluetoothAddress.equalsIgnoreCase(bluetooth.constants.Constants.BertaAdrReturnAdr) )
+					return true;
+			else
+				return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

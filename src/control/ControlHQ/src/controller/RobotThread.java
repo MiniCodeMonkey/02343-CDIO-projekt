@@ -93,11 +93,6 @@ public class RobotThread extends Thread
 	private List<IRobot> allRobotLocations = null;
 	
 	/**
-	 * Static attribute defining if a master has been initialized before
-	 */
-	private static boolean masterIsDefined = false;
-	
-	/**
 	 * Set to true to output processing time in console
 	 */
 	private final boolean showProcessingTime = false;
@@ -105,11 +100,12 @@ public class RobotThread extends Thread
 	/**
 	 * Constructs a new robot thread for a new robot
 	 * @param robotControl The control object to physically control the robot
+	 * @param type is MASTER or SLAVE
 	 */
-	public RobotThread(IControl robotControl)
+	public RobotThread(IControl robotControl, RobotType type)
 	{
 		this.robotControl = robotControl;
-		
+		robotType = type;
 	}
 	
 	/**
@@ -167,17 +163,6 @@ public class RobotThread extends Thread
 	 */
 	private void initialize() throws IOException, InterruptedException
 	{
-		// Initialize master/slave configuration
-		if (!RobotThread.masterIsDefined)
-		{
-			RobotThread.masterIsDefined = true;
-			
-			this.robotType = RobotType.MASTER;
-		}
-		else
-		{
-			this.robotType = RobotType.SLAVE;
-		}
 		
 		// Initialize claw
 		robotControl.closeClaw();
@@ -257,8 +242,6 @@ public class RobotThread extends Thread
 						
 						turnTo(targetAngle);
 						
-						System.out.println("turnTo POSITIONING");
-						
 						// Is the rotation close enough?
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
@@ -286,49 +269,8 @@ public class RobotThread extends Thread
 //							Thread.sleep(2000);
 //							robotControl.stop();
 							
-							
-//							int dropDistance = 5/ImageProcessor2.outputScale;
-							int dropDistance = 0;
-							
-							// Decide delivery location | FIXME: if obstacles is in the way
-							Location deliveryLocations[] = {
-									
-									// right side
-									new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
-									new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
-									new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
-																		
-									// left side
-									new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
-									new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
-									new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
-									
-									// lower long side
-									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(180)),
-									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(180)),
-									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(180)),
-									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(180)),
-									new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(180)),
-									
-									// upper long side
-									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(0)),
-									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(0)),
-									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(0)),
-									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(0)),
-									new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(0))
-							};
-							
-							double bestDistance = Double.MAX_VALUE;
-							for (Location deliveryLocation : deliveryLocations)
-							{
-								double currentDistance = calculateDistance(deliveryLocation.GetX(), deliveryLocation.GetY(), robotLocation.getX(), robotLocation.getY());
-								
-								if (currentDistance < bestDistance)
-								{
-									bestDistance = currentDistance;
-									targetLocation = deliveryLocation;
-								}
-							}
+							// what droppoint to deliver to
+							chooseDropPoint();
 							
 							// Now heading for delivery
 							this.robotState = RobotState.HEADING_FOR_DELIVERY;
@@ -347,6 +289,23 @@ public class RobotThread extends Thread
 						}
 						
 						break;
+					}
+					
+					case HEADING_FOR_HOME:
+					{
+						// where is home?
+						chooseDropPoint();
+						
+						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToDelivery())
+						{
+							turnTo(this.targetLocation.getTargetAngle());
+							
+							// U A E KUMUUN!
+							robotControl.move(100, false);
+							Thread.sleep(2000);
+							robotControl.stop();
+							this.robotState = RobotState.IDLE;
+						}
 					}
 						
 					case HEADING_FOR_DELIVERY:
@@ -387,18 +346,12 @@ public class RobotThread extends Thread
 					}
 				}
 				
-				// Reset yield status
-				if (this.robotState == RobotState.YIELD_CAKE)
-					this.robotState = RobotState.HEADING_FOR_CAKE;
-				
-				if (this.robotState == RobotState.YIELD_DELIVERY)
-					this.robotState = RobotState.HEADING_FOR_DELIVERY;
 				
 				// If we are heading somewhere
-				if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
+				if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY || this.robotState == RobotState.HEADING_FOR_HOME)
 				{
 					// Slaves should yield for the master
-					if (this.robotType == RobotType.SLAVE)
+					if (this.robotType == RobotType.SLAVE && !robotControl.isBerta())
 					{
 						// Is any robots nearby?
 						for (IRobot otherRobotLocation : allRobotLocations)
@@ -411,7 +364,7 @@ public class RobotThread extends Thread
 								{									
 									robotControl.stop();
 									
-									System.out.println("Yielding! Distance is " + distance);
+									System.out.println("Yielding! Distance is " + distance + " | Robotthread: " + this);
 									
 									// TODO hvad hvis Prop er i PICK_UP || DELIVERY
 									
@@ -423,11 +376,20 @@ public class RobotThread extends Thread
 									
 									break;
 								}
+								else
+								{
+									// Reset yield status
+									if (this.robotState == RobotState.YIELD_CAKE)
+										this.robotState = RobotState.HEADING_FOR_CAKE;
+									
+									if (this.robotState == RobotState.YIELD_DELIVERY)
+										this.robotState = RobotState.HEADING_FOR_DELIVERY;
+								}
 							}
 						}
 					}
 					
-					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
+					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY || this.robotState == RobotState.HEADING_FOR_HOME )
 					{
 						
 //						turnTo(targetAngle);
@@ -436,7 +398,6 @@ public class RobotThread extends Thread
 						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
 						{
 							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
-							System.out.println("FREMAD");
 						}
 						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do minor corrections
 						{
@@ -469,6 +430,52 @@ public class RobotThread extends Thread
 //		}
 //		else
 //			robotControl.stop();
+	}
+
+	private void chooseDropPoint()
+	{
+		//							int dropDistance = 5/ImageProcessor2.outputScale;
+									int dropDistance = 0;
+									
+									// Decide delivery location | FIXME: if obstacles is in the way
+									Location deliveryLocations[] = {
+											
+											// right side
+											new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
+											new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
+											new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
+																				
+											// left side
+											new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
+											new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
+											new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
+											
+											// lower long side
+											new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(180)),
+											new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(180)),
+											new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(180)),
+											new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(180)),
+											new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(180)),
+											
+											// upper long side
+											new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(0)),
+											new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(0)),
+											new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(0)),
+											new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(0)),
+											new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(0))
+									};
+									
+									double bestDistance = Double.MAX_VALUE;
+									for (Location deliveryLocation : deliveryLocations)
+									{
+										double currentDistance = calculateDistance(deliveryLocation.GetX(), deliveryLocation.GetY(), robotLocation.getX(), robotLocation.getY());
+										
+										if (currentDistance < bestDistance)
+										{
+											bestDistance = currentDistance;
+											targetLocation = deliveryLocation;
+										}
+									}
 	}
 	
 	/**
