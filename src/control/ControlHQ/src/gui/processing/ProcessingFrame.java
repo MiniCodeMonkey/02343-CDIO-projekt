@@ -1,10 +1,7 @@
 package gui.processing;
 
-import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 
 import controller.MainController;
 
@@ -21,6 +18,9 @@ import gui.FramePlaceHolder;
  */
 public class ProcessingFrame extends javax.swing.JInternalFrame {
 		
+	//custom varables
+	private static int THRESHOLDS_BUFFER_SIZE = 15;
+	
     /** Creates new form ImageFrame */
     public ProcessingFrame() {
         initComponents();
@@ -128,50 +128,64 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_webcamBtnActionPerformed
 
     private void imagePanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePanelMousePressed
-    	
-    		
+    	  		
     		System.out.println("FISSE");
-    		
-    		int[] rgb = pickColorFromImage(srcImgPanel.getImage());
-    		int buff = 15;
-    		
-    		Thresholds newThreshold = new Thresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
+    		Thresholds thresH = pickColorFromImage(srcImgPanel.getImage());
 
+    		//Cake
     		if(FramePlaceHolder.getImgThresholdFrame().isCakeColorPickerSelected()){
-    			MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE,newThreshold);
-    			FramePlaceHolder.getImgThresholdFrame().setCakeColorLabel(rgb[0], rgb[1], rgb[2]);
+    			System.out.println("Sætter CAKE farven");
+    			MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE, thresH);
+    			FramePlaceHolder.getImgThresholdFrame().setCakeColorLabel(
+    					thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
     		}
 
+    		//Obstacle
     		if(FramePlaceHolder.getImgThresholdFrame().isObsColorPickerSelected()){
-    			IImageProcessor.OBSTACLE_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    			FramePlaceHolder.getImgThresholdFrame().setObsColorLabel(rgb[0], rgb[1], rgb[2]);
+    			System.out.println("Sætter OBSTACLE farven");
+    			MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.OBSTACLE, thresH);
+    			FramePlaceHolder.getImgThresholdFrame().setObsColorLabel(
+    					thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
     		}
+    		//Robot 1 (Berta)
     		if(FramePlaceHolder.getImgThresholdFrame().isR1ColorPickerSelected()){
+    			//FrontTab
     			if(FramePlaceHolder.getImgThresholdFrame().isR1FrontTabShowing()){
-    				IImageProcessor.ROBOT1_N_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    				FramePlaceHolder.getImgThresholdFrame().setR1FrontColorLabel(rgb[0], rgb[1], rgb[2]);
+    				System.out.println("Sætter R1-FRONT farven");
+    				IImageProcessor.ROBOT1_N_THRESHOLDS.setThresholds(
+    						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
+    				FramePlaceHolder.getImgThresholdFrame().setR1FrontColorLabel(
+    						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
     			}
+    			//BackTab
     			if(FramePlaceHolder.getImgThresholdFrame().isR1BackTabShowing()){
-    				IImageProcessor.ROBOT1_S_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    				FramePlaceHolder.getImgThresholdFrame().setR1BackColorLabel(rgb[0], rgb[1], rgb[2]);
+    				System.out.println("Sætter R1-BACK farven");
+    				IImageProcessor.ROBOT1_S_THRESHOLDS.setThresholds(
+    						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
+    				FramePlaceHolder.getImgThresholdFrame().setR1BackColorLabel(
+    						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
     			}
     		}
+    		//Robot 2 (Prop)
     		if(FramePlaceHolder.getImgThresholdFrame().isR2ColorPickerSelected()){
+    			//FrontTab
     			if(FramePlaceHolder.getImgThresholdFrame().isR2FrontTabShowing()){
-    				IImageProcessor.ROBOT2_N_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    				FramePlaceHolder.getImgThresholdFrame().setR2FrontColorLabel(rgb[0], rgb[1], rgb[2]);
+    				System.out.println("Sætter R2-FRONT farven");
+    				IImageProcessor.ROBOT2_N_THRESHOLDS.setThresholds(
+    						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
+    				FramePlaceHolder.getImgThresholdFrame().setR2FrontColorLabel(
+    						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
     			}
+    			//BackTab
     			if(FramePlaceHolder.getImgThresholdFrame().isR2BackTabShowing()){
-    				IImageProcessor.ROBOT2_S_THRESHOLDS.setThresholds(rgb[0]-buff, rgb[1]-buff, rgb[2]-buff, rgb[0]+buff, rgb[1]+buff,rgb[2]+buff);
-    				FramePlaceHolder.getImgThresholdFrame().setR2BackColorLabel(rgb[0], rgb[1], rgb[2]);
+    				System.out.println("Sætter R2-BACK farven");
+    				IImageProcessor.ROBOT2_S_THRESHOLDS.setThresholds(
+    						thresH.getMinR(), thresH.getMinG(), thresH.getMinB(),thresH.getMaxR(), thresH.getMaxG(), thresH.getMaxB());
+    				FramePlaceHolder.getImgThresholdFrame().setR2BackColorLabel(
+    						thresH.getMaxR()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxG()-THRESHOLDS_BUFFER_SIZE, thresH.getMaxB()-THRESHOLDS_BUFFER_SIZE);
     			}
     		}
 
-    	
-    
-    
-    
-    
     }//GEN-LAST:event_imagePanelMousePressed
     
     public void updateImagePanel() {
@@ -267,13 +281,13 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	
     	
     }
-    public int[] pickColorFromImage(BufferedImage image)
+    public Thresholds pickColorFromImage(BufferedImage image)
     {
     	int[] rgb = new int[3];
     	int rgbVal;
-    	
-    	Point p = imagePanel.getMousePosition();
-    	
+    	int[] minVals = new int[3];
+    	int[] maxVals = new int[3];
+    	Point p = imagePanel.getMousePosition();    	
     	System.out.println("imagePanel "+imagePanel);
     	
     	rgbVal = image.getRGB((int)p.getX(), (int)p.getY());
@@ -282,24 +296,24 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	
     	// Beregn RGB-komponenter vha. bit-shifting og bitwise AND
     	//fra ImageProcessor2.java (Per)
-		rgb[2] = rgbVal & 0xFF;
-		rgb[1] = (rgbVal >> 8) & 0xFF;
-		rgb[0] = (rgbVal >> 16) & 0xFF;
-		
-//		for (int i = 0; i < rgb.length; i++)
-//		{
-//			if ( 0 > rgb[i])
-//				rgb[i] = 0;
-//			else if  (rgb[i] > 256)
-//				rgb[i] = 255;
-//		}
-		
-    	return rgb;
-    	
-    	
-    	
-    	
-    	
+    	rgb[2] = rgbVal & 0xFF;
+    	rgb[1] = (rgbVal >> 8) & 0xFF;
+    	rgb[0] = (rgbVal >> 16) & 0xFF;
+
+    	//Sanity check på RGB værdierne
+    	for (int i = 0; i < rgb.length; i++)
+    	{
+    		if ( rgb[i]+THRESHOLDS_BUFFER_SIZE>256)
+    			maxVals[i] = 256;
+    		else if  (rgb[i]-THRESHOLDS_BUFFER_SIZE < 0)
+    			minVals[i] = 0;
+    		else {
+    			maxVals[i]=rgb[i]+THRESHOLDS_BUFFER_SIZE;
+    			minVals[i]=rgb[i]-THRESHOLDS_BUFFER_SIZE;
+    		}
+    	}
+    	Thresholds t = new Thresholds(minVals[0], minVals[1], minVals[2], maxVals[0], maxVals[1],maxVals[2]);    	
+		return  t;
     }
 
 }

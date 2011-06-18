@@ -1087,6 +1087,9 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //custom Variables
+    private static final int THRESHOLDS_BUFFER_SIZE = 15;
+    
     private void obsResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obsResetBtnActionPerformed
     	Thresholds obs = IImageProcessor.OBSTACLE_THRESHOLDS;
 
@@ -1098,9 +1101,9 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	obsMaxGreen.setValue(obs.getMaxG());
     	obsMaxBlue.setValue(obs.getMaxB());
     	//Sï¿½tter obsColorLabel
-		int r=obs.getMaxR()-15;
-		int g=obs.getMaxG()-15;
-		int b=obs.getMaxB()-15;
+		int r=obs.getMaxR()- THRESHOLDS_BUFFER_SIZE;
+		int g=obs.getMaxG()-THRESHOLDS_BUFFER_SIZE;
+		int b=obs.getMaxB()-THRESHOLDS_BUFFER_SIZE;
 		obsColorLabel.setBackground(new Color(r, g, b));
     	
     }//GEN-LAST:event_obsResetBtnActionPerformed
@@ -1116,9 +1119,9 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	cakeMaxGreen.setValue(cakes.getMaxG());
     	cakeMaxBlue.setValue(cakes.getMaxB());
     	//Sï¿½tter cakeColorLabel
-		int r=cakes.getMaxR()-15;
-		int g=cakes.getMaxG()-15;
-		int b=cakes.getMaxB()-15;
+		int r=cakes.getMaxR()-THRESHOLDS_BUFFER_SIZE;
+		int g=cakes.getMaxG()-THRESHOLDS_BUFFER_SIZE;
+		int b=cakes.getMaxB()-THRESHOLDS_BUFFER_SIZE;
 		cakeColorLabel.setBackground(new Color(r, g, b));
 		
     }//GEN-LAST:event_cakeResetBtnActionPerformed
@@ -1145,13 +1148,13 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r1MaxGreen1.setValue(robot1S.getMaxG()); 
 	    	r1MaxBlue1.setValue(robot1S.getMaxB());
 	    	//Sï¿½tter både FRONT og BACK lables for Robot1 (Berta)
-			int r=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxR()-15;
-			int g=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxG()-15;
-			int b=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxB()-15;
+			int r=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxR()-THRESHOLDS_BUFFER_SIZE;
+			int g=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxG()-THRESHOLDS_BUFFER_SIZE;
+			int b=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxB()-THRESHOLDS_BUFFER_SIZE;
 	    	r1FrontColorLabel.setBackground(new Color(r, g, b));
-	    	int r1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxR()-15;
-			int g1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxG()-15;
-			int b1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxB()-15;
+	    	int r1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxR()-THRESHOLDS_BUFFER_SIZE;
+			int g1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxG()-THRESHOLDS_BUFFER_SIZE;
+			int b1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxB()-THRESHOLDS_BUFFER_SIZE;
 	    	r1BackColorLabel.setBackground(new Color(r1, g1, b1));
     }//GEN-LAST:event_r1ResetBtnActionPerformed
 
@@ -1178,13 +1181,13 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r2MaxBlue1.setValue(robot2S.getMaxB());
 	    	
 	    	//Sï¿½tter både FRONT og BACK lables for Robot2 (Prop)
-			int r=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxR()-15;
-			int g=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxG()-15;
-			int b=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxB()-15;
+			int r=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxR()-THRESHOLDS_BUFFER_SIZE;
+			int g=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxG()-THRESHOLDS_BUFFER_SIZE;
+			int b=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxB()-THRESHOLDS_BUFFER_SIZE;
 	    	r1FrontColorLabel.setBackground(new Color(r, g, b));
-	    	int r1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxR()-15;
-			int g1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxG()-15;
-			int b1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxB()-15;
+	    	int r1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxR()-THRESHOLDS_BUFFER_SIZE;
+			int g1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxG()-THRESHOLDS_BUFFER_SIZE;
+			int b1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxB()-THRESHOLDS_BUFFER_SIZE;
 	    	r1BackColorLabel.setBackground(new Color(r1, g1, b1));
     }//GEN-LAST:event_r2ResetBtnActionPerformed
 
@@ -1195,19 +1198,30 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	else
     		setCursor(Cursor.getDefaultCursor());
     	
-    	
     }//GEN-LAST:event_cakeColorToggleBtnActionPerformed
 
     private void obsColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obsColorToggleBtnActionPerformed
 
+    	if (cakeColorToggleBtn.isSelected())
+    		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    	else
+    		setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_obsColorToggleBtnActionPerformed
 
     private void r1ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ColorToggleBtnActionPerformed
 
+    	if (cakeColorToggleBtn.isSelected())
+    		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    	else
+    		setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_r1ColorToggleBtnActionPerformed
 
     private void r2ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ColorToggleBtnActionPerformed
 
+    	if (cakeColorToggleBtn.isSelected())
+    		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+    	else
+    		setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_r2ColorToggleBtnActionPerformed
 
 
