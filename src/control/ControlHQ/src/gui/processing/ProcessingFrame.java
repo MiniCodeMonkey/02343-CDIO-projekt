@@ -1,5 +1,4 @@
 package gui.processing;
-package gui.processing;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -327,7 +326,5 @@ public class ProcessingFrame extends javax.swing.JInternalFrame {
     	Thresholds t = new Thresholds(minVals[0], minVals[1], minVals[2], maxVals[0], maxVals[1],maxVals[2]);    	
 		return  t;
     }
-
-}
 
 }
