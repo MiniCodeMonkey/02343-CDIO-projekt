@@ -30,7 +30,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 		if(e.getSource() instanceof JSpinner){
 			JSpinner spinner = (JSpinner) e.getSource();
 			ImageThresholdsFrame frame = FramePlaceHolder.getImgThresholdFrame();
-			Thresholds ObThreshold, CakeThreshold;
+			Thresholds obThreshold, cakeThreshold;
 			
 			//OBSTACLES
 			if(spinner.equals(frame.getObsMinRed())
@@ -41,7 +41,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 			||(spinner.equals(frame.getObsMaxBlue()))
 			){
 				
-				ObThreshold = new Thresholds(
+				obThreshold = new Thresholds(
 							(Integer)frame.getObsMinRed().getValue(), 
 							(Integer)frame.getObsMinGreen().getValue(), 
 							(Integer)frame.getObsMinBlue().getValue(), 
@@ -49,7 +49,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 							(Integer)frame.getObsMaxGreen().getValue(), 
 							(Integer)frame.getObsMaxBlue().getValue());
 				 
-				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.OBSTACLE, ObThreshold);
+				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.OBSTACLE, obThreshold);
 				
 			}
 			//CAKES
@@ -60,7 +60,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 			||(spinner.equals(frame.getCakeMaxGreen()))
 			||(spinner.equals(frame.getCakeMaxBlue()))
 			){
-				CakeThreshold = new Thresholds(
+				cakeThreshold = new Thresholds(
 							(Integer)frame.getCakeMinRed().getValue(), 
 							(Integer)frame.getCakeMinGreen().getValue(), 
 							(Integer)frame.getCakeMinBlue().getValue(), 
@@ -68,7 +68,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 							(Integer)frame.getCakeMaxGreen().getValue(), 
 							(Integer)frame.getCakeMaxBlue().getValue());
 				 
-				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE, CakeThreshold);
+				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE, cakeThreshold);
 				
 			}
 			
