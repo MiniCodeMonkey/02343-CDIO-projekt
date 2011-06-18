@@ -1100,6 +1100,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	obsMaxRed.setValue(obs.getMaxR());
     	obsMaxGreen.setValue(obs.getMaxG());
     	obsMaxBlue.setValue(obs.getMaxB());
+    	MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.OBSTACLE, obs);
     	//Sï¿½tter obsColorLabel
 		int r=obs.getMaxR()- THRESHOLDS_BUFFER_SIZE;
 		int g=obs.getMaxG()-THRESHOLDS_BUFFER_SIZE;
@@ -1118,6 +1119,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	cakeMaxRed.setValue(cakes.getMaxR());
     	cakeMaxGreen.setValue(cakes.getMaxG());
     	cakeMaxBlue.setValue(cakes.getMaxB());
+    	MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE, cakes);
     	//Sï¿½tter cakeColorLabel
 		int r=cakes.getMaxR()-THRESHOLDS_BUFFER_SIZE;
 		int g=cakes.getMaxG()-THRESHOLDS_BUFFER_SIZE;
@@ -1138,6 +1140,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r1MaxRed.setValue(robot1N.getMaxR()); 
 	    	r1MaxGreen.setValue(robot1N.getMaxG()); 
 	    	r1MaxBlue.setValue(robot1N.getMaxB());
+	    	MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.ROBOT1N, robot1N);
     	
     		// back (blue)
 	    	r1MinRed1.setValue(robot1S.getMinR());
@@ -1147,6 +1150,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r1MaxRed1.setValue(robot1S.getMaxR());
 	    	r1MaxGreen1.setValue(robot1S.getMaxG()); 
 	    	r1MaxBlue1.setValue(robot1S.getMaxB());
+	    	MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.ROBOT1S, robot1S);
 	    	//Sï¿½tter både FRONT og BACK lables for Robot1 (Berta)
 			int r=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxR()-THRESHOLDS_BUFFER_SIZE;
 			int g=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxG()-THRESHOLDS_BUFFER_SIZE;
@@ -1170,6 +1174,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r2MaxRed.setValue(robot2N.getMaxR());
 	    	r2MaxGreen.setValue(robot2N.getMaxG()); 
 	    	r2MaxBlue.setValue(robot2N.getMaxB());
+	    	MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.ROBOT2N, robot2N);
 	    	
 	    	// back (yellow)
 	    	r2MinRed1.setValue(robot2S.getMinR());
@@ -1179,6 +1184,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r2MaxRed1.setValue(robot2S.getMaxR());
 	    	r2MaxGreen1.setValue(robot2S.getMaxG());
 	    	r2MaxBlue1.setValue(robot2S.getMaxB());
+	    	MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.ROBOT2S, robot2S);
 	    	
 	    	//Sï¿½tter både FRONT og BACK lables for Robot2 (Prop)
 			int r=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxR()-THRESHOLDS_BUFFER_SIZE;
