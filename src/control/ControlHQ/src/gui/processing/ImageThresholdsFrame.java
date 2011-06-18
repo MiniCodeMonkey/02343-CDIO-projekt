@@ -2,6 +2,7 @@ package gui.processing;
 
 import gui.FramePlaceHolder;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JSlider;
@@ -71,10 +72,12 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         cakeResetBtn = new javax.swing.JButton();
         cakeColorToggleBtn = new javax.swing.JToggleButton();
         obsColorToggleBtn = new javax.swing.JToggleButton();
+        cakeColorLabel = new javax.swing.JLabel();
+        obsColorLabel = new javax.swing.JLabel();
         robot1Panel = new javax.swing.JPanel();
         robot1Tabs = new javax.swing.JTabbedPane();
         r1FrontTab = new javax.swing.JPanel();
-        jLabel49 = new javax.swing.JLabel();
+        r1FrontColorLabel = new javax.swing.JLabel();
         r1MinRed = new javax.swing.JSpinner();
         r1MinGreen = new javax.swing.JSpinner();
         r1MinBlue = new javax.swing.JSpinner();
@@ -90,7 +93,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         r1BackTab = new javax.swing.JPanel();
-        jLabel50 = new javax.swing.JLabel();
+        r1BackColorLabel = new javax.swing.JLabel();
         r1MinRed1 = new javax.swing.JSpinner();
         r1MinGreen1 = new javax.swing.JSpinner();
         r1MinBlue1 = new javax.swing.JSpinner();
@@ -126,7 +129,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         jLabel38 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
-        jLabel51 = new javax.swing.JLabel();
+        r2FrontColorLabel = new javax.swing.JLabel();
         r2BackTab = new javax.swing.JPanel();
         r2MinRed1 = new javax.swing.JSpinner();
         r2MinGreen1 = new javax.swing.JSpinner();
@@ -142,7 +145,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         jLabel46 = new javax.swing.JLabel();
         jLabel47 = new javax.swing.JLabel();
         jLabel48 = new javax.swing.JLabel();
-        jLabel52 = new javax.swing.JLabel();
+        r2BackColorLabel = new javax.swing.JLabel();
         robot2Canvas = new java.awt.Canvas();
         r2ColorToggleBtn = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JSeparator();
@@ -445,6 +448,24 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints.gridy = 5;
         commonPanel.add(obsColorToggleBtn, gridBagConstraints);
 
+        cakeColorLabel.setBackground(new java.awt.Color(255, 0, 0));
+        cakeColorLabel.setText("\t\t\t");
+        cakeColorLabel.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        commonPanel.add(cakeColorLabel, gridBagConstraints);
+
+        obsColorLabel.setBackground(new java.awt.Color(255, 255, 255));
+        obsColorLabel.setText("\t\t\t");
+        obsColorLabel.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        commonPanel.add(obsColorLabel, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -456,14 +477,14 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 
         r1FrontTab.setLayout(new java.awt.GridBagLayout());
 
-        jLabel49.setBackground(java.awt.Color.green);
-        jLabel49.setText("\t\t\t");
-        jLabel49.setOpaque(true);
+        r1FrontColorLabel.setBackground(java.awt.Color.green);
+        r1FrontColorLabel.setText("\t\t\t");
+        r1FrontColorLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        r1FrontTab.add(jLabel49, gridBagConstraints);
+        r1FrontTab.add(r1FrontColorLabel, gridBagConstraints);
 
         r1MinRed.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -585,14 +606,14 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 
         r1BackTab.setLayout(new java.awt.GridBagLayout());
 
-        jLabel50.setBackground(new java.awt.Color(0, 0, 255));
-        jLabel50.setText("\t\t\t");
-        jLabel50.setOpaque(true);
+        r1BackColorLabel.setBackground(new java.awt.Color(0, 0, 255));
+        r1BackColorLabel.setText("\t\t\t");
+        r1BackColorLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        r1BackTab.add(jLabel50, gridBagConstraints);
+        r1BackTab.add(r1BackColorLabel, gridBagConstraints);
 
         r1MinRed1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -883,14 +904,14 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         r2FrontTab.add(jLabel40, gridBagConstraints);
 
-        jLabel51.setBackground(java.awt.Color.orange);
-        jLabel51.setText("\t\t\t");
-        jLabel51.setOpaque(true);
+        r2FrontColorLabel.setBackground(java.awt.Color.orange);
+        r2FrontColorLabel.setText("\t\t\t");
+        r2FrontColorLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        r2FrontTab.add(jLabel51, gridBagConstraints);
+        r2FrontTab.add(r2FrontColorLabel, gridBagConstraints);
 
         robot2Tabs.addTab("Front", r2FrontTab);
 
@@ -1012,14 +1033,14 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         r2BackTab.add(jLabel48, gridBagConstraints);
 
-        jLabel52.setBackground(java.awt.Color.yellow);
-        jLabel52.setText("\t\t\t");
-        jLabel52.setOpaque(true);
+        r2BackColorLabel.setBackground(java.awt.Color.yellow);
+        r2BackColorLabel.setText("\t\t\t");
+        r2BackColorLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        r2BackTab.add(jLabel52, gridBagConstraints);
+        r2BackTab.add(r2BackColorLabel, gridBagConstraints);
 
         robot2Tabs.addTab("Back", r2BackTab);
 
@@ -1075,6 +1096,11 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	obsMaxRed.setValue(obs.getMaxR());
     	obsMaxGreen.setValue(obs.getMaxG());
     	obsMaxBlue.setValue(obs.getMaxB());
+    	//Sï¿½tter obsColorLabel
+		int r=obs.getMaxR()-15;
+		int g=obs.getMaxG()-15;
+		int b=obs.getMaxB()-15;
+		obsColorLabel.setBackground(new Color(r, g, b));
     	
     }//GEN-LAST:event_obsResetBtnActionPerformed
 
@@ -1088,6 +1114,11 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     	cakeMaxRed.setValue(cakes.getMaxR());
     	cakeMaxGreen.setValue(cakes.getMaxG());
     	cakeMaxBlue.setValue(cakes.getMaxB());
+    	//Sï¿½tter cakeColorLabel
+		int r=cakes.getMaxR()-15;
+		int g=cakes.getMaxG()-15;
+		int b=cakes.getMaxB()-15;
+		cakeColorLabel.setBackground(new Color(r, g, b));
     }//GEN-LAST:event_cakeResetBtnActionPerformed
 
     private void r1ResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ResetBtnActionPerformed
@@ -1111,6 +1142,15 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r1MaxRed1.setValue(robot1S.getMaxR());
 	    	r1MaxGreen1.setValue(robot1S.getMaxG()); 
 	    	r1MaxBlue1.setValue(robot1S.getMaxB());
+	    	//Sï¿½tter både FRONT og BACK lables for Robot1 (Berta)
+			int r=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxR()-15;
+			int g=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxG()-15;
+			int b=IImageProcessor.ROBOT1_N_THRESHOLDS.getMaxB()-15;
+	    	r1FrontColorLabel.setBackground(new Color(r, g, b));
+	    	int r1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxR()-15;
+			int g1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxG()-15;
+			int b1=IImageProcessor.ROBOT1_S_THRESHOLDS.getMaxB()-15;
+	    	r1BackColorLabel.setBackground(new Color(r1, g1, b1));
     }//GEN-LAST:event_r1ResetBtnActionPerformed
 
     private void r2ResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ResetBtnActionPerformed
@@ -1134,32 +1174,61 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	    	r2MaxRed1.setValue(robot2S.getMaxR());
 	    	r2MaxGreen1.setValue(robot2S.getMaxG());
 	    	r2MaxBlue1.setValue(robot2S.getMaxB());
+	    	
+	    	//Sï¿½tter både FRONT og BACK lables for Robot2 (Prop)
+			int r=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxR()-15;
+			int g=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxG()-15;
+			int b=IImageProcessor.ROBOT2_N_THRESHOLDS.getMaxB()-15;
+	    	r1FrontColorLabel.setBackground(new Color(r, g, b));
+	    	int r1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxR()-15;
+			int g1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxG()-15;
+			int b1=IImageProcessor.ROBOT2_S_THRESHOLDS.getMaxB()-15;
+	    	r1BackColorLabel.setBackground(new Color(r1, g1, b1));
     }//GEN-LAST:event_r2ResetBtnActionPerformed
 
     private void cakeColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cakeColorToggleBtnActionPerformed
-        // TODO add your handling code here:
-    	if(cakeColorToggleBtn.isSelected())cakeColorToggleBtn.setSelected(false);
-    	else cakeColorToggleBtn.setSelected(true);
+        if(cakeColorToggleBtn.isSelected()){
+        	cakeColorToggleBtn.setSelected(false);
+        }
+    	else{
+    		cakeColorToggleBtn.setSelected(true);
+    	}
     	
     	
     }//GEN-LAST:event_cakeColorToggleBtnActionPerformed
 
     private void obsColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obsColorToggleBtnActionPerformed
-        // TODO add your handling code here:
+    	if(obsColorToggleBtn.isSelected()){
+    		obsColorToggleBtn.setSelected(false);
+    	}
+    	else{
+    		obsColorToggleBtn.setSelected(true);
+    	}
     }//GEN-LAST:event_obsColorToggleBtnActionPerformed
 
     private void r1ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ColorToggleBtnActionPerformed
-        // TODO add your handling code here:
+    	if(r1ColorToggleBtn.isSelected()){
+    		r1ColorToggleBtn.setSelected(false);
+    	}
+    	else{
+    		r1ColorToggleBtn.setSelected(true);
+    	}
     }//GEN-LAST:event_r1ColorToggleBtnActionPerformed
 
     private void r2ColorToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ColorToggleBtnActionPerformed
-        // TODO add your handling code here:
+    	if(r2ColorToggleBtn.isSelected()){
+    		r2ColorToggleBtn.setSelected(false);
+    	}
+    	else{
+    		r2ColorToggleBtn.setSelected(true);
+    	}
     }//GEN-LAST:event_r2ColorToggleBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider bufferSlider;
     private java.awt.Canvas cakeCanvas;
+    private javax.swing.JLabel cakeColorLabel;
     private javax.swing.JToggleButton cakeColorToggleBtn;
     private javax.swing.JSpinner cakeMaxBlue;
     private javax.swing.JSpinner cakeMaxGreen;
@@ -1210,11 +1279,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1222,6 +1287,7 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private java.awt.Canvas obsCanvas;
+    private javax.swing.JLabel obsColorLabel;
     private javax.swing.JToggleButton obsColorToggleBtn;
     private javax.swing.JSpinner obsMaxBlue;
     private javax.swing.JSpinner obsMaxGreen;
@@ -1230,8 +1296,10 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner obsMinGreen;
     private javax.swing.JSpinner obsMinRed;
     private javax.swing.JButton obsResetBtn;
+    private javax.swing.JLabel r1BackColorLabel;
     private javax.swing.JPanel r1BackTab;
     private javax.swing.JToggleButton r1ColorToggleBtn;
+    private javax.swing.JLabel r1FrontColorLabel;
     private javax.swing.JPanel r1FrontTab;
     javax.swing.JSpinner r1MaxBlue;
     javax.swing.JSpinner r1MaxBlue1;
@@ -1246,8 +1314,10 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     javax.swing.JSpinner r1MinRed;
     javax.swing.JSpinner r1MinRed1;
     private javax.swing.JButton r1ResetBtn;
+    private javax.swing.JLabel r2BackColorLabel;
     private javax.swing.JPanel r2BackTab;
     private javax.swing.JToggleButton r2ColorToggleBtn;
+    private javax.swing.JLabel r2FrontColorLabel;
     private javax.swing.JPanel r2FrontTab;
     javax.swing.JSpinner r2MaxBlue;
     javax.swing.JSpinner r2MaxBlue1;
@@ -1693,5 +1763,28 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	{
 		return thresholdPanel;
 	}
-
+	public void setObsColorLabel(int r, int g, int b)
+	{
+		obsColorLabel.setBackground(new Color(r, g, b));
+	}
+	public void setCakeColorLabel(int r, int g, int b)
+	{
+		cakeColorLabel.setBackground(new Color(r, g, b));
+	}
+	public void setR1FrontColorLabel(int r, int g, int b)
+	{
+		r1FrontColorLabel.setBackground(new Color(r, g, b));
+	}
+	public void setR1BackColorLabel(int r, int g, int b)
+	{
+		r1BackColorLabel.setBackground(new Color(r, g, b));
+	}
+	public void setR2FrontColorLabel(int r, int g, int b)
+	{
+		r2FrontColorLabel.setBackground(new Color(r, g, b));
+	}
+	public void setR2BackColorLabel(int r, int g, int b)
+	{
+		r2BackColorLabel.setBackground(new Color(r, g, b));
+	}
 }
