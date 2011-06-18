@@ -69,20 +69,13 @@ public class ImageProcessor2 implements IImageProcessor {
 	public void setRobotYield(boolean robotYield) {
 		this.robotYield = robotYield;
 	}
-	
+//	
 	// Sætter nedskaleringen af output-maps.
-	private int outputScale = 2;
+	public static int outputScale = 2;
 
-	public int getOutputScale() {
-		return outputScale;
-	}
-
-	public void setOutputScale(int outputScale) {
-		this.outputScale = outputScale;
-	}
-	
 	// Grænser for selve banen {ymin, xmin, ymax, xmax}
 	private int[] bounds;
+	public static int[] stageBounds;
 
 	/**
 	 * Konstruktør. Initialiserer standard-værdier.
@@ -571,6 +564,7 @@ public class ImageProcessor2 implements IImageProcessor {
 		}
 		
 		this.bounds = bounds;
+		stageBounds = new int[]{bounds[0]/outputScale,bounds[1]/outputScale,bounds[2]/outputScale,bounds[3]/outputScale};
 		
 		return bounds;
 	}
