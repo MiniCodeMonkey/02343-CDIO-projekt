@@ -21,7 +21,7 @@ public class RobotThread extends Thread
 	 */
 	public enum RobotState
 	{
-		START, IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY, HEADING_FOR_HOME
+		START, IDLE, HEADING_FOR_CAKE, POSITIONING, PICKING_UP, HEADING_FOR_DELIVERY, DELIVERING, YIELD_CAKE, YIELD_DELIVERY, HEADING_FOR_HOME, HOME
 	};
 	
 	/**
@@ -291,22 +291,22 @@ public class RobotThread extends Thread
 						break;
 					}
 					
-					case HEADING_FOR_HOME:
-					{
-						// where is home?
-						chooseDropPoint();
-						
-						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToDelivery())
-						{
-							turnTo(this.targetLocation.getTargetAngle());
-							
-							// U A E KUMUUN!
-							robotControl.move(100, false);
-							Thread.sleep(2000);
-							robotControl.stop();
-							this.robotState = RobotState.IDLE;
-						}
-					}
+//					case HEADING_FOR_HOME:
+//					{
+//						// where is home?
+//						chooseDropPoint();
+//						
+//						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToDelivery())
+//						{
+//							turnTo(this.targetLocation.getTargetAngle());
+//							
+//							// U A E KUMUUN!
+//							robotControl.move(100, false);
+//							Thread.sleep(2000);
+//							robotControl.stop();
+//							this.robotState = RobotState.HOME;
+//						}
+//					}
 						
 					case HEADING_FOR_DELIVERY:
 					{
@@ -347,8 +347,39 @@ public class RobotThread extends Thread
 				}
 				
 				
+				
+				// Reset yield status
+				if (this.robotState == RobotState.YIELD_CAKE || this.robotState == RobotState.YIELD_DELIVERY)
+				{
+					for (IRobot otherRobotLocation : allRobotLocations)
+					{
+						if (!otherRobotLocation.equals(robotLocation) && otherRobotLocation.isActive())
+						{
+							double distance = calculateDistance(robotLocation.getX(), robotLocation.getY(), otherRobotLocation.getX(), otherRobotLocation.getY());
+							
+							if (distance > Thresholds.getInstance().getYieldDistance())
+							{									
+								robotControl.stop();
+								
+								System.out.println("NOT yielding! Distance is " + distance + " | Robotthread: " + this);
+								
+								// TODO hvad hvis Prop er i PICK_UP || DELIVERY
+								
+								if (this.robotState == RobotState.YIELD_CAKE)
+									this.robotState = RobotState.HEADING_FOR_CAKE;
+								
+								if (this.robotState == RobotState.YIELD_DELIVERY)
+									this.robotState = RobotState.HEADING_FOR_DELIVERY;
+								
+								break;
+							}
+						}
+						
+					}
+				}
+				
 				// If we are heading somewhere
-				if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY || this.robotState == RobotState.HEADING_FOR_HOME)
+				if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY /*|| this.robotState == RobotState.HEADING_FOR_HOME*/)
 				{
 					// Slaves should yield for the master
 					if (this.robotType == RobotType.SLAVE && !robotControl.isBerta())
@@ -376,20 +407,13 @@ public class RobotThread extends Thread
 									
 									break;
 								}
-								else
-								{
-									// Reset yield status
-									if (this.robotState == RobotState.YIELD_CAKE)
-										this.robotState = RobotState.HEADING_FOR_CAKE;
-									
-									if (this.robotState == RobotState.YIELD_DELIVERY)
-										this.robotState = RobotState.HEADING_FOR_DELIVERY;
-								}
 							}
+							
 						}
+						
 					}
 					
-					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY || this.robotState == RobotState.HEADING_FOR_HOME )
+					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY /*|| this.robotState == RobotState.HEADING_FOR_HOME*/)
 					{
 						
 //						turnTo(targetAngle);

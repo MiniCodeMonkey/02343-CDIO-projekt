@@ -420,10 +420,10 @@ public class ProcessingThread extends Thread
 			}
 			
 			
-			if(robotThread.getRobotState() == RobotState.IDLE && possibleCakes.size() <= 0)
-			{
-				robotThread.setRobotState(RobotState.HEADING_FOR_HOME);
-			}
+//			if(robotThread.getRobotState() == RobotState.IDLE && possibleCakes.size() <= 0)
+//			{
+//				robotThread.setRobotState(RobotState.HEADING_FOR_HOME);
+//			}
 			
 			// We only calculate a path if the robot is heading for delivery or
 			// heading for a cake or is currently positioning

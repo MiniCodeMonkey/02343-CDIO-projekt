@@ -1363,8 +1363,28 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
 	{
 		return r2ColorToggleBtn.isSelected();
 	}
-    
-    public boolean isR1FrontTabShowing()
+
+    public void resetCakeColorToggleBtn()
+	{
+		this.cakeColorToggleBtn.setSelected(false);
+	}
+
+	public void resetObsColorToggleBtn()
+	{
+		this.obsColorToggleBtn.setSelected(false);
+	}
+
+	public void resetR1ColorToggleBtn()
+	{
+		this.r1ColorToggleBtn.setSelected(false);
+	}
+
+	public void resetR2ColorToggleBtn()
+	{
+		this.r2ColorToggleBtn.setSelected(false);
+	}
+
+	public boolean isR1FrontTabShowing()
 	{
 		return r1FrontTab.isShowing();
 	}
