@@ -254,7 +254,7 @@ public class ProcessingThread extends Thread
 					}
 					else
 					{
-						robotThreads[robotIndex].getRobotControl().move(40, false);
+						robotThreads[robotIndex].getRobotControl().move(Thresholds.getInstance().getHighSpeed(), false);
 					}
 				}
 			}
@@ -419,12 +419,6 @@ public class ProcessingThread extends Thread
 					robotThread.setRobotState(RobotState.HEADING_FOR_CAKE);
 				}
 			}
-			
-			
-//			if(robotThread.getRobotState() == RobotState.IDLE && possibleCakes.size() <= 0)
-//			{
-//				robotThread.setRobotState(RobotState.HEADING_FOR_HOME);
-//			}
 			
 			// We only calculate a path if the robot is heading for delivery or
 			// heading for a cake or is currently positioning

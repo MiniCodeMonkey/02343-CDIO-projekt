@@ -14,14 +14,14 @@ public class Thresholds
         return instance;
     }
     
-	private int slowSpeed = 7;
+	private int slowSpeed = 5;
 	private int mediumSpeed = 12;
 	private int highSpeed = 35;
 
 	private int closeEnoughToCake = 35;
 	private int closeEnoughToDelivery = 10;
 	
-	private double rotationClose = Math.toRadians(14);
+	private double rotationClose = Math.toRadians(12);
 	private double rotationFairlyClose = Math.toRadians(30);
 	private int yieldDistance = 50;
 	
