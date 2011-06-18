@@ -12,6 +12,7 @@ import javax.swing.JSpinner;
 import controller.MainController;
 
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
+import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds;
 
 /**
@@ -1091,7 +1092,8 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     private static final int THRESHOLDS_BUFFER_SIZE = 15;
     
     private void obsResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obsResetBtnActionPerformed
-    	Thresholds obs = IImageProcessor.OBSTACLE_THRESHOLDS;
+    	IImageProcessor  im = new ImageProcessor2();
+    	Thresholds obs = im.OBSTACLE_THRESHOLDS;
 
     	obsMinRed.setValue(obs.getMinR());
     	obsMinGreen.setValue(obs.getMinR());
@@ -1109,7 +1111,8 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_obsResetBtnActionPerformed
 
     private void cakeResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cakeResetBtnActionPerformed
-    	Thresholds cakes = IImageProcessor.CAKE_THRESHOLDS;
+    	IImageProcessor im = new ImageProcessor2();
+    	Thresholds cakes = im.CAKE_THRESHOLDS;
 
     	cakeMinRed.setValue(cakes.getMinR());
     	cakeMinGreen.setValue(cakes.getMinG());
@@ -1127,8 +1130,9 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cakeResetBtnActionPerformed
 
     private void r1ResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ResetBtnActionPerformed
-    	Thresholds robot1N = IImageProcessor.ROBOT1_N_THRESHOLDS;
-    	Thresholds robot1S = IImageProcessor.ROBOT1_S_THRESHOLDS;
+    	IImageProcessor im = new ImageProcessor2();
+    	Thresholds robot1N = im.ROBOT1_N_THRESHOLDS;
+    	Thresholds robot1S = im.ROBOT1_S_THRESHOLDS;
     	
     		// front (green)
 	    	r1MinRed.setValue(robot1N.getMinR());
@@ -1159,8 +1163,9 @@ public class ImageThresholdsFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_r1ResetBtnActionPerformed
 
     private void r2ResetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ResetBtnActionPerformed
-    	Thresholds robot2N = IImageProcessor.ROBOT2_N_THRESHOLDS;
-	    Thresholds robot2S = IImageProcessor.ROBOT2_S_THRESHOLDS;
+    	IImageProcessor im = new ImageProcessor2();
+    	Thresholds robot2N = im.ROBOT2_N_THRESHOLDS;
+	    Thresholds robot2S = im.ROBOT2_S_THRESHOLDS;
 	    
 	    	// front (orange)
 	    	r2MinRed.setValue(robot2N.getMinR());
