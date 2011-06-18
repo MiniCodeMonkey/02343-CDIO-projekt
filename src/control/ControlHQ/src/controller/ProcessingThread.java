@@ -103,6 +103,7 @@ public class ProcessingThread extends Thread
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
+		ImageProcessor2.outputScale = 1;
 
 //		connetToRobots = 1;
 		
