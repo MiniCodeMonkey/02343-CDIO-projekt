@@ -14,17 +14,20 @@ public class Thresholds
         return instance;
     }
     
-	private int slowSpeed = 3;
+	private int slowSpeed = 4;
 	private int mediumSpeed = 12;
 	private int highSpeed = 35;
-
-	private int closeEnoughToCake = 40;
-	private int closeEnoughToDelivery = 10;
 	
-	private double rotationClose = Math.toRadians(3);
+	private int minPositionForCake = 18;
+	private int maxPositionForCake = 22;
+	private int closeEnoughToCake = 30;
+	private int closeEnoughToDelivery = 10;
+	private int inRangeOfCake = 55;
+	
+	private double rotationClose = Math.toRadians(4);
 	private double rotationFairlyClose = Math.toRadians(20);
 	private double rotationKindaClose = Math.toRadians(30);
-	private int yieldDistance = 50;
+	private int yieldDistance = 60;
 	
 	/**
 	 * Returns the slow speed set
@@ -178,5 +181,47 @@ public class Thresholds
 	public void setRotationKindaClose(double rotationKindaClose)
 	{
 		this.rotationKindaClose = rotationKindaClose;
+	}
+
+	public void setMaxPositionForCake(int maxPositionForCake)
+	{
+		this.maxPositionForCake = maxPositionForCake;
+	}
+
+	/**
+	 * Returns the max distance where the cake is right beside the claw of the robot
+	 * @return
+	 */
+	public int getMaxPositionForCake()
+	{
+		return maxPositionForCake;
+	}
+
+	public void setMinPositionForCake(int minPositionForCake)
+	{
+		this.minPositionForCake = minPositionForCake;
+	}
+	
+	/**
+	 * Returns the min distance where the cake is right beside the claw of the robot
+	 * @return
+	 */
+	public int getMinPositionForCake()
+	{
+		return minPositionForCake;
+	}
+	
+	/**
+	 * Distance for in range of cake (Robot should move slower when in range of cake)
+	 * @return
+	 */
+	public int getInRangeOfCake()
+	{
+		return inRangeOfCake;
+	}
+	
+	public void setInRangeOfCake(int inRangeOfCake)
+	{
+		this.inRangeOfCake = inRangeOfCake;
 	}
 }
