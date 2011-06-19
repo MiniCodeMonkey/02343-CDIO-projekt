@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import command.BertaCommando;
 import command.interfaces.IControl;
 
 import dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot;
@@ -219,13 +218,13 @@ public class RobotThread extends Thread
 				
 				// FIXME  maybe delete  - used in turnTo() insted
 				double targetAngleDifference = calculateAngleDifference(robotLocation.getAngle(), targetAngle);
-
 				
 				// Perform actions according to the robot state
 				switch (this.robotState)
 				{
 					case HEADING_FOR_CAKE:
 					{
+						System.out.println(Thread.currentThread().getName() + ": Distance to target: " + distanceToTarget);
 						// If close enough to the cake
 						if (distanceToTarget < Thresholds.getInstance().getCloseEnoughToCake())
 						{
@@ -239,11 +238,9 @@ public class RobotThread extends Thread
 						
 					case POSITIONING:
 					{
-						
-//						turnTo(targetAngle);
-						
+						System.out.println(Thread.currentThread().getName() + ": Distance to target: " + distanceToTarget);
 						// Is the rotation close enough?
-						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
+						if (Math.abs(targetAngleDifference) <= Thresholds.getInstance().getRotationClose())
 						{
 							robotControl.stop();
 							// Now picking up cake
@@ -255,8 +252,8 @@ public class RobotThread extends Thread
 							robotControl.stopClaw();
 							
 							// Move forward
-							robotControl.move(30, false);
-							Thread.sleep(320);
+							robotControl.move(15, false);
+							Thread.sleep(640);
 							robotControl.stop();
 							
 							// Close claw
@@ -265,8 +262,8 @@ public class RobotThread extends Thread
 							robotControl.stopClaw();
 							
 							// Move backwards
-							robotControl.move(30, true);
-							Thread.sleep(320);
+							robotControl.move(15, true);
+							Thread.sleep(1200);//640);
 							robotControl.stop();
 							
 							// what droppoint to deliver to
@@ -278,7 +275,7 @@ public class RobotThread extends Thread
 						else
 						{
 							// Rotate slowly to cake
-							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
+							if (targetAngleDifference > 0)
 							{
 								robotControl.right(Thresholds.getInstance().getSlowSpeed());
 							}
@@ -322,6 +319,8 @@ public class RobotThread extends Thread
 							robotControl.stopClaw();
 							robotControl.stop();
 							
+							this.targetLocation = null;
+							this.path = null;
 							
 							// robot becomes idle (job done)
 							this.robotState = RobotState.IDLE;
@@ -329,8 +328,6 @@ public class RobotThread extends Thread
 						break;
 					}
 				}
-				
-				
 				
 				// Reset yield status
 				if (this.robotState == RobotState.YIELD_CAKE || this.robotState == RobotState.YIELD_DELIVERY)
@@ -358,7 +355,6 @@ public class RobotThread extends Thread
 								break;
 							}
 						}
-						
 					}
 				}
 				
@@ -392,28 +388,22 @@ public class RobotThread extends Thread
 									break;
 								}
 							}
-							
 						}
-						
 					}
 					
-					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY /*|| this.robotState == RobotState.HEADING_FOR_HOME*/)
-					{
-						
-//						turnTo(targetAngle);
-												
-//						 We are very very close to the correct angle, so drive forward
-						if (targetAngleDifference <= Thresholds.getInstance().getRotationClose())
+					if (this.robotState == RobotState.HEADING_FOR_CAKE || this.robotState == RobotState.HEADING_FOR_DELIVERY)
+					{						
+						// We are very very close to the correct angle, so drive forward
+						if (Math.abs(targetAngleDifference) <= Thresholds.getInstance().getRotationFairlyClose())
 						{
 							robotControl.move(Thresholds.getInstance().getHighSpeed(), false);
 						}
-						else if (targetAngleDifference <= Thresholds.getInstance().getRotationFairlyClose()) // Do minor corrections
+						else if (Math.abs(targetAngleDifference) <= Thresholds.getInstance().getRotationKindaClose()) // Do minor corrections
 						{
 							// Rotate
-							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
+							if (targetAngleDifference > 0)
 							{
 								robotControl.right(Thresholds.getInstance().getSlowSpeed());
-								
 							}
 							else
 							{
@@ -423,7 +413,7 @@ public class RobotThread extends Thread
 						else // Do major corrections
 						{
 							// Rotate
-							if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
+							if (targetAngleDifference > 0)
 							{
 								robotControl.right(Thresholds.getInstance().getMediumSpeed());
 							}
@@ -436,13 +426,12 @@ public class RobotThread extends Thread
 				}
 			}
 		}
-		else
-			robotControl.stop();
+//		else
+//			robotControl.stop();
 	}
 
 	private void chooseDropPoint()
 	{
-		//							int dropDistance = 5/ImageProcessor2.outputScale;
 		int dropDistance = 0;
 
 		// Decide delivery location | FIXME: if obstacles is in the way
@@ -459,11 +448,11 @@ public class RobotThread extends Thread
 				new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
 
 				// lower long side
-				new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(180)),
-				new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(180)),
-				new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(180)),
-				new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(180)),
-				new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(180)),
+				//new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(-179)),
+				//new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 30, Math.toRadians(-179)),
+				//new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2, Math.toRadians(-179)),
+				//new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 30, Math.toRadians(-179)),
+				//new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 + 60, Math.toRadians(-179)),
 
 				// upper long side
 				new Location(ImageProcessor2.stageBounds[0] + dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(0)),
@@ -495,23 +484,33 @@ public class RobotThread extends Thread
 	 */
 	private double calculateAngleDifference(double robotAngle, double targetAngle)
 	{
-		double difference;
-//		difference = robotAngle - targetAngle;
+		double difference = -(robotAngle - targetAngle);
+		
+		if (Math.abs(difference) > Math.toRadians(180))
+		{
+			difference = -(robotAngle + targetAngle);
+		}
+		
+//		System.out.println("== " + Thread.currentThread().getName() + " ==");
+//		System.out.println("robotAngle: " + Math.toDegrees(robotAngle));
+//		System.out.println("targetAngle: " + Math.toDegrees(targetAngle));
+//		System.out.println("difference: " + Math.toDegrees(difference));
+//		System.out.println();
 		
 		// Old way to figure out delta angle
-		if (targetAngle < 0 && robotAngle < 0 || targetAngle >= 0 && robotAngle >= 0)
-		{
-			difference = Math.abs(robotAngle - targetAngle);
-		}
-		else if (robotLocation.getAngle() >= 0)
-		{
-			difference = Math.abs(robotAngle - targetAngle);
-		}
-		else
-		{
-			difference = Math.abs(robotAngle + targetAngle);
-		}
-		
+//		if (targetAngle < 0 && robotAngle < 0 || targetAngle >= 0 && robotAngle >= 0)
+//		{
+//			difference = Math.abs(robotAngle - targetAngle);
+//		}
+//		else if (robotLocation.getAngle() >= 0)
+//		{
+//			difference = Math.abs(robotAngle - targetAngle);
+//		}
+//		else
+//		{
+//			difference = Math.abs(robotAngle + targetAngle);
+//		}
+//		
 		return difference;
 	}
 
@@ -699,7 +698,7 @@ public class RobotThread extends Thread
 			targetAngleDifference = calculateAngleDifference(robotLocation.getAngle(), targetAngle);
 			
 			// Rotate slowly to cake
-			if (robotLocation.getAngle() < targetAngle && (targetAngle - robotLocation.getAngle()) < Math.PI)
+			if (targetAngleDifference > 0)
 			{
 				robotControl.right(Thresholds.getInstance().getSlowSpeed());
 			}

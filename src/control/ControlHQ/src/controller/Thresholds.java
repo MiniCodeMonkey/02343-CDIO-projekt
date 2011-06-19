@@ -14,15 +14,16 @@ public class Thresholds
         return instance;
     }
     
-	private int slowSpeed = 5;
+	private int slowSpeed = 3;
 	private int mediumSpeed = 12;
 	private int highSpeed = 35;
 
-	private int closeEnoughToCake = 35;
+	private int closeEnoughToCake = 40;
 	private int closeEnoughToDelivery = 10;
 	
-	private double rotationClose = Math.toRadians(12);
-	private double rotationFairlyClose = Math.toRadians(30);
+	private double rotationClose = Math.toRadians(3);
+	private double rotationFairlyClose = Math.toRadians(20);
+	private double rotationKindaClose = Math.toRadians(30);
 	private int yieldDistance = 50;
 	
 	/**
@@ -167,5 +168,15 @@ public class Thresholds
 	public void setYieldDistance(int length)
 	{
 		yieldDistance = length;
+	}
+
+	public double getRotationKindaClose()
+	{
+		return rotationKindaClose;
+	}
+	
+	public void setRotationKindaClose(double rotationKindaClose)
+	{
+		this.rotationKindaClose = rotationKindaClose;
 	}
 }

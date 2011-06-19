@@ -13,7 +13,6 @@ import command.interfaces.IControl;
 import command.rmi.RmiClient;
 
 import controller.RobotThread.RobotState;
-import controller.RobotThread.RobotType;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
@@ -46,10 +45,6 @@ public class ProcessingThread extends Thread
 	 * Used to decide which robot(s) to connect
 	 */
 	private int connetToRobots = -1;
-	/**
-	 * Set to true to output processing time in console
-	 */
-	private final boolean showProcessingTime = false;
 	
 	// bruges af GUI
 	/**
@@ -213,7 +208,7 @@ public class ProcessingThread extends Thread
 					} 
 					catch (ControllerException e)
 					{
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					} 
 				}
 			};
@@ -334,9 +329,6 @@ public class ProcessingThread extends Thread
 				// The target cake is no longer at the location
 				if (!foundCake)
 				{
-//					System.out.println("********************");
-//					System.out.println("** CAKE HAS MOVED **");
-//					System.out.println("********************");
 					robotThread.setRobotState(RobotState.IDLE);
 				}
 			}
@@ -344,12 +336,9 @@ public class ProcessingThread extends Thread
 			// If idling, possibly pick a cake to pick up
 			if (robotThread.getRobotState() == RobotState.IDLE && cakesCount > 0)
 			{
-				
 				// Loop through all cakes
 				for (ICake cake : locations.getCakes())
 				{
-					
-					
 					boolean in_use = false;
 					for (RobotThread rThread : robotThreads)
 					{
@@ -360,7 +349,6 @@ public class ProcessingThread extends Thread
 						{
 							// If the robot has the target location as the
 							// current cake
-//							if (rThread.getTargetLocation().GetX() == cake.getX() && rThread.getTargetLocation().GetY() == cake.getY())
 							if((Math.abs(rThread.getTargetLocation().GetX() - cake.getX()) < 10) && (Math.abs(rThread.getTargetLocation().GetY() - cake.getY()) < 10))
 							{
 								in_use = true;
