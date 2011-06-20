@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import sun.dc.pr.PathFiller;
+
 import command.interfaces.IControl;
 
 import dk.dtu.imm.c02343.grp4.dto.impl.Robot;
@@ -13,6 +15,8 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.ImageProcessor2;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Location;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Path;
 import dk.dtu.imm.c02343.grp4.pathfinding.dat.Step;
+import dk.dtu.imm.c02343.grp4.pathfinding.dat.TileMap;
+import dk.dtu.imm.c02343.grp4.pathfinding.implementations.PathFinder;
 
 public class RobotThread extends Thread
 {
@@ -93,7 +97,9 @@ public class RobotThread extends Thread
 	private final boolean showProcessingTime = false;
 
 	private IRobot otherRobotLocation;
-	
+
+	private TileMap tileMap;
+
 	/**
 	 * Constructs a new robot thread for a new robot
 	 * @param robotControl The control object to physically control the robot
@@ -438,15 +444,15 @@ public class RobotThread extends Thread
 				}
 			}
 		}
-		else
-			robotControl.stop();
+//		else
+//			robotControl.stop();
 	}
 
 	private void chooseDropPoint()
 	{
 		int dropDistance = 0;
 
-		// Decide delivery location | FIXME: if obstacles is in the way
+		// Decide delivery location
 		Location deliveryLocations[] = {
 
 				// right side
@@ -455,9 +461,9 @@ public class RobotThread extends Thread
 				new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[3] - dropDistance, Math.toRadians(90)),
 
 				// left side
-//				new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
-//				new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
-//				new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
+				new Location((int) mapSize.getHeight() / 2 - 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
+				new Location((int) mapSize.getHeight() / 2, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
+				new Location((int) mapSize.getHeight() / 2 + 30, ImageProcessor2.stageBounds[1] + dropDistance, Math.toRadians(-90)),
 
 				// lower long side
 				//new Location(ImageProcessor2.stageBounds[2] - dropDistance,(int) mapSize.getWidth() / 2 - 60, Math.toRadians(-179)),
@@ -481,8 +487,17 @@ public class RobotThread extends Thread
 
 			if (currentDistance < bestDistance)
 			{
-				bestDistance = currentDistance;
-				targetLocation = deliveryLocation;
+				PathFinder pathFinder = new PathFinder(tileMap, 700, false);
+				
+				if (pathFinder.findPath(robotLocation, deliveryLocation) != null)
+				{
+					bestDistance = currentDistance;
+					targetLocation = deliveryLocation;
+				}
+				else
+				{
+					System.out.println("Could not use target location because path could not be found " + targetLocation.GetX() + "," + targetLocation.GetY());
+				}
 			}
 		}
 	}
@@ -498,6 +513,7 @@ public class RobotThread extends Thread
 	{
 		double difference = -(robotAngle - targetAngle);
 		
+		
 		if (Math.abs(difference) > Math.toRadians(180) && Math.abs(targetAngle) >= Math.toRadians(90) && Math.abs(targetAngle) <= Math.toRadians(180))
 		{
 			difference = -(robotAngle + targetAngle) + Math.toRadians(180);
@@ -508,7 +524,21 @@ public class RobotThread extends Thread
 			difference = -(robotAngle + targetAngle);
 		}
 		
+		if (Math.abs(difference) == Math.abs(robotAngle) && Math.toDegrees(targetAngle) != 0)
+		{
+			difference += Math.toRadians(180);
+			
+			if (difference > Math.toRadians(180))
+				difference -= Math.toRadians(360);
+		}
+		
 		/**
+		== RobotThread PROP ==
+		robotAngle: -75.06858282186246
+		targetAngle: 180.0
+		difference: 75.06858282186246
+
+
 		== RobotThread BERTA ==
 		robotAngle: -90.0
 		targetAngle: 91.90915243299638
@@ -742,5 +772,10 @@ public class RobotThread extends Thread
 	public IRobot getOtherRobotLocation()
 	{
 		return this.otherRobotLocation;
+	}
+	
+	public void setTileMap(TileMap tileMap)
+	{
+		this.tileMap = tileMap;
 	}
 }

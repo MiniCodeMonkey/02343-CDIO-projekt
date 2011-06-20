@@ -200,11 +200,11 @@ public class ProcessingThread extends Thread
 				{
 					try
 					{
-//						long time = System.currentTimeMillis();
+						long time = System.currentTimeMillis();
 						if (locations != null){
 							// Calculate new paths
 							calculatePaths(getLocations());
-//							System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
+							System.out.println("Calculate paths in " + (System.currentTimeMillis() - time) + " ms");
 						}
 					} 
 					catch (ControllerException e)
@@ -294,9 +294,12 @@ public class ProcessingThread extends Thread
 			if (robotThread == null)
 				continue;
 			
+			RobotThread otherRobotThread = robotThreads[robotIndex == 0 ? 1 : 0];
+			
 			// Tell the thread the new robot locations
 			try
 			{
+				robotThread.setTileMap(tileMap);
 				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
 				robotThread.setOtherRobotLocation(locations.getRobots().get(robotIndex == 0 ? 1 : 0));
 				
@@ -351,8 +354,18 @@ public class ProcessingThread extends Thread
 							// If the robot has the target location as the current cake
 							if((Math.abs(rThread.getTargetLocation().GetX() - cake.getX()) < 10) && (Math.abs(rThread.getTargetLocation().GetY() - cake.getY()) < 10))
 							{
-								in_use = true;
-								break;
+								// If the other robot is inactive / visually out of sight, we can pick this to
+								if (!robotThread.getOtherRobotLocation().isActive())
+								{
+									// Tell the robot that it no longer has this cake as target location
+									otherRobotThread.setTargetLocation(null);
+									otherRobotThread.setRobotState(RobotState.IDLE);
+								}
+								else
+								{
+									in_use = true;
+									break;
+								}
 							}
 						}	
 					}
@@ -360,8 +373,6 @@ public class ProcessingThread extends Thread
 					// If the current robot is a MASTER robot and the SLAVE is yielding, AND the SLAVE robot is close to the cake, it is "in use"
 					if (robotThread.getRobotType() == RobotType.MASTER)
 					{
-						RobotThread otherRobotThread = robotThreads[robotIndex == 0 ? 1 : 0];
-						
 						if (otherRobotThread != null && otherRobotThread.getRobotLocation() != null)
 						{
 							double distance = otherRobotThread.calculateDistance(cake.getX(), cake.getY(), otherRobotThread.getRobotLocation().getX(), otherRobotThread.getRobotLocation().getY());
@@ -421,12 +432,9 @@ public class ProcessingThread extends Thread
 			// We only calculate a path if the robot is heading for delivery or
 			// heading for a cake or is currently positioning
 			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE || robotThread.getRobotState() == RobotState.POSITIONING)
-			{
-				// FIXME WTF is this for?!
-//				Location target = robotThread.getTargetLocation();
-				
+			{	
 				// Find path for robot
-				PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
+				PathFinder pathFinder = new PathFinder(tileMap, 700, false);
 				
 				Path newPath = null;
 				
@@ -435,7 +443,7 @@ public class ProcessingThread extends Thread
 				
 				if (newPath == null)
 				{
-					return;//throw new ControllerException("Could not find path for robot " + robotThread.toString());
+					throw new ControllerException("Could not find path for robot " + robotThread.toString());
 				}
 				else
 				{
