@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="bluecove.jar"/>
 	<classpathentry kind="lib" path="pccomm.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/CommanderRMI"/>
+	<classpathentry kind="lib" path="src/gui/beansbinding-1.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
