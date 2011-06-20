@@ -270,22 +270,22 @@ public class RobotThread extends Thread
 								
 								// Open claw
 								robotControl.openClaw();
-								Thread.sleep(1000);
+								Thread.sleep(750);
 								robotControl.stopClaw();
 								
 								// Move forward
 								robotControl.move(30, false);
-								Thread.sleep(230);
+								Thread.sleep(150);
 								robotControl.stop();
 								
 								// Close claw
 								robotControl.closeClaw();
-								Thread.sleep(1000);
+								Thread.sleep(750);
 								robotControl.stopClaw();
 								
 								// Move backwards
 								robotControl.move(23, true);
-								Thread.sleep(1200);//640);
+								Thread.sleep(1600);//640);
 								robotControl.stop();
 								
 								// what droppoint to deliver to

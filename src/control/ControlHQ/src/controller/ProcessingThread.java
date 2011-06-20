@@ -183,10 +183,10 @@ public class ProcessingThread extends Thread
 			{
 				while(running)
 				{
-//					long time = System.currentTimeMillis();
+					long time = System.currentTimeMillis();
 					if (getImage() != null){
 						locations = imageProcessor.examineImage(getImage(), true);
-//						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
 					}
 				}
 			};

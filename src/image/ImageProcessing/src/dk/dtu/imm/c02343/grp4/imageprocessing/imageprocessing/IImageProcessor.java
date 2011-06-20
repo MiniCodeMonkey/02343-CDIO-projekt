@@ -54,7 +54,7 @@ public interface IImageProcessor {
 	 * Standard størrelse på forhindrings-sikkerhedszone
 	 * HUSK: Ændres dette skal der også tages forbehold for dette i tilemappen's blocked metode i pathfinderen
 	 */
-	public static final int OBSTACLE_BUFFER = 40;
+	public static final int OBSTACLE_BUFFER = 30;
 	
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde

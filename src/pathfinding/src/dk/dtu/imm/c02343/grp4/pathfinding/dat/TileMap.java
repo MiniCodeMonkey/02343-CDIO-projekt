@@ -89,14 +89,14 @@ public class TileMap
 		}
 		
 		System.out.println("\n\n\n\n");*/
-		
-		/*if (obstacleMap[ty][tx] >= 25)
+
+		if (obstacleMap[ty][tx] >= 15)
 		{
 			return 2;
 		}
-		else */if (obstacleMap[ty][tx] >= 1)
+		else if (obstacleMap[ty][tx] >= 1)
 		{
-			return 2;
+			return 1;
 		}
 		else
 		{
