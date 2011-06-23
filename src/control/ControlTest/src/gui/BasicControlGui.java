@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -13,8 +14,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import command.Commando;
-import command.interfaces.IClawControl;
 import command.interfaces.IControl;
+
+
+
 
 /** GUI af styring til debug..
  * 
@@ -26,9 +29,9 @@ public class BasicControlGui extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = -693154801145671834L;
 	IControl controller;
-	IClawControl claw;
 	Commando con;
 	boolean connected;
+	boolean isClicked = false;
 
 	/** Creates new form BasicControlGui */
 	public BasicControlGui() throws UnsupportedLookAndFeelException,
@@ -40,6 +43,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 		initComponents();
 
 		Thread.currentThread().setName("BasicGUI");
+		
+		
 		
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
@@ -269,6 +274,7 @@ public class BasicControlGui extends javax.swing.JFrame {
         movePanel.add(isReversedChkBox, gridBagConstraints);
 
         debugBtn.setText("jButton1");
+        debugBtn.setFocusable(false);
         debugBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 debugBtnActionPerformed(evt);
@@ -437,6 +443,7 @@ public class BasicControlGui extends javax.swing.JFrame {
         speedPanel.add(clawValueLabel, gridBagConstraints);
 
         speedResetButton.setText("reset");
+        speedResetButton.setFocusable(false);
         speedResetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 speedResetButtonActionPerformed(evt);
@@ -450,6 +457,7 @@ public class BasicControlGui extends javax.swing.JFrame {
         speedPanel.add(speedResetButton, gridBagConstraints);
 
         turnResetButton.setText("reset");
+        turnResetButton.setFocusable(false);
         turnResetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 turnResetButtonActionPerformed(evt);
@@ -462,6 +470,7 @@ public class BasicControlGui extends javax.swing.JFrame {
         speedPanel.add(turnResetButton, gridBagConstraints);
 
         clawResetButton.setText("reset");
+        clawResetButton.setFocusable(false);
         clawResetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clawResetButtonActionPerformed(evt);
@@ -483,6 +492,7 @@ public class BasicControlGui extends javax.swing.JFrame {
         });
 
         robotChoiceComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BERTA", "PROP" }));
+        robotChoiceComboBox.setFocusable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -619,7 +629,7 @@ public class BasicControlGui extends javax.swing.JFrame {
 			}
 		} else {
 			
-			
+			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			
 			con = new Commando(robotChoiceComboBox.getSelectedIndex());
 			
@@ -629,6 +639,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 			statusPtyLabel.setText("Forbundet til robot ");
 			statusPtyLabel.setForeground(Color.green);
 			enableControls(true);
+			
+			setCursor(null);
 			
 //			int result = -1;
 //			setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -711,31 +723,49 @@ public class BasicControlGui extends javax.swing.JFrame {
 	private void keyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_keyPressed
 		int key = evt.getKeyCode();
 
+		
 //		System.out.println("KEY PRESSED: " + key);
 		switch (key) {
 		case KeyEvent.VK_UP:
-			fwrBtn.doClick();
+			if (!isClicked)
+				fwrBtn.doClick();
 			moveForward();
+			isClicked = true;
 			break;
 		case KeyEvent.VK_DOWN:
-			BckwBtn.doClick();
+			if (!isClicked)
+				BckwBtn.doClick();
+			
 			moveBackward();
+			isClicked = true;
 			break;
 		case KeyEvent.VK_LEFT:
-			leftBtn.doClick();
+			if (!isClicked)
+				leftBtn.doClick();
+			
 			moveLeft();
+			isClicked = true;
 			break;
 		case KeyEvent.VK_RIGHT:
-			rightBtn.doClick();
+			if (!isClicked)
+				rightBtn.doClick();
+			
 			moveRight();
+			isClicked = true;
 			break;
 		case KeyEvent.VK_SPACE:
-			clawCloseBtn.doClick();
+			if (!isClicked)
+				clawCloseBtn.doClick();
+			
 			closeClaw();
+			isClicked = true;
 			break;
-               case KeyEvent.VK_CONTROL:
-            	clawOpenBtn.doClick();   
-			openClaw();			
+           case KeyEvent.VK_CONTROL:
+        	   if (!isClicked)
+        		   clawOpenBtn.doClick();
+            	
+			openClaw();
+			isClicked = true;
 			break;
                 default:
 			break;
@@ -748,7 +778,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 		System.out.println("KEY RELEASED: " + key);
 
              // skal indtil videre stoppe alt, uanset hvilken knap man slipper
-                
+        isClicked = false;        
+		
 		switch (key) {
 		case KeyEvent.VK_UP:
 		case KeyEvent.VK_DOWN:
