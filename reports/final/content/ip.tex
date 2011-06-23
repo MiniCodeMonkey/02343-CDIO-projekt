@@ -57,7 +57,17 @@ Her dannes ud fra kildebilledet et 2D-array med samme størrelse. Hver pixel und
 Metoden gemmer det resulterende \textit{tilemap} i klasse-variablen \texttt{tilemap}.
 
 \paragraph{\texttt{filterObstacles()}}
+Filtrering af forhindrings-pixels foregår her. Samtidig foretages første generering af forhindrings map -- endnu et 2D-array, \texttt{obstaclemap}, med samme størrelse som \texttt{tilemap}.\\
+Der benyttes endnu et 2D-array til at holde styr på behandlede pixels.
 
+Metoden vandrer igennem alle pixels i \texttt{tilemap}. Hver gang en forhindring, som ikke allerede er behandlet, registreres, benyttes hjælpemetoden \rec{\texttt{collectRecursion()}} til at samle alle de sammenhængende forhindrings-pixels.\\
+Hvis antallet af opsamlede koordinater er mindre end grænsen \texttt{MIN\_OBJECT\_SIZE}, forkastes forhindringen, og de fundne pixels defineres som baggrund i \texttt{tilemap} og \texttt{obstaclemap}.\\
+I modsat fald -- hvis den opsamlede forhindring er tilstrækkelig stor -- registreres de opsamlede punkter i \texttt{obstaclemap}.
+
+\paragraph{\texttt{findBounds()}}
+Grænserne for selve banen bestemmes groft ved at finde den øverste og nederste vandrette linje i \texttt{tilemap}, hvor der er min. 5 forhindrings-pixels. Tilsvarende gælder for lodrette linjer mod venstre og højre.
+
+De fundne grænseværdier gemmes som \texttt{int}-array på formen \textit{$\left\{\right.$ top, venstre, bund, højre $\left.\right\}$}.
 
 \begin{comment}
 Webcam
