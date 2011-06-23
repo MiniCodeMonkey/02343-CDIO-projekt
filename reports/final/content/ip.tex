@@ -91,7 +91,10 @@ Denne metode skalerer \texttt{tilemap} og \texttt{obstaclemap} ned. Dette er ikk
 I andre metoder bliver skaleringen også håndteret ved udregning af koordinater -- her divideres med skaleringsfaktoren \texttt{outputScale}.
 
 \paragraph{\texttt{createTileImage()}}
+Her genereres et \texttt{BufferedImage}, som giver en grafisk repræsentation af \texttt{tilemap} og \texttt{obstaclemap}.
 
+Værdierne fra \texttt{obstaclemap} vises som gule gradueringer, hvor højere værdi giver kraftigere farve. Selve forhindringerne, kagerne og robotterne vises ud fra deres registreringer i \texttt{tilemap} med farver, der nogenlunde matcher deres egentlige farver.\\
+Banens grænser vises som en cyan firkant.
 \begin{comment}
 Webcam
 	mode
