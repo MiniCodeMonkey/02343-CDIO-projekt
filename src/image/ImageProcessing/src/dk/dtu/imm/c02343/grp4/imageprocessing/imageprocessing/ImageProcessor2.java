@@ -271,7 +271,7 @@ public class ImageProcessor2 implements IImageProcessor {
 								for (int dy = -obstacleBuffer; dy < obstacleBuffer; dy++) {
 									for (int dx = -obstacleBuffer; dx < obstacleBuffer; dx++) {
 										if (y+dy >= 0 && y+dy < obstaclemap.length && x+dx >= 0 && x+dx < obstaclemap[0].length) {
-											obstaclemap[y+dy][x+dy] = -1;
+											obstaclemap[y+dy][x+dx] = -1;
 										}
 									}
 								}
@@ -286,7 +286,7 @@ public class ImageProcessor2 implements IImageProcessor {
 								for (int dy = -obstacleBuffer; dy < obstacleBuffer; dy++) {
 									for (int dx = -obstacleBuffer; dx < obstacleBuffer; dx++) {
 										if (y+dy >= 0 && y+dy < obstaclemap.length && x+dx >= 0 && x+dx < obstaclemap[0].length) {
-											obstaclemap[y+dy][x+dy] = -1;
+											obstaclemap[y+dy][x+dx] = -1;
 										}
 									}
 								}

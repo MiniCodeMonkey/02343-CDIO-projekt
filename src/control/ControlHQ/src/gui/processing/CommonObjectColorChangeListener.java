@@ -1,5 +1,7 @@
 package gui.processing;
 
+import java.awt.Color;
+
 import gui.FramePlaceHolder;
 
 import javax.swing.JSlider;
@@ -17,7 +19,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
-		System.out.println("Common object stateListener invoked!");
+
 		
 		
 		if (e.getSource() instanceof JSlider)
@@ -30,7 +32,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 		if(e.getSource() instanceof JSpinner){
 			JSpinner spinner = (JSpinner) e.getSource();
 			ImageThresholdsFrame frame = FramePlaceHolder.getImgThresholdFrame();
-			Thresholds obThreshold, cakeThreshold;
+			Thresholds obsThreshold, cakeThreshold;
 			
 			//OBSTACLES
 			if(spinner.equals(frame.getObsMinRed())
@@ -41,7 +43,7 @@ public class CommonObjectColorChangeListener implements ChangeListener
 			||(spinner.equals(frame.getObsMaxBlue()))
 			){
 				
-				obThreshold = new Thresholds(
+				obsThreshold = new Thresholds(
 							(Integer)frame.getObsMinRed().getValue(), 
 							(Integer)frame.getObsMinGreen().getValue(), 
 							(Integer)frame.getObsMinBlue().getValue(), 
@@ -49,8 +51,12 @@ public class CommonObjectColorChangeListener implements ChangeListener
 							(Integer)frame.getObsMaxGreen().getValue(), 
 							(Integer)frame.getObsMaxBlue().getValue());
 				 
-				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.OBSTACLE, obThreshold);
-				
+				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.OBSTACLE, obsThreshold);
+				//Sætter obsColorLabel
+					int r=IImageProcessor.OBSTACLE_THRESHOLDS.getMaxR()-15;
+					int g=IImageProcessor.OBSTACLE_THRESHOLDS.getMaxG()-15;
+					int b=IImageProcessor.OBSTACLE_THRESHOLDS.getMaxB()-15;
+					frame.setObsColorLabel(r,g,b);
 			}
 			//CAKES
 			if(spinner.equals(frame.getCakeMinRed())
@@ -69,12 +75,12 @@ public class CommonObjectColorChangeListener implements ChangeListener
 							(Integer)frame.getCakeMaxBlue().getValue());
 				 
 				 MainController.getInstance().getImageProcessor().setThresholds(IImageProcessor.CAKE, cakeThreshold);
-				
-			}
-			
+				//Sætter cakeColorLabel
+				int r=IImageProcessor.CAKE_THRESHOLDS.getMaxR()-15;
+				int g=IImageProcessor.CAKE_THRESHOLDS.getMaxG()-15;
+				int b=IImageProcessor.CAKE_THRESHOLDS.getMaxB()-15;
+				frame.setCakeColorLabel(r,g,b);
+			}	
 		}
-		
-
 	}
-
 }

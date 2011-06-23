@@ -49,6 +49,8 @@ public class BasicControlGui extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed"
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         movePanel = new javax.swing.JPanel();
         leftBtn = new javax.swing.JButton();
@@ -60,6 +62,8 @@ public class BasicControlGui extends javax.swing.JFrame {
         stopBtn = new javax.swing.JButton();
         isReversedChkBox = new javax.swing.JCheckBox();
         debugBtn = new javax.swing.JButton();
+        clawCloseLabel = new javax.swing.JLabel();
+        clawOpenLabel = new javax.swing.JLabel();
         connectBtn = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -73,6 +77,12 @@ public class BasicControlGui extends javax.swing.JFrame {
         speedSlider = new javax.swing.JSlider();
         turnspeedSlider = new javax.swing.JSlider();
         clawspeedSlider = new javax.swing.JSlider();
+        speedValueLabel = new javax.swing.JLabel();
+        turnValueLabel = new javax.swing.JLabel();
+        clawValueLabel = new javax.swing.JLabel();
+        speedResetButton = new javax.swing.JButton();
+        turnResetButton = new javax.swing.JButton();
+        clawResetButton = new javax.swing.JButton();
         aboutBtn = new javax.swing.JButton();
         robotChoiceComboBox = new javax.swing.JComboBox();
 
@@ -96,8 +106,9 @@ public class BasicControlGui extends javax.swing.JFrame {
         });
 
         movePanel.setFocusable(false);
+        movePanel.setLayout(new java.awt.GridBagLayout());
 
-        leftBtn.setText("<");
+        leftBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left.png"))); // NOI18N
         leftBtn.setBorderPainted(false);
         leftBtn.setEnabled(false);
         leftBtn.setFocusPainted(false);
@@ -107,8 +118,18 @@ public class BasicControlGui extends javax.swing.JFrame {
                 leftBtnActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.ipadx = -17;
+        gridBagConstraints.ipady = 17;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(26, 65, 0, 0);
+        movePanel.add(leftBtn, gridBagConstraints);
 
-        rightBtn.setText(">");
+        rightBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/right.png"))); // NOI18N
         rightBtn.setBorderPainted(false);
         rightBtn.setEnabled(false);
         rightBtn.setFocusPainted(false);
@@ -118,305 +139,411 @@ public class BasicControlGui extends javax.swing.JFrame {
                 rightBtnActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.ipadx = -14;
+        gridBagConstraints.ipady = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(29, 6, 0, 0);
+        movePanel.add(rightBtn, gridBagConstraints);
 
-        fwrBtn.setText("/\\");
-            fwrBtn.setBorderPainted(false);
-            fwrBtn.setEnabled(false);
-            fwrBtn.setFocusPainted(false);
-            fwrBtn.setFocusable(false);
-            fwrBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    fwrBtnActionPerformed(evt);
-                }
-            });
+        fwrBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/up.png"))); // NOI18N
+        fwrBtn.setBorderPainted(false);
+        fwrBtn.setEnabled(false);
+        fwrBtn.setFocusPainted(false);
+        fwrBtn.setFocusable(false);
+        fwrBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fwrBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 12;
+        gridBagConstraints.ipady = -5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 6, 0, 0);
+        movePanel.add(fwrBtn, gridBagConstraints);
 
-            BckwBtn.setText("\\/");
-            BckwBtn.setBorderPainted(false);
-            BckwBtn.setEnabled(false);
-            BckwBtn.setFocusPainted(false);
-            BckwBtn.setFocusable(false);
-            BckwBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    BckwBtnActionPerformed(evt);
-                }
-            });
+        BckwBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/down.png"))); // NOI18N
+        BckwBtn.setBorderPainted(false);
+        BckwBtn.setEnabled(false);
+        BckwBtn.setFocusPainted(false);
+        BckwBtn.setFocusable(false);
+        BckwBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BckwBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.ipadx = 12;
+        gridBagConstraints.ipady = -5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 6, 0, 0);
+        movePanel.add(BckwBtn, gridBagConstraints);
 
-            clawCloseBtn.setText(">-<");
-            clawCloseBtn.setToolTipText("Luk KLO");
-            clawCloseBtn.setBorderPainted(false);
-            clawCloseBtn.setEnabled(false);
-            clawCloseBtn.setFocusPainted(false);
-            clawCloseBtn.setFocusable(false);
-            clawCloseBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    clawCloseBtnActionPerformed(evt);
-                }
-            });
+        clawCloseBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/close_50.png"))); // NOI18N
+        clawCloseBtn.setToolTipText("Luk KLO");
+        clawCloseBtn.setBorderPainted(false);
+        clawCloseBtn.setEnabled(false);
+        clawCloseBtn.setFocusPainted(false);
+        clawCloseBtn.setFocusable(false);
+        clawCloseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clawCloseBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 11;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(11, 10, 0, 0);
+        movePanel.add(clawCloseBtn, gridBagConstraints);
 
-            clawOpenBtn.setText("<->");
-            clawOpenBtn.setToolTipText("Åbn KLO");
-            clawOpenBtn.setBorderPainted(false);
-            clawOpenBtn.setEnabled(false);
-            clawOpenBtn.setFocusPainted(false);
-            clawOpenBtn.setFocusable(false);
-            clawOpenBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    clawOpenBtnActionPerformed(evt);
-                }
-            });
+        clawOpenBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/open_50.png"))); // NOI18N
+        clawOpenBtn.setToolTipText("Åbn KLO");
+        clawOpenBtn.setBorderPainted(false);
+        clawOpenBtn.setEnabled(false);
+        clawOpenBtn.setFocusPainted(false);
+        clawOpenBtn.setFocusable(false);
+        clawOpenBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clawOpenBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(11, 9, 0, 10);
+        movePanel.add(clawOpenBtn, gridBagConstraints);
 
-            stopBtn.setFont(new java.awt.Font("Tahoma", 1, 11));
-            stopBtn.setForeground(new java.awt.Color(255, 0, 0));
-            stopBtn.setText("STOP ALT");
-            stopBtn.setToolTipText("Stop alt !");
-            stopBtn.setBorderPainted(false);
-            stopBtn.setEnabled(false);
-            stopBtn.setFocusPainted(false);
-            stopBtn.setFocusable(false);
-            stopBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    stopBtnActionPerformed(evt);
-                }
-            });
+        stopBtn.setFont(new java.awt.Font("Tahoma", 1, 11));
+        stopBtn.setForeground(new java.awt.Color(255, 0, 0));
+        stopBtn.setText("STOP ALT");
+        stopBtn.setToolTipText("Stop alt !");
+        stopBtn.setBorderPainted(false);
+        stopBtn.setEnabled(false);
+        stopBtn.setFocusPainted(false);
+        stopBtn.setFocusable(false);
+        stopBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.ipadx = 236;
+        gridBagConstraints.ipady = 39;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(15, 10, 11, 10);
+        movePanel.add(stopBtn, gridBagConstraints);
 
-            isReversedChkBox.setText("Reverse");
-            isReversedChkBox.setEnabled(false);
-            isReversedChkBox.setFocusPainted(false);
-            isReversedChkBox.setFocusable(false);
+        isReversedChkBox.setText("Reverse");
+        isReversedChkBox.setEnabled(false);
+        isReversedChkBox.setFocusPainted(false);
+        isReversedChkBox.setFocusable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(11, 6, 0, 0);
+        movePanel.add(isReversedChkBox, gridBagConstraints);
 
-            debugBtn.setText("jButton1");
-            debugBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    debugBtnActionPerformed(evt);
-                }
-            });
+        debugBtn.setText("jButton1");
+        debugBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                debugBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = -45;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(11, 34, 0, 0);
+        movePanel.add(debugBtn, gridBagConstraints);
 
-            javax.swing.GroupLayout movePanelLayout = new javax.swing.GroupLayout(movePanel);
-            movePanel.setLayout(movePanelLayout);
-            movePanelLayout.setHorizontalGroup(
-                movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(movePanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(stopBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                        .addGroup(movePanelLayout.createSequentialGroup()
-                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(clawCloseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(leftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(BckwBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                                .addComponent(fwrBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                                .addGroup(movePanelLayout.createSequentialGroup()
-                                    .addComponent(debugBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)))
-                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(movePanelLayout.createSequentialGroup()
-                                    .addGap(9, 9, 9)
-                                    .addComponent(clawOpenBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(movePanelLayout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(isReversedChkBox)
-                                        .addComponent(rightBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addContainerGap())
-            );
-            movePanelLayout.setVerticalGroup(
-                movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(movePanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(movePanelLayout.createSequentialGroup()
-                            .addComponent(fwrBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(BckwBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(movePanelLayout.createSequentialGroup()
-                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(clawOpenBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(clawCloseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                                    .addComponent(debugBtn)))
-                            .addGroup(movePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(movePanelLayout.createSequentialGroup()
-                                    .addGap(46, 46, 46)
-                                    .addComponent(leftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
-                                .addGroup(movePanelLayout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(rightBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(11, 11, 11)
-                            .addComponent(isReversedChkBox)))
-                    .addGap(15, 15, 15)
-                    .addComponent(stopBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
-                    .addContainerGap())
-            );
+        clawCloseLabel.setText("SPACE");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 51, 0, 0);
+        movePanel.add(clawCloseLabel, gridBagConstraints);
 
-            connectBtn.setText("CONNECT!");
-            connectBtn.setFocusable(false);
-            connectBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    connectBtnActionPerformed(evt);
-                }
-            });
+        clawOpenLabel.setText("CTRL");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 55, 0, 0);
+        movePanel.add(clawOpenLabel, gridBagConstraints);
 
-            statusLabel.setText("Status:");
-            statusLabel.setFocusable(false);
+        connectBtn.setText("CONNECT!");
+        connectBtn.setFocusable(false);
+        connectBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectBtnActionPerformed(evt);
+            }
+        });
 
-            statusPtyLabel.setText("NOT CONNECTED");
-            statusPtyLabel.setFocusable(false);
+        statusLabel.setText("Status:");
+        statusLabel.setFocusable(false);
 
-            sensorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Batteri"));
-            sensorPanel.setFocusable(false);
+        statusPtyLabel.setText("NOT CONNECTED");
+        statusPtyLabel.setFocusable(false);
 
-            batteryLevelBar.setOrientation(1);
-            batteryLevelBar.setToolTipText("Batteri-niveau");
-            batteryLevelBar.setFocusable(false);
+        sensorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Batteri"));
+        sensorPanel.setFocusable(false);
 
-            javax.swing.GroupLayout sensorPanelLayout = new javax.swing.GroupLayout(sensorPanel);
-            sensorPanel.setLayout(sensorPanelLayout);
-            sensorPanelLayout.setHorizontalGroup(
-                sensorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(sensorPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(batteryLevelBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            );
-            sensorPanelLayout.setVerticalGroup(
-                sensorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(sensorPanelLayout.createSequentialGroup()
-                    .addGap(38, 38, 38)
-                    .addComponent(batteryLevelBar, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                    .addContainerGap())
-            );
+        batteryLevelBar.setOrientation(1);
+        batteryLevelBar.setToolTipText("Batteri-niveau");
+        batteryLevelBar.setFocusable(false);
 
-            speedPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Speed"));
-            speedPanel.setFocusable(false);
+        javax.swing.GroupLayout sensorPanelLayout = new javax.swing.GroupLayout(sensorPanel);
+        sensorPanel.setLayout(sensorPanelLayout);
+        sensorPanelLayout.setHorizontalGroup(
+            sensorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sensorPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(batteryLevelBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        sensorPanelLayout.setVerticalGroup(
+            sensorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sensorPanelLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(batteryLevelBar, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
-            jLabel1.setText("Hastighed . . . . . .");
+        speedPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Speed"));
+        speedPanel.setFocusable(false);
+        speedPanel.setLayout(new java.awt.GridBagLayout());
 
-            jLabel2.setText("Vende-hastighed  .");
+        jLabel1.setText("Hastighed . . . . . .");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(31, 16, 0, 0);
+        speedPanel.add(jLabel1, gridBagConstraints);
 
-            jLabel3.setText("Klo . . . . . . . . . . .");
+        jLabel2.setText("Vende-hastighed  .");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 16, 0, 0);
+        speedPanel.add(jLabel2, gridBagConstraints);
 
-            speedSlider.setPaintTicks(true);
-            speedSlider.setEnabled(false);
-            speedSlider.setFocusable(false);
+        jLabel3.setText("Klo . . . . . . . . . . .");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 16, 0, 0);
+        speedPanel.add(jLabel3, gridBagConstraints);
 
-            turnspeedSlider.setPaintTicks(true);
-            turnspeedSlider.setEnabled(false);
-            turnspeedSlider.setFocusable(false);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setEnabled(false);
+        speedSlider.setFocusable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 164;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(31, 3, 0, 0);
+        speedPanel.add(speedSlider, gridBagConstraints);
 
-            clawspeedSlider.setMaximum(50);
-            clawspeedSlider.setPaintTicks(true);
-            clawspeedSlider.setValue(25);
-            clawspeedSlider.setEnabled(false);
-            clawspeedSlider.setFocusable(false);
+        turnspeedSlider.setPaintTicks(true);
+        turnspeedSlider.setEnabled(false);
+        turnspeedSlider.setFocusable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 164;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 4, 0, 91);
+        speedPanel.add(turnspeedSlider, gridBagConstraints);
 
-            javax.swing.GroupLayout speedPanelLayout = new javax.swing.GroupLayout(speedPanel);
-            speedPanel.setLayout(speedPanelLayout);
-            speedPanelLayout.setHorizontalGroup(
-                speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(speedPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(speedPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(4, 4, 4)
-                            .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(speedPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(turnspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(speedPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(clawspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap(85, Short.MAX_VALUE))
-            );
-            speedPanelLayout.setVerticalGroup(
-                speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(speedPanelLayout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2)
-                        .addComponent(turnspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(speedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(clawspeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3)))
-            );
+        clawspeedSlider.setMaximum(50);
+        clawspeedSlider.setPaintTicks(true);
+        clawspeedSlider.setValue(25);
+        clawspeedSlider.setEnabled(false);
+        clawspeedSlider.setFocusable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.ipadx = 164;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 4, 7, 91);
+        speedPanel.add(clawspeedSlider, gridBagConstraints);
 
-            aboutBtn.setContentAreaFilled(false);
-            aboutBtn.setFocusPainted(false);
-            aboutBtn.setFocusable(false);
-            aboutBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    aboutBtnActionPerformed(evt);
-                }
-            });
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, speedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), speedValueLabel, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
-            robotChoiceComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BERTA", "PROP" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+        speedPanel.add(speedValueLabel, gridBagConstraints);
 
-            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-            getContentPane().setLayout(layout);
-            layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(statusLabel)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
-                                        .addComponent(connectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(robotChoiceComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(62, 62, 62))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(speedPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(sensorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addContainerGap())
-            );
-            layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(34, 34, 34)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(connectBtn)
-                                .addComponent(robotChoiceComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(statusLabel)
-                                .addComponent(statusPtyLabel)))
-                        .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(4, 4, 4)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(sensorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(speedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(35, 35, 35))
-            );
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, turnspeedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), turnValueLabel, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
 
-            pack();
-        }// </editor-fold>//GEN-END:initComponents
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+        speedPanel.add(turnValueLabel, gridBagConstraints);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, clawspeedSlider, org.jdesktop.beansbinding.ELProperty.create("${value}"), clawValueLabel, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+        speedPanel.add(clawValueLabel, gridBagConstraints);
+
+        speedResetButton.setText("reset");
+        speedResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                speedResetButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+        speedPanel.add(speedResetButton, gridBagConstraints);
+
+        turnResetButton.setText("reset");
+        turnResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                turnResetButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+        speedPanel.add(turnResetButton, gridBagConstraints);
+
+        clawResetButton.setText("reset");
+        clawResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clawResetButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+        speedPanel.add(clawResetButton, gridBagConstraints);
+
+        aboutBtn.setContentAreaFilled(false);
+        aboutBtn.setFocusPainted(false);
+        aboutBtn.setFocusable(false);
+        aboutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutBtnActionPerformed(evt);
+            }
+        });
+
+        robotChoiceComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BERTA", "PROP" }));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(sensorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(speedPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(statusLabel)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(statusPtyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
+                                            .addComponent(connectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(robotChoiceComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(62, 62, 62)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(connectBtn)
+                            .addComponent(robotChoiceComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(statusLabel)
+                            .addComponent(statusPtyLabel)))
+                    .addComponent(aboutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sensorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(movePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(speedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        bindingGroup.bind();
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
         private void aboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutBtnActionPerformed
             
@@ -467,6 +594,21 @@ public class BasicControlGui extends javax.swing.JFrame {
             
             
         }//GEN-LAST:event_debugBtnActionPerformed
+
+        private void turnResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_turnResetButtonActionPerformed
+            turnspeedSlider.setValue(50);
+        	// TODO add your handling code here:
+        }//GEN-LAST:event_turnResetButtonActionPerformed
+
+        private void speedResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_speedResetButtonActionPerformed
+            speedSlider.setValue(50);
+        	// TODO add your handling code here:
+        }//GEN-LAST:event_speedResetButtonActionPerformed
+
+        private void clawResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clawResetButtonActionPerformed
+            clawspeedSlider.setValue(25);
+        	// TODO add your handling code here:
+        }//GEN-LAST:event_clawResetButtonActionPerformed
 
 	private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_connectBtnActionPerformed
 		if (connected) {
@@ -572,22 +714,28 @@ public class BasicControlGui extends javax.swing.JFrame {
 //		System.out.println("KEY PRESSED: " + key);
 		switch (key) {
 		case KeyEvent.VK_UP:
+			fwrBtn.doClick();
 			moveForward();
 			break;
 		case KeyEvent.VK_DOWN:
+			BckwBtn.doClick();
 			moveBackward();
 			break;
 		case KeyEvent.VK_LEFT:
+			leftBtn.doClick();
 			moveLeft();
 			break;
 		case KeyEvent.VK_RIGHT:
+			rightBtn.doClick();
 			moveRight();
 			break;
 		case KeyEvent.VK_SPACE:
+			clawCloseBtn.doClick();
 			closeClaw();
 			break;
                case KeyEvent.VK_CONTROL:
-			openClaw();
+            	clawOpenBtn.doClick();   
+			openClaw();			
 			break;
                 default:
 			break;
@@ -635,7 +783,11 @@ public class BasicControlGui extends javax.swing.JFrame {
     private javax.swing.JButton aboutBtn;
     private javax.swing.JProgressBar batteryLevelBar;
     private javax.swing.JButton clawCloseBtn;
+    private javax.swing.JLabel clawCloseLabel;
     private javax.swing.JButton clawOpenBtn;
+    private javax.swing.JLabel clawOpenLabel;
+    private javax.swing.JButton clawResetButton;
+    private javax.swing.JLabel clawValueLabel;
     private javax.swing.JSlider clawspeedSlider;
     private javax.swing.JButton connectBtn;
     private javax.swing.JButton debugBtn;
@@ -651,11 +803,16 @@ public class BasicControlGui extends javax.swing.JFrame {
     private javax.swing.JComboBox robotChoiceComboBox;
     private javax.swing.JPanel sensorPanel;
     private javax.swing.JPanel speedPanel;
+    private javax.swing.JButton speedResetButton;
     private javax.swing.JSlider speedSlider;
+    private javax.swing.JLabel speedValueLabel;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JLabel statusPtyLabel;
     private javax.swing.JButton stopBtn;
+    private javax.swing.JButton turnResetButton;
+    private javax.swing.JLabel turnValueLabel;
     private javax.swing.JSlider turnspeedSlider;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
 	public void reset() {

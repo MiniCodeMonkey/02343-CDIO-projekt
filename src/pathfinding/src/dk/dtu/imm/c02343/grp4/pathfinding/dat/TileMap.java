@@ -89,8 +89,19 @@ public class TileMap
 		}
 		
 		System.out.println("\n\n\n\n");*/
-		
-		return obstacleMap[ty][tx] / 15;
+
+		if (obstacleMap[ty][tx] >= 15)
+		{
+			return 2;
+		}
+		else if (obstacleMap[ty][tx] >= 1)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	public void pathFinderVisited(int y, int x)

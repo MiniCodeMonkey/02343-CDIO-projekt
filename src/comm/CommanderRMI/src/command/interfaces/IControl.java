@@ -111,4 +111,6 @@ public interface IControl extends Remote {
 	 */
 	void disconnect() throws IOException, RemoteException;
 	
+	boolean isBerta() throws RemoteException;
+	
 }

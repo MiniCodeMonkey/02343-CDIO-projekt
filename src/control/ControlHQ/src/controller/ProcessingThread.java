@@ -13,6 +13,7 @@ import command.interfaces.IControl;
 import command.rmi.RmiClient;
 
 import controller.RobotThread.RobotState;
+import controller.RobotThread.RobotType;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ICake;
 import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
 import dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.IImageProcessor;
@@ -45,10 +46,6 @@ public class ProcessingThread extends Thread
 	 * Used to decide which robot(s) to connect
 	 */
 	private int connetToRobots = -1;
-	/**
-	 * Set to true to output processing time in console
-	 */
-	private final boolean showProcessingTime = false;
 	
 	// bruges af GUI
 	/**
@@ -80,7 +77,13 @@ public class ProcessingThread extends Thread
 		Thread.currentThread().setName("Processing Thread");
 		try
 		{
-			initialize();
+			try
+			{
+				initialize();
+			} catch (RemoteException e)
+			{
+				e.printStackTrace();
+			}
 			runLoop();
 		}
 		catch (ControllerException e)
@@ -98,8 +101,9 @@ public class ProcessingThread extends Thread
 	/**
 	 * @throws ControllerException
 	 * @throws MasterRobotNotFound
+	 * @throws RemoteException 
 	 */
-	private void initialize() throws ControllerException, MasterRobotNotFound
+	private void initialize() throws ControllerException, MasterRobotNotFound, RemoteException
 	{
 		// Initialize imageprocessor and comm
 		imageProcessor = new ImageProcessor2();
@@ -140,7 +144,13 @@ public class ProcessingThread extends Thread
 				continue;
 			}
 			
-			robotThreads[robotIndex] = new RobotThread(robotControl);
+			
+			if (robotControl.isBerta())
+				robotThreads[robotIndex] = new RobotThread(robotControl,RobotThread.RobotType.MASTER);
+			else
+				robotThreads[robotIndex] = new RobotThread(robotControl,RobotThread.RobotType.SLAVE);
+			
+			
 			robotThreads[robotIndex].start();
 			
 			robotIndex++;
@@ -173,10 +183,10 @@ public class ProcessingThread extends Thread
 			{
 				while(running)
 				{
-//					long time = System.currentTimeMillis();
+					long time = System.currentTimeMillis();
 					if (getImage() != null){
 						locations = imageProcessor.examineImage(getImage(), true);
-//						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
+						System.out.println("Image fetched in " + (System.currentTimeMillis() - time) + " ms");
 					}
 				}
 			};
@@ -190,16 +200,16 @@ public class ProcessingThread extends Thread
 				{
 					try
 					{
-//						long time = System.currentTimeMillis();
+						long time = System.currentTimeMillis();
 						if (locations != null){
 							// Calculate new paths
 							calculatePaths(getLocations());
-//							System.out.println("Calculate path in " + (System.currentTimeMillis() - time) + " ms");
+							System.out.println("Calculate paths in " + (System.currentTimeMillis() - time) + " ms");
 						}
 					} 
 					catch (ControllerException e)
 					{
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					} 
 				}
 			};
@@ -240,7 +250,7 @@ public class ProcessingThread extends Thread
 					}
 					else
 					{
-						robotThreads[robotIndex].getRobotControl().move(40, false);
+						robotThreads[robotIndex].getRobotControl().move(Thresholds.getInstance().getHighSpeed(), false);
 					}
 				}
 			}
@@ -257,7 +267,7 @@ public class ProcessingThread extends Thread
 		// Is no robots available?
 		if (!locations.getRobots().get(0).isActive() && !locations.getRobots().get(1).isActive())
 		{
-			throw new ControllerException("Could not visually find any robots");
+			return;//throw new ControllerException("Could not visually find any robots");
 		}
 		
 		// Create a new tile map from the locations object
@@ -265,7 +275,8 @@ public class ProcessingThread extends Thread
 		tileMap.setTileMap(locations.getTilemap(), locations.getObstaclemap());
 		
 		// Sets robot-is-yielding flag in imageprocessor, if robot 2 is in a YIELD state. (Robot 2 then works as an obstacle)
-		if (robotThreads[1] != null && (robotThreads[1].getRobotState() == RobotState.YIELD_CAKE || robotThreads[1].getRobotState() == RobotState.YIELD_DELIVERY))
+		if (robotThreads[1] != null && (robotThreads[1].getRobotState() == RobotState.YIELD_CAKE || robotThreads[1].getRobotState() == RobotState.YIELD_DELIVERY
+				|| robotThreads[1].getRobotState() == RobotState.IDLE ))
 		{
 			imageProcessor.setRobotYield(true);
 		}
@@ -275,7 +286,7 @@ public class ProcessingThread extends Thread
 		}
 		
 		// Find a path for each robot
-		int robotIndex = 0;
+		int robotIndex = 0;		
 		
 		// Loop through all active robots
 		for (RobotThread robotThread : robotThreads)
@@ -283,11 +294,14 @@ public class ProcessingThread extends Thread
 			if (robotThread == null)
 				continue;
 			
+			RobotThread otherRobotThread = robotThreads[robotIndex == 0 ? 1 : 0];
+			
 			// Tell the thread the new robot locations
 			try
 			{
+				robotThread.setTileMap(tileMap);
 				robotThread.setRobotLocation(locations.getRobots().get(robotIndex));
-				robotThread.setAllRobotLocations(locations.getRobots());
+				robotThread.setOtherRobotLocation(locations.getRobots().get(robotIndex == 0 ? 1 : 0));
 				
 			}
 			catch (IndexOutOfBoundsException e)
@@ -315,20 +329,18 @@ public class ProcessingThread extends Thread
 				// The target cake is no longer at the location
 				if (!foundCake)
 				{
-					System.out.println("********************");
-					System.out.println("** CAKE HAS MOVED **");
-					System.out.println("********************");
 					robotThread.setRobotState(RobotState.IDLE);
 				}
 			}
 			
 			// If idling, possibly pick a cake to pick up
+			
 			if (robotThread.getRobotState() == RobotState.IDLE && cakesCount > 0)
 			{
 				// Build a list of cakes not in use by other robots
 				ArrayList<Location> possibleCakes = new ArrayList<Location>();
 				
-				// Loop through all cakes
+				// Loop through all cakes to find possible cakes to pick up
 				for (ICake cake : locations.getCakes())
 				{
 					boolean in_use = false;
@@ -339,22 +351,46 @@ public class ProcessingThread extends Thread
 						
 						if (rThread.getTargetLocation() != null && rThread.getTargetLocation().GetX() > 0)
 						{
-							// If the robot has the target location as the
-							// current cake
-							if (rThread.getTargetLocation().GetX() == cake.getX() && rThread.getTargetLocation().GetY() == cake.getY())
+							// If the robot has the target location as the current cake
+							if((Math.abs(rThread.getTargetLocation().GetX() - cake.getX()) < 10) && (Math.abs(rThread.getTargetLocation().GetY() - cake.getY()) < 10))
+							{
+								// If the other robot is inactive / visually out of sight, we can pick this to
+								if (!robotThread.getOtherRobotLocation().isActive())
+								{
+									// Tell the robot that it no longer has this cake as target location
+									otherRobotThread.setTargetLocation(null);
+									otherRobotThread.setRobotState(RobotState.IDLE);
+								}
+								else
+								{
+									in_use = true;
+									break;
+								}
+							}
+						}	
+					}
+					
+					// If the current robot is a MASTER robot and the SLAVE is yielding, AND the SLAVE robot is close to the cake, it is "in use"
+					if (robotThread.getRobotType() == RobotType.MASTER)
+					{
+						if (otherRobotThread != null && otherRobotThread.getRobotLocation() != null)
+						{
+							double distance = otherRobotThread.calculateDistance(cake.getX(), cake.getY(), otherRobotThread.getRobotLocation().getX(), otherRobotThread.getRobotLocation().getY());
+							
+							if ((otherRobotThread.getRobotState() == RobotState.YIELD_CAKE || otherRobotThread.getRobotState() == RobotState.YIELD_DELIVERY)
+									&& distance < Thresholds.getInstance().getInRangeOfCake())
 							{
 								in_use = true;
-								break;
 							}
 						}
-						
 					}
 					
 					// No robot is using the cake
 					if (!in_use)
 					{
+						Location cakeNotInUse = new Location(cake.getY(), cake.getX());
 						// Add to not-in-use-list
-						possibleCakes.add(new Location(cake.getY(), cake.getX()));
+						possibleCakes.add(cakeNotInUse);
 					}
 				}
 				
@@ -362,13 +398,19 @@ public class ProcessingThread extends Thread
 				// already have been selected by another robot
 				if (possibleCakes.size() > 0)
 				{
+					// Only the master can pick the last cake
+					if (possibleCakes.size() == 1 && robotThread.getRobotType() != RobotType.MASTER)
+						return;
+					
 					// Find closest cake
 					double closestDistance = Double.MAX_VALUE;
 					Location determinedCakeLocation = null;
 					
-					// Loop through all cake locations to find the best location
-					for (Location cakeLocation : possibleCakes)
+					// Loop through all cake locations to find the best location (closest cake)
+					for (int i = 0; i < possibleCakes.size(); i++)
 					{					
+						Location cakeLocation = possibleCakes.get(i);
+						
 						double dist = Math.sqrt(Math.pow(robotThread.getRobotLocation().getX() - cakeLocation.GetX(), 2) + Math.pow(robotThread.getRobotLocation().getY() - cakeLocation.GetY(), 2));
 						
 						// Is this cake closer than the last found closest cake?
@@ -379,7 +421,6 @@ public class ProcessingThread extends Thread
 						}
 					}
 					
-					System.out.println("Going for cake at: " + determinedCakeLocation.GetX() + "," + determinedCakeLocation.GetY());
 					// Set the target to the determined cake's location
 					robotThread.setTargetLocation(determinedCakeLocation);
 					
@@ -391,12 +432,9 @@ public class ProcessingThread extends Thread
 			// We only calculate a path if the robot is heading for delivery or
 			// heading for a cake or is currently positioning
 			if (robotThread.getRobotState() == RobotState.HEADING_FOR_DELIVERY || robotThread.getRobotState() == RobotState.HEADING_FOR_CAKE || robotThread.getRobotState() == RobotState.POSITIONING)
-			{
-				// FIXME WTF is this for?!
-//				Location target = robotThread.getTargetLocation();
-				
+			{	
 				// Find path for robot
-				PathFinder pathFinder = new PathFinder(tileMap, 1500, false);
+				PathFinder pathFinder = new PathFinder(tileMap, 700, false);
 				
 				Path newPath = null;
 				
@@ -417,9 +455,9 @@ public class ProcessingThread extends Thread
 					locations.setTileImage(drawPath(locations.getTileImage(), robotThread.getPath()));
 				}
 				
-				robotIndex++;
+				
 			}
-			
+			robotIndex++;
 		}
 	}
 	

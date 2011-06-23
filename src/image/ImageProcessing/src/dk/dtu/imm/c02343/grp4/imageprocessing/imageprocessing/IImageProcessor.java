@@ -50,7 +50,7 @@ public interface IImageProcessor {
 	 * Standard størrelse på forhindrings-sikkerhedszone
 	 * HUSK: Ændres dette skal der også tages forbehold for dette i tilemappen's blocked metode i pathfinderen
 	 */
-	public static final int OBSTACLE_BUFFER = 40;
+	public static final int OBSTACLE_BUFFER = 30;
 	
 	/**
 	 * Standard grænseværdier for mapping af forhindringer fra billedkilde
@@ -60,7 +60,7 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af kager fra billedkilde
 	 */
-	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(80, 0, 0, 255, 45, 60);
+	public static final Thresholds CAKE_THRESHOLDS = new Thresholds(80, 0, 0, 255, 52, 60);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot1 front fra billedkilde
@@ -70,17 +70,17 @@ public interface IImageProcessor {
 	/**
 	 * Standard grænseværdier for mapping af robot1 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 30, 30, 50, 255);
+	public static final Thresholds ROBOT1_S_THRESHOLDS = new Thresholds(0, 0, 10, 30, 50, 255);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 front fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 60, 0, 220, 110, 50);
+	public static final Thresholds ROBOT2_N_THRESHOLDS = new Thresholds(150, 60, 0, 240, 110, 50);
 	
 	/**
 	 * Standard grænseværdier for mapping af robot2 bag fra billedkilde
 	 */
-	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(170, 170, 0, 230, 230, 90);
+	public static final Thresholds ROBOT2_S_THRESHOLDS = new Thresholds(180, 180, 0, 250, 240, 90);
 	
 	/**
 	 * Standard værdi for X-opløsningen i behandlingen

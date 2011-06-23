@@ -116,4 +116,11 @@ public class Robot implements dk.dtu.imm.c02343.grp4.dto.interfaces.IRobot {
 		
 		return (x == -1 && y == -1)? false: true;
 	}
+	
+	@Override public boolean equals(Object otherObject)
+	{
+		Robot otherRobot = (Robot)otherObject;
+		
+		return (this.getX() == otherRobot.getX() && this.getY() == otherRobot.getY());
+	}
 }
