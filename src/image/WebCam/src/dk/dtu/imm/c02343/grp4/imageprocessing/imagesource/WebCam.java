@@ -95,9 +95,6 @@ public class WebCam implements IImageSource {
 		// Vent, så playeren får tid til at starte op
 		try {
 			Thread.sleep(5000);
-//			do {
-//				Thread.sleep(100);
-//			} while (player.getState() == Controller.Unrealized || player.getState() == Controller.Realizing);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
