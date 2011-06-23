@@ -1,0 +1,87 @@
+% Forside
+% Gruppe betegnelse
+\def\group{Gruppe nr. 4}%
+%\begin{tabular}{l l}%
+%Gruppe nr.: & 4 \\%
+%Rapport nr.: & 1 \\%
+%Livscyklus fase: & Etablering \\%
+%Plan status: & Ej lagt%
+%\end{tabular}%
+%}
+%Gruppe nr. 4}
+\def\taa{Gruppe nr.:}
+\def\tba{4}
+\def\tab{Rapport nr.:}
+\def\tbb{7 (status 4)}
+\def\tac{Livscyklus fase:}
+\def\tbc{Eksekvering}
+\def\tad{Plan status:}
+\def\tbd{Følges}
+
+% Gruppemedlemmer
+% Billeder af gruppemedlemmer skal ligge i mappen forside med filnavn [studienr].eps+[studienr].jpg/png/bmp/pdf
+\addstudent{s042067}{Clausen}{Per Boye}{Initialer: PC --- Projektleder}
+\addstudent{s083117}{Andersen}{Morten Hulvej}{Initialer: MA --- Stedfortræder}
+\addstudent{s070162}{Kronborg}{Jeppe}{Initialer: JK}
+\addstudent{s093478}{Hansen}{Mathias}{Initialer: MH}
+\addstudent{s093482}{Brix}{Terkel Thorbjørn}{Initialer: TB}
+
+% Tekst til signaturlinjer
+\def\signature{Afleveret via CampusNet}
+%\def\signature{}
+
+% Tekst under deltagere
+%\def\studentend{\vspace{1cm}Denne rapport er modtaget af: \rule{3cm}{1pt} den \rule{0.9cm}{1pt}\ /\ \rule{0.9cm}{1pt} kl: \rule{0.9cm}{1pt}\ :\ \rule{0.9cm}{1pt}}
+
+% Kursus
+\def\course{02341 CDIO-projekt}
+
+% Subject
+\def\subject{LEGO-robot}
+
+% Titel på opgave
+\def\titlea{CDIO-projekt}
+\def\titleb{\subject}
+
+%\def\totalpages{8}
+% Afleveringstidspunkt
+\def\delivery{14. juni 2011 kl. 14}
+% Lærer(e)
+\def\teacher{.}
+
+% Institut + kursus til bund venstre
+\def\institutelogo{DTU_IMM_DK_CMYK}
+\def\bl{\course}
+
+% Vejleder, frist, sider til bund højre
+\def\bra{}
+\def\brb{Dato: \delivery}
+\def\brc{Dokumentet indeholder \totalpages\ sider inkl. forside}
+
+% Indhold
+% Header
+\def\headinner{\titleb}
+%\def\headinner{\leftmark}
+\def\headcenter{}
+\def\headouter{\thepage}
+% Footer
+\def\footinner{}
+\def\footcenter{\group\\\studentstring{0}}
+\def\footouter{}
+
+% Appendix
+% Header
+\def\headainner{\titleb: Appendix}
+\def\headacenter{}
+\def\headaouter{\thepage}
+% Footer
+\def\footainner{}
+\def\footacenter{\footcenter}
+\def\footaouter{}
+
+
+\hypersetup{%
+  pdfauthor={\group: \studentstring{1}},
+  pdftitle={\titlea},
+  pdfsubject={\titleb}}
+% se http://shor.ter.dk/585273876 og http://ltswww.epfl.ch/~dsanta/resources/hyperref
