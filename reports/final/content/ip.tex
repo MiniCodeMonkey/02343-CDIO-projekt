@@ -1,5 +1,9 @@
 \chapter{Billedbehandling}\label{cha:ip}
-\section{Udviklingsproces}
+Billedbehandlingen er udviklet helt fra grunden. Der er valgt en metode, som så tidligt som muligt fortolker billedet fra webcam til et 2D-array. Dette er gjort for at få maksimalt kendskab til koden, og dermed bedre mulighed for at rette eventuelle uhensigtsmæssigheder samt forbedre performance.
+
+Billedbehandlingen er udviklet iterativt. I projektets forløb har ønskerne til billedbehandlingen ændret sig, og i første omgang er disse ønsker opfyldt hurtigst muligt for at maksimere effektiviteten i projektforløbet.
+
+Efter første full cycle er erfaringerne og tilføjelserne i billedbehandlingen benyttet til udvikling af en ny version -- version 2. Her er køretid mv. forsøgt optimeret i forhold til tidligere.
 
 \section{Design}
 Billedbehandlingen inddeles i to dele: Webcam og behandling af billedet.
@@ -7,9 +11,9 @@ Billedbehandlingen inddeles i to dele: Webcam og behandling af billedet.
 \subsection{Webcam}
 Webcam-delen sørger for at varetage forbindelsen til webcam, og herfra hentes rå billeder.
 
-Der defineres et interface, \texttt{IImageSource}, som specificerer metoderne \texttt{init()}, som benyttes til at forbinde til webcam -- \texttt{close()}, som lukker forbindelsen til webcam -- samt \texttt{getImage()}, som returnerer et billede fra webcam som et \texttt{BufferedImage} objekt.
+Der defineres et interface, \texttt{IImageSource}. Dette specificerer metoderne \texttt{init()}, som benyttes til at forbinde til webcam -- \texttt{close()}, som lukker forbindelsen til webcam -- samt \texttt{getImage()}, som returnerer et billede fra webcam som et \texttt{BufferedImage} objekt.
 
-Til at håndtere selve fobinddelsen til kameraet benyttes JMF \rec{cite}.
+Til at håndtere selve forbindelsen til kameraet benyttes JMF \rec{cite}.
 
 \begin{comment}
 Opbygning
@@ -36,7 +40,9 @@ Der er specificeret et interface -- \texttt{IImageProcessor} -- som billedbehand
 Selve billedbehandlingen er implementeret i \texttt{ImageProcessor2} klassen. \rec{Forklaring på 2?} Al funktionalitet er specificeret her.
 
 Data, som skal benyttes videre i det samlede system, returneres i DTO\footnote{Data Transfer Object} klassen \texttt{Locations}, som implementerer \texttt{ILocations} interfacet. Disse entiteter er rent databærende.\\
-\texttt{ILocations} gemmer tilemap og forhindrings map som 2D int-arrays, og kager og robotter gemmes som lister af hhv. \texttt{Cake}- og \texttt{Robot} DTO-objekter. Kildebillede og fortolket billedet gemmes som \texttt{BufferedImage} objekter.
+\texttt{Locations} gemmer tilemap og forhindrings map som 2D int-arrays, og kager og robotter gemmes som lister af hhv. \texttt{Cake}- og \texttt{Robot} DTO-objekter. Kildebillede og fortolket billedet gemmes som \texttt{BufferedImage} objekter.
+
+Der er til de fleste parametre lavet getter/setter metoder. Til bestemmelse af grænseværdier for en objekttype er indført en \texttt{Thresholds} klasse, som indeholder minimums- og maksimumsværdier for farvekomponenterne.
 
 \section{Implementering}
 \subsection{Webcam}
@@ -47,6 +53,12 @@ Selve forbindelsen bruges gennem et statisk \texttt{Player} objekt.
 
 \subsection{Billedbehandling}
 I billedbehandlingen ligger klassevariable med tilhørende get-/set-metoder til de parametre, som er specificeret i \texttt{IImageProcessor}.
+
+\paragraph{Hjælpemetoder}
+De mest benyttede hjælpemetoder i billedbehandlingen er \texttt{collect(...)} og \texttt{collectRecursion(...)}. Sidstnævnte benytter en BFS\footnote{Bredde-Først Søgning} til at samle sammenhængende punkter.\\
+\texttt{collect(...)} benytter denne til at samle punkter til et objekt. Undervejs vurderes det, om objektet er for lille -- og dermed blot skal filtreres fra. Hvis objektet bliver accepteret, bestemmes og returneres centerkoordinatet.
+
+\texttt{calculateAngle(...)} metoden finder vinklen fra ét punkt til et andet. Dette udregnes vha. trigonometri. Vinkler behandles altid i radianer.
 
 \paragraph{\texttt{examineImage(...)}}
 Denne metode benyttes, når et billede skal behandles. Metoden tager som argumenter det kildebillede (et \texttt{BufferedImage}), som skal behandles, samt en boolsk værdi, som dikterer, hvorvidt en grafisk repræsentation af det behandlede billede skal dannes.\\

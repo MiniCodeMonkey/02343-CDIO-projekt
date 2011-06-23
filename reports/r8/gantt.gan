@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Kursus 02343 F11 - &lt;Projektnavn&gt;" company="" webLink="" view-date="2011-01-30" view-index="0" gantt-divider-location="497" resource-divider-location="301" version="2.0">
+    <description/>
+    <view zooming-state="default:5" id="gantt-chart"/>
+    <view id="resource-table">
+        <field id="0" name="Name" width="55" order="0"/>
+        <field id="1" name="Default role" width="44" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <calendar id="1" name="default">
+                <default-week sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+                <overriden-day-types/>
+                <days/>
+            </calendar>
+        </day-types>
+    </calendars>
+    <tasks color="#99ccff">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="LEGO-robot" color="#99ccff" meeting="false" start="2011-02-02" duration="102" complete="31" priority="1" expand="true">
+            <task id="1" name="Etablering" color="#99ccff" meeting="false" start="2011-02-02" duration="13" complete="100" priority="1" expand="true">
+                <depend id="2" type="2" difference="0" hardness="Strong"/>
+                <depend id="23" type="2" difference="0" hardness="Strong"/>
+                <depend id="28" type="2" difference="0" hardness="Strong"/>
+                <task id="12" name="Gruppe etablering" color="#99ccff" meeting="false" start="2011-02-02" duration="1" complete="100" priority="1" expand="true">
+                    <depend id="13" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="13" name="Løsningsstrategi" color="#99ccff" meeting="false" start="2011-02-03" duration="4" complete="100" priority="1" expand="true">
+                    <depend id="11" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="11" name="Udarbejdelse af projektplan" color="#99ccff" meeting="false" start="2011-02-09" duration="8" complete="100" priority="1" expand="true"/>
+            </task>
+            <task id="2" name="Eksekvering" color="#99ccff" meeting="false" start="2011-02-21" duration="85" complete="97" priority="1" expand="true">
+                <task id="4" name="Robot" color="#99ccff" meeting="false" start="2011-02-21" duration="42" complete="100" priority="1" expand="true">
+                    <depend id="27" type="2" difference="0" hardness="Strong"/>
+                    <task id="21" name="Kommunikation" color="#99ccff" meeting="false" start="2011-02-21" duration="20" complete="100" priority="1" expand="true">
+                        <depend id="42" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="15" name="Bygning" color="#99ccff" meeting="false" start="2011-02-21" duration="27" complete="100" priority="1" expand="true">
+                        <depend id="42" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="20" name="Programmering" color="#99ccff" meeting="false" start="2011-03-01" duration="25" complete="100" priority="1" expand="true">
+                        <depend id="42" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="42" name="Test" color="#99ccff" meeting="false" start="2011-04-05" duration="11" complete="100" priority="1" expand="true"/>
+                </task>
+                <task id="5" name="Billedbehandling" color="#99ccff" meeting="false" start="2011-02-21" duration="42" complete="100" priority="1" expand="true">
+                    <depend id="27" type="2" difference="0" hardness="Strong"/>
+                    <task id="23" name="Webcam forbindelse" color="#99ccff" meeting="false" start="2011-02-21" duration="4" complete="100" priority="1" expand="true">
+                        <depend id="24" type="2" difference="0" hardness="Strong"/>
+                        <depend id="43" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="24" name="Positionsbestemmelse" color="#99ccff" meeting="false" start="2011-02-25" duration="25" complete="100" priority="1" expand="true">
+                        <depend id="43" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="43" name="Test" color="#99ccff" meeting="false" start="2011-04-01" duration="13" complete="100" priority="1" expand="true"/>
+                </task>
+                <task id="26" name="Stifinding" color="#99ccff" meeting="false" start="2011-02-21" duration="42" complete="100" priority="1" expand="true">
+                    <depend id="27" type="2" difference="0" hardness="Strong"/>
+                    <task id="28" name="Algoritmedesign" color="#99ccff" meeting="false" start="2011-02-21" duration="12" complete="100" priority="1" expand="true">
+                        <depend id="30" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="30" name="Implementering af algoritme" color="#99ccff" meeting="false" start="2011-03-09" duration="5" complete="100" priority="1" expand="true">
+                        <depend id="36" type="2" difference="0" hardness="Strong"/>
+                    </task>
+                    <task id="36" name="Test" color="#99ccff" meeting="false" start="2011-03-16" duration="25" complete="100" priority="1" expand="true"/>
+                </task>
+                <task id="27" name="Samling" color="#99ccff" meeting="false" start="2011-04-20" duration="33" complete="100" priority="1" expand="true">
+                    <depend id="38" type="2" difference="0" hardness="Strong"/>
+                    <task id="34" name="Test af samlet System" color="#99ccff" meeting="false" start="2011-04-20" duration="33" complete="100" priority="1" expand="true"/>
+                </task>
+                <task id="38" name="Videreudvikling*" color="#99ccff" meeting="false" start="2011-06-06" duration="10" complete="50" priority="1" expand="true">
+                    <task id="40" name="2 Robotter" color="#99ccff" meeting="false" start="2011-06-06" duration="10" complete="50" priority="1" expand="true"/>
+                </task>
+            </task>
+            <task id="17" name="Styring" color="#99ccff" meeting="false" start="2011-02-02" duration="102" complete="0" priority="1" expand="true">
+                <task id="18" name="Logføring" color="#99ccff" meeting="false" start="2011-02-02" duration="102" complete="0" priority="1" expand="true"/>
+                <task id="22" name="Gruppemøder" color="#99ccff" meeting="false" start="2011-02-02" duration="102" complete="0" priority="1" expand="true"/>
+            </task>
+            <task id="33" name="Dokumentation" color="#99ccff" meeting="false" start="2011-02-02" duration="102" complete="0" priority="1" expand="true"/>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="PC" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="MA" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="JK" function="Default:0" contacts="" phone=""/>
+        <resource id="3" name="MH" function="Default:0" contacts="" phone=""/>
+        <resource id="4" name="TB" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="0" resource-id="3" function="1" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="4" function="1" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="2" function="1" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="1" function="1" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="4" resource-id="4" function="1" responsible="false" load="100.0"/>
+        <allocation task-id="4" resource-id="1" function="0" responsible="true" load="100.0"/>
+        <allocation task-id="5" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="26" resource-id="3" function="1" responsible="false" load="100.0"/>
+        <allocation task-id="26" resource-id="2" function="0" responsible="true" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd3" order="0" width="262"/>
+        <displaycolumn property-id="tpd4" order="1" width="42"/>
+        <displaycolumn property-id="tpd5" order="2" width="38"/>
+        <displaycolumn property-id="tpd6" order="3" width="52"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles>
+        <role id="0" name="Ansvarlig"/>
+        <role id="1" name="Deltager"/>
+    </roles>
+</project>
