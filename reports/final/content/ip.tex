@@ -1,0 +1,103 @@
+\chapter{Billedbehandling}\label{cha:ip}
+\section{Design}
+Billedbehandlingen inddeles i to dele: Webcam og behandling af billedet.
+
+\subsection{Webcam}
+Webcam-delen sørger for at varetage forbindelsen til webcam, og herfra hentes rå billeder.
+
+Der defineres et interface, \texttt{IImageSource}, som specificerer metoderne \texttt{init()}, som benyttes til at forbinde til webcam -- \texttt{close()}, som lukker forbindelsen til webcam -- samt \texttt{getImage()}, som returnerer et billede fra webcam som et \texttt{BufferedImage} objekt.
+
+Til at håndtere selve fobinddelsen til kameraet benyttes JMF \rec{cite}.
+
+\begin{comment}
+Opbygning
+	Webcam -> behandling
+	JMF
+\end{comment}
+
+\subsection{Billedbehandling}
+Billedbehandlingen behandler billedet fra kameraet og bestemmer positioner af forhindringer, kager og robotter, nærmere bestemt:
+\begin{description}
+	\item[Fortolkning af kildebillede] til et \textit{tilemap\footnote{Tilemap er et 2D-array af integers, som er opbygget som et billede med meget få farver (én farve pr. genkendt objekttype)}}. Hver pixel undersøges i forhold til fastsatte grænseværdier.
+	\item[Filtrering] af tilemap, hvor områder af pixels sorteres fra, hvis ikke de dækker et tilstrækkelig stort antal sammenhængende pixels. Dette fjerner støj fra billedet, og sikrer mod fejlagtig genkendelse af objekter.
+	\item[Bestemmelse af grænser] for banen ud fra de 4 hjørne-forhindringer.
+	\item[Generering af map af forhindringer], hvor der er tilføjet buffer-zoner omkring forhindringer. Hvis det ønskes, kan robot 2 her markeres, ligeledes med en buffer-zone, i tilfælde, hvor robot 1 skal finde vej uden om.
+	\item[Bestemmelse af position] for kager.
+	\item[Bestemmelse af position og vinkel] for robotter.
+	\item[Skalering af output] for at optimere køretiden for stifindingen. Denne funktionalitet er ikke taget i brug.
+	\item[Generering af grafisk repræsentation] af de behandlede data, så det er muligt at følge billedbehandlingens arbejde løbende.
+\end{description}
+
+\subsubsection{Opbygning}
+Der er specificeret et interface -- \texttt{IImageProcessor} -- som billedbehandlingen skal implementere. I dette interface lægges også standard-værdier for mange af de parametre, som billedbehandlingen gør brug af.
+
+Selve billedbehandlingen er implementeret i \texttt{ImageProcessor2} klassen. \rec{Forklaring på 2?} Al funktionalitet er specificeret her.
+
+Data, som skal benyttes videre i det samlede system, returneres i DTO\footnote{Data Transfer Object} klassen \texttt{Locations}, som implementerer \texttt{ILocations} interfacet. Disse entiteter er rent databærende.\\
+\texttt{ILocations} gemmer tilemap og forhindrings map som 2D int-arrays, og kager og robotter gemmes som lister af hhv. \texttt{Cake}- og \texttt{Robot} DTO-objekter. Kildebillede og fortolket billedet gemmes som \texttt{BufferedImage} objekter.
+
+\section{Implementering}
+\subsection{Webcam}
+Der benyttes fortrinsvis JMF til hele implementeringen af webcam forbindelsen. Implementeringen tager udgangspunkt i det eksempel, som er givet på CampusNet. \rec{Ref?}\\
+I \texttt{init()} metoden oprettes der forbindelse til enheden "`vfw:Microsoft WDM Image Capture (Win32):0"'. Der benyttes formatet 320x240 RGB.
+
+Selve forbindelsen bruges gennem et statisk \texttt{Player} objekt.
+
+\subsection{Billedbehandling}
+I billedbehandlingen ligger klassevariable med tilhørende get-/set-metoder til de parametre, som er specificeret i \texttt{IImageProcessor}.
+
+\paragraph{\texttt{examineImage(...)}}
+Denne metode benyttes, når et billede skal behandles. Metoden tager som argumenter det kildebillede (et \texttt{BufferedImage}), som skal behandles, samt en boolsk værdi, som dikterer, hvorvidt en grafisk repræsentation af det behandlede billede skal dannes.\\
+Metoden returnerer et \texttt{Locations} objekt.
+
+\texttt{examineImage(...)} benytter de øvrige metoder i billedbehandlingen til at behandle det givne kildebillede.
+
+\paragraph{\texttt{generateTilemap()}}
+Her dannes ud fra kildebilledet et 2D-array med samme størrelse. Hver pixel undersøges i forhold til \rec{\texttt{Threshold}} objekter. Der tjekkes i rækkefølgen \textit{forhindring}, \textit{kage}, \textit{robot 1 (front-bag)}, \textit{robot2 (front-bag)}. Hvis ikke en pixel bliver genkendt her, tolkes den som værende baggrund/gulv.\\
+Metoden gemmer det resulterende \textit{tilemap} i klasse-variablen \texttt{tilemap}.
+
+\paragraph{\texttt{filterObstacles()}}
+
+
+\begin{comment}
+Webcam
+	mode
+	player?
+	
+Processor
+	Thresholds
+	Resolution
+\end{comment}
+
+\section{Test}
+
+\section{Udviklingsproces}
+
+\begin{comment}
+	
+Webcam
+	Varetager forbindelse til webcam
+	Henter BufferedImage i 320x240
+
+Processor
+	Billede ind som BufferedImage
+	Parse til 2D-array
+	Filtrering
+	Optimering i walker
+	Objekt-/robot ID
+	Obstacle map
+	Grafisk repræsentation
+	Scaling (ej i brug)
+	Returnerer Locations objekt til brug i pathfinder
+	
+Udviklingsproces
+	Simpelt udgangspunkt
+	Løbende tilføjet funktionalitet med behov fra stifinding
+	Efter første full cycle udviklet i version 2 med optimeringer
+	
+Test
+	Program t visuel test
+	"Webcam-simulator"
+	Benchmark kørsler, resultater
+	Performance udvikling
+\end{comment}
