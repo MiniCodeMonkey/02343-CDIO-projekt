@@ -1,4 +1,6 @@
 \chapter{Billedbehandling}\label{cha:ip}
+\section{Udviklingsproces}
+
 \section{Design}
 Billedbehandlingen inddeles i to dele: Webcam og behandling af billedet.
 
@@ -124,7 +126,8 @@ Køretiden er vurderet løbende ved test med programmet \texttt{FullBenchmark}. 
 
 For at vurdere effekten af det løbende arbejde med forbedring af billedbehandlingen er både den oprindelige og den endelige billedbehandling testet -- med flere forskellige konfigurationer.
 
-Hver test køres 20 gange, og minimums-, maksimums- og gennemsnitstider registreres. Der er testet med 5 billeder. Billede 1 er et billede taget med webcam, som viser banen, som foruden de 4 hjørne-forhindringer indeholder 2 løse forhindringer, 7 kager og 2 robotter. Billede 2 er genereret, og viser banen med 3 løse forhindringer, 2 robotter og 6 kager. Billede 3 er en tom bane -- og billede 4 har 7 løse forhindringer, hvoraf 4 er sammenhængende, 9 kager og 2 robotter. Billede 5 er helt hvidt, og anses som worst case, idet samtlige punkter skal behandles til forhindrings map.\\
+Hver test køres 20 gange, og minimums-, maksimums- og gennemsnitstider registreres. Der er testet med 5 billeder. Billede 1 er et billede taget med webcam, som viser banen, som foruden de 4 hjørne-forhindringer indeholder 2 løse forhindringer, 7 kager og 2 robotter. Billede 2 er genereret, og viser banen med 3 løse forhindringer, 2 robotter og 6 kager. Billede 3 er en tom bane -- og billede 4 har 7 løse forhindringer, hvoraf 4 er sammenhængende, 9 kager og 2 robotter. Billede 5 er helt hvidt, og anses som worst case, idet samtlige punkter skal behandles til forhindrings map. Billederne er vist i \pref{fig:ip-test-performancepics}.\\
+\billede{!htbp}{0.4}{ip-test-performancepics}{Billede 1-4 fra performance test af billedbehandlingen.,}
 Resultatet af testen er vist i \pref{tab:ip-test-performance}.
 \begin{table}[!hp]
 	\begin{center}
@@ -187,8 +190,6 @@ Resultatet af testen er vist i \pref{tab:ip-test-performance}.
 \end{table}
 
 Ud fra testen ses det, at version 2 af biledbehandlingen er en anelse langsommere end den oprindelige udgave. Dette kompenseres der dog rigeligt for ved indførelsen af behandlings-opløsning, foruden at den oprindelige udgave giver stack overflow ved de rekursive behandlinger af store forhindringer -- hvilket er elimineret i version 2.
-
-\section{Udviklingsproces}
 
 \begin{comment}
 	
