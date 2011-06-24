@@ -1,0 +1,55 @@
+\chapter{Samling}
+Samlingen af alle delkomponenterne, hvilket vil sige billedbehandling, stifinding og robot- styring/kommunikation, var nok den største udfordring i projektet. Trods tests af hver delkomponent hver især, vidste vi ikke på forhånd hvordan hele systemet ville fungere og hvordan de enkelte dele ville påvirke hinanden. Vi endte dog relativt tidlig i processen op med en robot der uden forhindringer, kunne samle kager op og bringe dem uden for en bane. Dog ikke uden omveje og fejl, men det var en start.
+Kort efter denne milepæl, tog vi beslutningen om et redesign af robotten, herunder overgang fra larvefødder til hjul med gearing, samt nu at understøtte 2 robotter. Grundlaget for denne beslutning lå i, at vi ville få en hurtigere (fysisk) køretid både med hastighed på robotterne på grund af gearingen, men også fordi der nu er to robotter der kunne arbejde sammen. Iøvrigt skulle den samlingen af det oprindelige system re-implementeres, og det nye design skulle derfor ikke give de store problemer.
+
+Den første udgave til et færdigt system med understøttelse af flere robotter lå klar umiddelbart de første dage i 3-ugers perioden, mens ombygingen af selve robotterne blev udført inden starten af denne periode. Ændringen påvirkede ikke selve styringen af robotterne mærkbart. Dog var vi nødsaget til at bruge Java RMI, for at understøtte samtidig forbindelse til 2 robotter på samme tid.
+Den første umiddelbare test med den "nye" implementering fungererde praktisk talt slet ikke. Der var mange fejl der skulle rettes, før vi havde et system der blot fungerede som før.
+
+\section{Implementering}
+På baggrund af den "`gamle"' implementering af et system der virkede med én robot, startede vi så at sige forfra med at lave den endelige logik der helt igennem, understøttede 2 robotter.
+Det endelige program består af en multi-tråds applikation med et GUI der viser et visuelt desktop. Her åbnes vinduer til hver komponent herunder billedebehandling som angiver den beregnede rute og den virtuelle bane, et værktøj til dynamisk farvekorrektion, et værktøj til at justere forskellige hastigheder på begge robotter, samt et info panel der giver nyttigt information omkring hver robot i real-time.
+Det er denne GUI der starter selve logikken op som en \texttt{SwingWorker}- task, hvilket gør at GUI’en ikke bliver påvirket af beregningerne foretaget i logikken. Denne \textit{task} starter med at starte en ny tråd, kaldet \texttt{ProcessingThread}, der fungerer som den centrale styring. Denne klasse binder \texttt{ImageProcessor} og \texttt{PathFinder} sammen og levere en rute til robotterne, der bliver startet herfra og kører selvstændigt i hver deres tråd kladet \texttt{RobotThread}.
+
+Hvor \texttt{ProcessingThread} sørger for tildelingen af kager og opstart af robotterne, sørger \texttt{RobotThread}-trådene selv for styringen af hver enkelt robot i forhold til den tildelte \textit{state}. \texttt{ProcessingThread} henter desuden det rå og behandlede billede fra \texttt{ImageProcessor} i en selvstændig tråd, der muliggør at man stadig kan hente det nyeste billede, hvis stifindingen skulle blokere for en kort stund. Denne tråd-skedulering afhjalp problemer med timning på vores system, da vi ofte havde et problem hvis der blot var ét billede af en bane, der krævede en meget kompleks beregning. En rute kunne tage op til 15 sekunder for \texttt{PathFinder} at regne ud og derfor blokere for nye billeder, hvilket var uacceptabelt, da det givne billede i teorien kunne være et forkert eller forældet udtryk for hvodan banen så ud. Tråd opdelingen løste også et problem med at få vist det nyeste billede i GUI’en. På \rec{FIGUR\_A} kan ses et sekvensdiagram over \texttt{ProcessingThread} og hvordan de forskellige tråde opererer.
+\rec{SEKVENSDIAGRAM  TODO (jeppeK)}
+
+\subsection{Robotstyring via states}
+Til styring af robotterne har Mathias, ved udformningen af det "`nye"' system, defineret forskellige \textit{states} som en robot kan være i. Disse \textit{states} tæller:
+\begin{itemize}
+\item \texttt{START}
+\item \texttt{IDLE}
+\item \texttt{HEADING\_FOR\_CAKE}
+\item \texttt{POSITIONING}
+\item \texttt{PICKING\_UP}
+\item \texttt{HEADING\_FOR\_DELIVERY}
+\item \texttt{DELIVERING}
+\item \texttt{YIELD\_CAKE}
+\item \texttt{YIELD\_DELIVERY}
+\end{itemize}
+Disse \textit{states} er defineret i en \texttt{enum}-klasse og burde være selvforklarende, men særligt kan fremhæves \texttt{YIELD\_CAKE} og \texttt{YIELD\_DELIVERY}, der netop muliggør 2 robotter på en og samme bane. Hver robot er enten \texttt{MASTER} eller \texttt{SLAVE} (hvilket også er defineret i egen \texttt{enum}-klasse). Dette afgør om den givne robot skal vige (\texttt{YIELD}) eller blot forsætte sit arbejde, når den kommer i en særligt defineret afstand til den anden robot. Grundlæggende gør \texttt{ProcessingThread} brug af disse states, til at sætte en robot i en tilstand, så robotten selv (\texttt{RobotThread}) ved, hvad den skal gøre.
+F.eks. kan også \texttt{POSITIONING} nævnes som en ret essensielt, da det er her robotten “retter ind” i forhold til næste \textit{step} på stien, eller kagen - hvis denne er tæt nok på. Helt præcist leverer billedbehandlingen robottens nuværende vinkel og bliver brugt til løbende til at justere i forhold til den vinkel robotten \textit{burde} have. Vinkel-forskellen bliver ved hjælp af disse oplysninger udregnet, og robotten tilpasser sig løbende så forskellen bliver så lille som mulig, efter nogle nærmere fastsatte grænseværdier (se afsnit  \vref{system-parametere}). Dette forgår i real-time, dvs. at vinklen bliver målt så hurtigt som billedbehandlingen måler den og så hurtigt som kommandoerne kan sendes til robotten.
+
+\subsection{Kommunikationen via RMI}
+For at systemet skal kunne fungere med 2 samtidig robot-forbindelser via bluetooth, lærte vi at hver forbindelse skal startes i en selvstændig process. Dette gjorde også at vi blev nødt til at benytte af en IPC teknologi for at kunne sende kommandoer på tværs af processor.
+Da vi har implementeret systemet i Java og iøvrigt i forvejen benyttede et interface (\texttt{IControl}) til afkobling af styringen, gjorde vi brug af Java’s RMI teknologi. Dette viste sig, efter nogle designmæssige disskussioner, at kunne implementeres med en minimal indsats.
+
+\subsection{Tilgængelighed}
+Hele det underliggende system, herunder data omkring billedbehandling og stifinding, er gjort tilgængelige igennem et singleton objekt \texttt{MainController}, der gør det nemt for GUI og andre dele af systemet at tilgå relevante data.
+
+\subsection{System Parametere}\label{system-parametere}
+Globalt i systemet har vi op til flere variabler der kan ændres nemt for at gøre kalibreringen så nemt hurtig som muligt. Blandt andet kan nævnes klassen \texttt{controller.Threadholds}, der er en dataklasse, hvor info om hastigheder og vinkler kan læses og ændres. Også klassen \texttt{dk.dtu.imm.c02343.grp4.imageprocessing.imageprocessing.Thresholds} indeholder system-variabler, hvor disse muliggør dynamisk farvedektering. GUI’en benytter sig af begge klasser, men kan dog sagtens udvides med flere, så man f.eks. hurtigt kan ændre på om en kage skal ses som mindre rød, eller hvor præcis vinklen hvori robotten skal stå overfor kagen, skal være. Real-time ændringer af bufferzone-størrelse i forhold til forhindringer kan især være meget brugbart under tests.
+
+
+\section{Videreudvikling}
+\rec{MANGLER}
+
+\section{Test}
+Løbende under samlingen og udviklingen af det “nye” system, gennemførte vi mange tests, herunder visuelle tests af systemet med både én og to robotter.
+
+De indledende tests viste problemer med vinkeludregningen, og dette har været et gennemgående problem. Udover dette har vores tests belyst det føromtalte timingproblem, der ligger til grund for beslutningen om multi-tråds processering. De fleste tests er foretaget visuelt, hvorpå man observerede et problem eller fejl, udbedrede fejlen - eller prøvede på det - og kørte samme test igen.
+En anden type test vi foretog var i samarbejde med en anden gruppe. Vi testede på to baner der ligner de officielle baner som blev brugt i forbindelse med konkurrencen, og testede udelukkende på tid. På figur~\vref{fig:Bane1} og figur~\vref{fig:Bane2} ses de to test opstillinger.
+
+\billede{!htbp}{0.4}{Bane1}{Bane 1}
+\billede{!htbp}{0.4}{Bane2}{Bane 2}
+
+\rec{Resultatet/konklusion af gruppe mod gruppe -tests .. ?}

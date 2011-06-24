@@ -11,10 +11,6 @@ import dk.dtu.imm.c02343.grp4.dto.interfaces.ILocations;
  * @author per
  *
  */
-/**
- * @author per
- *
- */
 public interface IImageProcessor {
 	/**
 	 * Integer-repræsentation af en forhindring i tilemap
@@ -140,8 +136,4 @@ public interface IImageProcessor {
 	public int getResolutionX();
 	
 	public int getResolutionY();
-//	
-//	public void setOutputScale(int scale);
-//	
-//	public int getOutputScale();
 }

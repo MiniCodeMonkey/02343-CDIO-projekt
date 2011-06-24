@@ -1,0 +1,12 @@
+%%%%%%%%%%%%%%%%%%% Funktion til at lave totalt antal sider %%%%%%%%%%%%%%%%%%%
+% \totalpages skriver totalt antal sider
+\usepackage{everyshi}
+\makeatletter
+\let\totalpages\relax
+\newcounter{mypage}
+\EveryShipout{\stepcounter{mypage}}
+\AtEndDocument{\clearpage
+   \immediate\write\@auxout{%
+    \string\gdef\string\totalpages{\themypage}}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

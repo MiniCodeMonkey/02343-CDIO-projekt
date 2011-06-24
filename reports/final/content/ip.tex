@@ -1,0 +1,233 @@
+\chapter{Billedbehandling}\label{cha:ip}
+Billedbehandlingen er udviklet helt fra grunden. Der er valgt en metode, som så tidligt som muligt fortolker billedet fra webcam til et 2D-array. Dette er gjort for at få maksimalt kendskab til koden, og dermed bedre mulighed for at rette eventuelle uhensigtsmæssigheder samt forbedre performance.
+
+Billedbehandlingen er udviklet iterativt. I projektets forløb har ønskerne til billedbehandlingen ændret sig, og i første omgang er disse ønsker opfyldt hurtigst muligt for at maksimere effektiviteten i projektforløbet.
+
+Efter første full cycle er erfaringerne og tilføjelserne i billedbehandlingen benyttet til udvikling af en ny version -- version 2. Her er køretid mv. forsøgt optimeret i forhold til tidligere.
+
+\section{Design}
+Billedbehandlingen inddeles i to dele: Webcam og behandling af billedet.
+
+\subsection{Webcam}
+Webcam-delen sørger for at varetage forbindelsen til webcam, og herfra hentes rå billeder.
+
+Der defineres et interface, \texttt{IImageSource}. Dette specificerer metoderne \texttt{init()}, som benyttes til at forbinde til webcam -- \texttt{close()}, som lukker forbindelsen til webcam -- samt \texttt{getImage()}, som returnerer et billede fra webcam som et \texttt{BufferedImage} objekt.
+
+Til at håndtere selve forbindelsen til kameraet benyttes JMF \rec{cite}.
+
+\begin{comment}
+Opbygning
+	Webcam -> behandling
+	JMF
+\end{comment}
+
+\subsection{Billedbehandling}
+Billedbehandlingen behandler billedet fra kameraet og bestemmer positioner af forhindringer, kager og robotter, nærmere bestemt:
+\begin{description}
+	\item[Fortolkning af kildebillede] til et \textit{tilemap\footnote{Tilemap er et 2D-array af integers, som er opbygget som et billede med meget få farver (én farve pr. genkendt objekttype)}}. Hver pixel undersøges i forhold til fastsatte grænseværdier.
+	\item[Filtrering] af tilemap, hvor områder af pixels sorteres fra, hvis ikke de dækker et tilstrækkelig stort antal sammenhængende pixels. Dette fjerner støj fra billedet, og sikrer mod fejlagtig genkendelse af objekter.
+	\item[Bestemmelse af grænser] for banen ud fra de 4 hjørne-forhindringer.
+	\item[Generering af map af forhindringer], hvor der er tilføjet buffer-zoner omkring forhindringer. Hvis det ønskes, kan robot 2 her markeres, ligeledes med en buffer-zone, i tilfælde, hvor robot 1 skal finde vej uden om.
+	\item[Bestemmelse af position] for kager.
+	\item[Bestemmelse af position og vinkel] for robotter.
+	\item[Skalering af output] for at optimere køretiden for stifindingen. Denne funktionalitet er ikke taget i brug.
+	\item[Generering af grafisk repræsentation] af de behandlede data, så det er muligt at følge billedbehandlingens arbejde løbende.
+\end{description}
+
+\subsubsection{Opbygning}
+Der er specificeret et interface -- \texttt{IImageProcessor} -- som billedbehandlingen skal implementere. I dette interface lægges også standard-værdier for mange af de parametre, som billedbehandlingen gør brug af.
+
+Selve billedbehandlingen er implementeret i \texttt{ImageProcessor2} klassen. \rec{Forklaring på 2?} Al funktionalitet er specificeret her.
+
+Data, som skal benyttes videre i det samlede system, returneres i DTO\footnote{Data Transfer Object} klassen \texttt{Locations}, som implementerer \texttt{ILocations} interfacet. Disse entiteter er rent databærende.\\
+\texttt{Locations} gemmer tilemap og forhindrings map som 2D int-arrays, og kager og robotter gemmes som lister af hhv. \texttt{Cake}- og \texttt{Robot} DTO-objekter. Kildebillede og fortolket billedet gemmes som \texttt{BufferedImage} objekter.
+
+Der er til de fleste parametre lavet getter/setter metoder. Til bestemmelse af grænseværdier for en objekttype er indført en \texttt{Thresholds} klasse, som indeholder minimums- og maksimumsværdier for farvekomponenterne.
+
+\section{Implementering}
+\subsection{Webcam}
+Der benyttes fortrinsvis JMF til hele implementeringen af webcam forbindelsen. Implementeringen tager udgangspunkt i det eksempel, som er givet på CampusNet. \rec{Ref?}\\
+I \texttt{init()} metoden oprettes der forbindelse til enheden "`vfw:Microsoft WDM Image Capture (Win32):0"'. Der benyttes formatet 320x240 RGB.
+
+Selve forbindelsen bruges gennem et statisk \texttt{Player} objekt.
+
+\subsection{Billedbehandling}
+I billedbehandlingen ligger klassevariable med tilhørende get-/set-metoder til de parametre, som er specificeret i \texttt{IImageProcessor}.
+
+\paragraph{Hjælpemetoder}
+De mest benyttede hjælpemetoder i billedbehandlingen er \texttt{collect(...)} og \texttt{collectRecursion(...)}. Sidstnævnte benytter en BFS\footnote{Bredde-Først Søgning} til at samle sammenhængende punkter.\\
+\texttt{collect(...)} benytter denne til at samle punkter til et objekt. Undervejs vurderes det, om objektet er for lille -- og dermed blot skal filtreres fra. Hvis objektet bliver accepteret, bestemmes og returneres centerkoordinatet.
+
+\texttt{calculateAngle(...)} metoden finder vinklen fra ét punkt til et andet. Dette udregnes vha. trigonometri. Vinkler behandles altid i radianer.
+
+\paragraph{\texttt{examineImage(...)}}
+Denne metode benyttes, når et billede skal behandles. Metoden tager som argumenter det kildebillede (et \texttt{BufferedImage}), som skal behandles, samt en boolsk værdi, som dikterer, hvorvidt en grafisk repræsentation af det behandlede billede skal dannes.\\
+Metoden returnerer et \texttt{Locations} objekt.
+
+\texttt{examineImage(...)} benytter de øvrige metoder i billedbehandlingen til at behandle det givne kildebillede.
+
+\paragraph{\texttt{generateTilemap()}}
+Her dannes ud fra kildebilledet et 2D-array med samme størrelse. Hver pixel undersøges i forhold til \rec{\texttt{Threshold}} objekter. Der tjekkes i rækkefølgen \textit{forhindring}, \textit{kage}, \textit{robot 1 (front-bag)}, \textit{robot2 (front-bag)}. Hvis ikke en pixel bliver genkendt her, tolkes den som værende baggrund/gulv.\\
+Metoden gemmer det resulterende \textit{tilemap} i klasse-variablen \texttt{tilemap}.
+
+\paragraph{\texttt{filterObstacles()}}
+Filtrering af forhindrings-pixels foregår her. Samtidig foretages første generering af forhindrings map -- endnu et 2D-array, \texttt{obstaclemap}, med samme størrelse som \texttt{tilemap}.\\
+Der benyttes endnu et 2D-array til at holde styr på behandlede pixels.
+
+Metoden vandrer igennem alle pixels i \texttt{tilemap}. Hver gang en forhindring, som ikke allerede er behandlet, registreres, benyttes hjælpemetoden \rec{\texttt{collectRecursion()}} til at samle alle de sammenhængende forhindrings-pixels.\\
+Hvis antallet af opsamlede koordinater er mindre end grænsen \texttt{MIN\_OBJECT\_SIZE}, forkastes forhindringen, og de fundne pixels defineres som baggrund i \texttt{tilemap} og \texttt{obstaclemap}.\\
+I modsat fald -- hvis den opsamlede forhindring er tilstrækkelig stor -- registreres de opsamlede punkter i \texttt{obstaclemap}.
+
+\paragraph{\texttt{findBounds()}}
+Grænserne for selve banen bestemmes groft ved at finde den øverste og nederste vandrette linje i \texttt{tilemap}, hvor der er min. 5 forhindrings-pixels. Tilsvarende gælder for lodrette linjer mod venstre og højre.
+
+De fundne grænseværdier gemmes som \texttt{int}-array på formen \textit{$\left\{\right.$ top, venstre, bund, højre $\left.\right\}$} i klasse-variablen \texttt{bounds}, den statiske variabel \texttt{stageBounds}, foruden at de returneres.
+
+\paragraph{\texttt{processTilemap()}}
+Her foretages den egentlige tolkning af \texttt{tilemap}, og her ligger billedbehandlingens store ressourceforbrug.\\
+Igen benyttes et 2D-array til registrering af behandlede pixels.
+
+Metoden vandrer gennem pixels. For at minimere køretiden er her indført en opløsning, så kun hver 3. linje og hver 3. pixel på linjerne behandles umiddelbart.
+
+Hvis en \textit{forhindrings}-pixel registreres, registreres denne i \texttt{obstaclemap} med \texttt{obstacleBuffer} værdien, og pixels omkring denne med \texttt{obstacleBuffer} fratrukket afstanden til den behandlede pixel -- såfremt der ikke allerede er en højere værdi. Herved opnås et forhindrings map, hvor forhindringer har en høj værdi, og pixels nær forhindringerne får en lavere værdi, jo længere væk de er fra forhindringen.
+
+Ved \textit{kage}-pixels benyttes hjælpemetoden \texttt{collect(...)} til at bestemme center-positionen for kagen. Der tjekkes, hvorvidt positionen er inden for banens grænser -- og hvis det er tilfældet, oprettes et \texttt{Cake} objekt, som føjes til \texttt{cakes} listen.
+
+Pixels, som tilhører en af robotterne benytter ligeledes \texttt{collect(...)} til at bestemme center-koordinaten for farven. Disse koordinater gemmes til senere brug.\\
+I tilfælde, hvor robotterne kommer i nærheden af hinanden, skal robot 1 kunne finde uden om robot 2. Dette er der forberedt for ved flaget \texttt{robotYield}. Hvis dette er sat, vil alle pixels, som tilhører robot 2 -- plus bufferzone omkring -- få værdien -1 i \texttt{obstaclemap}.
+
+Efter alle pixels er behandlet, samles robotternes informationer. En robot, hvis position ikke kan bestemmes ud fra de fundne informationer oprettes med positionen $(-1,-1)$.\\
+Hvis en robot kan findes, bestemmes dens position som gennemsnittet af front og bag -- og vinklen bestemmes med \texttt{calculateAngle(...)}.\\
+Begge robotter -- uanset om de kunne findes eller ej -- føjes til \texttt{robots} listen.
+
+\paragraph{\texttt{scaleMaps(...)}}
+Denne metode skalerer \texttt{tilemap} og \texttt{obstaclemap} ned. Dette er ikke ibrugtaget, men forberedt aht. at kunne reducere køretiden på stifindingen.\\
+I andre metoder bliver skaleringen også håndteret ved udregning af koordinater -- her divideres med skaleringsfaktoren \texttt{outputScale}.
+
+\paragraph{\texttt{createTileImage()}}
+Her genereres et \texttt{BufferedImage}, som giver en grafisk repræsentation af \texttt{tilemap} og \texttt{obstaclemap}.
+
+Værdierne fra \texttt{obstaclemap} vises som gule gradueringer, hvor højere værdi giver kraftigere farve. Selve forhindringerne, kagerne og robotterne vises ud fra deres registreringer i \texttt{tilemap} med farver, der nogenlunde matcher deres egentlige farver.\\
+Banens grænser vises som en lilla firkant, og kager og robotter vises med hhv. cyan og røde punktmarkeringer.
+\begin{comment}
+Webcam
+	mode
+	player?
+	
+Processor
+	Thresholds
+	Resolution
+\end{comment}
+
+\section{Test}
+\subsection{Webcam}
+Webcam forbindelsen er testet med en viderebygning af programmet fra CampusNet \rec{ref?}. Her vises billedet fra webcam i et vindue med 3 knapper: \textit{Connect}, \textit{Update image} og \textit{Disconnect.}
+
+\textit{Connect} forbinder til webcam vha. \texttt{init()} metoden -- \textit{Update Image} opdaterer det viste billede ved brug af \texttt{getImage()} -- og \textit{Disconnect} nedlægger forbindelsen til webcam vha. \texttt{disconnect()} metoden.
+
+For at kunne gennemføre mere strukturerede test af den øvrige billedbehandling er \texttt{ImageFile} klassen udviklet. Denne implementerer også \texttt{IImageSource}, men benytter .png billeder i mappen \textit{testimages\footnote{Dette ses i forhold til den mappe, hvorfra det kørende program afvikles -- eller i Eclipse roden af projektet, der bliver kørt.}}. Ved kørsel af \texttt{init()} skabes en liste over disse billeder, ved \texttt{getImage()} returneres næste billede på listen, og ved \texttt{close()} nedlægges listen. Dette giver mulighed for at vurdere funktionaliteten i forhold til brug med et rigtigt webcam.
+
+\subsection{Billedbehandling}
+\paragraph{Funktionalitet}
+Funktionstest af billedbehandlingen er gennemført ved visuel inspektion. Et simpelt testprogram er udviklet til at forbinde til en billedkilde og fortolke billedet fra denne. Kildebilledet vises så med fortolkningen under. De tre knapper fra webcam testen går igen.
+
+Der er ved test af billedbehandlingen benyttet både genererede billeder samt "`rigtige"' billeder fra webcam til at vurdere, hvorvidt billedbehandlingen fungerer som ønsket. Samtidig er der gennem konsol-output aflæst vinkler på robotter, som vurderes op imod de reelle vinkler.
+
+\paragraph{Performance}
+Køretiden er vurderet løbende ved test med programmet \texttt{FullBenchmark}. Her er kun fokuseret på billedbehandlingen, og bestemte billeder er benyttet.
+
+For at vurdere effekten af det løbende arbejde med forbedring af billedbehandlingen er både den oprindelige og den endelige billedbehandling testet -- med flere forskellige konfigurationer.
+
+Hver test køres 20 gange, og minimums-, maksimums- og gennemsnitstider registreres. Der er testet med 5 billeder. Billede 1 er et billede taget med webcam, som viser banen, som foruden de 4 hjørne-forhindringer indeholder 2 løse forhindringer, 7 kager og 2 robotter. Billede 2 er genereret, og viser banen med 3 løse forhindringer, 2 robotter og 6 kager. Billede 3 er en tom bane -- og billede 4 har 7 løse forhindringer, hvoraf 4 er sammenhængende, 9 kager og 2 robotter. Billede 5 er helt hvidt, og anses som worst case, idet samtlige punkter skal behandles til forhindrings map. Billederne er vist i \pref{fig:ip-test-performancepics}.\\
+\billede{!htbp}{0.4}{ip-test-performancepics}{Billede 1-4 fra performance test af billedbehandlingen.,}
+Resultatet af testen er vist i \pref{tab:ip-test-performance}.
+\begin{table}[!hp]
+	\begin{center}
+	\begin{tabular}{l | r r r}
+		\textbf{Test} & \textbf{Gns (ms)} & \textbf{Min (ms)} & \textbf{Max (ms)} \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 1}}\\
+		\hline
+		Ver. 1 u. debug & 684 & 664 & 749 \\
+		Ver. 1 m. debug & 669 & 662 & 678 \\
+		Ver. 2 u. debug & 733 & 720 & 784 \\
+		Ver. 2 m. debug & 735 & 726 & 752 \\
+		Ver. 2 m. debug, res 3 & 98 & 95 & 111 \\
+		Ver. 2 m. debug, res 3, yield & 97 & 96 & 106 \\
+		Ver. 2 m. debug, res 3, scale 2 & 95 & 92 & 108 \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 2}}\\
+		\hline
+		Ver. 1 u. debug & 1056 & 1022 & 1125 \\
+		Ver. 1 m. debug & 1030 & 1021 & 1045 \\
+		Ver. 2 u. debug & 1136 & 1118 & 1207 \\
+		Ver. 2 m. debug & 1135 & 1122 & 1205 \\
+		Ver. 2 m. debug, res 3 & 144 & 141 & 155 \\
+		Ver. 2 m. debug, res 3, yield & 144 & 141 & 154 \\
+		Ver. 2 m. debug, res 3, scale 2 & 140 & 137 & 150 \\ 
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 3}}\\
+		\hline
+		Ver. 1 u. debug & 517 & 499 & 603 \\
+		Ver. 1 m. debug & 506 & 500 & 519 \\
+		Ver. 2 u. debug & 607 & 594 & 629 \\
+		Ver. 2 m. debug & 610 & 601 & 633 \\
+		Ver. 2 m. debug, res 3 & 83 & 81 & 95 \\
+		Ver. 2 m. debug, res 3, yield & 82 & 80 & 92 \\
+		Ver. 2 m. debug, res 3, scale 2 & 80 & 78 & 90 \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 4}}\\
+		\hline
+		Ver. 1 u. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 1 m. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 2 u. debug & 1806 & 1772 & 1874 \\
+		Ver. 2 m. debug & 1805 & 1770 & 1868 \\
+		Ver. 2 m. debug, res 3 & 224 & 218 & 235 \\
+		Ver. 2 m. debug, res 3, yield & 234 & 221 & 264 \\
+		Ver. 2 m. debug, res 3, scale 2 & 219 & 214 & 239 \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 5}}\\
+		\hline
+		Ver. 1 u. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 1 m. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 2 u. debug & 7639 & 7438 & 8182 \\
+		Ver. 2 m. debug & 7506 & 7406 & 7596 \\
+		Ver. 2 m. debug, res 3 & 861 & 848 & 878 \\
+		Ver. 2 m. debug, res 3, yield & 860 & 846 & 887 \\
+		Ver. 2 m. debug, res 3, scale 2 & 861 & 850 & 889 \\
+	\end{tabular}
+	\caption{Resultat af benchmarking med \texttt{FullBenchmark} med forskellige konfigurationer af billedbehandling.\\
+	\scriptsize{\textit{res} står for opløsning -- hvor mange punkter, der skal springes over ved scanning efter objekter -- \textit{yield} angiver, at robot 2 skal optræde som forhindring, og \textit{scale} angiver den faktor, hvormed tilemap mv. skal nedskaleres}}\label{tab:ip-test-performance}
+	\end{center}
+\end{table}
+
+Ud fra testen ses det, at version 2 af biledbehandlingen er en anelse langsommere end den oprindelige udgave. Dette kompenseres der dog rigeligt for ved indførelsen af behandlings-opløsning, foruden at den oprindelige udgave giver stack overflow ved de rekursive behandlinger af store forhindringer -- hvilket er elimineret i version 2.
+
+\begin{comment}
+	
+Webcam
+	Varetager forbindelse til webcam
+	Henter BufferedImage i 320x240
+
+Processor
+	Billede ind som BufferedImage
+	Parse til 2D-array
+	Filtrering
+	Optimering i walker
+	Objekt-/robot ID
+	Obstacle map
+	Grafisk repræsentation
+	Scaling (ej i brug)
+	Returnerer Locations objekt til brug i pathfinder
+	
+Udviklingsproces
+	Simpelt udgangspunkt
+	Løbende tilføjet funktionalitet med behov fra stifinding
+	Efter første full cycle udviklet i version 2 med optimeringer
+	
+Test
+	Program t visuel test
+	"Webcam-simulator"
+	Benchmark kørsler, resultater
+	Performance udvikling
+\end{comment}
