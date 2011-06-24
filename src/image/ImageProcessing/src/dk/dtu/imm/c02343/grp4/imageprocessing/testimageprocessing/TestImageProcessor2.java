@@ -27,7 +27,7 @@ import dk.dtu.imm.c02343.grp4.imageprocessing.imagesource.WebCam;
 public class TestImageProcessor2 implements ActionListener {
 	ImageProcessor2 imageProcessor;
 	IImageSource imageSource;
-	ImagePanel panel1, panel2;
+	ImagePanelTest panel1, panel2;
 	
 	/**
 	 * Kører testen
@@ -37,6 +37,7 @@ public class TestImageProcessor2 implements ActionListener {
 		imageSource = new WebCam();
 //		imageSource = new ImageFile();
 		imageProcessor = new ImageProcessor2();
+		ImageProcessor2.outputScale = 1;
 		try {
 			imageSource.init();
 		} catch (Exception e) {
@@ -54,12 +55,12 @@ public class TestImageProcessor2 implements ActionListener {
 		// Opret JFrame samt panel til input-billede
 		JFrame frame = new JFrame();
 		frame.setLayout(new FlowLayout());
-		panel1 = new ImagePanel(sourceImg);
+		panel1 = new ImagePanelTest(sourceImg);
 		panel1.setMinimumSize(new Dimension(sourceImg.getWidth(),sourceImg.getHeight()));
 		frame.getContentPane().add(panel1);
 		
 		// Opret JFrame samt panel til tile-billede
-		panel2 = new ImagePanel(tileImg);
+		panel2 = new ImagePanelTest(tileImg);
 		panel2.setMinimumSize(new Dimension(tileImg.getWidth(),tileImg.getHeight()));
 		frame.getContentPane().add(panel2);
 		
