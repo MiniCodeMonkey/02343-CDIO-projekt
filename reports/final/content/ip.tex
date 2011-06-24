@@ -31,7 +31,7 @@ Billedbehandlingen behandler billedet fra kameraet og bestemmer positioner af fo
 \subsubsection{Opbygning}
 Der er specificeret et interface -- \texttt{IImageProcessor} -- som billedbehandlingen skal implementere. I dette interface lægges også standard-værdier for mange af de parametre, som billedbehandlingen gør brug af.
 
-Selve billedbehandlingen er implementeret i \texttt{ImageProcessor2} klassen. \rec{Forklaring på 2?} Al funktionalitet er specificeret her.
+Selve billedbehandlingen er implementeret i \texttt{ImageProcessor2} klassen. Al funktionalitet er specificeret her.
 
 Data, som skal benyttes videre i det samlede system, returneres i DTO\footnote{Data Transfer Object} klassen \texttt{Locations}, som implementerer \texttt{ILocations} interfacet. Disse entiteter er rent databærende.\\
 \texttt{Locations} gemmer tilemap og forhindrings map som 2D int-arrays, og kager og robotter gemmes som lister af hhv. \texttt{Cake}- og \texttt{Robot} DTO-objekter. Kildebillede og fortolket billedet gemmes som \texttt{BufferedImage} objekter.
@@ -40,7 +40,7 @@ Der er til de fleste parametre lavet getter/setter metoder. Til bestemmelse af g
 
 \section{Implementering}
 \subsection{Webcam}
-Der benyttes fortrinsvis JMF til hele implementeringen af webcam forbindelsen. Implementeringen tager udgangspunkt i det eksempel, som er givet på CampusNet. \rec{Ref?}\\
+Der benyttes fortrinsvis JMF til hele implementeringen af webcam forbindelsen. Implementeringen tager udgangspunkt i det eksempel, som er givet på CampusNet.\\
 I \texttt{init()} metoden oprettes der forbindelse til enheden "`vfw:Microsoft WDM Image Capture (Win32):0"'. Der benyttes formatet 320x240 RGB.
 
 Selve forbindelsen bruges gennem et statisk \texttt{Player} objekt.
