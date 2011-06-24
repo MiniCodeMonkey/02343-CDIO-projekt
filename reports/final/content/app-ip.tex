@@ -1,0 +1,137 @@
+\chapter{Billedbehandling}
+Dette bilag indeholder dybere behandling af enkelte emner i billedbehandlingen, som er gennemgået i \pref{cha:ip}.
+\section{Implementering}\label{app:ip-impl}
+I billedbehandlingen ligger klassevariable med tilhørende get-/set-metoder til de parametre, som er specificeret i \texttt{IImageProcessor}.
+
+\paragraph{Hjælpemetoder}
+De mest benyttede hjælpemetoder i billedbehandlingen er \texttt{collect(...)} og \texttt{collectRecursion(...)}. Sidstnævnte benytter en BFS\footnote{Bredde-Først Søgning} til at samle sammenhængende punkter.\\
+\texttt{collect(...)} benytter denne til at samle punkter til et objekt. Undervejs vurderes det, om objektet er for lille -- og dermed blot skal filtreres fra. Hvis objektet bliver accepteret, bestemmes og returneres centerkoordinatet.
+
+\texttt{calculateAngle(...)} metoden finder vinklen fra ét punkt til et andet. Dette udregnes vha. trigonometri. Vinkler behandles altid i radianer, da radianer benyttes til Java's indbyggede trigonometriske metoder.
+
+\paragraph{\texttt{examineImage(...)}}
+Denne metode benyttes, når et billede skal behandles. Metoden tager som argumenter det kildebillede (et \texttt{BufferedImage}), som skal behandles, samt en boolsk værdi, som dikterer, hvorvidt en grafisk repræsentation af det behandlede billede skal dannes.\\
+Metoden returnerer et \texttt{Locations} objekt.
+
+\texttt{examineImage(...)} benytter de øvrige metoder i billedbehandlingen til at behandle det givne kildebillede.
+
+\paragraph{\texttt{generateTilemap()}}
+Her dannes ud fra kildebilledet et 2D-array med samme størrelse. Hver pixel undersøges i forhold til \texttt{Threshold} objekter. Der tjekkes i rækkefølgen \textit{forhindring}, \textit{kage}, \textit{robot 1 (front-bag)}, \textit{robot2 (front-bag)}. Hvis ikke en pixel bliver genkendt her, tolkes den som værende baggrund/gulv.\\
+Metoden gemmer det resulterende \textit{tilemap} i klasse-variablen \texttt{tilemap}.
+
+\paragraph{\texttt{filterObstacles()}}
+Filtrering af forhindrings-pixels foregår her. Samtidig foretages første generering af forhindrings map -- endnu et 2D-array, \texttt{obstaclemap}, med samme størrelse som \texttt{tilemap}.\\
+Der benyttes endnu et 2D-array til at holde styr på behandlede pixels.
+
+Metoden vandrer igennem alle pixels i \texttt{tilemap}. Hver gang en forhindring, som ikke allerede er behandlet, registreres, benyttes hjælpemetoden \texttt{collectRecursion()} til at samle alle de sammenhængende forhindrings-pixels.\\
+Hvis antallet af opsamlede koordinater er mindre end grænsen \texttt{MIN\_OBJECT\_SIZE}, forkastes forhindringen, og de fundne pixels defineres som baggrund i \texttt{tilemap} og \texttt{obstaclemap}.\\
+I modsat fald -- hvis den opsamlede forhindring er tilstrækkelig stor -- registreres de opsamlede punkter i \texttt{obstaclemap}.
+
+\paragraph{\texttt{findBounds()}}
+Grænserne for selve banen bestemmes groft ved at finde den øverste og nederste vandrette linje i \texttt{tilemap}, hvor der er min. 5 forhindrings-pixels. Tilsvarende gælder for lodrette linjer mod venstre og højre.
+
+De fundne grænseværdier gemmes som \texttt{int}-array på formen \textit{$\left\{\right.$ top, venstre, bund, højre $\left.\right\}$} i klasse-variablen \texttt{bounds}, den statiske variabel \texttt{stageBounds}, foruden at de returneres.
+
+\paragraph{\texttt{processTilemap()}}
+Her foretages den egentlige tolkning af \texttt{tilemap}, og her ligger billedbehandlingens store ressourceforbrug.\\
+Igen benyttes et 2D-array til registrering af behandlede pixels.
+
+Metoden vandrer gennem pixels. For at minimere køretiden er her indført en opløsning, så kun hver 3. linje og hver 3. pixel på linjerne behandles umiddelbart.
+
+Hvis en \textit{forhindrings}-pixel registreres, registreres denne i \texttt{obstaclemap} med \texttt{obstacleBuffer} værdien, og pixels omkring denne med \texttt{obstacleBuffer} fratrukket afstanden til den behandlede pixel -- såfremt der ikke allerede er en højere værdi. Herved opnås et forhindrings map, hvor forhindringer har en høj værdi, og pixels nær forhindringerne får en lavere værdi, jo længere væk de er fra forhindringen.
+
+Ved \textit{kage}-pixels benyttes hjælpemetoden \texttt{collect(...)} til at bestemme center-positionen for kagen. Der tjekkes, hvorvidt positionen er inden for banens grænser -- og hvis det er tilfældet, oprettes et \texttt{Cake} objekt, som føjes til \texttt{cakes} listen.
+
+Pixels, som tilhører en af robotterne benytter ligeledes \texttt{collect(...)} til at bestemme center-koordinaten for farven. Disse koordinater gemmes til senere brug.\\
+I tilfælde, hvor robotterne kommer i nærheden af hinanden, skal robot 1 kunne finde uden om robot 2. Dette er der forberedt for ved flaget \texttt{robotYield}. Hvis dette er sat, vil alle pixels, som tilhører robot 2 -- plus bufferzone omkring -- få værdien -1 i \texttt{obstaclemap}.
+
+Efter alle pixels er behandlet, samles robotternes informationer. En robot, hvis position ikke kan bestemmes ud fra de fundne informationer oprettes med positionen $(-1,-1)$.\\
+Hvis en robot kan findes, bestemmes dens position som gennemsnittet af front og bag -- og vinklen bestemmes med \texttt{calculateAngle(...)}.\\
+Begge robotter -- uanset om de kunne findes eller ej -- føjes til \texttt{robots} listen.
+
+\paragraph{\texttt{scaleMaps(...)}}
+Denne metode skalerer \texttt{tilemap} og \texttt{obstaclemap} ned. Dette er ikke ibrugtaget, men forberedt aht. at kunne reducere køretiden på stifindingen.\\
+I andre metoder bliver skaleringen også håndteret ved udregning af koordinater -- her divideres med skaleringsfaktoren \texttt{outputScale}.
+
+\paragraph{\texttt{createTileImage()}}
+Her genereres et \texttt{BufferedImage}, som giver en grafisk repræsentation af \texttt{tilemap} og \texttt{obstaclemap}.
+
+Værdierne fra \texttt{obstaclemap} vises som gule gradueringer, hvor højere værdi giver kraftigere farve. Selve forhindringerne, kagerne og robotterne vises ud fra deres registreringer i \texttt{tilemap} med farver, der nogenlunde matcher deres egentlige farver.\\
+Banens grænser vises som en lilla firkant, og kager og robotter vises med hhv. cyan og røde punktmarkeringer.
+
+\section{Test}\label{app:ip-test}
+\subsection{Webcam}
+Webcam forbindelsen er testet med en viderebygning af programmet fra CampusNet. Her vises billedet fra webcam i et vindue med 3 knapper: \textit{Connect}, \textit{Update image} og \textit{Disconnect.}
+
+For at kunne gennemføre mere strukturerede test af den øvrige billedbehandling er \texttt{ImageFile} klassen udviklet. Denne implementerer også \texttt{IImageSource}, men benytter .png billeder i mappen \textit{testimages\footnote{Dette ses i forhold til den mappe, hvorfra det kørende program afvikles -- eller i Eclipse roden af projektet, der bliver kørt.}}. Ved kørsel af \texttt{init()} skabes en liste over disse billeder, ved \texttt{getImage()} returneres næste billede på listen, og ved \texttt{close()} nedlægges listen. Dette giver mulighed for at vurdere funktionaliteten i forhold til brug med et rigtigt webcam.
+
+\subsection{Billedbehandling}
+\paragraph{Performance}
+Køretiden er vurderet løbende ved test med programmet \texttt{FullBenchmark}. Her er kun fokuseret på billedbehandlingen, og bestemte billeder er benyttet.
+
+For at vurdere effekten af det løbende arbejde med forbedring af billedbehandlingen er både den oprindelige og den endelige billedbehandling testet -- med flere forskellige konfigurationer.
+
+Hver test køres 20 gange, og minimums-, maksimums- og gennemsnitstider registreres. Der er testet med 5 billeder. Billede 1 er et billede taget med webcam, som viser banen, som foruden de 4 hjørne-forhindringer indeholder 2 løse forhindringer, 7 kager og 2 robotter. Billede 2 er genereret, og viser banen med 3 løse forhindringer, 2 robotter og 6 kager. Billede 3 er en tom bane -- og billede 4 har 7 løse forhindringer, hvoraf 4 er sammenhængende, 9 kager og 2 robotter. Billede 5 er helt hvidt, og anses som worst case, idet samtlige punkter skal behandles til forhindrings map. Billederne er vist i \pref{fig:ip-test-performancepics}.\\
+\billede{!htbp}{0.4}{ip-test-performancepics}{Billede 1-4 fra performance test af billedbehandlingen.,}
+Resultatet af testen er vist i \pref{tab:ip-test-performance}.
+\begin{table}[!hp]
+	\begin{center}
+	\begin{tabular}{l | r r r}
+		\textbf{Test} & \textbf{Gns (ms)} & \textbf{Min (ms)} & \textbf{Max (ms)} \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 1}}\\
+		\hline
+		Ver. 1 u. debug & 684 & 664 & 749 \\
+		Ver. 1 m. debug & 669 & 662 & 678 \\
+		Ver. 2 u. debug & 733 & 720 & 784 \\
+		Ver. 2 m. debug & 735 & 726 & 752 \\
+		Ver. 2 m. debug, res 3 & 98 & 95 & 111 \\
+		Ver. 2 m. debug, res 3, yield & 97 & 96 & 106 \\
+		Ver. 2 m. debug, res 3, scale 2 & 95 & 92 & 108 \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 2}}\\
+		\hline
+		Ver. 1 u. debug & 1056 & 1022 & 1125 \\
+		Ver. 1 m. debug & 1030 & 1021 & 1045 \\
+		Ver. 2 u. debug & 1136 & 1118 & 1207 \\
+		Ver. 2 m. debug & 1135 & 1122 & 1205 \\
+		Ver. 2 m. debug, res 3 & 144 & 141 & 155 \\
+		Ver. 2 m. debug, res 3, yield & 144 & 141 & 154 \\
+		Ver. 2 m. debug, res 3, scale 2 & 140 & 137 & 150 \\ 
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 3}}\\
+		\hline
+		Ver. 1 u. debug & 517 & 499 & 603 \\
+		Ver. 1 m. debug & 506 & 500 & 519 \\
+		Ver. 2 u. debug & 607 & 594 & 629 \\
+		Ver. 2 m. debug & 610 & 601 & 633 \\
+		Ver. 2 m. debug, res 3 & 83 & 81 & 95 \\
+		Ver. 2 m. debug, res 3, yield & 82 & 80 & 92 \\
+		Ver. 2 m. debug, res 3, scale 2 & 80 & 78 & 90 \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 4}}\\
+		\hline
+		Ver. 1 u. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 1 m. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 2 u. debug & 1806 & 1772 & 1874 \\
+		Ver. 2 m. debug & 1805 & 1770 & 1868 \\
+		Ver. 2 m. debug, res 3 & 224 & 218 & 235 \\
+		Ver. 2 m. debug, res 3, yield & 234 & 221 & 264 \\
+		Ver. 2 m. debug, res 3, scale 2 & 219 & 214 & 239 \\
+		\hline
+		\multicolumn{4}{c}{\textbf{BILLEDE 5}}\\
+		\hline
+		Ver. 1 u. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 1 m. debug & \multicolumn{3}{c}{STACK OVERFLOW} \\
+		Ver. 2 u. debug & 7639 & 7438 & 8182 \\
+		Ver. 2 m. debug & 7506 & 7406 & 7596 \\
+		Ver. 2 m. debug, res 3 & 861 & 848 & 878 \\
+		Ver. 2 m. debug, res 3, yield & 860 & 846 & 887 \\
+		Ver. 2 m. debug, res 3, scale 2 & 861 & 850 & 889 \\
+	\end{tabular}
+	\caption{Resultat af benchmarking med \texttt{FullBenchmark} med forskellige konfigurationer af billedbehandling.\\
+	\scriptsize{\textit{res} står for opløsning -- hvor mange punkter, der skal springes over ved scanning efter objekter -- \textit{yield} angiver, at robot 2 skal optræde som forhindring, og \textit{scale} angiver den faktor, hvormed tilemap mv. skal nedskaleres}}\label{tab:ip-test-performance}
+	\end{center}
+\end{table}
+
+Ud fra testen ses det, at version 2 af biledbehandlingen er en anelse langsommere end den oprindelige udgave. Dette kompenseres der dog rigeligt for ved indførelsen af behandlings-opløsning, foruden at den oprindelige udgave giver stack overflow ved de rekursive behandlinger af store forhindringer -- hvilket er elimineret i version 2.
