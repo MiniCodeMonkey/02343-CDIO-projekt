@@ -41,19 +41,7 @@ public class TileMap
 	}
 
 	public boolean blocked(IRobot robot, int ty, int tx)
-	{
-		/*
-		// Is robot inside bounding box?
-		if (obstacleMap[robot.getY()][robot.getX()] > 0)	
-		{
-			return (obstacleMap[ty][tx] <= 5);
-		}
-		else
-		{
-			return (obstacleMap[ty][tx] != 0);
-		}
-		*/
-		
+	{		
 		boolean blocked = true;
 		
 		try
@@ -79,17 +67,6 @@ public class TileMap
 
 	public float getCost(IRobot robot, int sy, int sx, int ty, int tx)
 	{
-		/*for (int y = 0; y < obstacleMap.length; y++)
-		{
-			for (int x = 0; x < obstacleMap[0].length; x++)
-			{
-				System.out.print(String.format( "%02d",obstacleMap[y][x])+" ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println("\n\n\n\n");*/
-
 		if (obstacleMap[ty][tx] >= 15)
 		{
 			return 2;
