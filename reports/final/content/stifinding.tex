@@ -2,9 +2,9 @@
 
 \section{Valg af algoritme}
 Efter grundig research af algoritme muligheder er valget faldet på \textit{A*}\footnote{Pathfinding algoritme først beskrevet af  Peter Hart, Nils Nilsson og Bertram Raphael i 1968} algoritmen.
-Algoritmen er valgt på baggrund af tidligere erfaringer fra nogle af gruppens medlemmer samt at den opfylder projektets behov i forhold til effektivitet og brugbarhed. Desuden er algoritmen meget udbredt og har vist sit værd i utallige software projekter tidligere.
+Algoritmen er valgt på baggrund af tidligere erfaringer fra nogle af gruppens medlemmer, og fordi at den opfylder projektets behov i forhold til effektivitet og brugbarhed. Desuden er algoritmen meget udbredt og har vist sit værd i utallige software projekter tidligere.
 
-\textit{Dijkstra's algoritme} har også været overvejet, da denne algoritme kunne bruges som base for en videreudvikling i forhold til vores krav, dette blev dog droppet da det ikke regnedes for, ikke at kunne betale sig.
+\textit{Dijkstra's algoritme} har også været overvejet, da denne algoritme kunne bruges som base for en videreudvikling i forhold til vores krav. Dette blev dog droppet da det ikke regnedes for, ikke at kunne betale sig.
 
 \section{Implementering}
 Stifindingen blev implementeret som en separat pakke i projektet med dertilhørende klasser der henholdsvis repræsenterer \texttt{TileMap}, \texttt{Path} og \texttt{Step}s. Implementeringen er baseret på en eksisterende implementering i Java, \citet{astar}.
@@ -13,12 +13,14 @@ Dertil er implementeringen blevet optimeret og justeret til projektets behov.
 Dette betyder også at hele banen omdannes til et tile map som består af ét tile for hver pixel, tile mappet spiller derefter en stor rolle i stifindings algoritmen.
 
 \subsection{Kort over forhindringer}
-Fra billedbehandlingen genereres et kort over forhindringer og objekter der er detekteret af kameraet, desuden indeholder kortet også information om såkaldte bufferzoner som findes omkring forhindringer. I stifindingen benyttes denne information til dels at fortælle om visse tiles er blokeret samt dels til at angive tiles som er bekostelige at køre igennem.
+Fra billedbehandlingen genereres et kort over forhindringer og objekter der er detekteret af kameraet, desuden indeholder kortet også information om såkaldte \textit{bufferzoner} som findes omkring forhindringer. I stifindingen benyttes denne information til dels at fortælle om visse tiles er blokeret samt dels til at angive tiles som er bekostelige at køre igennem.
 
-På den måde er forhindringer angivet som blokeret og bufferzonerne omkring forhindringerne er angivet til at være bekostelige at køre igennem, dette betyder at ruten kommer til at gå en afstand uden om forhindringer og at robotten stadig kan navigere ud hvis den havner i en bufferzone da den ikke er blokeret. Metoderne til disse ligger i \texttt{TileMap} klassen og er hhv. \texttt{blocked(...)} og \texttt{getCost(...)}
+På den måde er forhindringer angivet som blokeret og bufferzonerne omkring forhindringerne er angivet til at være bekostelige at køre igennem, dette betyder at ruten kommer til at gå i en afstand uden om forhindringer og at robotten stadig kan navigere ud, hvis den havner i en bufferzone da den ikke er blokeret. Metoderne til disse ligger i \texttt{TileMap} klassen og er hhv. \texttt{blocked(...)} og \texttt{getCost(...)}
 
 \section{Optimering}
-Algoritmen er optimeret således at antallet af steps der returneres af \texttt{findPath(...)} metoden er reduceret til et minimum, dette er gjort for at behjælpe controlleren i arbejdet med at instruerer robottens bevægelser. Antallet af steps er reduceret ved at loope igennem alle steps, og for hvert step benytte \textit{afstandsformlen} og kun tage step'et med i path'en såfremt afstanden til det forrige valgte step er over en foruddefineret grænseværdi.
+Algoritmen er optimeret således at antallet af \textit{steps} der returneres af \texttt{findPath(...)} metoden er reduceret til et minimum. Dette er gjort for at hjælpe controlleren i arbejdet med at instruere robottens bevægelser. Antallet af steps er reduceret ved at loope igennem alle steps, og for hvert step benytte \textit{afstandsformlen} og kun tage step'et med i path'en såfremt afstanden til det forrige valgte step er over en foruddefineret grænseværdi.
+\subsection{getCost()}
+
 
 \section{Test}
 For at teste stifindingen er der udviklet et test program. Programmet får processeret data fra billedbehandlingen igennem statiske test billede, hvorefter en path beregnes for eventuelle og robotter og vises visuelt i user interfacet.
