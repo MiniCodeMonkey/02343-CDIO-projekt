@@ -7,7 +7,7 @@ Algoritmen er valgt på baggrund af tidligere erfaringer fra nogle af gruppens m
 \textit{Dijkstra's algoritme} har også været overvejet, da denne algoritme kunne bruges som base for en videreudvikling i forhold til vores krav, dette blev dog droppet da det ikke regnedes for, ikke at kunne betale sig.
 
 \section{Implementering}
-Stifindingen blev implementeret som en separat pakke i projektet med dertilhørende klasser der henholdsvis repræsenterer \texttt{TileMap}, \texttt{Path} og \texttt{Step}s. Implementeringen er baseret på en eksisterende implementering i Java. \cite{astar} \rec{HUSK AT KIGGE PÅ CITE}
+Stifindingen blev implementeret som en separat pakke i projektet med dertilhørende klasser der henholdsvis repræsenterer \texttt{TileMap}, \texttt{Path} og \texttt{Step}s. Implementeringen er baseret på en eksisterende implementering i Java, \citet{astar}.
 Dertil er implementeringen blevet optimeret og justeret til projektets behov.
 
 Dette betyder også at hele banen omdannes til et tile map som består af ét tile for hver pixel, tile mappet spiller derefter en stor rolle i stifindings algoritmen.
@@ -19,3 +19,8 @@ På den måde er forhindringer angivet som blokeret og bufferzonerne omkring for
 
 \section{Optimering}
 Algoritmen er optimeret således at antallet af steps der returneres af \texttt{findPath(...)} metoden er reduceret til et minimum, dette er gjort for at behjælpe controlleren i arbejdet med at instruerer robottens bevægelser. Antallet af steps er reduceret ved at loope igennem alle steps, og for hvert step benytte \textit{afstandsformlen} og kun tage step'et med i path'en såfremt afstanden til det forrige valgte step er over en foruddefineret grænseværdi.
+
+\section{Test}
+For at teste stifindingen er der udviklet et test program. Programmet får processeret data fra billedbehandlingen igennem statiske test billede, hvorefter en path beregnes for eventuelle og robotter og vises visuelt i user interfacet.
+
+Ved hjælp af at udføre disse tests har det b.la. været muligt at optimere antallet af steps i et meget tidligt stadie, samt at teste algoritmens effektivitet og køretid i kritiske situationer.
