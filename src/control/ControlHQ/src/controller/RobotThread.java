@@ -223,10 +223,6 @@ public class RobotThread extends Thread
 				// FIXME  maybe delete  - used in turnTo() insted
 				double targetAngleDifference = calculateAngleDifference(robotLocation.getAngle(), targetAngle);
 				
-//				double targetVector = Math.atan2(robotLocation.getY() - step.getY(), robotLocation.getX() - step.getX());
-//				double robotVector = Math.atan2(y, x)
-//				
-				//targetAngleDifference = Math.atan2(step.getY(), step.getX()) - Math.atan2(robotLocation.getY(), robotLocation.getX());
 				
 				// Perform actions according to the robot state
 				switch (this.robotState)
@@ -270,12 +266,12 @@ public class RobotThread extends Thread
 								
 								// Open claw
 								robotControl.openClaw();
-								Thread.sleep(750);
+								Thread.sleep(750);//750);
 								robotControl.stopClaw();
 								
 								// Move forward
 								robotControl.move(30, false);
-								Thread.sleep(150);
+								Thread.sleep(200);//150
 								robotControl.stop();
 								
 								// Close claw
@@ -285,7 +281,7 @@ public class RobotThread extends Thread
 								
 								// Move backwards
 								robotControl.move(23, true);
-								Thread.sleep(1600);//640);
+								Thread.sleep(1640*2);//640);
 								robotControl.stop();
 								
 								// what droppoint to deliver to
@@ -532,44 +528,6 @@ public class RobotThread extends Thread
 				difference -= Math.toRadians(360);
 		}
 		
-		/**
-		== RobotThread PROP ==
-		robotAngle: -75.06858282186246
-		targetAngle: 180.0
-		difference: 75.06858282186246
-
-
-		== RobotThread BERTA ==
-		robotAngle: -90.0
-		targetAngle: 91.90915243299638
-		difference: -1.9091524329963774
-		
-		== RobotThread BERTA ==
-		robotAngle: -90.0
-		targetAngle: 90.0
-		difference: 180.0
-		 */
-		
-		System.out.println("== " + Thread.currentThread().getName() + " ==");
-		System.out.println("robotAngle: " + Math.toDegrees(robotAngle));
-		System.out.println("targetAngle: " + Math.toDegrees(targetAngle));
-		System.out.println("difference: " + Math.toDegrees(difference));
-		System.out.println();
-		
-		// Old way to figure out delta angle
-//		if (targetAngle < 0 && robotAngle < 0 || targetAngle >= 0 && robotAngle >= 0)
-//		{
-//			difference = Math.abs(robotAngle - targetAngle);
-//		}
-//		else if (robotLocation.getAngle() >= 0)
-//		{
-//			difference = Math.abs(robotAngle - targetAngle);
-//		}
-//		else
-//		{
-//			difference = Math.abs(robotAngle + targetAngle);
-//		}
-//		
 		return difference;
 	}
 
@@ -724,26 +682,7 @@ public class RobotThread extends Thread
 	 * @throws InterruptedException
 	 */
 	public void turnTo(double targetAngle) throws RemoteException, IOException, InterruptedException
-	{
-//		While the robot does not have the correct angle... ((robotLocation.getAngle() - targetAngle) > Thresholds.getInstance().getRotationClose())
-//		while (
-//				!((robotLocation.getAngle() == targetAngle) ||
-//			(((robotLocation.getAngle() - targetAngle) < Thresholds.getInstance().getRotationClose()))
-//		   ))
-//		{
-//
-//			//....turn right, or....
-//			if((robotLocation.getAngle() - targetAngle) < 0 )
-//			{
-//				robotControl.right(Thresholds.getInstance().getMediumSpeed());
-//			}
-//			//....turn left
-//			else
-//			{
-//				robotControl.left(Thresholds.getInstance().getMediumSpeed());
-//			}
-//		}
-		
+	{		
 		double targetAngleDifference;
 		
 		do

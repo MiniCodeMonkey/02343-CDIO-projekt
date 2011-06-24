@@ -84,7 +84,7 @@ public class ProcessingThread extends Thread
 			{
 				e.printStackTrace();
 			}
-			runLoop();
+			startComponentThreads();
 		}
 		catch (ControllerException e)
 		{
@@ -159,7 +159,7 @@ public class ProcessingThread extends Thread
 		running = true;
 	}
 	
-	private void runLoop()
+	private void startComponentThreads()
 	{
 		
 		

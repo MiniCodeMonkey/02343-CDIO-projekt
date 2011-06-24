@@ -1,14 +1,17 @@
 \chapter{Videreudvikling}
 \section{Robot}
 \subsection{Sensorere}
-Det vidste sig gennem udviklingen af robotterne, at der kunne opstå et problem, hvis robottens indgangsvinkel til kagen ikke var helt præcis, ville de blot gribe ved siden af kagen, og derefter gå i \texttt{DELIVERING}-state, og afleverer luft. En løsning der her blev diskuteret, var at sætte en farve-sensor over kloen, der derved kunne detektere om kagen rent faktisk var samlet op.
+Det viste sig gennem udviklingen af robotterne, at der kunne opstå et problem, hvis robottens indgangsvinkel til kagen ikke var helt præcis, ville de blot gribe ved siden af kagen, og derefter gå i \texttt{DELIVERING}-state, og afleverer luft. En løsning der her blev diskuteret, var at sætte en berøring-sensor over kloen, der derved kunne detektere om kagen rent faktisk var samlet op.
 
 \subsection{Pilot Til Styring}
-I slutningen af projektforløbet blev det klart at selvom robotten var præcis, havde vi nogle ydelsesmæssige problemer i forhold til tiden robotten brugte på at finde den rette vinkel. Dette ville kunne løses ved at implementere Pilot fra Lejos, der kan dreje robotten til en bestemt vinkel med en usikkerhed på +/- 10°. Vi kunne herefter kombinere det med det eksisterende software der drejer robotten ind på den helt rigtige vinkel.
+I slutningen af projektforløbet blev det klart at selvom robotten var præcis, havde vi nogle ydelsesmæssige problemer i forhold til tiden robotten brugte på at finde den rette vinkel. Dette ville kunne løses ved at implementere \textit{Pilot fra Lejos}, der kan dreje robotten til en bestemt vinkel med en usikkerhed på +/- 10°. Vi kunne herefter kombinere det med det eksisterende software der drejer robotten ind på den helt rigtige vinkel.
 
 \section{Billedbehandling}
 \subsection{Autokalibrering Af Farver \& Lyssætning}
-\rec{skal udfyldes}
+For at sikre bedre kontinuert kørsel af systemet samt tolerance over for ændringer i lysforhold, kan automatisk kalibrering af billedet udvikles. Dette kan ske ved løbende at overvåge kendte, mere eller mindre fast positionerede, objekter -- og justere grænseværdier for objektgenkendelse løbende.
+
+Alternativt kan kalibreringen foregå ved, at referencefarver placeres umiddelbart uden for selve banen, og at disse farver udpeges. Systemet kan da løbende måle disse punkter og kalibrere herefter.
+
 \section{Samlet System}
 \subsection{Vektor Beregning Af Vinkler}
-\rec{skal udfyldes}
+Systemet giver problemer, når robotter skal køre med en vinkel på 180$^\circ$, hvor robotterne ind imellem drejer den lange vej rundt. Dette ville naturligvis kunne ordnes -- eksempelvis ved at konvertere al vinkel-beregning til vektorer, hvilket bl.a. vil give adgang til enklere metoder til vinkelbestemmelse.

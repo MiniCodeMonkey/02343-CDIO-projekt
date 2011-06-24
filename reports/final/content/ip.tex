@@ -58,7 +58,7 @@ I billedbehandlingen ligger klassevariable med tilhørende get-/set-metoder til 
 De mest benyttede hjælpemetoder i billedbehandlingen er \texttt{collect(...)} og \texttt{collectRecursion(...)}. Sidstnævnte benytter en BFS\footnote{Bredde-Først Søgning} til at samle sammenhængende punkter.\\
 \texttt{collect(...)} benytter denne til at samle punkter til et objekt. Undervejs vurderes det, om objektet er for lille -- og dermed blot skal filtreres fra. Hvis objektet bliver accepteret, bestemmes og returneres centerkoordinatet.
 
-\texttt{calculateAngle(...)} metoden finder vinklen fra ét punkt til et andet. Dette udregnes vha. trigonometri. Vinkler behandles altid i radianer.
+\texttt{calculateAngle(...)} metoden finder vinklen fra ét punkt til et andet. Dette udregnes vha. trigonometri. Vinkler behandles altid i radianer, da radianer benyttes til Java's indbyggede trigonometriske metoder.
 
 \paragraph{\texttt{examineImage(...)}}
 Denne metode benyttes, når et billede skal behandles. Metoden tager som argumenter det kildebillede (et \texttt{BufferedImage}), som skal behandles, samt en boolsk værdi, som dikterer, hvorvidt en grafisk repræsentation af det behandlede billede skal dannes.\\
@@ -122,8 +122,6 @@ Processor
 \section{Test}
 \subsection{Webcam}
 Webcam forbindelsen er testet med en viderebygning af programmet fra CampusNet \rec{ref?}. Her vises billedet fra webcam i et vindue med 3 knapper: \textit{Connect}, \textit{Update image} og \textit{Disconnect.}
-
-\textit{Connect} forbinder til webcam vha. \texttt{init()} metoden -- \textit{Update Image} opdaterer det viste billede ved brug af \texttt{getImage()} -- og \textit{Disconnect} nedlægger forbindelsen til webcam vha. \texttt{disconnect()} metoden.
 
 For at kunne gennemføre mere strukturerede test af den øvrige billedbehandling er \texttt{ImageFile} klassen udviklet. Denne implementerer også \texttt{IImageSource}, men benytter .png billeder i mappen \textit{testimages\footnote{Dette ses i forhold til den mappe, hvorfra det kørende program afvikles -- eller i Eclipse roden af projektet, der bliver kørt.}}. Ved kørsel af \texttt{init()} skabes en liste over disse billeder, ved \texttt{getImage()} returneres næste billede på listen, og ved \texttt{close()} nedlægges listen. Dette giver mulighed for at vurdere funktionaliteten i forhold til brug med et rigtigt webcam.
 
