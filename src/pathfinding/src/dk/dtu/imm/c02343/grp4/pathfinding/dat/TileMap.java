@@ -62,7 +62,7 @@ public class TileMap
 			if (obstacleMap[robot.getY()][robot.getX()] != -1)
 			{
 				// Blocked if an obstacle or the SLAVE robot is in the way
-				blocked = (obstacleMap[ty][tx] >= 39 || obstacleMap[ty][tx] == -1);
+				blocked = (obstacleMap[ty][tx] >= 29 || obstacleMap[ty][tx] == -1);
 			}
 			else
 			{

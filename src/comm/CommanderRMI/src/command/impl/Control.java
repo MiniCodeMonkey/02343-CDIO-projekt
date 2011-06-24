@@ -3,14 +3,10 @@ package command.impl;
 import java.io.IOException;
 import java.io.Serializable;
 
-import bluetooth.constants.Constants;
-
-import command.interfaces.IControl;
-
 import lejos.nxt.remote.NXTCommand;
 import lejos.nxt.remote.NXTProtocol;
-import lejos.nxt.Sound;
-import lejos.nxt.SoundSensor;
+
+import command.interfaces.IControl;
 
 /**
  * @author Morten Hulvej & Terkel Brix & Per Clausen
@@ -202,7 +198,7 @@ public class Control implements IControl, Serializable{
 		setInRightMotion(false);
 		
 		//commander.playTone(400, 1000);
-		commander.playSoundFile("d_.wav", false);
+		//commander.playSoundFile("d_.wav", false);
 		
 
 	}

@@ -270,12 +270,12 @@ public class RobotThread extends Thread
 								
 								// Open claw
 								robotControl.openClaw();
-								Thread.sleep(750);
+								Thread.sleep(750);//750);
 								robotControl.stopClaw();
 								
 								// Move forward
 								robotControl.move(30, false);
-								Thread.sleep(150);
+								Thread.sleep(200);//150
 								robotControl.stop();
 								
 								// Close claw
@@ -285,7 +285,7 @@ public class RobotThread extends Thread
 								
 								// Move backwards
 								robotControl.move(23, true);
-								Thread.sleep(1600);//640);
+								Thread.sleep(1640*2);//640);
 								robotControl.stop();
 								
 								// what droppoint to deliver to
@@ -550,11 +550,11 @@ public class RobotThread extends Thread
 		difference: 180.0
 		 */
 		
-		System.out.println("== " + Thread.currentThread().getName() + " ==");
+		/*System.out.println("== " + Thread.currentThread().getName() + " ==");
 		System.out.println("robotAngle: " + Math.toDegrees(robotAngle));
 		System.out.println("targetAngle: " + Math.toDegrees(targetAngle));
 		System.out.println("difference: " + Math.toDegrees(difference));
-		System.out.println();
+		System.out.println();*/
 		
 		// Old way to figure out delta angle
 //		if (targetAngle < 0 && robotAngle < 0 || targetAngle >= 0 && robotAngle >= 0)
