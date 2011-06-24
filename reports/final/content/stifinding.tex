@@ -12,15 +12,15 @@ Dertil er implementeringen blevet optimeret og justeret til projektets behov.
 
 Dette betyder også at hele banen omdannes til et tile map som består af ét tile for hver pixel, tile mappet spiller derefter en stor rolle i stifindings algoritmen.
 
-\subsection{Kort over forhindringer}
+\subsection{Håndtering af forhindringer}
 Fra billedbehandlingen genereres et kort over forhindringer og objekter der er detekteret af kameraet, desuden indeholder kortet også information om såkaldte \textit{bufferzoner} som findes omkring forhindringer. I stifindingen benyttes denne information til dels at fortælle om visse tiles er blokeret samt dels til at angive tiles som er bekostelige at køre igennem.
 
 På den måde er forhindringer angivet som blokeret og bufferzonerne omkring forhindringerne er angivet til at være bekostelige at køre igennem, dette betyder at ruten kommer til at gå i en afstand uden om forhindringer og at robotten stadig kan navigere ud, hvis den havner i en bufferzone da den ikke er blokeret. Metoderne til disse ligger i \texttt{TileMap} klassen og er hhv. \texttt{blocked(...)} og \texttt{getCost(...)}
 
 \section{Optimering}
 Algoritmen er optimeret således at antallet af \textit{steps} der returneres af \texttt{findPath(...)} metoden er reduceret til et minimum. Dette er gjort for at hjælpe controlleren i arbejdet med at instruere robottens bevægelser. Antallet af steps er reduceret ved at loope igennem alle steps, og for hvert step benytte \textit{afstandsformlen} og kun tage step'et med i path'en såfremt afstanden til det forrige valgte step er over en foruddefineret grænseværdi.
-\subsection{getCost()}
 
+Algoritmens køretid er også blevet optimeret ved justeringer i \texttt{getCost(...)}. Som udgangspunkt var det besluttet at bekostningen for bevægelse i bufferzoenn, skulle stige lineært i forhold til afstanden til forhindringen. Dette resulterede i en markant stigning af køretiden og resulterede derefter i at der derefter kun defineredes $0$, $1$ eller $2$ som valide \textit{costs}.
 
 \section{Test}
 For at teste stifindingen er der udviklet et test program. Programmet får processeret data fra billedbehandlingen igennem statiske test billede, hvorefter en path beregnes for eventuelle og robotter og vises visuelt i user interfacet.
